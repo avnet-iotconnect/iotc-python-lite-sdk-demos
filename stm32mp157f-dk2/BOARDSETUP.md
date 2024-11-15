@@ -86,4 +86,12 @@
      
 >[!NOTE]
 >After serially connecting to the board, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
+
+ ## Step 3: Set Up and Run the Python Lite SDK Demo
+* Connect the board to the internet using an Ethernet connection
+
+* Execute the command ```su``` to gain super-user privileges, followed by ```apt-get update``` to check for and install updates for the system
+
+* For the rest of the demo setup and execution processes, follow the instructions in the [Python Lite SDK Quickstart Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/QUICKSTART.md)
+
       
