@@ -1,6 +1,6 @@
 # STM32MP157F-DK2 Board Setup
 
-<img src=".//media/image34.png"/> 
+<img src=".//media/mp157-product.png"/> 
 
 ## Step 1: Flash IoTConnect-Compatible Image to Board
 * To download the zipped image folder, [click here](https://saleshosted.z13.web.core.windows.net/sdk/st/stmp1/proteus/OSTL_6.1_IoTConnect_Compatible.zip).
