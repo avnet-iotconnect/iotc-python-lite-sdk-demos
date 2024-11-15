@@ -1,4 +1,0 @@
-paho-mqtt
-ntplib
-pypiwin32
-jsonlib-python3

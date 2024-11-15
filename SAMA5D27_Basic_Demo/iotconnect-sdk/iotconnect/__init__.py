@@ -1,1 +1,0 @@
-from .IoTConnectSDK import IoTConnectSDK
