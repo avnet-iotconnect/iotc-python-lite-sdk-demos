@@ -1,1 +1,0 @@
-This file is just a placeholder so this otherwise-empty folder can be stored on GitHub. Paste you device certificates into this folder.
