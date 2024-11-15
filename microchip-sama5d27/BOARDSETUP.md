@@ -1,4 +1,4 @@
-# Microchip SAMA5D27 Setup and Demo 
+# Microchip SAMA5D27 Board Setup 
 
 <img src=".//media/sama5d27-product.png"/> 
 
