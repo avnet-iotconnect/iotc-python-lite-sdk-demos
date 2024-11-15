@@ -20,10 +20,10 @@
 
 * Using the included micro-USB cable, connect the SAMA5D27 board to your computer using the **J10** micro-USB port on the SAMA5D27 and any USB port on your computer.
   
+    <img src=".//media/image39.png"/>
+
 >[!NOTE]
 >This USB connection also serves as the power supply to the board.
-
-    <img src=".//media/image39.png"/>
 
 * Check and note which COM port the board is utilizing
   * On Windows computers this can be seen by using the Device Manager
