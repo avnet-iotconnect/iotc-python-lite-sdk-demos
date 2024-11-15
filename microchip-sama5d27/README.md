@@ -1,12 +1,12 @@
 # Microchip SAMA5D27 Setup and Demo 
 
-<img src=".//media/image34.png"/> 
+<img src=".//media/sama5d27-product.png"/> 
 
 ## Step 1: Flash Yocto Image to SD Card
 * [Click here](https://www.linux4sam.org/bin/view/Linux4SAM/Sama5d27Som1EKMainPage#eMMC_support_on_SDMMC0) to go to the image download/instructions page for images for the SAMA5D27.
 * Download this image:
 
-     <img src=".//media/image36.png"/>
+     <img src=".//media/image-download.png"/>
 
 * Follow the "Create a SD card with the demo" section of the instructions to flash the image to an SD card
 >[!IMPORTANT]
@@ -20,7 +20,7 @@
 
 * Using the included micro-USB cable, connect the SAMA5D27 board to your computer using the **J10** micro-USB port on the SAMA5D27 and any USB port on your computer.
   
-    <img src=".//media/image39.png"/>
+    <img src=".//media/j10-diagram.png"/>
 
 >[!NOTE]
 >This USB connection also serves as the power supply to the board.
@@ -28,17 +28,17 @@
 * Check and note which COM port the board is utilizing
   * On Windows computers this can be seen by using the Device Manager
  
-     <img src=".//media/image37.png"/>
+     <img src=".//media/device-manager.png"/>
 
 * Connect to the SAMA5D27 in a terminal emulator using these serial settings (your COM port number may be different):
 
-     <img src=".//media/image38.png"/>
+     <img src=".//media/putty.png"/>
 
 * Insert your SD card into the SD-card port on the board.
 
 * Press the "NRST" button on your SAMA5D27 to reboot the board, causing it to boot from the SD card
 
-  <img src=".//media/image40.png"/>
+  <img src=".//media/reset-diagram.png"/>
 
 * After all of the printout from the boot has stopped, the board will ask you to login. Type "root" and hit enter.
 >[!NOTE]
