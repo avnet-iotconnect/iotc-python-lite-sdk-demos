@@ -1,0 +1,55 @@
+{
+    "code": "basicpoc",
+    "name": "basicpoc",
+    "authType": 2,
+    "isIotEdgeEnable": false,
+    "attributes": [
+        {
+            "name": "random_integer",
+            "displayName": null,
+            "type": "INTEGER",
+            "description": null,
+            "unit": null
+        },
+        {
+            "name": "device_messages",
+            "displayName": null,
+            "type": "STRING",
+            "description": null,
+            "unit": null
+        }
+    ],
+    "commands": [
+        {
+            "name": "command_2",
+            "command": "2",
+            "requiredParam": false,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "command_1",
+            "command": "1",
+            "requiredParam": false,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "command_0",
+            "command": "0",
+            "requiredParam": false,
+            "requiredAck": false,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "GXBJNOI",
+    "properties": {
+        "description": null,
+        "dataFrequency": "60",
+        "fileSupport": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

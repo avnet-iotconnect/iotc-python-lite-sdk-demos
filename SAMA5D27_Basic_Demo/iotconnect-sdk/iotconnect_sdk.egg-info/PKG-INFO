@@ -1,0 +1,18 @@
+Metadata-Version: 1.2
+Name: iotconnect-sdk
+Version: 1.1
+Summary: SDK for D2C and C2D communication
+Home-page: UNKNOWN
+Author: SOFTWEB SOLUTIONS<admin@softwebsolutions.com> (https://www.softwebsolutions.com)
+License: MIT
+Description: UNKNOWN
+Platform: Linux
+Platform: Mac OS X
+Platform: Win
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: License :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=2.7,>=3.5,<3.9

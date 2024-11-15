@@ -1,0 +1,9 @@
+[Unit]
+Description=Service to run Python IoTConnect program on boot.
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/root/SAMA5D27_Basic_Demo/iotconnect-sdk/sample/Basic_Demo.py
+
+[Install]
+WantedBy=multi-user.target
