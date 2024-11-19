@@ -1,5 +1,4 @@
 # Introduction
-
 This repository contains guides and demos that utilize the [IoTConnect Python Lite SDK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk)
 to connect Linux devices to the Avnet IoTConnect platform 
 and showcase basic telemetry reporting and C2D command receiving functionality.
@@ -18,6 +17,4 @@ The following boards are supported by this repository:
 
 # Getting Started
 
-To get started, select the corresponding Quickstart Guide for your board from the above list.
-
-
+To get started, click the corresponding board link above in order to access the Quickstart Guide for your board.
