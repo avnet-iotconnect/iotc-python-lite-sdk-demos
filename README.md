@@ -1,6 +1,23 @@
 # Introduction
-These demos utilize the Python Light Client (SDK) to connect
-Linux devices to the Avnet IoTConnect platform and showcase basic telemetry-reporting and command-recieving functionality.
+
+This repository contains guides and demos that utilize the [IoTConnect Python Lite SDK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk)
+to connect Linux devices to the Avnet IoTConnect platform 
+and showcase basic telemetry reporting and C2D command receiving functionality.
+
+Currently, each of the board demos follows the simple Python Lite SDK Quickstart Example and experience,
+focusing on showcasing how to send and receive data over the network with IoTConnect with the SDK.
+
+Check this page at a later date for demos that interact with IoTConnect, 
+utilizing the hardware board-specific functionality.
+
+# Supported Boards
+The following boards are supported by this repository:
+
+* [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
+* [ST STM32MP157F-DK2 Discovery Kit](microchip-sama5d27) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html))
 
 # Getting Started
-To get started, navigate to the directory for your device and find the associated BOARDSETUP.md 
+
+To get started, select the corresponding Quickstart Guide for your board from the above list.
+
+
