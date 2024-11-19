@@ -20,7 +20,7 @@
 
 * Using the included micro-USB cable, connect the SAMA5D27 board to your computer using the **J10** micro-USB port on the SAMA5D27 and any USB port on your computer.
   
-    <img src=".//media/j10-diagram.png"/>
+    <img src="media/j10-diagram.png"/>
 
 >[!NOTE]
 >This USB connection also serves as the power supply to the board.
@@ -28,23 +28,23 @@
 * Check and note which COM port the board is utilizing
   * On Windows computers this can be seen by using the Device Manager
  
-     <img src=".//media/device-manager.png"/>
+     <img src="media/device-manager.png"/>
 
 * Connect to the SAMA5D27 in a terminal emulator using these serial settings (your COM port number may be different):
 
-     <img src=".//media/putty.png"/>
+     <img src="media/putty.png"/>
 
 * Insert your SD card into the SD-card port on the board.
 
 * Press the "NRST" button on your SAMA5D27 to reboot the board, causing it to boot from the SD card
 
-  <img src=".//media/reset-diagram.png"/>
+  <img src="media/reset-diagram.png"/>
 
-* After all of the printout from the boot has stopped, the board will ask you to login. Type "root" and hit enter.
+* After printout from system boot stops, the board will ask you to login. Type "root" and hit enter.
+
 >[!NOTE]
-> The "login" prompt may get covered by other prinout after the boot. If you do not see the prompt after the boot has completed (printout has stopped), just type "root" and hit enter anyways. This should get you into the device.
+> The "login" prompt may get covered by other text after boot. Hitting ENTER a couple of times should clear it.
 
  ## Step 3: Set Up and Run the Python Lite SDK Demo
-* Execute the command ```apt-get update``` to check for and install updates for the system
 
 * For the rest of the demo setup and execution processes, follow the instructions in the [Python Lite SDK Quickstart Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/QUICKSTART.md)
