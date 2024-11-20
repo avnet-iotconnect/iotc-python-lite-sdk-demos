@@ -2,7 +2,7 @@
 
 <img src="media/mp257-product.png"/> 
 
-## Step 2: Serially Connect to the STM32MP257F-EV1
+## Step 1: Serially Connect to the STM32MP257F-EV1
 
 * Using a USB-A to micro-USC cable, connect your board to your PC at the USB_PWR/ST-LINK connector.
 
@@ -23,7 +23,7 @@
 >[!NOTE]
 >After connecting to the board over serial Termina, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
 
-## Step 3: Set Up and Run the Python Lite SDK Demo
+## Step 2: Set Up and Run the Python Lite SDK Demo
 * Connect the board to the internet using an ethernet connection on the ETH2 port
 
    <img src="media/ethernet.png"/>
