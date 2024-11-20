@@ -24,7 +24,7 @@
 >After connecting to the board over serial Termina, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
 
 ## Step 3: Set Up and Run the Python Lite SDK Demo
-* Connect the board to the internet using an Ethernet connection on the ETH2 port
+* Connect the board to the internet using an ethernet connection on the ETH2 port
 
    <img src="media/ethernet.png"/>
 
