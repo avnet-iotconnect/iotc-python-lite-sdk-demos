@@ -85,7 +85,7 @@
      <img src="media/putty.png"/>
      
 >[!NOTE]
->After connecting to the board over serial Termina, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
+>After connecting to the board over serial, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
 
 ## Step 3: Set Up and Run the Python Lite SDK Demo
 * Connect the board to the internet using an Ethernet connection
