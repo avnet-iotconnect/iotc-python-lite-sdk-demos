@@ -75,7 +75,7 @@
 >[!NOTE]
 >For the first boot after flashing, the board may take a few minutes to turn on.
 
-## Step 2: Serially Connect to the STM32MP157F-DK2
+## Step 2: Serially Connect to the STM32MP135F-DK
 
 * Using a USB-A to micro-USB cable, connect your board to your PC at the ST-LINK connector.
 
@@ -86,7 +86,7 @@
  
      <img src="media/device-manager.png"/>
 
-* Connect to the STM32MP157F-DK2 in a terminal emulator using these serial settings (your COM port number may be different):
+* Connect to the STM32MP135F-DK in a terminal emulator using these serial settings (your COM port number may be different):
 
      <img src="media/putty.png"/>
      
