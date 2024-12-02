@@ -148,3 +148,9 @@ objects-detected.txt
 
 >[!TIP]
 >The minimum confidence threshold can be lowered to accomodate non-ideal conditions, but could result in false-positive detections.
+
+* Run the demo with this command:
+```python3 MP135-vision-demo.py 0.6```
+
+>[!NOTE]
+>The "0.6" at the end of the command is the minimum confidence threshold for object detection. Leaving the option blank defaults to 0.7 (70% confidence).
