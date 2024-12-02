@@ -1,16 +1,16 @@
-# STM32MP157F-DK2 Board Setup
+# STM32MP135F-DK Board Setup
 
-<img src="media/mp157-product.png"/> 
+<img src="media/mp135-product.png"/> 
 
 ## Step 1: Flash IoTConnect-Compatible Image to Board
 * To download the zipped image folder, [click here](https://saleshosted.z13.web.core.windows.net/sdk/st/stmp1/proteus/OSTL_6.1_IoTConnect_Compatible.zip).
 * Unzip the folder to a known location.
 * Download and Install the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) software (the utility for flashing the image to the device).
    * You may have to create an ST account (it's free) to get access to the software download.
-* Set up the STM32MP157F-DK board for flashing:
-   * On the underside of the board, flip both of the large dipswitches (directly opposite of the HDMI port) to the "OFF" position.
+* Set up the STM32MP135F-DK board for flashing:
+   * Set all 4 of the the dip-switches to "OPEN" for flashing
   
-      <img src="media/switches-off.png"/>
+      <img src="media/switches-flash.png"/>
       
    * Power the board with a USB-C cable connected to the "PWR_IN" USB-C port connected to a 5VDC supply with at least 1.0A of output.
    
