@@ -2,11 +2,13 @@
 
 <img src="media/mp135-product.png"/> 
 
-## Step 1: Flash IoTConnect-Compatible Image to Board
-* To download the zipped image folder, [click here](https://saleshosted.z13.web.core.windows.net/sdk/st/stmp1/proteus/OSTL_6.1_IoTConnect_Compatible.zip).
+## Step 1: Flash Updated Image to Board
+* Download the zipped image folder containing the latest STM32MP1 image from the [STM32MP1 OpenSTLinux Starter Package page](https://www.st.com/en/embedded-software/stm32mp1starter.html).
+>[!NOTE]
+>You may have to create an ST account (it's free) to get access to software downloads.
+
 * Unzip the folder to a known location.
 * Download and Install the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) software (the utility for flashing the image to the device).
-   * You may have to create an ST account (it's free) to get access to the software download.
 * Set up the STM32MP135F-DK board for flashing:
    * Set all 4 of the the dip-switches to "OPEN" for flashing
   
@@ -31,8 +33,8 @@
 
 <img src="media/open-file.png"/>
       
-* Navigate to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1\flashlayout_st-image-weston\optee
-   * Select the FlashLayout_sdcard_stm32mp157F-dk2-optee.tsv file and then click "Open." 
+* Navigate to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp1\flashlayout_st-image-weston\optee
+   * Select the FlashLayout_sdcard_stm32mp135F-dk-optee.tsv file and then click "Open." 
    
 <img src="media/file-selection.png"/>
       
@@ -40,7 +42,7 @@
    
 <img src="media/browse.png"/>
    
-* Navigate once again to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1
+* Navigate once again to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp1
    * Select the stm32mp1 folder and then click "Select folder."
 
 <img src="media/binaries-path.png"/>
@@ -54,8 +56,11 @@
 <img src="media/device-detected.png"/>
     
 * You are ready to flash. Click the "Download" button to begin the flashing process.
-   * The STM32MP157F-DK2 will turn off and on several times throughout the flashing process. It is important to not unplug or disturb it during the process. Given the size of the image it will usually take **up to 45 minutes** to flash.
-   * It is worth noting that the LCD screen on the board will turn on with some output text during the flash process, so do not be alarmed.
+
+>[!NOTE]
+>The STM32MP135F-DK will turn off and on several times throughout the flashing process. It is important to not unplug or disturb it during the process.
+>Given the size of the image it will usually take several minutes to flash.
+>It is worth noting that the LCD screen on the board will turn on with some output text during the flash process, so do not be alarmed.
 
 <img src="media/begin-flash.png"/>
    
@@ -67,7 +72,8 @@
 
 <img src="media/switches-on.png"/>
    
-* **For the first boot after flashing, the board takes a few minutes to turn on.**
+>[!NOTE]
+>For the first boot after flashing, the board may take a few minutes to turn on.
 
 ## Step 2: Serially Connect to the STM32MP157F-DK2
 
