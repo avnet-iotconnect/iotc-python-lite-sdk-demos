@@ -15,6 +15,7 @@ The following boards are supported by this repository:
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html))
 * [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html))
+* [ST STM32MP135F-EV1 Evaluation Board](stm32mp135f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp135f-dk.html))
 
 # Getting Started
 
