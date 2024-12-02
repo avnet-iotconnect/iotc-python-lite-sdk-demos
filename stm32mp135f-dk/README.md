@@ -68,16 +68,16 @@
 
 <img src="media/flash-complete.png"/>
    
-* Now, flip the large dipswitches on the underside of your board both to the "ON" position, and once again hit the reset button to properly boot the new image from the SD card.
+* Flip dipswitches 1 and 3 to the "closed" position while leaving dipswitches 2 and 4 in the "OPEN" position. Push the reset button to properly boot the new image from the SD card.
 
-<img src="media/switches-on.png"/>
+<img src="media/switches-boot.png"/>
    
 >[!NOTE]
 >For the first boot after flashing, the board may take a few minutes to turn on.
 
 ## Step 2: Serially Connect to the STM32MP157F-DK2
 
-* Using a USB-A to micro-USB cable, connect your board to your PC at the CN11 ST-LINK connector.
+* Using a USB-A to micro-USB cable, connect your board to your PC at the ST-LINK connector.
 
      <img src="media/stlink.png"/>
 
