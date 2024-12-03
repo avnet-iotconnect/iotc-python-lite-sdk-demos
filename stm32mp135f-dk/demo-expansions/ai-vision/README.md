@@ -75,3 +75,14 @@ cell phone
 
 >[!TIP]
 >Adjusting the lighting, distance from the camera, background, and confidence threshold can help with more-consistent detection
+
+## Step 5: Monitor Object Detection Data in IoTConnect
+* Approximately once per second while the demo program is active, a data packet will be sent to IoTConnect containing this information:
+   * Attribute Name: objects_detected
+     * Attribute Type: string
+     * Attribute Description: A string containing comma-separated label names of all objects currently detected, including their confidence percentages in parentheses. String is ordered from highest percentage confidence to lowest percentage.
+   * Attribute Name: detection_data
+     * Attribute Type: object
+     * Attribute Description: An object that breaks down the detected object information into individual string and decimal values to be used in more robust dashboards.
+
+* To view the live data, go to your device in IoTConnect, verify it is connected, and click on the "Live Data" tab.
