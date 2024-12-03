@@ -4,7 +4,7 @@ The STM32MP135F-DK supports the X-LINUX-AI expansion package, and a basic IoTCon
 ## Step 1: Acquire Necessary Files
 * Download the vision-ai-expansion.zip folder in this directory and extract it to a known location
 
-* Within the unzipped folder, locate the AIMP1_template.JSON file and use it as the template when creating your device in IoTConnect
+* Download the AIMP1_template.JSON file in this directory and **use it as the template when creating your device in IoTConnect**
 
 ## Step 2: Configure Board for AI Vision
 
