@@ -60,7 +60,7 @@ cd /home/weston
 >[!NOTE]
 >The "0.6" at the end of the command is the minimum confidence threshold for object detection. It is recommended to make this value between 0.5 and 0.8. Leaving the option blank defaults to 0.7 (70% confidence).
 
-* The vision program is trained to recognize any object in [this list](https://github.com/amikelive/coco-labels/blob/master/coco-labels-paper.txt) but from our experimentation, some of the most consistently-detected and conveniently-sized objects to use are:
+* The vision program is trained to recognize any object in [this list](object-labels.txt) but from our experimentation, some of the most consistently-detected and conveniently-sized objects to use are:
 ```
 apple
 orange
