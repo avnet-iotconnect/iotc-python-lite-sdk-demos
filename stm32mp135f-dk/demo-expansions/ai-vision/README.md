@@ -36,11 +36,14 @@ objects-detected.txt
 ## Step 3: Physically Set Up Demo Equipment
 * Using adhesive, zip-ties, or some other type of binding utility, secure your USB camera in a position to be looking at your designated detection area.
 
+>[!TIP]
+>To maintain a consistent and controlled background, it is recommended to position the camera above a tabletop secured to a boom arm (such as [this](https://www.amazon.com/dp/B0BV2SBWVD?ref=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&ref_=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&social_share=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&peakEvent=1&starsLeft=1&skipTwisterOG=1&th=1)), looking down at objects on the table.
+
 >[!IMPORTANT]
 >The AI Vision Demo requires a USB UVC-Compliant Camera (such as [this](https://www.amazon.com/ALPCAM-Distortion-Compliant-Embedded-Industrial/dp/B0B1WTV1KB/ref=sr_1_40?crid=1Y64R6N37I2DW&dib=eyJ2IjoiMSJ9.09vlNQuRgZXBCOJltq5NAHjwkF3xrkD_IO8iIPnTgmM656JhZdERupdaYL29K-WbqLGgdkCchkhjMGFCFpy7D4Ng5LfWuSsYX1jMf8HFDXXsuqE96PFQrpwZszNnYEAkgDOKVRYky4lgiGU4S8NZZEcnmANwxdgvAOnkQCDQWIYxf2Tau45lZyN0ZjY5Otk6.TwrVuCH8OFqthDivTQqbOEPSUYAmvtH5LiE27DyAm7A&dib_tag=se&keywords=usb%2Bcamera%2Buvc&qid=1732315805&sprefix=usb%2Bcamera%2Buvc%2Caps%2C148&sr=8-40&th=1)). Using a non-UVC camera (most modern webcams, for example) will cause the vision program to crash due to image format incompatibilities.
 
 >[!NOTE]
-> The detection program works best with good lighting and non-glossy objects against a non-glossy background with good color-contrast versus the colors of the objects being detected. Ideally the objects are between 6 and 24 inches away from the camera lens (depends on size of object). To maintain a consistent and controlled background, it is recommended to position the camera above a tabletop secured to a boom arm (such as [this](https://www.amazon.com/dp/B0BV2SBWVD?ref=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&ref_=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&social_share=cm_sw_r_apan_dp_XVFHFPZQA55SFZY5S988&peakEvent=1&starsLeft=1&skipTwisterOG=1&th=1)), looking down at objects on the table.
+> The detection program works best with good lighting and non-glossy objects against a non-glossy background with good color-contrast versus the colors of the objects being detected. Ideally the objects are between 6 and 24 inches away from the camera lens (depends on size of object). 
 
 * Plug your USB camera into a USB port on the STM32MP135F-DK
 
@@ -56,3 +59,19 @@ cd /home/weston
 
 >[!NOTE]
 >The "0.6" at the end of the command is the minimum confidence threshold for object detection. It is recommended to make this value between 0.5 and 0.8. Leaving the option blank defaults to 0.7 (70% confidence).
+
+* The vision program is trained to recognize any object in [this list](https://github.com/amikelive/coco-labels/blob/master/coco-labels-paper.txt) but from our experimentation, some of the most consistently-detected and conveniently-sized objects to use are:
+```
+apple
+orange
+banana
+donut
+remote
+scissors
+cell phone
+```
+>[!NOTE]
+>Instead of the physical objects, printing out decent-quality images of the objects onto paper (not glossy photograph paper) and putting those in front of the camera can result in detections of objects that typically would not be feasible for the demo (such as airplane, stop sign, giraffe, etc.). There have been mixed results with this, usually dependent on how life-like the images are.
+
+>[!TIP]
+>Adjusting the lighting, distance from the camera, background, and confidence threshold can help with more-consistent detection
