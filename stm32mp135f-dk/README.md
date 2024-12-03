@@ -104,4 +104,4 @@
 
 * For the rest of the basic demo setup and execution processes, follow the instructions in the [Python Lite SDK Quickstart Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/QUICKSTART.md)
 >[!IMPORTANT]
->If planning to use an expansion demo, make sure to create your device using **the proper template for that demo** as outlined in that demo's specific README.
+>If planning to use an expansion demo, make sure to create your device using **the proper template for that demo** as outlined in that demo's specific README instead of the template provided in the Python Lite SDK Quickstart Guide.
