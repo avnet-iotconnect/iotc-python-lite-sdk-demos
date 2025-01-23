@@ -146,17 +146,37 @@ For further resources, visit:
 ## Troubleshooting
 
 ### Common Issues
-1. **No Power**:
-   - Ensure the power adapter is properly connected.
-   - Verify the power LED is lit on the evaluation kit.
-2. **No Debug Output**:
-   - Check the USB-to-UART connection.
-   - Confirm the terminal baud rate is set to 115200.
-3. **IoTConnect Connection Issues**:
-   - Verify the Ethernet cable is connected and the device has a valid IP address.
-   - Ensure the correct credentials are loaded onto the device.
+#### No Power:
+   **Symptom**: The board does not power on; power LED is off. 
+   **Solutions**:
+1) Power Supply Verification: Ensure the USB cable is securely connected to the J10 micro-USB port and a functioning power source. 
+2) Power Switch: Confirm that any onboard power switches are in the "ON" position. 
+3) Inspect for Damage: Check the board for visible signs of damage or component issues. 
 
-For additional assistance, refer to the [IoTConnect Troubleshooting Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/issues).
+#### No Debug Output:
+
+**Symptom**: No output appears in the terminal emulator during boot-up or operation.
+
+**Solutions**:
+1) Serial Connection: Verify the micro-USB cable is connected to the J10 port.
+2) COM Port Identification: On Windows, check Device Manager for the assigned COM port under "Ports (COM & LPT)".
+3) Terminal Settings: Configure your terminal emulator (e.g., PuTTY) with the following settings:
+   - Baud Rate: 115200
+   - Data Bits: 8
+   - Parity: None
+   - Stop Bits: 1
+   - Flow Control: None
+4) Driver Installation: Ensure that the necessary USB-to-serial drivers are installed on your host machine. 
+
+#### Boot Issues:
+
+**Symptom**: The device fails to boot from the SD card or eMMC.
+
+**Solutions**:
+1) Boot Medium Preparation: Ensure the boot medium (SD card or eMMC) is properly flashed with a compatible image.
+2) Boot Mode Selection: Verify that the boot mode switches or jumpers are configured correctly for the intended boot source.
+3) SD Card Integrity: Use high-quality SD cards and check for errors using appropriate tools.
+4) Log Analysis: Observe boot logs via the serial console for error messages that can provide clues to the failure point.
 
 ---
 
