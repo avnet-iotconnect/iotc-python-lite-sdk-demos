@@ -14,7 +14,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 
 <table>
   <tr>
-    <td><img src="../media/STM32MP257F-EV1.jpg" width="6000"></td>
+    <td><img src="../media/FRDM93.png" width="6000"></td>
     <td>The FRDM i.MX 93 development board is a low-cost and compact development board featuring the i.MX93 applications processor. Equipped with an onboard IW612 module, featuring NXP's Tri-Radio solution with Wi-Fi 6 + Bluetooth 5.4 + 802.15.4, the board is ideal for developing modern Industrial and IoT applications.</td>
   </tr>
 </table>
@@ -28,7 +28,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="https://github.com/avnet-iotconnect/meta-iotconnect-docs/blob/main/QuickStart/ST/STM32MP257/media/STM32MP257x-EV1_connections.jpg" alt="STM32MP257x-EV1 Connections">
+<img src="../media/FRDM93-connections.jpg">
 </details>
 
 1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
