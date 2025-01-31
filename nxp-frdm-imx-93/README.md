@@ -10,7 +10,7 @@
 8. [Resources](#8-resources)
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate standard IoT functions such as telemetry collection and OTA updates.
+This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
 
 <table>
   <tr>
