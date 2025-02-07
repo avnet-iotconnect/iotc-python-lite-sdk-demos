@@ -67,7 +67,6 @@ A Device Template define the type of telemetery the platform should expect to re
    mkdir /home/weston/demo
    cd /home/weston/demo
    ```
-
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
@@ -81,6 +80,8 @@ A Device Template define the type of telemetery the platform should expect to re
    ```
 >[!NOTE]
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
+
+9. Wifi Setup (OPTIONAL): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 
 # 7. Using the Demo
 1. Run the basic demo with this command:
