@@ -22,7 +22,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 # 2. Hardware Requirements
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
-* 1x Ethernet Cable (with a switch/router to connect to)
+* **OPTIONAL**: 1x Ethernet Cable (with a switch/router to connect to)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
@@ -31,7 +31,7 @@ See the reference image below for cable connections.
 <img src="./media/FRDM93-connections.jpg">
 </details>
 
-1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
+1. **OPTIONAL**: Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
 2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the port labeled **#2** in the reference image.
 3. Connect a USB-C cable from your host machine to the port labeled **#3** in the reference image.
 
@@ -81,7 +81,7 @@ A Device Template define the type of telemetery the platform should expect to re
 >[!NOTE]
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
 
-9. Wifi Setup (OPTIONAL): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
+9. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 
 # 7. Using the Demo
 1. Run the basic demo with this command:
