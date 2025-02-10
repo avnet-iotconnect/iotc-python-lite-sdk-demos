@@ -81,7 +81,7 @@ A Device Template define the type of telemetery the platform should expect to re
    ```
 
 >[!IMPORTANT]
->The device template upload .step of the quickstart script can be skipped since it was already taken care of in Step 5
+>The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
 
 >[!NOTE]
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
