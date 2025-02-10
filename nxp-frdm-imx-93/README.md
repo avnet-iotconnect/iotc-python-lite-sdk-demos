@@ -79,6 +79,10 @@ A Device Template define the type of telemetery the platform should expect to re
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
    ```
+
+>[!IMPORTANT]
+>The device template upload .step of the quickstart script can be skipped since it was already taken care of in Step 5
+
 >[!NOTE]
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
 
