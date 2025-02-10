@@ -62,7 +62,8 @@ A Device Template define the type of telemetery the platform should expect to re
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 5. When prompted for a login, type "root" followed by the ENTER key.
-6. Run these commands to create and move into a directory for your demo files:
+6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
+7. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
    cd /home/weston/demo
@@ -70,18 +71,16 @@ A Device Template define the type of telemetery the platform should expect to re
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-7. Run this command to install the IoTConnect Python Lite SDK:
+8. Run this command to install the IoTConnect Python Lite SDK:
    ```
    python3 -m pip install iotconnect-sdk-lite
    ```
-8. Run this command to download and run the Quickstart setup script:
+9. Run this command to download and run the Quickstart setup script:
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
    ```
 >[!NOTE]
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
-
-9. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 
 # 7. Using the Demo
 1. Run the basic demo with this command:
