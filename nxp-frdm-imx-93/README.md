@@ -87,8 +87,9 @@ A Device Template define the type of telemetery the platform should expect to re
 >This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
 
 # 7. Using the Demo
-1. Run the basic demo with this command:
+1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
 ```
+cd /home/weston/demo
 python3 /home/weston/demo/quickstart.py
 ```
 2. View the dummy telemetry data under the "Live Data" tab for your device on IoTConnect.
