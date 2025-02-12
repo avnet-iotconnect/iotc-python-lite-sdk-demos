@@ -22,7 +22,8 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 # 2. Hardware Requirements
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
-* **OPTIONAL**: 1x Ethernet Cable (with a switch/router to connect to)
+* 1x Ethernet Cable (and a local router/switch with Internet connectivity)
+* (Optional) WiFi Network SSID and Password (more configuration is required for this method)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
@@ -31,7 +32,7 @@ See the reference image below for cable connections.
 <img src="./media/FRDM93-connections.jpg">
 </details>
 
-1. **OPTIONAL**: Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
+1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
 2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the port labeled **#2** in the reference image.
 3. Connect a USB-C cable from your host machine to the port labeled **#3** in the reference image.
 
@@ -46,13 +47,13 @@ An /IOTCONNECT account with AWS backend is required.  If you need to create an a
 See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
 # 5. /IOTCONNECT Device Template Setup
-A Device Template define the type of telemetery the platform should expect to recieve.
-* Download the pre-made [Basic Device Template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/files/plitedemo-template.json) (**MUST** Right-Click and "Save-As" to get the raw json file)
+A Device Template define the type of telemetry the platform should expect to receive.
+* Download the pre-made [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/files/plitedemo-template.json) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information, please see the [/IOTCONNECT Documentation](https://docs.iotconnect.io/iotconnect/) website.)
 
 # 6. Device Setup
 1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Device" (may be multiple).
-2. Open a terminal emulator program such as Putty on your host machine.
+2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
 3. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
   - Data Bits: 8
@@ -61,7 +62,7 @@ A Device Template define the type of telemetery the platform should expect to re
 4. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
-5. When prompted for a login, type "root" followed by the ENTER key.
+5. When prompted for a login, type `root` followed by the ENTER key.
 6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 7. Run these commands to create and move into a directory for your demo files:
    ```
@@ -71,7 +72,7 @@ A Device Template define the type of telemetery the platform should expect to re
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-8. Run this command to install the IoTConnect Python Lite SDK:
+8. Run this command to install the /IOTCONNECT Python Lite SDK:
    ```
    python3 -m pip install iotconnect-sdk-lite
    ```
@@ -84,7 +85,7 @@ A Device Template define the type of telemetery the platform should expect to re
 >The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
 
 >[!NOTE]
->This script primarily covers device and certificate creation in IoTConnect. It will require some copy/paste between your browser and the terminal window.
+>This script primarily covers device and certificate creation in /IOTCONNECT. It will require some copy/paste between your browser and the terminal window.
 
 # 7. Using the Demo
 1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
@@ -92,7 +93,7 @@ A Device Template define the type of telemetery the platform should expect to re
 cd /home/weston/demo
 python3 /home/weston/demo/quickstart.py
 ```
-2. View the dummy telemetry data under the "Live Data" tab for your device on IoTConnect.
+2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
 * [Purchase the STM32MP257-EV1 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
