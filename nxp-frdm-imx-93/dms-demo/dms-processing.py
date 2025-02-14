@@ -9,6 +9,12 @@ import sys
 import time
 import argparse
 import json
+# System optimizations: Fixes GStreamer video playback issues, Mesa driver errors, and OpenGL fallback
+import os                                                                                             
+os.environ["ETHOSU_CACHE"] = "0"  # Ensures Ethos-U cache does not interfere with execution           
+os.environ["MESA_LOADER_DRIVER_OVERRIDE"] = "llvmpipe"  # Forces software rendering to avoid driver errors
+os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"  # Disables hardware OpenGL acceleration                        
+os.environ["QT_X11_NO_MITSHM"] = "1"  # Prevents X11 shared memory segmentation faults    
 
 from face_detection import *
 from eye_landmark import EyeMesher
@@ -76,9 +82,21 @@ def update_json():
     global bbox_xmax
     global bbox_ymax
     
-    with open("/home/weston/dms-data.json", "r") as jsonFile:
-        dms_data = json.load(jsonFile)
-    if dms_data["ack"] == 1:
+    json_path = "/home/weston/dms-data.json"
+
+    # Ensure the JSON file exists and is not empty before reading
+    if not os.path.exists(json_path) or os.path.getsize(json_path) == 0:
+        print(f"ERROR: JSON file {json_path} is missing or empty.")
+        return
+
+    try:
+        with open(json_path, "r") as jsonFile:
+            dms_data = json.load(jsonFile)
+    except json.JSONDecodeError:
+        print(f"ERROR: JSON file {json_path} contains invalid JSON.")
+        return
+
+    if dms_data.get("ack") == 1:
         dms_data["head_direction"] = head_direction
         dms_data["yawning"] = yawning
         dms_data["eyes_open"] = eyes_open
@@ -88,9 +106,13 @@ def update_json():
         dms_data["bbox_xmax"] = int(bbox_xmax)
         dms_data["bbox_ymax"] = int(bbox_ymax)
         dms_data["ack"] = 0
-        with open("/home/weston/dms-data.json", "w") as jsonFile:
-            json.dump(dms_data, jsonFile)
 
+        with open(json_path, "w") as jsonFile:
+            json.dump(dms_data, jsonFile)
+# Changes to update_json():
+# - Added a check to ensure the file exists and is not empty before reading.
+# - Wrapped JSON loading in a try-except to catch parsing errors.
+# - Used `get("ack")` to safely access the key in case of missing data.
 
 def draw_face_box(image, bboxes, landmarks, scores):
     global bbox_xmin
