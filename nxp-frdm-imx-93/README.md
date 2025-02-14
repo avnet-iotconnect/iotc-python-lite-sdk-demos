@@ -96,6 +96,6 @@ python3 /home/weston/demo/quickstart.py
 2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-* [Purchase the STM32MP257-EV1 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+* [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
