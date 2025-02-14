@@ -4,7 +4,7 @@
 This document will help guide you to enable the Driver Monitoring System demo on your NXP FRDM i.MX 93 Development Board.
 
 # 2. Prerequisites
-It is expected that you have already followed [the main README guide](../REAME.md) for this board which means you have:
+It is expected that you have already followed [the main README guide](../README.md) for this board which means you have:
   * Already created your device in IoTConnect
   * Already connected to your board serially (or via SSH) so that you have access to its terminal
   * Already installed the IoTConnect Python Lite SDK on your board
