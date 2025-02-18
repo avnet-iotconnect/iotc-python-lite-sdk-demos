@@ -10,9 +10,6 @@ source ~/iotconnect_env/bin/activate
 pip install --upgrade pip
 pip install flask numpy opencv-python requests iotconnect-sdk-lite
 
-echo "Installing IoTConnect SDK..."
-pip install iotconnect-sdk-lite
-
 echo "Generating SSL certificates..."
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /home/weston/key.pem -out /home/weston/cert.pem -subj "/CN=localhost"
 
