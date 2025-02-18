@@ -112,8 +112,7 @@ if [[ -f "device-cert.pem" && -f "device-pkey.pem" ]]; then
 else
   gencert "device"
 fi
-
-# ---- Download Quickstart Script ----# ---- IoTConnect Setup ----
+# ---- IoTConnect Setup ----
 cat <<END
 ---- IoTConnect Python Lite SDK Quickstart ----
 This script will help guide you through setting up this device with IoTConnect.
@@ -126,6 +125,28 @@ Follow these steps:
   - Click the "Use my certificate" radio button.
   - Copy and paste the certificate that will be printed, including the BEGIN and END lines into the Certificate Text field:
 END
+
+# **Force Pause Before Printing Certificate**
+read -n 1 -s -r -p "Press ENTER to print the certificate and proceed..."
+
+cat device-cert.pem
+
+# **Force Pause for Copying**
+echo -e "\n\n📌 Copy the certificate above, then press ENTER to continue."
+read -n 1 -s -r -p ""
+
+cat <<END
+
+- Click the "Save & View" button.
+- Click the "Paper and Cog" icon at the top right to download your device configuration file.
+- Open the downloaded file in a text editor, paste the content into this terminal, and press ENTER after the last line.
+END
+
+# **Force Pause for Device Config Input**
+echo -e "\n📌 Paste your configuration file content, then press ENTER to continue."
+read -n 1 -s -r -p ""
+
+
 
 read -rp "Press ENTER to print the certificate and proceed:"
 cat device-cert.pem
