@@ -17,7 +17,13 @@ This simple guide will help you download all the necessary files for flashing a 
 
 # 4. Organize Files for Flashing
 * Unzip the zipped image folder you downloaded
-* Copy the uuu.exe file you previously downloaded into the newly-unzipped image folder
+* Copy the uuu.exe file you previously downloaded into the of the newly-unzipped image folder (you may need to navigate an additional layer into the folder after unzipping it to get to where the real files are)
+* Using 7-Zip (or another unzipping utility that supports ZST files), unzip this file (keeping the same destination directory):
+  ```imx-image-full-imx93frdm.rootfs.wic.zst```
+* Before proceeding to the next step, very that these 3 files are all within the same folder:
+```imx-image-full-imx93frdm.rootfs.wic```
+```imx-boot-imx93frdm-sd.bin-flash_singleboot```
+```uuu.exe```
 
 # 5. Prepare Hardware for Flashing
 * Set the boot dip-switches (SW1) to OFF-OFF-OFF-ON for Serial Download mode
@@ -30,8 +36,8 @@ This simple guide will help you download all the necessary files for flashing a 
 * Open a Windows Powershell window
 * Move into the unzipped downloaded image folder conatining the image files and uuu.exe
 * Execute this command to start the flash:
-  ```.\uuu.exe -b emmc_all .\imx-boot-imx93-11x11-lpddr4x-evk-sd.bin-flash_singleboot .\imx-image-full-imx93evk.wic```
-* Wait until the flash is complete
+  ```.\uuu.exe -b emmc_all .\imx-boot-imx93frdm-sd.bin-flash_singleboot .\imx-image-full-imx93frdm.rootfs.wic```
+* Wait until the flash is complete (should take ~5 minutes)
 * Change the boot dip-switches (SW1) back to OFF-OFF-ON-OFF for eMMC boot mode
 * Reboot the board by unplugging the power cable and plugging it back in
 * Your i.MX 93 now has booted with a fresh default image on it
