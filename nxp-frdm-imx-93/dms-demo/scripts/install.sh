@@ -8,7 +8,7 @@ echo "Creating Python virtual environment..."
 python3 -m venv ~/iotconnect_env
 source ~/iotconnect_env/bin/activate
 pip install --upgrade pip
-pip install flask numpy opencv-python requests avnet-iotconnect-sdk-lite
+pip install flask numpy opencv-python requests iotconnect-sdk-lite
 
 echo "Installing IoTConnect SDK..."
 pip install iotconnect-sdk-lite
