@@ -50,8 +50,14 @@ function askyn {
     echo "Need argument 1" >&2
     exit 128
   fi
+  
+  # Timeout & Default Answer (set to 'y' by default)
+  DEFAULT_ANSWER="y"
+  
   while true; do
-    read -rp "$1 [y/n]: " answer
+    read -t 5 -rp "$1 [y/n]: " answer  # 5-second timeout for user input
+    answer=${answer:-$DEFAULT_ANSWER}  # If empty, use default answer
+    
     if [[ "${answer}" =~ ^[yY]$ ]]; then
       return 0
     elif [[ "${answer}" =~ ^[nN]$ ]]; then
@@ -61,6 +67,7 @@ function askyn {
     fi
   done
 }
+
 
 function gencert {
   if [ -z "$1" ]; then
