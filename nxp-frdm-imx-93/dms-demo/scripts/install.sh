@@ -4,11 +4,12 @@ echo "Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-#echo "Creating Python virtual environment..."
-#python3 -m venv ~/iotconnect_env
-#source ~/iotconnect_env/bin/activate
-pip install --upgrade pip
-pip install flask numpy opencv-python requests iotconnect-sdk-lite
+python3 -m pip install --upgrade pip  
+pip install --upgrade pip --root-user-action
+pip install flask numpy opencv-python requests iotconnect-sdk-lite --root-user-action
+
+echo "Installing IoTConnect SDK..."
+pip install iotconnect-sdk-lite --root-user-action
 
 echo "Generating SSL certificates..."
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /home/weston/key.pem -out /home/weston/cert.pem -subj "/CN=localhost"
