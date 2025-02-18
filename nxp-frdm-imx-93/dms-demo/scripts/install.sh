@@ -1,27 +1,8 @@
 #!/bin/bash
 
-echo "Updating package lists and installing required dependencies..."
-sudo apt update && sudo apt upgrade -y
-
-# Fix missing repository issue for libssl-dev (ensure universe repo is enabled)
-sudo apt install -y software-properties-common
-sudo add-apt-repository universe -y
-sudo apt update
-
-# Install required packages
-sudo apt install -y \
-    git \
-    curl \
-    wget \
-    unzip \
-    python3 \
-    python3-pip \
-    python3-venv \
-    openssl \
-    libopencv-dev \
-    libffi-dev \
-    libssl-dev \
-    libcurl4-openssl-dev || { echo "Package installation failed. Exiting."; exit 1; }
+echo "Updating environment variables..."
+export PATH=$PATH:/usr/local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 echo "Creating Python virtual environment..."
 python3 -m venv ~/iotconnect_env
