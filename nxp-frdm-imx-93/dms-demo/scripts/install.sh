@@ -113,7 +113,7 @@ else
   gencert "device"
 fi
 
-# ---- IoTConnect Setup ----
+# ---- Download Quickstart Script ----# ---- IoTConnect Setup ----
 cat <<END
 ---- IoTConnect Python Lite SDK Quickstart ----
 This script will help guide you through setting up this device with IoTConnect.
@@ -130,6 +130,7 @@ END
 read -rp "Press ENTER to print the certificate and proceed:"
 cat device-cert.pem
 
+# **Pause to allow copy-paste before continuing**
 echo ""
 echo "Copy the certificate above, then press ENTER to continue."
 read -rp ""
@@ -140,11 +141,10 @@ cat <<END
 Open the downloaded file in a text editor, paste the content into this terminal, and press ENTER after the last line.
 END
 
+# **Pause again before proceeding**
 echo "Waiting for you to paste the configuration. Press ENTER when ready."
 read -rp ""
 
-
-# ---- Download Quickstart Script ----
 echo "Downloading IoTConnect Quickstart script..."
 cd /home/weston/
 curl -sSLo imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/imx93-ai-demo.py"
