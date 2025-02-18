@@ -130,31 +130,19 @@ END
 read -rp "Press ENTER to print the certificate and proceed:"
 cat device-cert.pem
 
+echo ""
+echo "Copy the certificate above, then press ENTER to continue."
+read -rp ""
+
 cat <<END
 - Click the "Save & View" button.
 - Click the "Paper and Cog" icon at the top right to download your device configuration file.
+Open the downloaded file in a text editor, paste the content into this terminal, and press ENTER after the last line.
 END
 
-# ---- Device Configuration File Setup ----
-paste_config_json=true
-if [[ -f "iotcDeviceConfig.json" ]]; then
-  if ! askyn "It seems that the iotcDeviceConfig.json already exists. Do you want to overwrite it?"; then
-    paste_config_json=false
-  fi
-fi
+echo "Waiting for you to paste the configuration. Press ENTER when ready."
+read -rp ""
 
-if ${paste_config_json} ]]; then
-  echo "Open the downloaded file in a text editor, paste the content into this terminal, and press ENTER after the last line."
-
-  echo > iotcDeviceConfig.json
-  while true; do
-    read -r line
-    echo "${line}" >> iotcDeviceConfig.json
-    if [[ "${line}" == "}" ]]; then
-      break
-    fi
-  done
-fi # paste_config_json
 
 # ---- Download Quickstart Script ----
 echo "Downloading IoTConnect Quickstart script..."
