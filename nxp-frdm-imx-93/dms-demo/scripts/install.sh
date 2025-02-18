@@ -78,9 +78,13 @@ chmod +x imx93-ai-demo.py
 
 # ---- Download DMS Processing Script ----
 echo "Downloading DMS processing script..."
-mkdir -p /usr/bin/eiq-examples-git/dms
-curl -sSLo /usr/bin/eiq-examples-git/dms/dms-processing.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/dms-processing.py"
-chmod +x /usr/bin/eiq-examples-git/dms/dms-processing.py
+curl -sSLo /usr/bin/eiq-examples-git/dms/dms-processing-final.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/dms-processing.py"
+chmod +x /usr/bin/eiq-examples-git/dms/dms-processing-final.py
+
+# ---- Downloading eIQ AI Models ----
+echo "Downloading eIQ AI Models..."
+cd /usr/bin/eiq-examples-git/
+python3 download_models.py
 
 # ---- Completion ----
 echo ""
