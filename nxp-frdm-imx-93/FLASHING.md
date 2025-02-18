@@ -10,8 +10,9 @@ This simple guide will help you download all the necessary files for flashing a 
 * Download the executable of the latest release of the Universal Update Utility (UUU) by clicking [this link](https://github.com/nxp-imx/mfgtools/releases/download/uuu_1.5.201/uuu.exe)
 
 # 3. Download Image Files
-* Go to NXP's [Embedded Linux for i.MX Applications Processors Page](https://www.nxp.com/design/design-center/software/embedded-software/i-mx-software/embedded-linux-for-i-mx-applications-processors:IMXLINUX?_gl=1*1c74pf2*_ga*MTUwOTcwNjIzNi4xNzM1NTEyNzQw*_ga_WM5LE0KMSH*MTczOTkwNzk1NS4xMS4xLjE3Mzk5MDgwMDcuMC4wLjA.)
-* Click on the "i.MX 93 EVK, QSB, 14x14,PF09" link under the "Supported Platforms/Binary Demo Files" section
+* Go to NXP's [FRDM-IMX93 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
+* Click on the "Design Resources" tab and then scroll down to the "Software" section
+* Click the "Download" button next to "FRDM-IMX93 Demo Images"
 * Accept the Software License Agreement and the download should automatically start
 
 # 4. Organize Files for Flashing
