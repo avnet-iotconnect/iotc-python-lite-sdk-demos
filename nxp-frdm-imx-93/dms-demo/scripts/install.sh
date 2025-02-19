@@ -93,21 +93,16 @@ fi
 echo "Updating Vela Compiler..."
 pip uninstall -y ethos-u-vela flatbuffers || true  # Remove old versions (ignore errors)
 
-# Check if flatbuffers is already correct before reinstalling
-installed_flatbuffers=$(pip show flatbuffers | grep Version | awk '{print $2}')
-if [[ "$installed_flatbuffers" != "1.12.0" ]]; then
-    echo "Ensuring correct Flatbuffers version for ethosu compatibility..."
-    pip install --no-cache-dir flatbuffers==1.12.0 pybind11==2.8.1  
-else
-    echo "Flatbuffers is already at version 1.12.0. Skipping reinstall."
-fi
+# Manually install the correct Flatbuffers version for ethosu
+pip install --no-cache-dir flatbuffers==1.12.0 pybind11==2.8.1  
 
-# Reinstall the latest Vela
-pip install --no-cache-dir --upgrade ethos-u-vela
+# Force reinstall ethos-u-vela while preventing flatbuffers from being upgraded
+pip install --no-cache-dir --upgrade --no-deps ethos-u-vela
 
 # Verify final installation
 echo "Vela updated to version: $(vela --version)"
 pip show flatbuffers
+
 
 
 # ---- Generate Certificates ----
