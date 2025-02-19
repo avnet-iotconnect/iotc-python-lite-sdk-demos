@@ -41,7 +41,7 @@ END
 
 # **Pause for Copying the Certificate**
 echo ""
-cat device-cert.pem
+cat /usr/bin/eiq-examples-git/dms/cert.pem
 echo ""
 read -p "Copy the certificate above, then press ENTER to continue."
 
