@@ -22,8 +22,7 @@ PIP_ROOT_USER_ACTION=ignore pip install iotconnect-sdk-lite
 
 # ---- Generate Certificates ----
 echo "Generating SSL certificates..."
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout device-pkey.pem -out device-cert.pem -subj "/CN=localhost"
-
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/bin/eiq-examples-git/dms/key.pem -out /usr/bin/eiq-examples-git/dms/cert.pem -subj "/CN=localhost"
 echo "X509 credentials are now generated as device-cert.pem and device-pkey.pem."
 
 # ---- IoTConnect Setup ----
