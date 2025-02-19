@@ -104,8 +104,6 @@ echo "Vela updated to version: $(vela --version)"
 pip show flatbuffers
 
 
-
-
 # ---- Generate Certificates ----
 echo "Generating SSL certificates..."
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout device-pkey.pem -out device-cert.pem -subj "/CN=localhost"
