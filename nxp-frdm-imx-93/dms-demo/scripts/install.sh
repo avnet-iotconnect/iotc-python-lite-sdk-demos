@@ -54,7 +54,7 @@ END
 
 # **Pause and Wait for Configuration Paste**
 echo ""
-echo "Paste your configuration below and press ENTER when done."
+read -p "Paste your configuration below and press ENTER when done: " </dev/tty
 echo "(Make sure to include the opening and closing curly brackets `{}`.)"
 echo ""
 
