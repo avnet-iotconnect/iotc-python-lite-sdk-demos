@@ -3,14 +3,7 @@
 # Copyright (C) 2024 Avnet
 # Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
 
-set -e  # Stop script on first failure
-
-echo "Updating environment variables..."
-export PATH=$PATH:/usr/local/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
-
-setup_wifi() {
+set -e  # Stop scrsetup_wifi() {
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
     sleep 2  # Wait for scan to complete
@@ -19,7 +12,7 @@ setup_wifi() {
     connmanctl services | awk '{print NR")", $0}'
 
     read -p "Enter the number of the Wi-Fi network to connect to: " wifi_choice
-    wifi_id=$(connmanctl services | awk "NR==$wifi_choice {print \$NF}")  # Extract the full service ID
+    wifi_id=$(connmanctl services | awk "NR==$wifi_choice {print \$NF}")  # Extract full service ID
 
     echo "DEBUG: Selected Wi-Fi ID: '$wifi_id'"
 
@@ -34,14 +27,16 @@ setup_wifi() {
     echo "DEBUG: Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Enabling Wi-Fi..."
     connmanctl enable wifi >/dev/null 2>&1
-    connmanctl agent on >/dev/null 2>&1
 
+    echo "Starting ConnMan agent for authentication..."
+    connmanctl agent on
+
+    echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
-        echo "DEBUG: Running 'connmanctl connect \"$wifi_id\"'"
         connmanctl connect "$wifi_id"
     else
-        echo "DEBUG: Running 'connmanctl connect \"$wifi_id\" --passphrase \"(hidden)\"'"
-        connmanctl connect "$wifi_id" --passphrase "$wifi_passphrase"
+        echo -e "[service_$wifi_choice]\nType=wifi\nSSID=$(echo $wifi_id | cut -d'_' -f2 | xxd -r -p)\nPassphrase=$wifi_passphrase" > /var/lib/connman/service.conf
+        echo "$wifi_passphrase" | connmanctl connect "$wifi_id"
     fi
 
     if [[ $? -eq 0 ]]; then
@@ -76,6 +71,12 @@ EOF
 
     echo "Wi-Fi setup is now permanent!"
 }
+ipt on first failure
+
+echo "Updating environment variables..."
+export PATH=$PATH:/usr/local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
 
 
