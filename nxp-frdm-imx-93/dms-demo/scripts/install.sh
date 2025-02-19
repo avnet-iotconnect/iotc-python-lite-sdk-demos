@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "AAA - Updating environment variables..."
+echo "BBB - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -91,17 +91,19 @@ fi
 
 # ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
 echo "Updating Vela Compiler..."
-pip uninstall -y ethos-u-vela flatbuffers || true  # Remove old versions
+pip uninstall -y ethos-u-vela ethosu flatbuffers || true  # Remove old versions
 
-# Find the latest compatible Flatbuffers version (>=2.0.0) that does not use `imp`
-pip install --no-cache-dir "flatbuffers>=2.0.0,<3.0.0" pybind11==2.8.1  
+# Install ethosu first to lock flatbuffers at 1.12.0
+pip install --no-cache-dir flatbuffers==1.12.0 pybind11==2.8.1 ethosu
 
-# Reinstall ethos-u-vela and ethosu
-pip install --no-cache-dir --upgrade ethos-u-vela ethosu
+# Install ethos-u-vela WITHOUT dependencies to prevent flatbuffers upgrade
+pip install --no-cache-dir --no-deps ethos-u-vela
 
-# Verify installation
+# Verify final installation
 echo "Vela updated to version: $(vela --version)"
 pip show flatbuffers
+
+
 
 
 # ---- Generate Certificates ----
