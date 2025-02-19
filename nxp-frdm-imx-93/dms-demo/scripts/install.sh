@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "Updating environment variables..."
+echo "AAA - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
