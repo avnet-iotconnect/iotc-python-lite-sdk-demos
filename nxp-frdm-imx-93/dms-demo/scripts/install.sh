@@ -87,6 +87,7 @@ cd /usr/bin/eiq-examples-git/
 python3 download_models.py
 
 # ---- Completion ----
+cd /home/weston
 echo ""
 echo "Installation complete! You can now run the IoTConnect script:"
 echo "python3 /home/weston/imx93-ai-demo.py"
