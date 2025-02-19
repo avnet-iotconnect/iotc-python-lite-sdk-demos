@@ -15,7 +15,7 @@ PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade pip
 
 echo "Installing dependencies..."
 PIP_ROOT_USER_ACTION=ignore pip install --upgrade pip  
-PIP_ROOT_USER_ACTION=ignore pip install flask numpy opencv-python requests iotconnect-sdk-lite
+PIP_ROOT_USER_ACTION=ignore pip install flask numpy opencv-python requests iotconnect-sdk-lite filelock networkx
 
 echo "Installing IoTConnect SDK..."
 PIP_ROOT_USER_ACTION=ignore pip install iotconnect-sdk-lite  
@@ -68,7 +68,6 @@ done
 echo ""
 echo "Configuration file successfully saved."
 read -p "Press ENTER to continue..."
-
 
 # ---- Download IoTConnect Quickstart Script ----
 echo "Downloading IoTConnect Quickstart script..."
