@@ -9,46 +9,49 @@ echo "Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
-
 setup_wifi() {
-    echo "Scanning for available Wi-Fi networks..."
+    echo "🔍 Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
     sleep 2  # Wait for scan to complete
 
-    echo "Available Wi-Fi Networks:"
+    echo "📡 Available Wi-Fi Networks:"
     connmanctl services | awk '{print NR")", $0}'
-    
+
     read -p "Enter the number of the Wi-Fi network to connect to: " wifi_choice
     wifi_id=$(connmanctl services | awk "NR==$wifi_choice {print \$1}")
 
+    echo "🔍 DEBUG: Selected Wi-Fi ID: '$wifi_id'"
+
     if [ -z "$wifi_id" ]; then
-        echo "Invalid selection. Exiting Wi-Fi setup."
+        echo "❌ Invalid selection. Exiting Wi-Fi setup."
         return
     fi
 
-    echo "Enter Wi-Fi passphrase (leave empty for open networks):"
+    echo "🔑 Enter Wi-Fi passphrase (leave empty for open networks):"
     read -s wifi_passphrase
 
-    echo "🔗 Connecting to Wi-Fi..."
+    echo "🔗 DEBUG: Connecting to Wi-Fi ID: '$wifi_id'"
+    echo "🔗 Enabling Wi-Fi..."
     connmanctl enable wifi >/dev/null 2>&1
     connmanctl agent on >/dev/null 2>&1
 
     if [ -z "$wifi_passphrase" ]; then
-        connmanctl connect "$wifi_id" >/dev/null 2>&1
+        echo "🔗 DEBUG: Running 'connmanctl connect \"$wifi_id\"'"
+        connmanctl connect "$wifi_id"
     else
-        echo -e "[service_$wifi_choice]\nType=wifi\nSSID=$(echo $wifi_id | cut -d'_' -f2 | xxd -r -p)\nPassphrase=$wifi_passphrase" > /var/lib/connman/service.conf
-        connmanctl connect "$wifi_id" >/dev/null 2>&1
+        echo "🔗 DEBUG: Running 'connmanctl connect \"$wifi_id\" --passphrase \"(hidden)\"'"
+        connmanctl connect "$wifi_id" --passphrase "$wifi_passphrase"
     fi
 
     if [[ $? -eq 0 ]]; then
-        echo "Wi-Fi connected successfully!"
+        echo "✅ Wi-Fi connected successfully!"
     else
-        echo "Failed to connect to Wi-Fi. Please check credentials and try again."
+        echo "❌ Failed to connect to Wi-Fi. Please check credentials and try again."
         return
     fi
 
     # Make Wi-Fi persistent across reboots
-    echo "Making Wi-Fi persistent..."
+    echo "🔄 Making Wi-Fi persistent..."
     echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
     echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
 
@@ -70,8 +73,10 @@ EOF
     systemctl enable wifi-setup.service
     systemctl start wifi-setup.service
 
-    echo "Wi-Fi setup is now permanent!"
+    echo "✅ Wi-Fi setup is now permanent!"
 }
+
+
 
 # ---- Prompt for Wi-Fi Setup ----
 read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice
