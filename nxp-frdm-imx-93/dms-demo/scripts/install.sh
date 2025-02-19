@@ -10,7 +10,6 @@ export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
-# ---- Function for Wi-Fi Setup ----
 setup_wifi() {
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
@@ -30,16 +29,23 @@ setup_wifi() {
     echo "Enter Wi-Fi passphrase (leave empty for open networks):"
     read -s wifi_passphrase
 
-    echo "Connecting to Wi-Fi..."
+    echo "🔗 Connecting to Wi-Fi..."
     connmanctl enable wifi >/dev/null 2>&1
     connmanctl agent on >/dev/null 2>&1
+
     if [ -z "$wifi_passphrase" ]; then
-        connmanctl connect "$wifi_id"
+        connmanctl connect "$wifi_id" >/dev/null 2>&1
     else
-        connmanctl connect "$wifi_id" --passphrase "$wifi_passphrase"
+        echo -e "[service_$wifi_choice]\nType=wifi\nSSID=$(echo $wifi_id | cut -d'_' -f2 | xxd -r -p)\nPassphrase=$wifi_passphrase" > /var/lib/connman/service.conf
+        connmanctl connect "$wifi_id" >/dev/null 2>&1
     fi
 
-    echo "Wi-Fi connected successfully!"
+    if [[ $? -eq 0 ]]; then
+        echo "Wi-Fi connected successfully!"
+    else
+        echo "Failed to connect to Wi-Fi. Please check credentials and try again."
+        return
+    fi
 
     # Make Wi-Fi persistent across reboots
     echo "Making Wi-Fi persistent..."
@@ -149,7 +155,7 @@ if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
     echo "Downloading eIQ AI Models..."
     cd /usr/bin/eiq-examples-git/
     if python3 download_models.py 2>/dev/null; then
-        echo "✅ eIQ AI Models downloaded successfully."
+        echo "eIQ AI Models downloaded successfully."
     else
         echo "⚠ Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
     fi
@@ -160,5 +166,5 @@ fi
 # ---- Completion ----
 cd /home/weston
 echo ""
-echo "✅ Installation complete! You can now run the IoTConnect script:"
+echo "Installation complete! You can now run the IoTConnect script:"
 echo "python3 /home/weston/imx93-ai-demo.py"
