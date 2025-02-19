@@ -89,11 +89,15 @@ else
     echo "Skipping Wi-Fi setup."
 fi
 
-# ---- Upgrade Vela to Latest Version ----
+# ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
 echo "Updating Vela Compiler..."
 pip uninstall -y ethos-u-vela flatbuffers || true  # Remove old versions (ignore errors)
-pip install flatbuffers==1.12.0 pybind11==2.8.1   # Install compatible dependencies
-pip install --upgrade ethos-u-vela
+
+# Ensure correct Flatbuffers version for ethosu compatibility
+pip install --no-cache-dir flatbuffers==1.12.0 pybind11==2.8.1  
+
+# Reinstall the latest Vela
+pip install --no-cache-dir --upgrade ethos-u-vela
 echo "Vela updated to version: $(vela --version)"
 
 # ---- Generate Certificates ----
