@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "CCC - Updating environment variables..."
+echo "DDD - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -92,13 +92,15 @@ fi
 
 # ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
 echo "Updating Vela Compiler..."
-pip uninstall -y ethos-u-vela flatbuffers || true  # Remove old versions
 
-# Check if ethosu exists on the system (manually installed)
+# Remove any old versions of Vela and Flatbuffers
+pip uninstall -y ethos-u-vela flatbuffers || true
+
+# Check if ethosu exists in the system
 if python3 -c "import ethosu" 2>/dev/null; then
-    echo "ethosu is already installed. Skipping reinstallation."
+    echo "ethosu is already installed as a system package."
 else
-    echo "WARNING: ethosu package is missing. It may need to be installed manually."
+    echo "⚠ WARNING: ethosu package is missing. It may need to be installed manually via NXP tools."
 fi
 
 # Ensure the correct Flatbuffers version for ethosu compatibility
@@ -110,6 +112,7 @@ pip install --no-cache-dir --no-deps ethos-u-vela
 # Verify final installation
 echo "Vela updated to version: $(vela --version)"
 pip show flatbuffers
+
 
 
 # ---- Generate Certificates ----
