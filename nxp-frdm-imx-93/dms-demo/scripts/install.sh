@@ -3,28 +3,88 @@
 # Copyright (C) 2024 Avnet
 # Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
 
-set -e
+set -e  # Stop script on first failure
 
 echo "Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
-echo "Upgrading Pip..."
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade pip  
+# ---- Function for Wi-Fi Setup ----
+setup_wifi() {
+    echo "Scanning for available Wi-Fi networks..."
+    connmanctl scan wifi >/dev/null 2>&1
+    sleep 2  # Wait for scan to complete
 
-echo "Installing dependencies..."
-PIP_ROOT_USER_ACTION=ignore pip install --upgrade pip  
-PIP_ROOT_USER_ACTION=ignore pip install flask numpy opencv-python requests iotconnect-sdk-lite filelock networkx
+    echo "Available Wi-Fi Networks:"
+    connmanctl services | awk '{print NR")", $0}'
+    
+    read -p "Enter the number of the Wi-Fi network to connect to: " wifi_choice
+    wifi_id=$(connmanctl services | awk "NR==$wifi_choice {print \$1}")
 
-echo "Installing IoTConnect SDK..."
-PIP_ROOT_USER_ACTION=ignore pip install iotconnect-sdk-lite  
+    if [ -z "$wifi_id" ]; then
+        echo "Invalid selection. Exiting Wi-Fi setup."
+        return
+    fi
+
+    echo "Enter Wi-Fi passphrase (leave empty for open networks):"
+    read -s wifi_passphrase
+
+    echo "Connecting to Wi-Fi..."
+    connmanctl enable wifi >/dev/null 2>&1
+    connmanctl agent on >/dev/null 2>&1
+    if [ -z "$wifi_passphrase" ]; then
+        connmanctl connect "$wifi_id"
+    else
+        connmanctl connect "$wifi_id" --passphrase "$wifi_passphrase"
+    fi
+
+    echo "Wi-Fi connected successfully!"
+
+    # Make Wi-Fi persistent across reboots
+    echo "Making Wi-Fi persistent..."
+    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
+    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
+
+    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
+[Unit]
+Description=WiFi Setup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    systemctl daemon-reload
+    systemctl enable wifi-setup.service
+    systemctl start wifi-setup.service
+
+    echo "Wi-Fi setup is now permanent!"
+}
+
+# ---- Prompt for Wi-Fi Setup ----
+read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice
+if [[ "$wifi_choice" == "y" || "$wifi_choice" == "Y" ]]; then
+    setup_wifi
+else
+    echo "Skipping Wi-Fi setup."
+fi
+
+# ---- Upgrade Vela to Latest Version ----
+echo "Updating Vela Compiler..."
+pip uninstall -y ethos-u-vela flatbuffers || true  # Remove old versions (ignore errors)
+pip install flatbuffers==1.12.0 pybind11==2.8.1   # Install compatible dependencies
+pip install --upgrade ethos-u-vela
+echo "Vela updated to version: $(vela --version)"
 
 # ---- Generate Certificates ----
 echo "Generating SSL certificates..."
-# Generate IoTConnect device certificates in the current directory
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout device-pkey.pem -out device-cert.pem -subj "/CN=localhost"
-# Generate Flask HTTPS server certificates directly in the dms directory
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/bin/eiq-examples-git/dms/key.pem -out /usr/bin/eiq-examples-git/dms/cert.pem -subj "/CN=localhost"
 echo "X509 credentials are now generated."
 
@@ -82,17 +142,23 @@ echo "Downloading DMS processing script..."
 curl -sSLo /usr/bin/eiq-examples-git/dms/dms-processing-final.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/dms-processing.py"
 chmod +x /usr/bin/eiq-examples-git/dms/dms-processing-final.py
 
-# ---- Downloading eIQ AI Models ----
-echo "Downloading eIQ AI Models..."
-cd /usr/bin/eiq-examples-git/
-if python3 download_models.py; then
-    echo "eIQ AI Models downloaded successfully."
+# ---- Prompt User for eIQ AI Model Download ----
+echo ""
+read -p "Do you want to download eIQ AI Models? (y/n): " model_choice </dev/tty
+if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
+    echo "Downloading eIQ AI Models..."
+    cd /usr/bin/eiq-examples-git/
+    if python3 download_models.py 2>/dev/null; then
+        echo "✅ eIQ AI Models downloaded successfully."
+    else
+        echo "⚠ Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
+    fi
 else
-    echo "Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
+    echo "Skipping eIQ AI Models download."
 fi
 
 # ---- Completion ----
 cd /home/weston
 echo ""
-echo "Installation complete! You can now run the IoTConnect script:"
+echo "✅ Installation complete! You can now run the IoTConnect script:"
 echo "python3 /home/weston/imx93-ai-demo.py"
