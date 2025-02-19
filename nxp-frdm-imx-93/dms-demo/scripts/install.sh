@@ -3,7 +3,16 @@
 # Copyright (C) 2024 Avnet
 # Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
 
-set -e  # Stop scrsetup_wifi() {
+set -e  # Stop script on first failure
+
+echo "Updating environment variables..."
+export PATH=$PATH:/usr/local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
+
+# ---- Function for Wi-Fi Setup ----
+
+setup_wifi() {
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
     sleep 2  # Wait for scan to complete
@@ -29,14 +38,13 @@ set -e  # Stop scrsetup_wifi() {
     connmanctl enable wifi >/dev/null 2>&1
 
     echo "Starting ConnMan agent for authentication..."
-    connmanctl agent on
+    connmanctl agent on >/dev/null 2>&1
 
     echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
         connmanctl connect "$wifi_id"
     else
-        echo -e "[service_$wifi_choice]\nType=wifi\nSSID=$(echo $wifi_id | cut -d'_' -f2 | xxd -r -p)\nPassphrase=$wifi_passphrase" > /var/lib/connman/service.conf
-        echo "$wifi_passphrase" | connmanctl connect "$wifi_id"
+        connmanctl connect "$wifi_id" <<< "$wifi_passphrase"
     fi
 
     if [[ $? -eq 0 ]]; then
@@ -71,13 +79,6 @@ EOF
 
     echo "Wi-Fi setup is now permanent!"
 }
-ipt on first failure
-
-echo "Updating environment variables..."
-export PATH=$PATH:/usr/local/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
-
 
 
 # ---- Prompt for Wi-Fi Setup ----
