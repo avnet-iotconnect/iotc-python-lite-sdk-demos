@@ -50,18 +50,6 @@ EOF
     wifi_list=$(connmanctl services)
     sleep 2
 
-    echo "Starting ConnMan agent for authentication..."
-echo "Starting ConnMan agent for authentication..."
-( expect <<'EOF'
-spawn connmanctl
-expect "connmanctl>"
-send "agent on\r"
-expect "Agent registered"
-# Keep the agent running so it remains active for connections.
-sleep 3
-EOF
-) &
-
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
         echo "No Wi-Fi networks found. Exiting Wi-Fi setup."
@@ -94,7 +82,17 @@ EOF
     echo "Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
-        connmanctl connect "$wifi_id"
+        echo "Starting ConnMan agent for authentication..."
+( expect <<'EOF'
+spawn connmanctl
+expect "connmanctl>"
+send "agent on\r"
+expect "Agent registered"
+connect "$wifi_id"
+# Keep the agent running so it remains active for connections.
+sleep 5
+EOF
+) &
     else
         connmanctl connect "$wifi_id" <<< "$wifi_passphrase"
     fi
