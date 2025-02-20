@@ -241,7 +241,7 @@ def ensure_json_file_valid(json_path):
     If missing or invalid, create a default.
     """
     if not os.path.exists(json_path) or os.path.getsize(json_path) == 0:
-        print(f"{json_path} is missing or empty. Creating a default JSON.")
+        #print(f"{json_path} is missing or empty. Creating a default JSON.")
         default_data = {
             "head_direction": 5,
             "yawning": 0,
@@ -259,7 +259,7 @@ def ensure_json_file_valid(json_path):
             with open(json_path, "r") as f:
                 json.load(f)
         except json.JSONDecodeError:
-            print(f"{json_path} has invalid JSON. Overwriting with defaults.")
+            #print(f"{json_path} has invalid JSON. Overwriting with defaults.")
             default_data = {
                 "head_direction": 5,
                 "yawning": 0,
@@ -455,7 +455,7 @@ def main(image):
             eyes_open = 2
             bbox_xmin, bbox_ymin, bbox_xmax, bbox_ymax = 0, 0, 0, 0
             update_json()  # Ensure no-face state is saved
-            print("No face detected: alert=3, head_direction=5, eyes_open=2")
+            #print("No face detected: alert=3, head_direction=5, eyes_open=2")
             return image_show  # Exit early since no face is present
 
         # If a face is detected, continue processing
@@ -590,7 +590,7 @@ def main(image):
                     stable_state[key] = new_state[key]
                     transition_counts[key] = 0
                     transition_occurred = True
-                    print(f"STATE CHANGE: '{key}' from {old_val} to {new_state[key]} "
+                    #print(f"STATE CHANGE: '{key}' from {old_val} to {new_state[key]} "
                           f"(pitch={pitch:.2f}, yaw={yaw_val:.2f}, mouth={mouth_ratio_val:.2f})")
             else:
                 transition_counts[key] = 0
