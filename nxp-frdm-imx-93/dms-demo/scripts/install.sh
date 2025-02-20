@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "III - Updating environment variables..."
+echo "JJJ - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -13,43 +13,23 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 # ---- Function for Wi-Fi Setup ----
 
 setup_wifi() {
-    modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf    
-    # Make Wi-Fi persistent across reboots
-    echo "Making Wi-Fi persistent..."
-    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
-    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
-[Unit]
-Description=WiFi Setup
-After=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    systemctl daemon-reload
-    systemctl enable wifi-setup.service
-    systemctl start wifi-setup.service
-
-    echo "Wi-Fi setup is now permanent!"
-
+    modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+    connmanctl
+    sleep 2  # Wait for scan to complete
+    enable wifi
+    sleep 1
+    scan wifi
     echo "Scanning for available Wi-Fi networks..."
-    connmanctl scan wifi >/dev/null 2>&1
     sleep 5  # Wait for scan to complete
-
     # Capture the list of available Wi-Fi networks
-    wifi_list=$(connmanctl services)
-
+    wifi_list=$(services)
+    sleep 2  # Wait for scan to complete
+    agent on
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
         echo "No Wi-Fi networks found. Exiting Wi-Fi setup."
         return 1
     fi
-
     echo "Available Wi-Fi Networks:"
     echo "$wifi_list" | awk '{print NR")", $0}'
 
@@ -74,17 +54,11 @@ EOF
     read -s wifi_passphrase
 
     echo "DEBUG: Connecting to Wi-Fi ID: '$wifi_id'"
-    echo "Enabling Wi-Fi..."
-    connmanctl enable wifi >/dev/null 2>&1
-
-    echo "Starting ConnMan agent for authentication..."
-    connmanctl agent on >/dev/null 2>&1
-
     echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
-        connmanctl connect "$wifi_id"
+        connect "$wifi_id"
     else
-        connmanctl connect "$wifi_id" <<< "$wifi_passphrase"
+        connect "$wifi_id" <<< "$wifi_passphrase"
     fi
 
     if [[ $? -eq 0 ]]; then
@@ -93,6 +67,30 @@ EOF
         echo "Failed to connect to Wi-Fi. Please check credentials and try again."
         return
     fi
+    quit
+    # Make Wi-Fi persistent across reboots
+    echo "Making Wi-Fi persistent..."
+    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
+    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
+    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
+[Unit]
+Description=WiFi Setup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    systemctl daemon-reload
+    systemctl enable wifi-setup.service
+    systemctl start wifi-setup.service
+
+    echo "Wi-Fi setup is now permanent!"
 }
 
 
