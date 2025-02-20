@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "Updating environment variables..."
+echo "555Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -51,8 +51,15 @@ EOF
     sleep 2
 
     echo "Starting ConnMan agent for authentication..."
-    connmanctl agent on
-    sleep 2
+    expect <<'EOF'
+    spawn connmanctl
+    expect "connmanctl>"
+    send "agent on\r"
+    expect "Agent registered"
+    send "quit\r"
+    expect eof
+    EOF
+
 
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
