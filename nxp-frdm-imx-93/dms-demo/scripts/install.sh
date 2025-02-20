@@ -113,10 +113,10 @@ fi
 
 echo "Installing dependencies..."
 #PIP_ROOT_USER_ACTION=ignore pip install --upgrade pip  
-PIP_ROOT_USER_ACTION=ignore pip install flask numpy opencv-python requests filelock networkx
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
 
 echo "Installing IoTConnect SDK..."
-PIP_ROOT_USER_ACTION=ignore pip install iotconnect-sdk-lite  
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install iotconnect-sdk-lite  
 
 # ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
 #echo "Updating Vela Compiler..."
