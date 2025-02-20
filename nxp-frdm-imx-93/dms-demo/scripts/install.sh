@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "GGGG - Updating environment variables..."
+echo "HHH - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -13,11 +13,29 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 # ---- Function for Wi-Fi Setup ----
 
 setup_wifi() {
-    echo "Resetting Wi-Fi interface..."
-    sudo ifconfig wlan0 down
-    sleep 2
-    sudo ifconfig wlan0 up
-    sleep 5  # Wait a bit for Wi-Fi to reinitialize
+    modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf    
+    # Make Wi-Fi persistent across reboots
+    echo "Making Wi-Fi persistent..."
+    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
+    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
+[Unit]
+Description=WiFi Setup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    systemctl daemon-reload
+    systemctl enable wifi-setup.service
+    systemctl start wifi-setup.service
+
+    echo "Wi-Fi setup is now permanent!"
 
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
@@ -59,38 +77,12 @@ setup_wifi() {
         echo "Failed to connect to Wi-Fi. Please check credentials and try again."
         return
     fi
-
-    # Make Wi-Fi persistent across reboots
-    echo "Making Wi-Fi persistent..."
-    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
-    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
-
-    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
-[Unit]
-Description=WiFi Setup
-After=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    systemctl daemon-reload
-    systemctl enable wifi-setup.service
-    systemctl start wifi-setup.service
-
-    echo "Wi-Fi setup is now permanent!"
 }
 
 
 # ---- Prompt for Wi-Fi Setup ----
 read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice
 if [[ "$wifi_choice" == "y" || "$wifi_choice" == "Y" ]]; then
-    read -p "Before scanning for Wi‑Fi networks, please disconnect the Ethernet cable. The script will then reset the Wi‑Fi interface and perform a scan. Press ENTER to continue..."
     setup_wifi
 else
     echo "Skipping Wi-Fi setup."
