@@ -15,14 +15,36 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 setup_wifi() {
     # Load the Wi-Fi module with parameters
     modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+    # Make Wi-Fi persistent across reboots
+    echo "Making Wi-Fi persistent..."
+    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
+    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
+    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
+[Unit]
+Description=WiFi Setup
+After=network.target
 
+[Service]
+Type=oneshot
+ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    systemctl daemon-reload
+    systemctl enable wifi-setup.service
+    systemctl start wifi-setup.service
+
+    echo "Wi-Fi setup is now permanent!"
     echo "Enabling Wi-Fi..."
     connmanctl enable wifi
-    sleep 2
+    sleep 1
 
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi
-    sleep 5  # Wait for scan to complete
+    sleep 4  # Wait for scan to complete
 
     # Capture the list of available Wi-Fi networks
     wifi_list=$(connmanctl services)
@@ -30,6 +52,7 @@ setup_wifi() {
 
     echo "Starting ConnMan agent for authentication..."
     connmanctl agent on
+    sleep 2
 
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
@@ -76,30 +99,6 @@ setup_wifi() {
     fi
 
     connmanctl quit
-
-    # Make Wi-Fi persistent across reboots
-    echo "Making Wi-Fi persistent..."
-    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
-    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
-    cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
-[Unit]
-Description=WiFi Setup
-After=network.target
-
-[Service]
-Type=oneshot
-ExecStart=/sbin/modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    systemctl daemon-reload
-    systemctl enable wifi-setup.service
-    systemctl start wifi-setup.service
-
-    echo "Wi-Fi setup is now permanent!"
 }
 
 
