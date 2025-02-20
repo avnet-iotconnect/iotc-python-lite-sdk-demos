@@ -88,13 +88,22 @@ spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
-connect "$wifi_id"
+connect ""$wifi_id"\r"
 # Keep the agent running so it remains active for connections.
 sleep 5
 EOF
 ) &
     else
-        connmanctl connect "$wifi_id" <<< "$wifi_passphrase"
+( expect <<'EOF'
+spawn connmanctl
+expect "connmanctl>"
+send "agent on\r"
+expect "Agent registered"
+connect ""$wifi_id" <<< "$wifi_passphrase"\r"
+# Keep the agent running so it remains active for connections.
+sleep 5
+EOF
+) &
     fi
 
     if [[ $? -eq 0 ]]; then
