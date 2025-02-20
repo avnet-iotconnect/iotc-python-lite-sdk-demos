@@ -97,8 +97,6 @@ EOF
         echo "Failed to connect to Wi-Fi. Please check credentials and try again."
         return 1
     fi
-
-    connmanctl quit
 }
 
 
