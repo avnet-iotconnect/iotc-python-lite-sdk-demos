@@ -51,16 +51,16 @@ EOF
     sleep 2
 
     echo "Starting ConnMan agent for authentication..."
-expect <<'EOF'
+echo "Starting ConnMan agent for authentication..."
+( expect <<'EOF'
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
-send "quit\r"
-expect eof
+# Keep the agent running so it remains active for connections.
+sleep 300
 EOF
-
-
+) &
 
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
