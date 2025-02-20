@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "fff - Updating environment variables..."
+echo "GGGG - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -13,9 +13,15 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 # ---- Function for Wi-Fi Setup ----
 
 setup_wifi() {
+    echo "Resetting Wi-Fi interface..."
+    sudo ifconfig wlan0 down
+    sleep 2
+    sudo ifconfig wlan0 up
+    sleep 5  # Wait a bit for Wi-Fi to reinitialize
+
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi >/dev/null 2>&1
-    sleep 2  # Wait for scan to complete
+    sleep 5  # Wait for scan to complete
 
     echo "Available Wi-Fi Networks:"
     connmanctl services | awk '{print NR")", $0}'
@@ -84,6 +90,7 @@ EOF
 # ---- Prompt for Wi-Fi Setup ----
 read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice
 if [[ "$wifi_choice" == "y" || "$wifi_choice" == "Y" ]]; then
+    read -p "Before scanning for Wi‑Fi networks, please disconnect the Ethernet cable. The script will then reset the Wi‑Fi interface and perform a scan. Press ENTER to continue..."
     setup_wifi
 else
     echo "Skipping Wi-Fi setup."
@@ -173,8 +180,10 @@ chmod +x /usr/bin/eiq-examples-git/dms/dms-processing-final.py
 echo ""
 read -p "Do you want to download eIQ AI Models? (y/n): " model_choice </dev/tty
 if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
-    echo "Downloading eIQ AI Models..."
     cd /usr/bin/eiq-examples-git/
+    curl -sSLo /usr/bin/eiq-examples-git/download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/download_models.py"
+    chmod +x /usr/bin/eiq-examples-git/download_models.py
+    echo "Downloading eIQ AI Models..."
     if python3 download_models.py 2>/dev/null; then
         echo "eIQ AI Models downloaded successfully."
     else
