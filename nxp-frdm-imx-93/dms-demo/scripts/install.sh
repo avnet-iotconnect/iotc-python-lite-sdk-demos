@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "JJJ - Updating environment variables..."
+echo "Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -116,7 +116,8 @@ echo "Updating Vela Compiler..."
 python3 -m pip uninstall -y ethos-u-vela flatbuffers || true
 
 # Find a compatible Flatbuffers version (>=2.0.0 but NOT 1.12.0)
-python3 -m pip install --no-cache-dir "flatbuffers>=2.0.0,<3.0.0" pybind11==2.8.1  
+python3 -m pip install --force-reinstall flatbuffers==1.12.0
+#python3 -m pip install --no-cache-dir "flatbuffers>=2.0.0,<3.0.0" pybind11==2.8.1  
 
 # Install ethos-u-vela without dependencies to prevent flatbuffers upgrade
 python3 -m pip install --no-cache-dir --no-deps ethos-u-vela
