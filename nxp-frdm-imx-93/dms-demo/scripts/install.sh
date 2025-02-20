@@ -81,7 +81,7 @@ EOF
     # Extract the Wi-Fi service ID from the stored list using the selected line number
     wifi_id=$(echo "$wifi_list" | awk "NR==$wifi_choice {print \$NF}")
 
-    echo "DEBUG: Selected Wi-Fi ID: '$wifi_id'"
+    echo "Selected Wi-Fi ID: '$wifi_id'"
 
     if [ -z "$wifi_id" ]; then
         echo "Invalid selection. Exiting Wi-Fi setup."
@@ -91,7 +91,7 @@ EOF
     echo "Enter Wi-Fi passphrase (leave empty for open networks):"
     read -s wifi_passphrase
 
-    echo "DEBUG: Connecting to Wi-Fi ID: '$wifi_id'"
+    echo "Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
         connmanctl connect "$wifi_id"
@@ -123,7 +123,7 @@ echo "Installing dependencies..."
 #PIP_ROOT_USER_ACTION=ignore pip install --upgrade pip  
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
 
-echo "Installing IoTConnect SDK..."
+echo "Installing /IOTCONNECT SDK..."
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install iotconnect-sdk-lite  
 
 # ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
@@ -150,13 +150,11 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout device-pkey.pem -out
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/bin/eiq-examples-git/dms/key.pem -out /usr/bin/eiq-examples-git/dms/cert.pem -subj "/CN=localhost"
 echo "X509 credentials are now generated."
 
-# ---- IoTConnect Setup ----
 cat <<END
----- IoTConnect Python Lite SDK Quickstart ----
-This script will help guide you through setting up this device with IoTConnect.
-Ensure that you have read the guide at https://github.com/avnet-iotconnect/iotc-python-lite-sdk on how to install the Lite SDK before proceeding.
-
-Follow these steps:
+---- IoTconnect Python Lite SDK Quickstart ----
+This script will help guide you through the setup this device with IoTConnect.
+Ensure that you have read the guide at https://github.com/avnet-iotconnect/iotc-python-lite-sdk on how to install the lite SDK before proceeding.
+If you are already familiar with IoTconnect you can follow these simple steps:
 - Create the device template by uploading TBD link to template.
 - Create a new device and:
   - Select your Entity and the newly created template.
@@ -164,37 +162,54 @@ Follow these steps:
   - Copy and paste the certificate that will be printed, including the BEGIN and END lines into the Certificate Text field:
 END
 
-# **Pause for Copying the Certificate**
-echo ""
+read -rp "ENTER to print the certificate and proceed:"
 cat device-cert.pem
-echo ""
-read -p "Copy the certificate above, then press ENTER to continue."
 
 cat <<END
 - Click the "Save & View" button.
-- Click the "Paper and Cog" icon at the top right to download your device configuration file.
-- Open the downloaded file in a text editor, paste the content into this terminal, and press ENTER after the last line.
+- Click the "Paper and Cog" icon at top right to download your device configuration file.
 END
 
-# **Pause and Wait for Configuration Paste**
-echo ""
-read -p "Paste your configuration below and press ENTER when done: " </dev/tty
-echo "(Make sure to include the opening and closing curly brackets `{}`.)"
-echo ""
+paste_config_json=true
+if [[ -f "iotcDeviceConfig.json" ]]; then
+  if ! askyn "It seems that the iotcDeviceConfig.json already exists. Do you want to overwrite it?"; then
+    paste_config_json=false
+  fi
+fi
 
-# Create or overwrite the configuration file
-> iotcDeviceConfig.json
-while IFS= read -r line; do
-  echo "$line" >> iotcDeviceConfig.json
-  [[ $line == "}" ]] && break
-done
+if ${paste_config_json} ]]; then
+  echo "Open the downloaded file in a text editor and paste the content into this terminal and press ENTER to add the last line:"
 
-echo ""
-echo "Configuration file successfully saved."
-read -p "Press ENTER to continue..."
+  echo > iotcDeviceConfig.json
+  while true; do
+    read -r line
+    echo "${line}" >> iotcDeviceConfig.json
+    if [[ "${line}" == "}" ]]; then
+      break
+    fi
+  done
 
-# ---- Download IoTConnect Quickstart Script ----
-echo "Downloading IoTConnect Quickstart script..."
+fi # paste_config_json
+
+if [[ ${do_download} && -f quickstart.py ]]; then
+  if ! askyn "It seems that the quickstart.py already exists. Do you want to overwrite it?"; then
+    do_download=false
+  fi
+fi
+
+if ${do_download}; then
+  if ! has curl; then
+    if has wget; then
+      echo "Using wget to download..."
+      use_curl=false
+    else
+      echo "No curl or wget found on this system. Please install one of the tools." >&2
+      exit 5
+    fi
+  fi
+
+# ---- Download /IOTCONNECT Quickstart Script ----
+echo "Downloading /IOTCONNECT Quickstart script..."
 cd /home/weston/
 curl -sSLo imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/imx93-ai-demo.py"
 chmod +x imx93-ai-demo.py
@@ -215,7 +230,7 @@ if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
     if python3 download_models.py 2>/dev/null; then
         echo "eIQ AI Models downloaded successfully."
     else
-        echo "⚠ Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
+        echo "Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
     fi
 else
     echo "Skipping eIQ AI Models download."
@@ -224,5 +239,8 @@ fi
 # ---- Completion ----
 cd /home/weston
 echo ""
-echo "Installation complete! You can now run the IoTConnect script:"
+echo "Installation complete! You can now run the /IOTCONNECT script:"
 echo "python3 /home/weston/imx93-ai-demo.py"
+board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
+echo "Camera Live Stream url: https://$board_ip:8080/live"
+
