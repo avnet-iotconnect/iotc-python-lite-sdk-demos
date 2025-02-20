@@ -58,7 +58,7 @@ expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 # Keep the agent running so it remains active for connections.
-sleep 300
+sleep 3
 EOF
 ) &
 
