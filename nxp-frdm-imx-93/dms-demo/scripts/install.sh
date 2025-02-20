@@ -108,23 +108,32 @@ else
     echo "Skipping Wi-Fi setup."
 fi
 
+#echo "Upgrading Pip..."
+#PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade pip  
+
+echo "Installing dependencies..."
+#PIP_ROOT_USER_ACTION=ignore pip install --upgrade pip  
+PIP_ROOT_USER_ACTION=ignore pip install flask numpy opencv-python requests filelock networkx
+
+echo "Installing IoTConnect SDK..."
+PIP_ROOT_USER_ACTION=ignore pip install iotconnect-sdk-lite  
 
 # ---- Upgrade Vela to Latest Version (Fixes Flatbuffers Conflict) ----
-echo "Updating Vela Compiler..."
+#echo "Updating Vela Compiler..."
 
 # Uninstall conflicting versions
-python3 -m pip uninstall -y ethos-u-vela flatbuffers || true
+#python3 -m pip uninstall -y ethos-u-vela flatbuffers || true
 
 # Find a compatible Flatbuffers version (>=2.0.0 but NOT 1.12.0)
-python3 -m pip install --force-reinstall flatbuffers==1.12.0
+#python3 -m pip install --force-reinstall flatbuffers==1.12.0
 #python3 -m pip install --no-cache-dir "flatbuffers>=2.0.0,<3.0.0" pybind11==2.8.1  
 
 # Install ethos-u-vela without dependencies to prevent flatbuffers upgrade
-python3 -m pip install --no-cache-dir --no-deps ethos-u-vela
+#python3 -m pip install --no-cache-dir --no-deps ethos-u-vela
 
 # Verify final installation
-echo "Vela updated to version: $(vela --version)"
-python3 -m pip show flatbuffers
+#echo "Vela updated to version: $(vela --version)"
+#python3 -m pip show flatbuffers
 
 
 # ---- Generate Certificates ----
