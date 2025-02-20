@@ -13,23 +13,30 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 # ---- Function for Wi-Fi Setup ----
 
 setup_wifi() {
+    # Load the Wi-Fi module with parameters
     modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
-    connmanctl
-    sleep 2  # Wait for scan to complete
-    enable wifi
-    sleep 1
-    scan wifi
+
+    echo "Enabling Wi-Fi..."
+    connmanctl enable wifi
+    sleep 2
+
     echo "Scanning for available Wi-Fi networks..."
+    connmanctl scan wifi
     sleep 5  # Wait for scan to complete
+
     # Capture the list of available Wi-Fi networks
-    wifi_list=$(services)
-    sleep 2  # Wait for scan to complete
-    agent on
+    wifi_list=$(connmanctl services)
+    sleep 2
+
+    echo "Starting ConnMan agent for authentication..."
+    connmanctl agent on
+
     # Check if any networks were found
     if [ -z "$wifi_list" ]; then
         echo "No Wi-Fi networks found. Exiting Wi-Fi setup."
         return 1
     fi
+
     echo "Available Wi-Fi Networks:"
     echo "$wifi_list" | awk '{print NR")", $0}'
 
@@ -47,7 +54,7 @@ setup_wifi() {
 
     if [ -z "$wifi_id" ]; then
         echo "Invalid selection. Exiting Wi-Fi setup."
-        return
+        return 1
     fi
 
     echo "Enter Wi-Fi passphrase (leave empty for open networks):"
@@ -56,18 +63,20 @@ setup_wifi() {
     echo "DEBUG: Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Connecting..."
     if [ -z "$wifi_passphrase" ]; then
-        connect "$wifi_id"
+        connmanctl connect "$wifi_id"
     else
-        connect "$wifi_id" <<< "$wifi_passphrase"
+        connmanctl connect "$wifi_id" <<< "$wifi_passphrase"
     fi
 
     if [[ $? -eq 0 ]]; then
         echo "Wi-Fi connected successfully!"
     else
         echo "Failed to connect to Wi-Fi. Please check credentials and try again."
-        return
+        return 1
     fi
-    quit
+
+    connmanctl quit
+
     # Make Wi-Fi persistent across reboots
     echo "Making Wi-Fi persistent..."
     echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
@@ -95,8 +104,8 @@ EOF
 
 
 # ---- Prompt for Wi-Fi Setup ----
-read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice
-if [[ "$wifi_choice" == "y" || "$wifi_choice" == "Y" ]]; then
+read -p "Do you want to set up Wi-Fi? (y/n): " wifi_choice_input
+if [[ "$wifi_choice_input" == "y" || "$wifi_choice_input" == "Y" ]]; then
     setup_wifi
 else
     echo "Skipping Wi-Fi setup."
@@ -118,8 +127,6 @@ python3 -m pip install --no-cache-dir --no-deps ethos-u-vela
 # Verify final installation
 echo "Vela updated to version: $(vela --version)"
 python3 -m pip show flatbuffers
-
-
 
 
 # ---- Generate Certificates ----
