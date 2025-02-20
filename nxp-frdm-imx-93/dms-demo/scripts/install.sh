@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "HHH - Updating environment variables..."
+echo "III - Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -41,11 +41,27 @@ EOF
     connmanctl scan wifi >/dev/null 2>&1
     sleep 5  # Wait for scan to complete
 
+    # Capture the list of available Wi-Fi networks
+    wifi_list=$(connmanctl services)
+
+    # Check if any networks were found
+    if [ -z "$wifi_list" ]; then
+        echo "No Wi-Fi networks found. Exiting Wi-Fi setup."
+        return 1
+    fi
+
     echo "Available Wi-Fi Networks:"
-    connmanctl services | awk '{print NR")", $0}'
+    echo "$wifi_list" | awk '{print NR")", $0}'
 
     read -p "Enter the number of the Wi-Fi network to connect to: " wifi_choice
-    wifi_id=$(connmanctl services | awk "NR==$wifi_choice {print \$NF}")  # Extract full service ID
+    # Check if input is empty
+    if [ -z "$wifi_choice" ]; then
+        echo "No network selected. Exiting Wi-Fi setup."
+        return 1
+    fi
+
+    # Extract the Wi-Fi service ID from the stored list using the selected line number
+    wifi_id=$(echo "$wifi_list" | awk "NR==$wifi_choice {print \$NF}")
 
     echo "DEBUG: Selected Wi-Fi ID: '$wifi_id'"
 
