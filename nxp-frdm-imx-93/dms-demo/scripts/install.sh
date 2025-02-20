@@ -191,23 +191,6 @@ if ${paste_config_json} ]]; then
 
 fi # paste_config_json
 
-if [[ ${do_download} && -f quickstart.py ]]; then
-  if ! askyn "It seems that the quickstart.py already exists. Do you want to overwrite it?"; then
-    do_download=false
-  fi
-fi
-
-if ${do_download}; then
-  if ! has curl; then
-    if has wget; then
-      echo "Using wget to download..."
-      use_curl=false
-    else
-      echo "No curl or wget found on this system. Please install one of the tools." >&2
-      exit 5
-    fi
-  fi
-
 # ---- Download /IOTCONNECT Quickstart Script ----
 echo "Downloading /IOTCONNECT Quickstart script..."
 cd /home/weston/
