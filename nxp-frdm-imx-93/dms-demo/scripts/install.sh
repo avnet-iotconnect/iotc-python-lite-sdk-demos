@@ -5,7 +5,7 @@
 
 set -e  # Stop script on first failure
 
-echo "777-Updating environment variables..."
+echo "888-Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
@@ -127,10 +127,6 @@ if [[ "$wifi_choice_input" == "y" || "$wifi_choice_input" == "Y" ]]; then
 else
     echo "Skipping Wi-Fi setup."
 fi
-
-# Wait a few seconds to ensure network is fully up and DNS is working
-echo "Waiting for network to stabilize..."
-sleep 10
 
 echo "Installing dependencies..."
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
