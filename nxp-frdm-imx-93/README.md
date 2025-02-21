@@ -66,7 +66,7 @@ A Device Template define the type of telemetry the platform should expect to rec
 6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 7. Run the install script: This script automates installation of the i.MX eIQ Demo on the FRDM imx93 Board. It will install all of the dependencies, the IOTCONNECT Python Lite SDK, download the AI-ML models, and guide the user through onboarding their device into IOTCONNECT:
    ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
    ```
 >[!IMPORTANT]
 >The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
