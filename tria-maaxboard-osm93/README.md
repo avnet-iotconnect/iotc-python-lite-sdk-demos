@@ -41,6 +41,7 @@ See the reference image below for cable connections.
 3. Connect your USB to TTL Serial 3.3V Adapter Cable to the appropriate pins on the A55 debug header.
 >[!NOTE]
 >The A55 debug header is the **lower** row of 3 pins, the upper row should be left open.
+
 >[!IMPORTANT]
 >When connecting the wires of your USB to TTL Serial 3.3V Adapter Cable, the "TXD" pin of the board should connect to the "RXD" wire of your cable. Similarly, the "RXD" pin of the board should connect to the "TXD" wire of your cable. "GND" connects to "GND".
 
