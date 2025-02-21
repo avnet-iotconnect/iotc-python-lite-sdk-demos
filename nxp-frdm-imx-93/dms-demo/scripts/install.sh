@@ -19,6 +19,7 @@ setup_wifi() {
     echo "Making Wi-Fi persistent..."
     echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
     echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
+
     cat <<EOF | tee /etc/systemd/system/wifi-setup.service >/dev/null
 [Unit]
 Description=WiFi Setup
@@ -36,12 +37,11 @@ EOF
     systemctl daemon-reload
     systemctl enable wifi-setup.service
     systemctl start wifi-setup.service
-
     echo "Wi-Fi setup is now permanent!"
 
     # Enable Wi-Fi via ConnMan
     echo "Enabling Wi-Fi..."
-    connmanctl enable wifi
+    connmanctl enable wifi || true
     sleep 1
 
     # Scan for available networks
@@ -70,52 +70,43 @@ EOF
     # Extract the Wi-Fi service ID (strip any extraneous quotes)
     wifi_id=$(echo "$wifi_list" | awk "NR==$wifi_choice {print \$NF}" | tr -d "'")
     echo "Selected Wi-Fi ID: '$wifi_id'"
+
     if [ -z "$wifi_id" ]; then
         echo "Invalid selection. Exiting Wi-Fi setup."
         return 1
     fi
 
-    echo "Enter Wi-Fi passphrase (leave empty for open networks):"
-    read -s wifi_passphrase
+    echo ""
+    echo "---------------------------------------------------------------------------------"
+    echo "We will now open an interactive ConnMan session using 'expect'."
+    echo "Type your passphrase when ConnMan asks for 'Passphrase?', then type 'quit' to exit."
+    echo "---------------------------------------------------------------------------------"
+    echo ""
 
-    echo "Connecting to Wi-Fi ID: '$wifi_id'"
-    echo "Connecting..."
-
-    # Use Expect to drive ConnMan interactively
-    if [ -z "$wifi_passphrase" ]; then
-        # No passphrase required
-        expect <<EOF
+    # Hand control to the user so they can manually type the passphrase
+    # when ConnMan prompts for it.
+    expect <<EOF
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
-expect "Connected"
-send "quit\r"
-expect eof
+# Hand over control to the user
+interact
 EOF
-    else
-        # Passphrase is required; wait for the passphrase prompt
-        expect <<EOF
-spawn connmanctl
-expect "connmanctl>"
-send "agent on\r"
-expect "Agent registered"
-send "connect $wifi_id\r"
-expect -re {Passphrase.*[:?]} { send "$wifi_passphrase\r" }
-expect "Connected"
-send "quit\r"
-expect eof
-EOF
-    fi
 
-    if [[ $? -eq 0 ]]; then
+    # Optional: Check if we're connected by verifying that the service
+    # is "online" or by attempting a ping. For example:
+    echo "Verifying if Wi-Fi is connected..."
+    if connmanctl services | grep -q -m 1 "$wifi_id.*\*AO"; then
+        # *AO in ConnMan indicates an active/online service
         echo "Wi-Fi connected successfully!"
     else
-        echo "Failed to connect to Wi-Fi. Please check credentials and try again."
+        echo "Failed to connect (or user quit the session without connecting)."
         return 1
     fi
 }
+
 
 
 
