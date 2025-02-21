@@ -116,6 +116,8 @@ expect "Agent registered"
 send "connect $wifi_id\r"
 expect -re "Passphrase.*[:?]" { send "$wifi_passphrase\r" }
 sleep 10
+# Optionally, do not quit so that the agent remains active
+# send "quit\r"
 expect eof
 EOF
     fi
