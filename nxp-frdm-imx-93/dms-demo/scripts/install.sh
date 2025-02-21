@@ -93,9 +93,9 @@ EOF
     echo "Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Connecting..."
 
-if [ -z "$wifi_passphrase" ]; then
-    echo "Starting ConnMan agent for authentication (no passphrase)..."
-    expect <<EOF &
+    if [ -z "$wifi_passphrase" ]; then
+        echo "Starting ConnMan agent for authentication (no passphrase)..."
+        expect <<EOF &
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
@@ -106,28 +106,24 @@ sleep 10
 #send "quit\r"
 expect eof
 EOF
-else
-    echo "Starting ConnMan agent for authentication (with passphrase)..."
-    expect <<EOF &
+    else
+        echo "Starting ConnMan agent for authentication (with passphrase)..."
+        expect <<EOF &
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
-expect {
-    "Passphrase:" {
-         send "$wifi_passphrase\r"
-    }
-    timeout {
-         send "\r"
-    }
+expect -re "Passphrase[[:space:]]*[:?]" {
+    send "$wifi_passphrase\r"
 }
 sleep 10
-# Optionally, remove the quit command to keep the agent active
-#send "quit\r"
+# Do not quit to keep the agent active
+# send "quit\r"
 expect eof
 EOF
-fi
+
+    fi
 
 
     if [[ $? -eq 0 ]]; then
