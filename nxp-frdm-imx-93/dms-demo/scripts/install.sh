@@ -5,26 +5,16 @@
 
 set -e  # Stop script on first failure
 
-# Define askyn function if not defined
-askyn() {
-    read -rp "$1 (y/n): " answer
-    if [[ "$answer" =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 echo "777-Updating environment variables..."
 export PATH=$PATH:/usr/local/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
 # ---- Function for Wi-Fi Setup ----
-
 setup_wifi() {
     # Load the Wi-Fi module with parameters
     modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
+
     # Make Wi-Fi persistent across reboots
     echo "Making Wi-Fi persistent..."
     echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
@@ -48,19 +38,21 @@ EOF
     systemctl start wifi-setup.service
 
     echo "Wi-Fi setup is now permanent!"
+
+    # Enable Wi-Fi via ConnMan
     echo "Enabling Wi-Fi..."
     connmanctl enable wifi
     sleep 1
 
+    # Scan for available networks
     echo "Scanning for available Wi-Fi networks..."
     connmanctl scan wifi
-    sleep 4  # Wait for scan to complete
+    sleep 4
 
     # Capture the list of available Wi-Fi networks
     wifi_list=$(connmanctl services)
     sleep 2
 
-    # Check if any networks were found
     if [ -z "$wifi_list" ]; then
         echo "No Wi-Fi networks found. Exiting Wi-Fi setup."
         return 1
@@ -70,18 +62,14 @@ EOF
     echo "$wifi_list" | awk '{print NR")", $0}'
 
     read -p "Enter the number of the Wi-Fi network to connect to: " wifi_choice
-    # Check if input is empty
     if [ -z "$wifi_choice" ]; then
         echo "No network selected. Exiting Wi-Fi setup."
         return 1
     fi
 
-    # Extract the Wi-Fi service ID from the stored list using the selected line number
-    # Remove extra single quotes with tr -d "'"
+    # Extract the Wi-Fi service ID (strip any extraneous quotes)
     wifi_id=$(echo "$wifi_list" | awk "NR==$wifi_choice {print \$NF}" | tr -d "'")
-
     echo "Selected Wi-Fi ID: '$wifi_id'"
-
     if [ -z "$wifi_id" ]; then
         echo "Invalid selection. Exiting Wi-Fi setup."
         return 1
@@ -93,40 +81,50 @@ EOF
     echo "Connecting to Wi-Fi ID: '$wifi_id'"
     echo "Connecting..."
 
+    # Use Expect to drive ConnMan interactively
     if [ -z "$wifi_passphrase" ]; then
-        echo "Starting ConnMan agent for authentication (no passphrase)..."
-        expect <<EOF &
+        # No passphrase required
+        expect <<EOF
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
-sleep 10
-# Do not quit; let the agent remain active
-#send "quit\r"
+expect "Connected"
+send "quit\r"
 expect eof
 EOF
     else
-    echo "Starting ConnMan agent for authentication (with passphrase)..."
-        expect <<EOF &
+        # Passphrase is required; wait for the passphrase prompt
+        expect <<EOF
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
 expect -re {Passphrase.*[:?]} { send "$wifi_passphrase\r" }
-sleep 10
-# Optionally, do not quit so that the agent remains active
-# send "quit\r"
+expect "Connected"
+send "quit\r"
 expect eof
 EOF
     fi
-
 
     if [[ $? -eq 0 ]]; then
         echo "Wi-Fi connected successfully!"
     else
         echo "Failed to connect to Wi-Fi. Please check credentials and try again."
+        return 1
+    fi
+}
+
+
+
+# Define askyn function if not defined
+askyn() {
+    read -rp "$1 (y/n): " answer
+    if [[ "$answer" =~ ^[Yy]$ ]]; then
+        return 0
+    else
         return 1
     fi
 }
@@ -168,6 +166,7 @@ If you are already familiar with IoTConnect you can follow these simple steps:
 END
 
 read -rp "ENTER to print the certificate and proceed:"
+echo 
 cat device-cert.pem
 
 cat <<END
