@@ -187,7 +187,7 @@ fi
 # ---- Download /IOTCONNECT Quickstart Script ----
 echo "Downloading /IOTCONNECT Quickstart script..."
 cd /home/weston/
-curl -sSL -o imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frm-imx-93/dms-demo/imx93-ai-demo.py" || {
+curl -sSL -o imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/imx93-ai-demo.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1
 }
@@ -195,7 +195,7 @@ chmod +x imx93-ai-demo.py
 
 # ---- Download DMS Processing Script ----
 echo "Downloading DMS processing script..."
-curl -sSL -o /usr/bin/eiq-examples-git/dms/dms-processing-final.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frm-imx-93/dms-demo/dms-processing.py" || {
+curl -sSL -o /usr/bin/eiq-examples-git/dms/dms-processing-final.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/dms-processing.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1
 }
