@@ -22,7 +22,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 # 2. Hardware Requirements
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
-* 1x Ethernet Cable (and a local router/switch with Internet connectivity)
+* (Optional) 1x Ethernet Cable (and a local router/switch with Internet connectivity)
 * (Optional) WiFi Network SSID and Password (more configuration is required for this method)
 
 # 3. Hardware Setup
@@ -32,7 +32,7 @@ See the reference image below for cable connections.
 <img src="./media/FRDM93-connections.jpg">
 </details>
 
-1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
+1. (Optional) Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
 2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the port labeled **#2** in the reference image.
 3. Connect a USB-C cable from your host machine to the port labeled **#3** in the reference image.
 
