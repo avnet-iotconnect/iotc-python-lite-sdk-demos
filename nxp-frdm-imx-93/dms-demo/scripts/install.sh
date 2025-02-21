@@ -114,15 +114,10 @@ expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
-expect -re "Passphrase[[:space:]]*[:?]" {
-    send "$wifi_passphrase\r"
-}
+expect -re "Passphrase.*[:?]" { send "$wifi_passphrase\r" }
 sleep 10
-# Do not quit to keep the agent active
-# send "quit\r"
 expect eof
 EOF
-
     fi
 
 
