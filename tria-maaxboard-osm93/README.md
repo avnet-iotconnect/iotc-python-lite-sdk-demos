@@ -14,28 +14,21 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard O
 
 <table>
   <tr>
-    <td><img src="./media/FRDM93.png" width="6000"></td>
+    <td><img src="./media/OSM93-top-down.png" width="6000"></td>
     <td>The MaaXBoard OSM93 features an energy-efficient, combination CPU/MPU/NPU, high-performance OSM compute system based on the NXP i.MX93 processor. The i.MX 93 device is architected with 3 separate processing domains: An application domain that includes two Arm® Cortex®-A55 (2.7 GHz) cores,
 a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-board AI accelerator, Arm® Ethos-U65 MicroNPU for machine learning and computer vision applications.</td>
   </tr>
 </table>
 
 # 2. Hardware Requirements
-* NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
-* 2x USB Type-C Cables (included in kit)
+* TRIA Maaxboard OSM93 [Purchase](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/80927648-7b98-4063-b91e-a8cb2e51e8a6/MaaXBoard+OSM93+User+Guide+v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-80927648-7b98-4063-b91e-a8cb2e51e8a6-pf2HBHv) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
+* 1x USB Type-C Cables (included in kit)
 * 1x Ethernet Cable (and a local router/switch with Internet connectivity)
 * (Optional) WiFi Network SSID and Password (more configuration is required for this method)
 
 # 3. Hardware Setup
-See the reference image below for cable connections.
-<details>
-<summary>Reference Image with Connections</summary>
-<img src="./media/FRDM93-connections.jpg">
-</details>
-
-1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
-2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the port labeled **#2** in the reference image.
-3. Connect a USB-C cable from your host machine to the port labeled **#3** in the reference image.
+1. Connect an Ethernet cable from your LAN (router/switch) to the "ETH_A" port on the board.
+2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the "POWER/USB_A" port on your board.
 
 # 4. Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
@@ -97,6 +90,6 @@ python3 /home/weston/demo/quickstart.py
 2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-* [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+* [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
