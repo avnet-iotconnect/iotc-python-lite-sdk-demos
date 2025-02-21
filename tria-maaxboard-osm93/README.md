@@ -68,9 +68,13 @@ A Device Template define the type of telemetry the platform should expect to rec
   - Data Bits: 8
   - Stop Bits: 1
   - Parity: None
-4. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
+4. Open your Device Manager list, note the COM port being utilized by your adapter cable, and use that COM port to connect to your board via the terminal emulator.
+>[!TIP]
+>If you do not see your cable in the COM port list, check for it in the "Other devices" section. You may need to install/select the driver for the cable to get it to be recognized as a COM port connection.
+
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
+
 5. When prompted for a login, type `root` followed by the ENTER key.
 6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
 7. Run these commands to create and move into a directory for your demo files:
