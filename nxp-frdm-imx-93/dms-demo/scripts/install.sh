@@ -107,14 +107,14 @@ sleep 10
 expect eof
 EOF
     else
-        echo "Starting ConnMan agent for authentication (with passphrase)..."
+    echo "Starting ConnMan agent for authentication (with passphrase)..."
         expect <<EOF &
 spawn connmanctl
 expect "connmanctl>"
 send "agent on\r"
 expect "Agent registered"
 send "connect $wifi_id\r"
-expect -re "Passphrase.*[:?]" { send "$wifi_passphrase\r" }
+expect -re {Passphrase.*[:?]} { send "$wifi_passphrase\r" }
 sleep 10
 # Optionally, do not quit so that the agent remains active
 # send "quit\r"
