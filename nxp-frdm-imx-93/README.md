@@ -64,23 +64,10 @@ A Device Template define the type of telemetry the platform should expect to rec
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 5. When prompted for a login, type `root` followed by the ENTER key.
 6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
-7. Run these commands to create and move into a directory for your demo files:
+7. Run the install script: This script automates installation of the i.MX eIQ Demo on the FRDM imx93 Board. It will install all of the dependencies, the IOTCONNECT Python Lite SDK, download the AI-ML models, and guide the user through onboarding their device into IOTCONNECT:
    ```
-   mkdir /home/weston/demo
-   cd /home/weston/demo
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/mcl-DMS-updates/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
    ```
->[!TIP]
->To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
-
-8. Run this command to install the /IOTCONNECT Python Lite SDK:
-   ```
-   python3 -m pip install iotconnect-sdk-lite
-   ```
-9. Run this command to download and run the Quickstart setup script:
-   ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
-   ```
-
 >[!IMPORTANT]
 >The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
 
