@@ -28,23 +28,14 @@ modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
 
 ### Step 2 (Optional): Create a Systemd Service File to Bring Up WiFi Devices
 
-1. Add the moal module to load at boot with the correct parameters:
+1. Add the moal module to load at boot with the correct parameters, create a modprobe configuration file to pass the parameters, and then create a new service file for the WiFi setup:
    ```bash
    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
-   ```
-
-2. Create a modprobe configuration file to pass the parameters:
-   ```bash
    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
-   ```
-
-3. Create a new service file for the WiFi setup:
-
-   ```bash
    nano /etc/systemd/system/wifi-setup.service
    ```
 
-4. Add the following content to the file:
+2. Add the following content to the file:
 
    ```ini
    [Unit]
@@ -67,8 +58,6 @@ modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
    systemctl enable wifi-setup.service
    systemctl start wifi-setup.service
    ```
-
----
 
 ### Step 3: Connecting to Wi-Fi Using `connmanctl`
 
