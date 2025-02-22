@@ -19,7 +19,10 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
   </tr>
 </table>
 
-# 2. Hardware Requirements
+# 2. Requirements
+This guide has been written and tested to work on a Windows 10/11 PC.
+
+## Hardware 
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
 * Ethernet Cable
@@ -27,6 +30,9 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 * HDMI Cable
 * 2nd Monitor
 * (Optional) WiFi Network SSID and Password
+
+## Software
+* A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
@@ -41,37 +47,36 @@ Using the above image as reference, make the following connections:
 3. Connect a webcam to the USB-A connector labeled **#4**.
 4. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
 The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
 
 
-* Option #1 [/IOTCONNECT via iotconnect.io)](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
-* Option #2 [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
+
 
 
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-# 5. /IOTCONNECT Device Template Setup
+# 5. /IOTCONNECT: Device Template Setup
 A Device Template define the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/files/plitedemo-template.json) (**MUST** Right-Click and "Save-As" to get the raw json file)
-* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information, please see the [/IOTCONNECT Documentation](https://docs.iotconnect.io/iotconnect/) website.)
+* Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
 # 6. Device Setup
-1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Device" (may be multiple).
-2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
-3. Ensure that your serial settings in your terminal emulator are set to:
+1. Open a serial terminal emulator program such as TeraTerm.
+2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
   - Data Bits: 8
   - Stop Bits: 1
   - Parity: None
-4. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
+3. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
-5. When prompted for a login, type `root` followed by the ENTER key.
-6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
-7. Run the install script: This script automates installation of the i.MX eIQ Demo on the FRDM imx93 Board. It will install all of the dependencies, the IOTCONNECT Python Lite SDK, download the AI-ML models, and guide the user through onboarding their device into IOTCONNECT:
+4. When prompted for a login, type `root` followed by the ENTER key.
+5. Run the install script: This script automates installation of the i.MX eIQ Demo on the FRDM imx93 Board. It will install all of the dependencies, the IOTCONNECT Python Lite SDK, download the AI-ML models, and guide the user through onboarding their device into /IOTCONNECT:
    ```
    cd /home/weston
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
