@@ -1,7 +1,7 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Hardware Requirements](#2-hardware-requirements)
+2. [Hardware Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
@@ -20,7 +20,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 </table>
 
 # 2. Requirements
-This guide has been written and tested to work on a Windows 10/11 PC.
+This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
 
 ## Hardware 
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
