@@ -591,7 +591,7 @@ def main(image):
                     transition_counts[key] = 0
                     transition_occurred = True
                     #print(f"STATE CHANGE: '{key}' from {old_val} to {new_state[key]} "
-                    f"(pitch={pitch:.2f}, yaw={yaw_val:.2f}, mouth={mouth_ratio_val:.2f})")
+                    #f"(pitch={pitch:.2f}, yaw={yaw_val:.2f}, mouth={mouth_ratio_val:.2f})")
             else:
                 transition_counts[key] = 0
 
