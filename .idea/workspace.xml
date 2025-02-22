@@ -7,6 +7,7 @@
     <list default="true" id="4285e31c-2556-493a-9b91-7c8e1b5f6a5b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nxp-frdm-imx-93/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/nxp-frdm-imx-93/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nxp-frdm-imx-93/dms-demo/scripts/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/nxp-frdm-imx-93/dms-demo/scripts/install.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

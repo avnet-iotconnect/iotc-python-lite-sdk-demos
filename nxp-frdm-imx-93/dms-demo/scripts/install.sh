@@ -33,24 +33,23 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/bin/eiq-example
 echo "X509 credentials are now generated."
 
 cat <<END
----- IoTconnect Python Lite SDK Quickstart ----
-This script will help guide you through the setup of this device with IoTConnect.
-Ensure that you have read the guide at https://github.com/avnet-iotconnect/iotc-python-lite-sdk on how to install the lite SDK before proceeding.
-If you are already familiar with IoTConnect you can follow these simple steps:
-- Create the device template by uploading TBD link to template.
-- Create a new device and:
-  - Select your Entity and the newly created template.
+---- /IOTCONNECT Python Lite SDK QuickStart ----
+This script will help guide through the setup of this device with /IOTCONNECT.
+If you are already familiar with /IOTCONNECT you can follow these simple steps:
+1. Create a New Device in your /IOTCONNECT instance:
+  - Select your Entity and the newly created Device Template.
   - Click the "Use my certificate" radio button.
-  - Copy and paste the certificate that will be printed, including the BEGIN and END lines into the Certificate Text field:
+  - Copy and Paste the certificate that will be printed below (including the BEGIN and END lines) into the Certificate Text field.
+
 END
 
-read -rp "ENTER to print the certificate and proceed:"
+read -rp "When ready, press ENTER to print the certificate:"
 echo 
 cat device-cert.pem
 
 cat <<END
-- Click the "Save & View" button.
-- Click the "Paper and Cog" icon at top right to download your device configuration file.
+- Return to the /IOTCONNECT platform and Click the "Save & View" button.
+- Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
 END
 
 paste_config_json=true
@@ -72,8 +71,8 @@ if ${paste_config_json}; then
   done
 fi
 
-# ---- Download /IOTCONNECT Quickstart Script ----
-echo "Downloading /IOTCONNECT Quickstart script..."
+# ---- Download /IOTCONNECT QuickStart Script ----
+echo "Downloading /IOTCONNECT QuickStart script..."
 curl -sSL -o imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/imx93-ai-demo.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1

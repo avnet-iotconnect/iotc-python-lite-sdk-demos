@@ -3,9 +3,9 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-cloud-account-setup)
+4. [Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Setup](#6-device-setup)
+6. [Device Configuration](#6-device-configuration)
 7. [Using the Demo](#7-using-the-demo)
 8. [Resources](#8-resources)
 
@@ -65,7 +65,7 @@ A Device Template define the type of telemetry the platform should expect to rec
 * Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
-# 6. Device Setup
+# 6. Device Configuration
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
@@ -76,11 +76,17 @@ A Device Template define the type of telemetry the platform should expect to rec
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 4. When prompted for a login, type `root` followed by the ENTER key.
-5. Run the install script: This script automates installation of the i.MX eIQ Demo on the FRDM imx93 Board. It will install all of the dependencies, the IOTCONNECT Python Lite SDK, download the AI-ML models, and guide the user through onboarding their device into /IOTCONNECT:
+5. Run the install script which will automate the installation of the i.MX eIQ Demo by perform the following actions:
+   * Install all dependencies
+   * Install the /IOTCONNECT Python Lite SDK
+   * Download the AI-ML models
+   * Onboard the device into the /IOTCONNECT platform.
+
    ```
    cd /home/weston
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
    ```
+After about 20s, you will be prompted to enter a device 
 >[!IMPORTANT]
 >The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
 
