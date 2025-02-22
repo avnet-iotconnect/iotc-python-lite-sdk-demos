@@ -74,7 +74,6 @@ fi
 
 # ---- Download /IOTCONNECT Quickstart Script ----
 echo "Downloading /IOTCONNECT Quickstart script..."
-    cd /home/weston/
 curl -sSL -o imx93-ai-demo.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/imx93-ai-demo.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1
@@ -92,13 +91,13 @@ chmod +x /usr/bin/eiq-examples-git/dms/dms-processing-final.py
 # ---- Prompt User for eIQ AI Model Download ----
 echo ""
 read -p "Do you want to download eIQ AI Models? (y/n): " model_choice </dev/tty
+echo "Download and process of models takes approximately 10 minutes"
 if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
-    cd /usr/bin/eiq-examples-git/
-    curl -sSL -o download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/download_models.py" || {
+    curl -sSL -o /usr/bin/eiq-examples-git/download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/download_models.py" || {
         echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
         exit 1
     }
-    chmod +x download_models.py
+    chmod +x /usr/bin/eiq-examples-git/download_models.py 
     echo "Downloading eIQ AI Models..."
     if python3 download_models.py 2>/dev/null; then
         echo "eIQ AI Models downloaded successfully."
@@ -110,7 +109,6 @@ else
 fi
 
 # ---- Completion ----
-cd /home/weston
 echo ""
 echo "Installation complete! You can now run the /IOTCONNECT script:"
 echo "python3 /home/weston/imx93-ai-demo.py"
