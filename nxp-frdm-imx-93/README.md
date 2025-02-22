@@ -1,7 +1,7 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Hardware Requirements](#2-requirements)
+2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
