@@ -82,11 +82,11 @@ chmod +x imx93-ai-demo.py
 
 # ---- Download DMS Processing Script ----
 echo "Downloading DMS processing script..."
-curl -sSL -o /usr/bin/eiq-examples-git/dms/dms-processing-final.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/dms-processing.py" || {
+curl -sSL -o /usr/bin/eiq-examples-git/dms/dms-processing.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/dms-processing.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1
 }
-chmod +x /usr/bin/eiq-examples-git/dms/dms-processing-final.py
+chmod +x /usr/bin/eiq-examples-git/dms/dms-processing.py
 
 # ---- Prompt User for eIQ AI Model Download ----
 echo ""
