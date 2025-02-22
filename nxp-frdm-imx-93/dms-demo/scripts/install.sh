@@ -108,6 +108,10 @@ else
     echo "Skipping eIQ AI Models download."
 fi
 
+# Create empty dms-data.json with read/write perms
+touch dms-data.json
+chmod 666 dms-data.json
+
 # ---- Completion ----
 echo ""
 echo "Installation complete! You can now run the /IOTCONNECT script:"
