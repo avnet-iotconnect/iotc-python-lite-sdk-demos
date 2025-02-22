@@ -43,9 +43,9 @@ See the reference image below for cable connections.
 
 Using the above image as reference, make the following connections:
 1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**.
-2. Connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3**.
-3. Connect a webcam to the USB-A connector labeled **#4**.
-4. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
+2. Connect a webcam to the USB-A connector labeled **#4**.
+3. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
+4. Lastly, connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3** to power on the board.
 
 # 4. /IOTCONNECT: Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
@@ -62,7 +62,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 # 5. /IOTCONNECT: Device Template Setup
 A Device Template define the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
 # 6. Device Setup
