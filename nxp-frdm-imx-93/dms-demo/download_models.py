@@ -107,7 +107,7 @@ def convert_model(model_dir, vela_dir):
             model = os.path.join(model_dir, name)
             os.system('vela ' + model + " --output-dir " + vela_dir)
 
-model_dir = 'models'
-vela_dir = 'vela_models'
+model_dir = '/usr/bin/eiq-examples-git/models'
+vela_dir = '/usr/bin/eiq-examples-git/vela_models'
 download_all_models(model_dir, vela_dir)
 convert_model(model_dir, vela_dir)
