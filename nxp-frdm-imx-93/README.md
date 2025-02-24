@@ -128,9 +128,9 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 * Download the demo [Dashboard Template](dms-demo/templates/NXP-IMX9eIQ_dashboard_export.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
-* **Select** the `Import Dashboard` option and select `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
-* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and complete the import
-
+* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
+* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
+* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
 
 # 10. /IOTCONNECT: Using the Dashboard
 
