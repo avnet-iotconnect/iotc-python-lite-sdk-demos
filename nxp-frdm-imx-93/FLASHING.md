@@ -1,4 +1,4 @@
-# Flashing a Fresh Default Image onto an NXP i.MX 93 Development Board
+# Flashing the Default Image onto an NXP i.MX 93 Development Board
 
 # 1. Introduction
 This simple guide will help you download all the necessary files for flashing a fresh stock image to an NXP i.MX 93, and then flash the image to the board.
