@@ -98,7 +98,7 @@ def download_all_models(model_dir, vela_dir):
     # Add extra decompression step to access required model
     path = os.path.join(model_dir, '20_new_20211209/resources.tar.gz')
     decompress(path, model_dir)
-    shutil.copyfile("models/saved_model_64x64/model_integer_quant.tflite", "models/iris_landmark_quant.tflite")
+    shutil.copyfile("/usr/bin/eiq-examples-git/models/saved_model_64x64/model_integer_quant.tflite", "/usr/bin/eiq-examples-git/models/iris_landmark_quant.tflite")
 
 def convert_model(model_dir, vela_dir):
     for name in os.listdir(model_dir):
