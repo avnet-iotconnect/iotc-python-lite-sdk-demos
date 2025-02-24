@@ -94,12 +94,13 @@ A Device Template define the type of telemetry the platform should expect to rec
 > Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
 
 # 7. Start the Application and Verify Data
-1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
+Copy the following code block and paste into the terminal to move into the correct directory and start the demo application:
 ```
 cd /home/weston
 python3 /home/weston/imx93-ai-demo.py
 ```
-2. View the telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+
+The telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
 
 >[!IMPORTANT]
 >There needs to be a video capture device connected to the USB-A port on the board for the video to be processed.
