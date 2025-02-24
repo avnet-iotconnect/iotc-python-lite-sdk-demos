@@ -39,7 +39,7 @@ If you are already familiar with /IOTCONNECT you can follow these simple steps:
 1. Create a New Device in your /IOTCONNECT instance:
   - Select your Entity and the newly created Device Template.
   - Click the "Use my certificate" radio button.
-  - Copy and Paste the certificate that will be printed below (including the BEGIN and END lines) into the Certificate Text field.
+  - Copy the certificate that will be printed below (including the BEGIN and END lines).
 
 END
 
@@ -48,7 +48,8 @@ echo
 cat device-cert.pem
 
 cat <<END
-- Return to the /IOTCONNECT platform and Click the "Save & View" button.
+- Return to the /IOTCONNECT platform and paste the certifcate below the "Certificate Text" box.
+- Click the "Save & View" button.
 - Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
 END
 
