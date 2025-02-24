@@ -91,9 +91,6 @@ A Device Template defines the type of telemetry the platform should expect to re
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
    ```
 
->[!NOTE]
-> Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
-
 # 7. /IOTCONNECT: Create Device
 The script started in the previous step will guid you through the following steps:
 
@@ -104,14 +101,21 @@ The script started in the previous step will guid you through the following step
 5. Select the template `eiqIOTC` from the template dropdown box
 6. Change the Device Certificate as "Use my certificate"
 7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
+
+>[!NOTE]
+> Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
+
 8. Click `Save & View`
 9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
 10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `ENTER`
+11. When prompted, press `y` and `enter` to download the eIQ AI Models
+
+>[!INFO]
+>This process will take just over 8 minutes.
 
 # 8. Start the Application and Verify Data
-Copy the following code block and paste into the terminal to move into the correct directory and start the demo application:
+From the `/home/weston` directory, use the following command to the demo application:
 ```
-cd /home/weston
 python3 /home/weston/imx93-ai-demo.py
 ```
 
