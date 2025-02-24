@@ -5,12 +5,13 @@
 3. [Hardware Setup](#3-hardware-setup)
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Configuration](#6-device-configuration)
-7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
-8. [/IOTCONNECT: Import Dashboard Template](#8-iotconnect-import-dashboard-template)
-9. [/IOTCONNECT: Using the Dashboard](#9-iotconnect-using-the-dashboard)
-10. [Troubleshooting](#10-troubleshooting)
-11. [Resources](#11-resources)
+6. [Run Setup Scripts](#6-run-setup-scripts)
+7. [/IOTONNECT: Create Device](#7-iotconnect-create-device)
+8. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
+9. [/IOTCONNECT: Import Dashboard Template](#8-iotconnect-import-dashboard-template)
+10. [/IOTCONNECT: Using the Dashboard](#9-iotconnect-using-the-dashboard)
+11. [Troubleshooting](#10-troubleshooting)
+12. [Resources](#11-resources)
 
 # 1. Introduction
 This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) by leveraging local AI on the NPU.
@@ -64,11 +65,11 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > Be sure to check any SPAM folder for the temporary password after registering.
 
 # 5. /IOTCONNECT: Device Template Setup
-A Device Template define the type of telemetry the platform should expect to receive.
+A Device Template defines the type of telemetry the platform should expect to receive.
 * Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
-# 6. Device Configuration
+# 6. Run Setup Scripts
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
@@ -93,7 +94,21 @@ A Device Template define the type of telemetry the platform should expect to rec
 >[!NOTE]
 > Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
 
-# 7. Start the Application and Verify Data
+# 7. /IOTCONNECT: Create Device
+The script started in the previous step will guid you through the following steps:
+
+1. Click the `Device` icon and the "Device" sub-menu
+2. At the top-right, click on the `Create Device` button
+3. Enter `FRDMiMX93` for both **Unique ID** and **Device Name**
+4. Select the entity in the drop-down (if this is a new/trial account, there is only one option)
+5. Select the template `eiqIOTC` from the template dropdown box
+6. Change the Device Certificate as "Use my certificate"
+7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
+8. Click `Save & View`
+9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
+10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `ENTER`
+
+# 8. Start the Application and Verify Data
 Copy the following code block and paste into the terminal to move into the correct directory and start the demo application:
 ```
 cd /home/weston
@@ -105,7 +120,7 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 >[!IMPORTANT]
 >There needs to be a video capture device connected to the USB-A port on the board for the video to be processed.
 
-# 8. /IOTCONNECT: Import Dashboard Template
+# 9. /IOTCONNECT: Import Dashboard Template
 
 * Download the demo [Dashboard Template](dms-demo/templates/NXP-IMX9eIQ_dashboard_export.json.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
@@ -113,15 +128,15 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 * **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and complete the import
 
 
-# 9. /IOTCONNECT: Using the Dashboard
+# 10. /IOTCONNECT: Using the Dashboard
 
 
 
-# 10. Troubleshooting
+# 11. Troubleshooting
 
 To return the board to an out-of-box state, refer to the [flashing.md](flashing.md)
 
-# 11. Resources
+# 12. Resources
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [Other /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
