@@ -35,11 +35,13 @@ echo "X509 credentials are now generated."
 cat <<END
 ---- /IOTCONNECT Python Lite SDK QuickStart ----
 This script will help guide through the setup of this device with /IOTCONNECT.
-If you are already familiar with /IOTCONNECT you can follow these simple steps:
-1. Create a New Device in your /IOTCONNECT instance:
-  - Select your Entity and the newly created Device Template.
-  - Click the "Use my certificate" radio button.
-  - Copy the certificate that will be printed below (including the BEGIN and END lines).
+1. In the /IOTCONNECT Device view, click "Create Device" in the top-right corner
+2. Enter "FRDMiMX93" for both Unique ID and Device Name
+3. Select the only entity available in that the entity drop-down
+4. Select the template "eiqIOTC" from the template drop-down
+5. Change the Device Certificate to "Use my certificate"
+6. Copy the certificate that will be printed below (including the BEGIN and END lines).
+*** CAUTION: Do not use CTRL + C to copy at that will stop the script ***
 
 END
 
@@ -48,9 +50,9 @@ echo
 cat device-cert.pem
 
 cat <<END
-- Return to the /IOTCONNECT platform and paste the certifcate below the "Certificate Text" box.
-- Click the "Save & View" button.
-- Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
+7. Return to the /IOTCONNECT platform and paste the certifcate below the "Certificate Text" box.
+8. Click the "Save & View" button.
+9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
 END
 
 paste_config_json=true
