@@ -98,7 +98,7 @@ if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
     curl -sSL -o /usr/bin/eiq-examples-git/download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/download_models.py" || {
         echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
         exit 1
-    }
+        }
     chmod +x /usr/bin/eiq-examples-git/download_models.py 
     echo "Downloading eIQ AI Models..."
     python3 /usr/bin/eiq-examples-git/download_models.py
