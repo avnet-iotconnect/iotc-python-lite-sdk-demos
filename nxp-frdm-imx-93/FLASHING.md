@@ -20,10 +20,10 @@ This simple guide will help you download all the necessary files for flashing a 
 * Copy the uuu.exe file you previously downloaded into the of the newly-unzipped image folder (you may need to navigate an additional layer into the folder after unzipping it to get to where the real files are)
 * Using 7-Zip (or another unzipping utility that supports ZST files), unzip this file (keeping the same destination directory):
   ```imx-image-full-imx93frdm.rootfs.wic.zst```
-* Before proceeding to the next step, very that these 3 files are all within the same folder:
-```imx-image-full-imx93frdm.rootfs.wic```
-```imx-boot-imx93frdm-sd.bin-flash_singleboot```
-```uuu.exe```
+* Before proceeding to the next step, very that these 3 files are all within the same folder:  
+```imx-image-full-imx93frdm.rootfs.wic```  
+```imx-boot-imx93frdm-sd.bin-flash_singleboot```  
+```uuu.exe```  
 
 # 5. Prepare Hardware for Flashing
 * Set the boot dip-switches (SW1) to OFF-OFF-OFF-ON for Serial Download mode
@@ -35,8 +35,10 @@ This simple guide will help you download all the necessary files for flashing a 
 # 6. Flash the Image
 * Open a Windows Powershell window
 * Move into the unzipped downloaded image folder conatining the image files and uuu.exe
-* Execute this command to start the flash:
-  ```.\uuu.exe -b emmc_all .\imx-boot-imx93frdm-sd.bin-flash_singleboot .\imx-image-full-imx93frdm.rootfs.wic```
+* Execute this command to start the flash:  
+  ```
+  .\uuu.exe -b emmc_all .\imx-image-full-imx93frdm.rootfs.wic
+  ```
 * Wait until the flash is complete (should take ~5 minutes)
 * Change the boot dip-switches (SW1) back to OFF-OFF-ON-OFF for eMMC boot mode
 * Reboot the board by unplugging the power cable and plugging it back in
