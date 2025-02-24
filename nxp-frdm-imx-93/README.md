@@ -134,7 +134,11 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 # 10. /IOTCONNECT: Using the Dashboard
 
-While looking at the webcam, look in various directions and see the results of the head tracking live on the dashboard.
+The Driver Saftey Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
+<details>
+<summary>Table of Supported DSM Attributes</summary>
+<img src="./media/dsm_metrics.png" width="1000">
+</details>
 
 # 11. Troubleshooting
 
