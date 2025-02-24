@@ -102,7 +102,7 @@ The script started in the previous step will guide you through the following ste
 6. Change the Device Certificate as "Use my certificate"
 7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
 
->[!NOTE]
+>[!CAUTION]
 > Use the `Edit` -> `Copy` option as the Ctrl + C shortcut will interrupt the script.
 
 8. Click `Save & View`
@@ -110,7 +110,7 @@ The script started in the previous step will guide you through the following ste
 10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `enter`
 11. When prompted, press `y` and `enter` to download the eIQ AI Models
 
->[!INFO]
+>[!NOTE]
 >This process will take just over 8 minutes.
 
 # 8. Start the Application and Verify Data
