@@ -3,7 +3,7 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-iotconnect-cloud-account-setup)
+4. [/IOTCONNECT Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
 6. [Device Configuration](#6-device-configuration)
 7. [Using the Demo](#7-using-the-demo)
