@@ -98,7 +98,7 @@ if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
     }
     chmod +x /usr/bin/eiq-examples-git/download_models.py 
     echo "Downloading eIQ AI Models..."
-    if python3 download_models.py 2>/dev/null; then
+    if python3 /usr/bin/eiq-examples-git/download_models.py 2>/dev/null; then
         echo "eIQ AI Models downloaded successfully."
     else
         echo "Warning: There was an error downloading eIQ AI Models. Please verify the model URLs and file formats."
