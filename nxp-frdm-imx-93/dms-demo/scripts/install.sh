@@ -43,8 +43,8 @@ If you are already familiar with /IOTCONNECT you can follow these simple steps:
 
 END
 
-read -rp "When ready, press ENTER to print the certificate:"
-echo 
+read -rp "Press ENTER to display the certificate:"
+echo
 cat device-cert.pem
 
 cat <<END
