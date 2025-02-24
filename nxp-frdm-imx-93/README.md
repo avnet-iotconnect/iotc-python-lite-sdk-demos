@@ -92,9 +92,9 @@ A Device Template defines the type of telemetry the platform should expect to re
    ```
 
 # 7. /IOTCONNECT: Create Device
-The script started in the previous step will guid you through the following steps:
+The script started in the previous step will guide you through the following steps:
 
-1. Click the `Device` icon and the "Device" sub-menu
+1. Click the `Device` icon then the "Device" sub-menu
 2. At the top-right, click on the `Create Device` button
 3. Enter `FRDMiMX93` for both **Unique ID** and **Device Name**
 4. Select the entity in the drop-down (if this is a new/trial account, there is only one option)
@@ -103,11 +103,11 @@ The script started in the previous step will guid you through the following step
 7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
 
 >[!NOTE]
-> Use the menu Copy option as the Ctrl + C shortcut will interrupt the script.
+> Use the `Edit` -> `Copy` option as the Ctrl + C shortcut will interrupt the script.
 
 8. Click `Save & View`
 9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
-10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `ENTER`
+10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `enter`
 11. When prompted, press `y` and `enter` to download the eIQ AI Models
 
 >[!INFO]
