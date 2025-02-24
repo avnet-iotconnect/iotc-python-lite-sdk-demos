@@ -138,10 +138,11 @@ While looking at the webcam, look in various directions and see the results of t
 
 # 11. Troubleshooting
 
-To return the board to an out-of-box state, refer to the [flashing.md](flashing.md)
+To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
 
 # 12. Resources
+* [Webinar Slides]()
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
-* [Other /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
+* [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
