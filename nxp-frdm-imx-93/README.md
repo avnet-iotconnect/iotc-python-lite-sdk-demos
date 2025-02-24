@@ -101,6 +101,9 @@ python3 /home/weston/imx93-ai-demo.py
 ```
 2. View the telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
+>[!IMPORTANT]
+>There needs to be a video capture device connected to the USB-A port on the board for the video to be processed.
+
 # 8. /IOTCONNECT: Import Dashboard Template
 
 * Download the demo [Dashboard Template](/dms-demo/templates/NXP-IMX9eIQ_dashboard_export.json.json?raw=1) (**must** Right-Click, Save As)
@@ -115,7 +118,10 @@ python3 /home/weston/imx93-ai-demo.py
 
 # 10. Troubleshooting
 
+To return the board to an out-of-box state, refer to the [flashing.md](flashing.md)
+
 # 11. Resources
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+* [Other /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
