@@ -3,11 +3,14 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
+4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
+5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
 6. [Device Configuration](#6-device-configuration)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
+8. [/IOTCONNECT: Import Dashboard Template](#8-iotconnect-import-dashboard-template)
+9. [/IOTCONNECT: Using the Dashboard](#9-iotconnect-using-the-dashboard)
+10. [Troubleshooting](#10-troubleshooting)
+11. [Resources](#11-resources)
 
 # 1. Introduction
 This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) by leveraging local AI on the NPU.
@@ -77,31 +80,34 @@ A Device Template define the type of telemetry the platform should expect to rec
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 4. When prompted for a login, type `root` followed by the ENTER key.
 5. Run the install script which will automate the installation of the i.MX eIQ Demo by perform the following actions:
-   * Install all dependencies
-   * Install the /IOTCONNECT Python Lite SDK
-   * Download the AI-ML models
-   * Onboard the device into the /IOTCONNECT platform.
+   * Install Dependencies
+   * Install /IOTCONNECT Python Lite SDK
+   * Download AI-ML models
+   * Start the interactive /IOTCONNECT onboarding script
 
    ```
    cd /home/weston
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh' && bash ./install.sh
    ```
-After about 20s, you will be prompted to enter a device 
->[!IMPORTANT]
->The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
 
 >[!NOTE]
->This script primarily covers device and certificate creation in /IOTCONNECT. It will require some copy/paste between your browser and the terminal window.
+> Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
 
-# 7. Using the Demo
+# 7. Start the Application and Verify Data
 1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
 ```
 cd /home/weston
 python3 /home/weston/imx93-ai-demo.py
 ```
-2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+2. View the telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 8. /IOTCONNECT: Import Dashboard Template
+
+# 9. /IOTCONNECT: Using the Dashboard
+
+# 10. Troubleshooting
+
+# 11. Resources
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
