@@ -103,7 +103,7 @@ The script started in the previous step will guid you through the following step
 7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
 
 >[!NOTE]
-> Use the menu Copy/Paste options as shortcuts like Ctrl + C will interrupt the script.
+> Use the menu Copy option as the Ctrl + C shortcut will interrupt the script.
 
 8. Click `Save & View`
 9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
