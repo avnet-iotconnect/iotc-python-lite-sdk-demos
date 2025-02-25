@@ -139,8 +139,9 @@ The Driver Saftey Monitor demo solution will look for a variety of facial attrib
 <summary>Table of Supported DSM Attributes</summary>
 <img src="./media/dsm_metrics.png" width="1000">
 </details>
-> [!TIP]
-> You can find this slide and more details in the **Resources** section.
+
+>[!TIP]
+>You can find this slide and others on the demo in Webinar Slides located in the **Resources** section.
 
 # 11. Troubleshooting
 
