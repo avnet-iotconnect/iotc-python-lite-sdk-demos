@@ -83,7 +83,8 @@ A Device Template defines the type of telemetry the platform should expect to re
 5. Run the install script which will automate the installation of the i.MX eIQ Demo by perform the following actions:
    * Install Dependencies
    * Install /IOTCONNECT Python Lite SDK
-   * Download AI-ML models
+   * Download TFlite Models
+   * Optimize Models with [Vela Compiler](https://github.com/nxp-imx/ethos-u-vela)
    * Start the interactive /IOTCONNECT onboarding script
 
    ```
