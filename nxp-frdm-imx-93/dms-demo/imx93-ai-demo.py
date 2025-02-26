@@ -324,8 +324,8 @@ def on_ota(msg: C2dOta):
         try:
             if url.file_name.endswith(".zip"):
                 subprocess_run_with_print(("unzip", "-oqq", url.file_name))
-                # If there is an install.sh script in the OTA package, execute it
-                filename = "install.sh"
+                # If there is an ota_install.sh script in the OTA package, execute it
+                filename = "ota_install.sh"
                 current_directory = os.getcwd()
                 file_path = os.path.join(current_directory, filename)
                 if os.path.isfile(file_path):
@@ -336,7 +336,7 @@ def on_ota(msg: C2dOta):
                         # Execute the file
                         subprocess.run(['bash', file_path], check=True)
                         print(f"Successfully executed {filename}")
-                        # Delete the install.sh file after execution
+                        # Delete the ota_install.sh file after execution
                         os.remove(file_path)
                         print(f"{filename} has been deleted.")
 
