@@ -10,6 +10,6 @@ The first step is to actually make your desired changes to the files. You can do
 >When making changes to *imx93-ai-demo.py* and *dms-processing.py*, make sure you save them under the exact same file name as the originals. Model files can have any name as long as they have a ".tflite" file extension.
 
 # Download OTA Package Installation Script
-[example](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh)
+[example](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/dms-demo/scripts/install.sh?raw=1)
 
 # Gather and Zip OTA Package
