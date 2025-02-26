@@ -135,7 +135,7 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 # 10. /IOTCONNECT: Using the Dashboard
 
-The Driver Saftey Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
+The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
 <summary>Table of Supported DSM Attributes</summary>
 <img src="./media/dsm_metrics.png" width="1000">
