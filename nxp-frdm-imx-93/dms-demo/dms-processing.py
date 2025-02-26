@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#
 # Copyright (c) 2020-2023 NXP
 # Modifications Copyright (c) 2025 Avnet
 #
@@ -347,7 +346,7 @@ def update_json():
 
 app = Flask(__name__)
 MODEL_PATH = pathlib.Path("/usr/bin/eiq-examples-git/models/")
-DETECT_MODEL = "face_detection_front_128_full_integer_quant.tflite"
+DETECT_MODEL = "updated_face_detect_model.tflite"
 LANDMARK_MODEL = "face_landmark_192_full_integer_quant.tflite"
 EYE_MODEL = "iris_landmark_quant.tflite"
 
@@ -819,4 +818,3 @@ while True:
 time.sleep(2)
 cap.release()
 cv2.destroyAllWindows()
-
