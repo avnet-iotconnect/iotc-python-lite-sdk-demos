@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2025 Avnet
-# Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
-#
+# Authors: Nikola Markovic <nikola.markovic@avnet.com>, Zackary Andraka <zackary.andraka@avnet.com>, et al.
 # -----------------------------------------------------------------------------
 # PURPOSE:
 #   This script runs on an NXP i.MX platform (e.g. i.MX93) and accomplishes the following:
@@ -32,10 +31,11 @@ import json
 import socket
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+import urllib.request
 import requests
 import fcntl
 import os
+import re
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks, DeviceConfigError
 from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
@@ -44,6 +44,31 @@ from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dOta
 # -----------------------------------------------------------------------------
 # HELPER FUNCTIONS FOR SAFE JSON READ/WRITE
 # -----------------------------------------------------------------------------
+face_detection_model = ""
+face_landmark_model = ""
+eye_landmark_model = ""
+# Open the Python script and read its contents
+with open("/usr/bin/eiq-examples-git/dms/dms-processing.py", 'r') as file:
+    dms_script = file.read()        
+
+# Iterate over each line in the script
+for line in dms_script.splitlines():
+    if "DETECT_MODEL =" in line:
+        pattern = r'=\s*(.*)'
+        match = re.search(pattern, line)
+        if match:
+            face_detection_model = match.group(1).strip().strip('"') 
+    elif "FACE_LANDMARK_MODEL =" in line:
+        pattern = r'=\s*(.*)'
+        match = re.search(pattern, line)
+        if match:
+            face_landmark_model = match.group(1).strip().strip('"')
+    if "EYE_LANDMARK_MODEL =" in line:
+        pattern = r'=\s*(.*)'
+        match = re.search(pattern, line)
+        if match:
+            eye_landmark_model = match.group(1).strip().strip('"')
+
 
 def safe_write_json(path, data):
     """
@@ -72,14 +97,23 @@ def safe_read_json(path):
 # This dictionary is periodically sent to IoTConnect. We update it with current
 # DMS data read from /home/weston/dms-data.json.
 telemetry = {
+    "dms_face_detection_model": face_detection_model,
+    "dms_landmark_model": face_landmark_model,
+    "dms_eye_model": eye_landmark_model,
     "dms_head_direction": 0,
     "dms_yawning": 0,
-    "dms_eyes_open": 1,
+    "dms_eyes_open": 1, 
     "dms_alert": 0,
     "dms_bbox_xmin": 0,
     "dms_bbox_ymin": 0,
     "dms_bbox_xmax": 0,
     "dms_bbox_ymax": 0,
+    "dms_pitch": 0,
+    "dms_roll": 0,
+    "dms_yaw_val": 0,
+    "dms_mouth_ratio": 0,
+    "dms_left_eye_ratio_smoothed": 0,
+    "dms_right_eye_ratio_smoothed": 0,
     "camera_ip": ""
 }
 
@@ -260,17 +294,75 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Not Implemented")
 
 # -----------------------------------------------------------------------------
-# OTA CALLBACK (NOT IMPLEMENTED)
+# OTA CALLBACK
 # -----------------------------------------------------------------------------
+def exit_and_restart():
+    print("")  # Print a blank line so it doesn't look as confusing in the output.
+    sys.stdout.flush()
+    # restart the process
+    os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
+
+
+def subprocess_run_with_print(args):
+    print("Running command:", ' '.join(args))
+    subprocess.run(args, check=True)
+
+
 def on_ota(msg: C2dOta):
-    """
-    Called when an OTA (Over-The-Air) update request arrives from IoTConnect.
-    Here, we only log the request and do not actually implement any OTA flow.
-    """
-    print("Received OTA request. File: %s Version: %s URL: %s" % (
-        msg.urls[0].file_name, msg.version, msg.urls[0].url
-    ))
-    c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_FAILED, "Not implemented")
+    # We just print the URL. The actual handling of the OTA request would be project specific.
+    print("Starting OTA downloads for version %s" % msg.version)
+    error_msg = None
+    c.send_ota_ack(msg, C2dAck.OTA_DOWNLOADING)
+    for url in msg.urls:
+        print("Downloading OTA file %s from %s" % (url.file_name, url.url))
+        try:
+            urllib.request.urlretrieve(url.url, url.file_name)
+        except Exception as e:
+            print("Encountered download error", e)
+            error_msg = "Download error for %s" % url.file_name
+            break
+        try:
+            if url.file_name.endswith(".zip"):
+                subprocess_run_with_print(("unzip", "-oqq", url.file_name))
+                # If there is an install.sh script in the OTA package, execute it
+                filename = "install.sh"
+                current_directory = os.getcwd()
+                file_path = os.path.join(current_directory, filename)
+                if os.path.isfile(file_path):
+                    try:
+                        # Give the file executable permissions
+                        os.chmod(file_path, 0o755)
+                        print(f"{filename} is now executable.")
+                        # Execute the file
+                        subprocess.run(['bash', file_path], check=True)
+                        print(f"Successfully executed {filename}")
+                        # Delete the install.sh file after execution
+                        os.remove(file_path)
+                        print(f"{filename} has been deleted.")
+
+                    except subprocess.CalledProcessError as e:
+                        print(f"Error executing {filename}: {e}")
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
+                else:
+                    print(f"{filename} not found in the current directory.")
+            else:
+                print("ERROR: Unhandled file format for file %s" % url.file_name)
+                error_msg = "Processing error for %s" % url.file_name
+                break
+        except subprocess.CalledProcessError:
+            print("ERROR: Failed to install %s" % url.file_name)
+            error_msg = "Install error for %s" % url.file_name
+            break
+    if error_msg is not None:
+        c.send_ota_ack(msg, C2dAck.OTA_FAILED, error_msg)
+        print('Encountered a download processing error "%s". Not restarting.' % error_msg)  # In hopes that someone pushes a better update
+    else:
+        print("OTA successful. Will restart the application...")
+        c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)
+        exit_and_restart()
+
+
 
 # -----------------------------------------------------------------------------
 # FUNCTION: read_dms_data
@@ -349,6 +441,7 @@ try:
     c = Client(
         config=device_config,
         callbacks=Callbacks(
+            ota_cb = on_ota,
             command_cb=on_command,
             disconnected_cb=on_disconnect
         )
@@ -384,4 +477,3 @@ except Exception as ex:
     print("Exception occurred:", ex)
     DMS_process.terminate()
     sys.exit(0)
-
