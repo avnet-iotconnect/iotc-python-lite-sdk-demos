@@ -347,8 +347,8 @@ def update_json():
 app = Flask(__name__)
 MODEL_PATH = pathlib.Path("/usr/bin/eiq-examples-git/models/")
 DETECT_MODEL = "face_detection_front_128_full_integer_quant.tflite"
-LANDMARK_MODEL = "face_landmark_192_full_integer_quant.tflite"
-EYE_MODEL = "iris_landmark_quant.tflite"
+FACE_LANDMARK_MODEL = "face_landmark_192_full_integer_quant.tflite"
+EYE_LANDMARK_MODEL = "iris_landmark_quant.tflite"
 
 log_dir = "/home/weston/log"
 stream_mode = "live"  # 'live', 'off', or 'freeze'
