@@ -47,13 +47,16 @@ See the reference image below for cable connections.
 
 # 4. Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
+The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
 
-[/IOTCONNECT Free Trial (AWS Version)](https://subscription.iotconnect.io/subscribe?cloud=aws)
+
+* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
+
+
 
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
-
-See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
 # 5. /IOTCONNECT Device Template Setup
 A Device Template defines the type of telemetry the platform should expect to receive.
