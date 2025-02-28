@@ -5,7 +5,7 @@ This document will help you create and deploy an OTA package for the FRDM i.MX 9
 * TFLITE models used by the AI program
 
 # Video Guide
-[This video](https://www.youtube.com/watch?v=mMbipWsXlpM) goes through each of the steps of this guide. You are encouraged to watch it and follow along the rest of the document as you prepare your first OTA update.
+[This video](https://www.youtube.com/watch?v=mMbipWsXlpM) goes through each of the steps of this guide. You are encouraged to open it in another tab and watch it as you follow along the rest of the document and prepare your first OTA update.
 
 # Create Updated Files
 The first step is to actually make your desired changes to the files. You can download copies of *imx93-ai-demo.py* and *dms-processing.py* from this repository and then make your changes on your host machine. TFLITE models can be downloaded from numerous websites, but make sure they are compatible with the DMS demo. Alternatively, for a custom application you could train your own models.
