@@ -10,7 +10,7 @@ OUTPUT_PACKAGE="ota-package.tar.gz"
 
 # Files to include in the package
 FILES_TO_INCLUDE=(
-    "$CURRENT_DIR/ota_install.sh"
+    "$CURRENT_DIR/ota-install.sh"
     "$PARENT_DIR/dms-processing.py"
     "$PARENT_DIR/imx93-ai-demo.py"
     "$PARENT_DIR/download_models.py"
