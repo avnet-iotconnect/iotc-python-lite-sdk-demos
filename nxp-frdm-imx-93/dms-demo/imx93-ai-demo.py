@@ -323,9 +323,9 @@ def on_ota(msg: C2dOta):
             break
         try:
             if url.file_name.endswith(".zip"):
-                subprocess_run_with_print(("unzip", "-oqq", url.file_name))
-                # If there is an ota_install.sh script in the OTA package, execute it
-                filename = "ota_install.sh"
+                subprocess_run_with_print(("tar", "-xzvf", url.file_name, "--overwrite"))
+                # If there is an ota-install.sh script in the OTA package, execute it
+                filename = "ota-install.sh"
                 current_directory = os.getcwd()
                 file_path = os.path.join(current_directory, filename)
                 if os.path.isfile(file_path):
