@@ -3,7 +3,7 @@
 # Define the current directory and the parent directory
 CURRENT_DIR=$(pwd)
 PARENT_DIR=$(dirname "$CURRENT_DIR")
-ADDITIONAL_MODELS_DIR="$PARENT_DIR/additional_models"
+ADDITIONAL_MODELS_DIR="$PARENT_DIR/additional-models"
 
 # Define the output tar.gz file name
 OUTPUT_PACKAGE="ota-package.tar.gz"
