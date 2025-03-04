@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# Define the current directory and the directories for the other files
+# Define the current directory and the parent directory
 CURRENT_DIR=$(pwd)
 PARENT_DIR=$(dirname "$CURRENT_DIR")
-ADDITIONAL_MODELS_DIR="$PARENT_DIR/additional-models"
+ADDITIONAL_MODELS_DIR="$PARENT_DIR/additional_models"
 
 # Define the output tar.gz file name
-OUTPUT_PACKAGE="package_creation.tar.gz"
+OUTPUT_PACKAGE="ota-package.tar.gz"
 
 # Files to include in the package
 FILES_TO_INCLUDE=(
-    "$CURRENT_DIR/ota-install.sh"
+    "$CURRENT_DIR/ota_install.sh"
     "$PARENT_DIR/dms-processing.py"
     "$PARENT_DIR/imx93-ai-demo.py"
     "$PARENT_DIR/download_models.py"
