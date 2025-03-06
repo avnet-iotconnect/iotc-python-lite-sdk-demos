@@ -48,7 +48,7 @@ face_detection_model = ""
 face_landmark_model = ""
 eye_landmark_model = ""
 # Open the Python script and read its contents
-with open("/usr/bin/eiq-examples-git/dms/dms-processing.py", 'r') as file:
+with open("/home/weston/dms-processing.py", 'r') as file:
     dms_script = file.read()        
 
 # Iterate over each line in the script
