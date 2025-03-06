@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Force fresh install of SDK
+python3 -m pip install --force-reinstall iotconnect-sdk-lite
+
 # Define the target directories
 target_dir_tflite="/usr/bin/eiq-examples-git/models"
 
