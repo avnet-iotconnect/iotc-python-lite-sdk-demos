@@ -378,11 +378,11 @@ face_detector = FaceDetector(
     img_size=(target_dim, target_dim)
 )
 face_mesher = FaceMesher(
-    model_path=str(MODEL_PATH / LANDMARK_MODEL),
+    model_path=str(MODEL_PATH / FACE_LANDMARK_MODEL),
     delegate_path=args.delegate
 )
 eye_mesher = EyeMesher(
-    model_path=str(MODEL_PATH / EYE_MODEL),
+    model_path=str(MODEL_PATH / EYE_LANDMARK_MODEL),
     delegate_path=args.delegate
 )
 
