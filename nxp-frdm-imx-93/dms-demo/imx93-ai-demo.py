@@ -322,7 +322,7 @@ def on_ota(msg: C2dOta):
             error_msg = "Download error for %s" % url.file_name
             break
         try:
-            if url.file_name.endswith(".zip"):
+            if url.file_name.endswith(".tar.gz"):
                 subprocess_run_with_print(("tar", "-xzvf", url.file_name, "--overwrite"))
                 # If there is an ota-install.sh script in the OTA package, execute it
                 filename = "ota-install.sh"
