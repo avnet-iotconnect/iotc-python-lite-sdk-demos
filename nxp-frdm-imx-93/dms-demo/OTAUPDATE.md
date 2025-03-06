@@ -7,9 +7,6 @@ This document will help you create and deploy an OTA package for the FRDM i.MX 9
 
 The OTA update will also re-install the IoTConnect Python Lite SDK with the newest available version.
 
-# Video Guide
-[This video](https://www.youtube.com/watch?v=Ubx-5A8EpNs) goes through each of the steps of this guide. You are encouraged to open it in another tab and watch it as you follow along the rest of the document and prepare your first OTA update.
-
 # Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC so you can make changes to your desired files. 
 >[!NOTE]
