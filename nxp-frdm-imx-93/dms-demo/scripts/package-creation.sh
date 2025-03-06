@@ -19,8 +19,24 @@ FILES_TO_INCLUDE=(
 # Find all .tflite files in the additional_models directory
 TFLITE_FILES=$(find "$ADDITIONAL_MODELS_DIR" -name "*.tflite")
 
-# Create the tar.gz package
-tar -czvf "$OUTPUT_PACKAGE" "${FILES_TO_INCLUDE[@]}" $TFLITE_FILES
+# Temporary directory to store files with only filenames (no paths)
+TEMP_DIR=$(mktemp -d)
+
+# Copy the files into the temporary directory
+for file in "${FILES_TO_INCLUDE[@]}"; do
+    cp "$file" "$TEMP_DIR"
+done
+
+# Copy the .tflite files into the temporary directory
+for tflite in $TFLITE_FILES; do
+    cp "$tflite" "$TEMP_DIR"
+done
+
+# Create the tar.gz package with files only containing their base names
+tar -czvf "$OUTPUT_PACKAGE" -C "$TEMP_DIR" .
+
+# Remove the temporary directory
+rm -rf "$TEMP_DIR"
 
 # Confirm the creation of the package
 echo "Package $OUTPUT_PACKAGE created successfully."
