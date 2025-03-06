@@ -1,7 +1,7 @@
 #!/bin/bash
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2024 Avnet
-# Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
+# Authors: Nikola Markovic <nikola.markovic@avnet.com> and Zackary Andraka <zackary.andraka@avnet.com> et al.
 
 set -e  # Stop script on first failure
 
@@ -29,7 +29,7 @@ PIP_ROOT_USER_ACTION=ignore python3 -m pip install iotconnect-sdk-lite
 # ---- Generate Certificates ----
 echo "Generating SSL certificates..."
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout device-pkey.pem -out device-cert.pem -subj "/CN=localhost"
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /usr/bin/eiq-examples-git/dms/key.pem -out /usr/bin/eiq-examples-git/dms/cert.pem -subj "/CN=localhost"
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/CN=localhost"
 echo "X509 credentials are now generated."
 
 cat <<END
@@ -84,24 +84,24 @@ chmod +x imx93-ai-demo.py
 
 # ---- Download DMS Processing Script ----
 echo "Downloading DMS processing script..."
-curl -sSL -o /usr/bin/eiq-examples-git/dms/dms-processing.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/dms-processing.py" || {
+curl -sSL -o /home/weston/dms-processing.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/dms-processing.py" || {
     echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
     exit 1
 }
-chmod +x /usr/bin/eiq-examples-git/dms/dms-processing.py
+chmod +x /home/weston/dms-processing.py
 
 # ---- Prompt User for eIQ AI Model Download ----
 echo ""
 read -p "Do you want to download eIQ AI Models? (y/n): " model_choice </dev/tty
 echo "Download and process of models takes approximately 10 minutes"
 if [[ "$model_choice" == "y" || "$model_choice" == "Y" ]]; then
-    curl -sSL -o /usr/bin/eiq-examples-git/download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/download_models.py" || {
+    curl -sSL -o /home/weston/download_models.py "https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/download_models.py" || {
         echo "Error: Failed to resolve host raw.githubusercontent.com. Please check your network and DNS settings."
         exit 1
         }
-    chmod +x /usr/bin/eiq-examples-git/download_models.py 
+    chmod +x /home/weston/download_models.py 
     echo "Downloading eIQ AI Models..."
-    python3 /usr/bin/eiq-examples-git/download_models.py
+    python3 /home/weston/download_models.py
     
 else
     echo "Skipping eIQ AI Models download."
@@ -110,6 +110,11 @@ fi
 # Create empty dms-data.json with read/write perms
 touch dms-data.json
 chmod 666 dms-data.json
+
+cp /usr/bin/eiq-examples-git/dms/face_detection.py .
+cp /usr/bin/eiq-examples-git/dms/eye_landmark.py .
+cp /usr/bin/eiq-examples-git/dms/face_landmark.py .
+cp /usr/bin/eiq-examples-git/dms/utils.py .
 
 # ---- Completion ----
 echo ""
