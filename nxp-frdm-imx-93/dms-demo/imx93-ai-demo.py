@@ -422,7 +422,7 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 
 # Start up the DMS program as a separate process
 # (Make sure /usr/bin/eiq-examples-git/dms/dms-processing.py is the correct path)
-DMS_process = subprocess.Popen(["python3", "/usr/bin/eiq-examples-git/dms/dms-processing.py"])
+DMS_process = subprocess.Popen(["python3", "/home/weston/dms-processing.py"])
 
 try:
     # Gather local IP address to put in the telemetry
