@@ -14,7 +14,7 @@
 12. [Resources](#12-resources)
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) by leveraging local AI on the NPU.
+This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) demo by leveraging local AI on the NPU.
 
 <table>
   <tr>
