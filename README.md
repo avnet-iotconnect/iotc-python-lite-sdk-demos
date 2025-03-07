@@ -6,7 +6,7 @@ Currently, each of the board demos follows the simple Python Lite SDK Quickstart
 focusing on showcasing how to send and receive data over the network with IoTConnect with the SDK.
 
 # Supported Boards
-The following boards are supported by this repository:
+The following boards are pre-enabled with /IOTCONNECT in this repository:
 
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Product Link](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/))
