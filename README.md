@@ -3,7 +3,7 @@ This repository contains guides and demos that utilize the [/IOTCONNECT Python L
 to connect devices to the Avnet IoTConnect platform and showcase basic telemetry reporting and C2D command receiving functionality.
 
 Currently, each of the board demos follows the simple Python Lite SDK Quickstart Example and experience,
-focusing on showcasing how to send and receive data over the network with IoTConnect with the SDK.
+focusing on showcasing how to send and receive data over the network with /IOTCONNECT with the SDK.
 
 # Supported Boards
 The following boards are pre-enabled with /IOTCONNECT in this repository:
