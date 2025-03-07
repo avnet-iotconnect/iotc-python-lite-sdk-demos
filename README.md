@@ -17,4 +17,4 @@ The following boards are pre-enabled with /IOTCONNECT in this repository:
 
 ## Licensing
 
-This library is distributed under the [MIT License] (https://github.com/avnet-iotconnect/iotc-c-lib/blob/master/LICENSE.md).
+This library is distributed under the [MIT License](https://github.com/avnet-iotconnect/iotc-c-lib/blob/master/LICENSE.md).
