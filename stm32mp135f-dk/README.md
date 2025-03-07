@@ -5,7 +5,7 @@
 3. [Hardware Setup](#3-hardware-setup)
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Run Setup Scripts](#6-run-setup-scripts)
+6. [Device Software Setup](#6-device-software-setup)
 7. [/IOTCONNECT: Create Device](#7-iotconnect-create-device)
 8. [Start the Application and Verify Data](#8-start-the-application-and-verify-data)
 9. [/IOTCONNECT: Import Dashboard Template](#9-iotconnect-import-dashboard-template)
