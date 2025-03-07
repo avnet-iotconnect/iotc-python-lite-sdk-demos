@@ -30,7 +30,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
 * Ethernet Cable
-* Webcam
+* UVC-Compliant Webcam
 * HDMI Cable
 * 2nd Monitor
 * (Optional) WiFi Network SSID and Password
@@ -47,7 +47,7 @@ See the reference image below for cable connections.
 
 Using the above image as reference, make the following connections:
 1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**.
-2. Connect a webcam to the USB-A connector labeled **#4**.
+2. Connect a uvc-compliant webcam to the USB-A connector labeled **#4**.
 3. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
 4. Lastly, connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3** to power on the board.
 
