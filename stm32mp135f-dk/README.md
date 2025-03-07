@@ -103,6 +103,6 @@ To return the board to an out-of-box state, refer to the [flashing.md](flashing.
 
 # 9. Resources
 * [Purchase the STM32MP135F-DK](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345659849803/?srsltid=AfmBOopquBKia0rOHMSNs21TNvnk7RXm224OmsFITHs0A9LhuKjX4zHK)
-* [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
+* [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
