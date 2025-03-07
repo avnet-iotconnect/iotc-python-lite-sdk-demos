@@ -1,12 +1,9 @@
 # Introduction
-This repository contains guides and demos that utilize the [/IOTCONNECT Python Lite SDK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk)
-to connect devices to the Avnet IoTConnect platform and showcase basic telemetry reporting and C2D command receiving functionality.
+This repository contains various guides and demos that utilize the [/IOTCONNECT Python Lite SDK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk) to connect devices to the Avnet /IOTCONNECT platform and showcase telemetry reporting and cloud-to-device command functionality.
+The Python Lite SDK may be used to enable /IOTCONNECT on a wide variety of development boards/platforms.  Avnet has completed this work for a subset of board as outlined in the following section.
 
-Currently, each of the board demos follows the simple Python Lite SDK Quickstart Example and experience,
-focusing on showcasing how to send and receive data over the network with /IOTCONNECT with the SDK.
-
-# Supported Boards
-The following boards are pre-enabled with /IOTCONNECT in this repository:
+# Pre-enabled Development Boards
+The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Product Link](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/))
