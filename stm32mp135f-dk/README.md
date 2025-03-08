@@ -99,7 +99,7 @@ The random-integer telemetry data can be viewed and verified under the "Live Dat
 
 # 8. Troubleshooting
 
-To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
+To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
 # 9. Resources
 * [Purchase the STM32MP135F-DK](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345659849803/?srsltid=AfmBOopquBKia0rOHMSNs21TNvnk7RXm224OmsFITHs0A9LhuKjX4zHK)
