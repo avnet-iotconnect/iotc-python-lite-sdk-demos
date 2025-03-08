@@ -1,5 +1,9 @@
-## This guide will help you flash a fresh Yocto image to your STM32MP135F-DK
+# Flashing a fresh Yocto image to your STM32MP135F-DK
 
+# Introduction
+This simple guide will help you download all the necessary files for flashing a fresh stock image to a STM32MP135F-DK, and then flash the image to the board.
+
+# Guide
 
 * Download the zipped image folder containing the latest STM32MP1 image from the [STM32MP1 OpenSTLinux Starter Package page](https://www.st.com/en/embedded-software/stm32mp1starter.html).
 >[!NOTE]
