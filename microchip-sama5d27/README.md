@@ -7,8 +7,7 @@
 5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
 6. [Device Software Setup](#6-device-software-setup)
 7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
-8. [Troubleshooting](#8-troubleshooting)
-9. [Resources](#9-resources)
+8. [Resources](#8-resources)
 
 
 # 1. Introduction
@@ -102,7 +101,7 @@ python3 quickstart.py
 
 The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Resources
+# 8. Resources
 * [Purchase the Microchip SAMA5D27](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
