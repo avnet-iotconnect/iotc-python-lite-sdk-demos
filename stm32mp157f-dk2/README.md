@@ -41,7 +41,7 @@ See the reference image below for cable connections.
 </details>
 
 Using the above image as reference, make the following connections:
-1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**.
+1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
 2. Connect the USB-C cable from a 5V/2.4A (up to 3A) power supply to the "PWR_IN" USB-C connector on the board, labeled **#2**.
 3. Connect the Micro-USB cable from your PC to the Micro-USB connector labeled **#3** on the reference image.
 
