@@ -56,16 +56,14 @@ A Device Template define the type of telemetry the platform should expect to rec
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information, please see the [/IOTCONNECT Documentation](https://docs.iotconnect.io/iotconnect/) website.)
 
 # 6. Device Setup
-1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Device" (may be multiple).
+1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Port" (should be 4 of them). You will use the **2nd-highest port number**. For example, if the 4 ports listed are COM46, COM47, COM48, and COM49, you will connect to COM48.
 2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
 3. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
   - Data Bits: 8
   - Stop Bits: 1
   - Parity: None
-4. Open your Device Manager list, note the COM port being utilized by your adapter cable, and use that COM port to connect to your board via the terminal emulator.
->[!TIP]
->If you do not see your cable in the COM port list, check for it in the "Other devices" section. You may need to install/select the driver for the cable to get it to be recognized as a COM port connection.
+4. Connect to the port specified from sub-step 1 (2nd-highest port number)
 
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
