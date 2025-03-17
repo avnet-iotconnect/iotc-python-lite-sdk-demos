@@ -26,8 +26,7 @@ a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-boar
 * 1x USB to TTL Serial 3.3V Adapter Cable (must be purchased separately, this is [the cable used by Avnet's engineer](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1))
 >[!NOTE]
 >The USB to TTL Serial 3.3V Adapter Cable may require you to install a specific driver onto your host machine. The example cable linked above requires a [PL2303 driver](https://www.prolific.com.tw/us/showproduct.aspx?p_id=225&pcid=41).
-* (Optional) 1x Ethernet Cable (and a local router/switch with Internet connectivity)
-* (Optional) WiFi Network SSID and Password (more configuration is required for this method)
+* 1x Ethernet Cable (and a local router/switch with Internet connectivity)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
@@ -36,7 +35,7 @@ See the reference image below for cable connections.
 <img src="./media/OSM-93-connections.png">
 </details>
 
-1. (Optional) Connect an Ethernet cable from your LAN (router/switch) to the "ETH_A" port on the board.
+1. Connect an Ethernet cable from your LAN (router/switch) to the "ETH_A" port on the board.
 2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the "POWER/USB_A" port on your board.
 3. Connect your USB to TTL Serial 3.3V Adapter Cable to the appropriate pins on the A55 debug header.
 >[!NOTE]
@@ -80,8 +79,7 @@ A Device Template defines the type of telemetry the platform should expect to re
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
 5. When prompted for a login, type `root` followed by the ENTER key.
-6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
-7. Run these commands to create and move into a directory for your demo files:
+6. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
    cd /home/weston/demo
@@ -89,11 +87,11 @@ A Device Template defines the type of telemetry the platform should expect to re
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-8. Run this command to install the /IOTCONNECT Python Lite SDK:
+7. Run this command to install the /IOTCONNECT Python Lite SDK:
    ```
    python3 -m pip install iotconnect-sdk-lite
    ```
-9. Run this command to download and run the Quickstart setup script:
+8. Run this command to download and run the Quickstart setup script:
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
    ```
