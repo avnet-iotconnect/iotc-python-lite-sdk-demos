@@ -14,7 +14,7 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard 8
 
 <table>
   <tr>
-    <td><img src="./media/OSM93-top-down.png" width="6000"></td>
+    <td><img src="./media/8ulp-product-image.jpg" width="6000"></td>
     <td>MaaXBoard 8ULP features the NXP i.MX 8ULP processor to achieve ultra-low power, EdgeLock® secured intelligent edge applications. The i.MX 8ULP device is architected with 3 separate processing domains:
 
 * The application domain includes two Arm® Cortex®-A35 (800 MHz) cores plus 3D/2D GPUs for GUI-enabled Linux applications.
