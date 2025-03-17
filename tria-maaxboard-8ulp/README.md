@@ -100,6 +100,6 @@ python3 /home/weston/demo/quickstart.py
 2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-* [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
+* [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
