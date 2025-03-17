@@ -1,4 +1,4 @@
-# TRIA Maaxboard OSM93 QuickStart
+# TRIA Maaxboard 8ULP QuickStart
 
 1. [Introduction](#1-introduction)
 2. [Hardware Requirements](#2-hardware-requirements)
@@ -10,13 +10,16 @@
 8. [Resources](#8-resources)
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the TRIA Maaxboard OSM93 to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
+This guide is designed to walk through the steps to connect the TRIA Maaxboard 8ULP to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
 
 <table>
   <tr>
     <td><img src="./media/OSM93-top-down.png" width="6000"></td>
-    <td>The MaaXBoard OSM93 features an energy-efficient, combination CPU/MPU/NPU, high-performance OSM compute system based on the NXP i.MX93 processor. The i.MX 93 device is architected with 3 separate processing domains: An application domain that includes two Arm® Cortex®-A55 (2.7 GHz) cores,
-a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-board AI accelerator, Arm® Ethos-U65 MicroNPU for machine learning and computer vision applications.</td>
+    <td>MaaXBoard 8ULP features the NXP i.MX 8ULP processor to achieve ultra-low power, EdgeLock® secured intelligent edge applications. The i.MX 8ULP device is architected with 3 separate processing domains:
+
+* The application domain includes two Arm® Cortex®-A35 (800 MHz) cores plus 3D/2D GPUs for GUI-enabled Linux applications.
+* The Real Time domain includes an Arm Cortex-M33 (216 MHz) core, plus Fusion DSP (200 MHz) core for low-power audio/voice use cases.
+* The LPAV domain (Low Power Audio Video) has a HiFi 4 DSP (475 MHz) core to support advanced audio, ML and sensor applications.</td>
   </tr>
 </table>
 
