@@ -12,7 +12,7 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >[!NOTE]
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
-# 2. Modify Files and Add Models
+# 2. Modify and Add Files
 After navigating into the "core-files" directory for your demo, modify any of the the files as desired. 
 
 You can also add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
@@ -63,7 +63,7 @@ python3 quickstart.py
 ```
 
 # Send OTA Package
-* Back in the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
+* In the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
 * For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
 * Select the software version you chose for your firmware
 * For "Target" select "Devices" from the drop-down
