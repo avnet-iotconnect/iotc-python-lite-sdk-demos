@@ -19,7 +19,7 @@ After navigating into the "core-files" directory for your demo, modify any of th
 
 You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
 
-You are also able to modify the ota-install.sh bash script to choose whether or not you want the OTA update to automatically re-install the IoTConnect Python Lite SDK with the newest available version. To do this, open ota-install.sh inside of your text editor and find this section of the script:
+You are also able to modify the ota-install.sh script (located in the "ota" directory) to choose whether or not you want the OTA update to automatically re-install the IoTConnect Python Lite SDK with the newest available version. To do this, open ota-install.sh inside of your text editor and find this section of the script:
 
 ```
 # ---------UN-COMMENT THIS COMMAND TO ENABLE SDK RE-INSTALLATION-------
