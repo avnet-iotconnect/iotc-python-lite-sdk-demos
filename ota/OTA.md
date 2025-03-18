@@ -26,7 +26,7 @@ You are also able to modify the ota-install.sh script (located in the "ota" dire
 # python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 ```
-By default, the script **will not** re-install the SDK. To enable the re-install, simply backspace the "# " (remove the space as well to align the command) and then save the file.
+By default, the script **will not** re-install the SDK. To enable the re-install, simply backspace the "# " (remove the trailing space as well to align the command) and then save the file.
 
 A modified version that **will** re-install the SDK will look like this:
 ```
