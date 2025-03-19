@@ -52,11 +52,53 @@ def on_command(msg: C2dCommand):
 
 
 def on_ota(msg: C2dOta):
-    # We just print the URL. The actual handling of the OTA request would be project specific.
-    # See the ota-handling.py for more details.
-    print("Received OTA request. File: %s Version: %s URL: %s" % (msg.urls[0].file_name, msg.version, msg.urls[0].url))
-    # OTA messages always have ack_id, so it is safe to not check for it before sending the ack
-    c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_FAILED, "Not implemented")
+    print("Starting OTA downloads for version %s" % msg.version)
+    error_msg = None
+    c.send_ota_ack(msg, C2dAck.OTA_DOWNLOADING)
+    for url in msg.urls:
+        print("Downloading OTA file %s from %s" % (url.file_name, url.url))
+        try:
+            urllib.request.urlretrieve(url.url, url.file_name)
+        except Exception as e:
+            print("Encountered download error", e)
+            error_msg = "Download error for %s" % url.file_name
+            break
+        try:
+            if url.file_name.endswith(".tar.gz"):
+                subprocess.run(("tar", "-xzvf", url.file_name, "--overwrite"), check=True)
+                filename = "install.sh"
+                current_directory = os.getcwd()
+                file_path = os.path.join(current_directory, filename)
+                # If ota-install.sh is found in the current directory, give it executable permissions and execute it
+                if os.path.isfile(file_path):
+                    try:
+                        subprocess.run(['bash', file_path], check=True)
+                        print(f"Successfully executed {filename}")
+
+                    except subprocess.CalledProcessError as e:
+                        print(f"Error executing {filename}: {e}")
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
+                else:
+                    print(f"{filename} not found in the current directory.")
+            else:
+                print("ERROR: Unhandled file format for file %s" % url.file_name)
+                error_msg = "Processing error for %s" % url.file_name
+                break
+        except subprocess.CalledProcessError:
+            print("ERROR: Failed to install %s" % url.file_name)
+            error_msg = "Install error for %s" % url.file_name
+            break
+    if error_msg is not None:
+        c.send_ota_ack(msg, C2dAck.OTA_FAILED, error_msg)
+        print('Encountered a download processing error "%s". Not restarting.' % error_msg)  # In hopes that someone pushes a better update
+    else:
+        print("OTA successful. Will restart the application...")
+        c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)
+        print("")  # Print a blank line so it doesn't look as confusing in the output.
+        sys.stdout.flush()
+        # restart the process
+        os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
 
 
 def on_disconnect(reason: str, disconnected_from_server: bool):
