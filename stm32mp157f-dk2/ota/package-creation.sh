@@ -9,7 +9,7 @@ PARENT_DIR=$(realpath "$SCRIPT_DIR/..")
 # Define the directories and file locations
 CORE_FILES_DIR="$PARENT_DIR/core-files"
 ADDITIONAL_FILES_DIR="$PARENT_DIR/additional-files"
-OTA_INSTALL_FILE="$SCRIPT_DIR/ota-install.sh"
+INSTALL_FILE="$SCRIPT_DIR/install.sh"
 
 # Define the output archive file name
 OUTPUT_ARCHIVE="$SCRIPT_DIR/compressed-files.tar.gz"
@@ -23,8 +23,8 @@ find "$CORE_FILES_DIR" -type f -exec cp --no-dereference {} "$TEMP_DIR" \;
 # Copy files from additional-files directory except placeholder.txt
 find "$ADDITIONAL_FILES_DIR" -type f ! -name "placeholder.txt" -exec cp --no-dereference {} "$TEMP_DIR" \;
 
-# Copy ota-install.sh file to the temporary directory
-cp "$OTA_INSTALL_FILE" "$TEMP_DIR"
+# Copy install.sh file to the temporary directory
+cp "$INSTALL_FILE" "$TEMP_DIR"
 
 # Create the tar.gz archive (without path, just file names)
 tar -czf "$OUTPUT_ARCHIVE" -C "$TEMP_DIR" .
