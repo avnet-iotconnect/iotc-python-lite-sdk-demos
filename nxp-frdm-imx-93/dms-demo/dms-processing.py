@@ -34,38 +34,16 @@ import sys
 import time
 import argparse
 import json
-import os
-import cv2
-import threading
-import numpy as np
-from flask import Flask, Response, request, jsonify
-import fcntl
-import collections  # For temporal smoothing
 
-import logging
-logging.getLogger('werkzeug').setLevel(logging.INFO)
+# System optimizations: Fixes GStreamer video playback issues, Mesa driver errors, and OpenGL fallback
+import os                                                                                             
+os.environ["ETHOSU_CACHE"] = "0"  # Ensures Ethos-U cache does not interfere with execution           
+os.environ["MESA_LOADER_DRIVER_OVERRIDE"] = "llvmpipe"  # Forces software rendering to avoid driver errors
+os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"  # Disables hardware OpenGL acceleration                        
+os.environ["QT_X11_NO_MITSHM"] = "1"  # Prevents X11 shared memory segmentation faults    
 
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from face_detection import *
 
-# -----------------------------------------------------------------------------
-# ENVIRONMENT CONFIGS (FOR NXP BOARDS)
-os.environ["ETHOSU_CACHE"] = "0"
-os.environ["MESA_LOADER_DRIVER_OVERRIDE"] = "llvmpipe"
-os.environ["LIBGL_ALWAYS_SOFTWARE"] = "1"
-os.environ["QT_X11_NO_MITSHM"] = "1"
-os.environ["DISPLAY"] = ":0"
-os.environ["XDG_RUNTIME_DIR"] = "/tmp/"
-os.environ["QT_QPA_PLATFORM"] = "xcb"
-
-# -----------------------------------------------------------------------------
-# SSL CERTIFICATE FILES (for HTTPS streaming)
-cert_file = os.path.join(os.path.dirname(__file__), 'cert.pem')
-key_file = os.path.join(os.path.dirname(__file__), 'key.pem')
-
-# -----------------------------------------------------------------------------
-# TFLite-based modules (face detection, face/eye landmark, etc.)
-from face_detection import FaceDetector
 from eye_landmark import EyeMesher
 from face_landmark import FaceMesher
 from utils import get_face_angle, get_eye_ratio, get_iris_ratio
@@ -371,30 +349,65 @@ if not ret:
 h, w, _ = frame.shape
 target_dim = max(w, h)
 
-# Load TFLite models
-face_detector = FaceDetector(
-    model_path=str(MODEL_PATH / DETECT_MODEL),
-    delegate_path=args.delegate,
-    img_size=(target_dim, target_dim)
-)
-face_mesher = FaceMesher(
-    model_path=str(MODEL_PATH / FACE_LANDMARK_MODEL),
-    delegate_path=args.delegate
-)
-eye_mesher = EyeMesher(
-    model_path=str(MODEL_PATH / EYE_LANDMARK_MODEL),
-    delegate_path=args.delegate
-)
+# instantiate face models
+face_detector = FaceDetector(model_path = str(MODEL_PATH / DETECT_MODEL),
+                             delegate_path = args.delegate,
+                             img_size = (target_dim, target_dim))
+face_mesher = FaceMesher(model_path=str((MODEL_PATH / FACE_LANDMARK_MODEL)), delegate_path = args.delegate)
+eye_mesher = EyeMesher(model_path=str((MODEL_PATH / EYE_LANDMARK_MODEL)), delegate_path = args.delegate)
 
-# THREADING LOCKS
-latest_frame = None
-frame_lock = threading.Lock()
-latest_snapshot = None
-snapshot_lock = threading.Lock()
-model_lock = threading.Lock()
 
-# -----------------------------------------------------------------------------
-# DRAW_FACE_BOX (for visualization)
+yawning = 2
+eyes_open = 2
+head_direction = 5
+alert = False
+bbox_xmin = 0
+bbox_ymin = 0
+bbox_xmax = 0
+bbox_ymax = 0
+
+
+def update_json():
+    global yawning
+    global eyes_open
+    global head_direction
+    global alert
+    global bbox_xmin
+    global bbox_ymin
+    global bbox_xmax
+    global bbox_ymax
+    
+    json_path = "/home/weston/dms-data.json"
+
+    # Ensure the JSON file exists and is not empty before reading
+    if not os.path.exists(json_path) or os.path.getsize(json_path) == 0:
+        print(f"ERROR: JSON file {json_path} is missing or empty.")
+        return
+
+    try:
+        with open(json_path, "r") as jsonFile:
+            dms_data = json.load(jsonFile)
+    except json.JSONDecodeError:
+        print(f"ERROR: JSON file {json_path} contains invalid JSON.")
+        return
+
+    if dms_data.get("ack") == 1:
+        dms_data["head_direction"] = head_direction
+        dms_data["yawning"] = yawning
+        dms_data["eyes_open"] = eyes_open
+        dms_data["alert"] = alert
+        dms_data["bbox_xmin"] = int(bbox_xmin)
+        dms_data["bbox_ymin"] = int(bbox_ymin)
+        dms_data["bbox_xmax"] = int(bbox_xmax)
+        dms_data["bbox_ymax"] = int(bbox_ymax)
+        dms_data["ack"] = 0
+
+        with open(json_path, "w") as jsonFile:
+            json.dump(dms_data, jsonFile)
+# Changes to update_json():
+# - Added a check to ensure the file exists and is not empty before reading.
+# - Wrapped JSON loading in a try-except to catch parsing errors.
+# - Used `get("ack")` to safely access the key in case of missing data.
 
 def draw_face_box(image, bboxes, landmarks, scores):
     global bbox_xmin, bbox_ymin, bbox_xmax, bbox_ymax
