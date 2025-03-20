@@ -38,7 +38,7 @@ python3 -m pip install --force-reinstall iotconnect-sdk-lite
 
 If your OTA update includes additional files that need to go in specific directories (not in the same directory as the main IoTConnect program), you will need to make further modifications to install.sh to include commands to move the files to their desired directories.
 
-For example, adding this code to the end of install.sh will move any TFLITE model files from the current directory (where the tar.gz file was extracted and where the main IoTConnect program is) into the "/usr/bin/eiq-examples-git/models" directory:
+For example, adding this code to the end of install.sh will move any TFLITE model files from the current directory (where the .tar.gz file was extracted and where the main IoTConnect program is) into the "/usr/bin/eiq-examples-git/models" directory:
 ```
 # Define the target directories
 target_dir_tflite="/usr/bin/eiq-examples-git/models"
