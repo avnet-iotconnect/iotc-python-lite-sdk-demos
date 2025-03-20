@@ -12,7 +12,7 @@ ADDITIONAL_FILES_DIR="$PARENT_DIR/additional-files"
 INSTALL_FILE="$SCRIPT_DIR/install.sh"
 
 # Define the output archive file name
-OUTPUT_ARCHIVE="$SCRIPT_DIR/compressed-files.tar.gz"
+OUTPUT_ARCHIVE="$SCRIPT_DIR/ota-package.tar.gz"
 
 # Create a temporary directory to store files without their original paths
 TEMP_DIR=$(mktemp -d)
