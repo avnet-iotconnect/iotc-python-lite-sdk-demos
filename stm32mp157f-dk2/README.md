@@ -1,97 +1,106 @@
-# STM32MP157F-DK2 Board Setup
+# STM32MP157F-DK2 QuickStart
 
-<img src="media/mp157-product.png"/> 
+1. [Introduction](#1-introduction)
+2. [Requirements](#2-requirements)
+3. [Hardware Setup](#3-hardware-setup)
+4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
+5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
+6. [Device Software Setup](#6-device-software-setup)
+7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Resources](#9-resources)
 
-## Step 1: Flash IoTConnect-Compatible Image to Board
-* To download the zipped image folder, [click here](https://saleshosted.z13.web.core.windows.net/sdk/st/stmp1/proteus/OSTL_6.1_IoTConnect_Compatible.zip).
-* Unzip the folder to a known location.
-* Download and Install the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) software (the utility for flashing the image to the device).
-   * You may have to create an ST account (it's free) to get access to the software download.
-* Set up the STM32MP157F-DK board for flashing:
-   * On the underside of the board, flip both of the large dipswitches (directly opposite of the HDMI port) to the "OFF" position.
-  
-      <img src="media/switches-off.png"/>
-      
-   * Power the board with a USB-C cable connected to the "PWR_IN" USB-C port connected to a 5VDC supply with at least 1.0A of output.
-   
-      <img src="media/power.png"/>
-      
-   * Connect the USB-C "USB" port of your board to your PC with the included USB-C cable.
-      * If your PC does not have a USB-C port, you may use a USB-A to USB-C cable and connect it to a normal USB-A port on your PC.
-   
-      <img src="media/usb-connection.png"/>
-   
-   * Insert the included SD card into the SD card slot on the board.
-      
-   * Push the "RESET" button on your board to ensure it boots into flashing mode (the LCD display of the board should be black when it has booted into flashing mode).
+# 1. Introduction
+This guide is designed to walk through the steps to connect the STM32MP157F-DK2 to the Avnet /IOTCONNECT platform and periodically send general telemetry data.
 
-<img src="media/reset-button.png"/>
-      
-* Run the STM32CubeProgrammer software and click on the "Open file" tab.
+<table>
+  <tr>
+    <td><img src="./media/mp157-product.png" width="6000"></td>
+    <td>The STM32MP157F-DK2 Discovery kit leverages the capabilities of the increased-frequency 800 MHz microprocessors in the STM32MP157 product line to allow users to develop applications easily using STM32 MPU OpenSTLinux Distribution software for the main processor and STM32CubeMP1 software for the coprocessor. It includes an ST-LINK embedded debug tool, LEDs, push-buttons, one Ethernet 1-Gbit/s connector, one USB Type-C® OTG connector, four USB Host Type-A connectors, one HDMI® transceiver, one stereo headset jack with analog microphone, and one microSD™ connector. To expand the functionality of the STM32MP157D-DK1 and STM32MP157F-DK2 Discovery kits, two GPIO expansion connectors are also available for ARDUINO® and Raspberry Pi® shields. Additionally, the STM32MP157F-DK2 Discovery kit features an LCD display with a touch panel, and Wi‑Fi® and Bluetooth® Low Energy capability.</td>
+  </tr>
+</table>
 
-<img src="media/open-file.png"/>
-      
-* Navigate to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1\flashlayout_st-image-weston\optee
-   * Select the FlashLayout_sdcard_stm32mp157F-dk2-optee.tsv file and then click "Open." 
-   
-<img src="media/file-selection.png"/>
-      
-* Next, click on the "Browse" button to select the binaries path.
-   
-<img src="media/browse.png"/>
-   
-* Navigate once again to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1
-   * Select the stm32mp1 folder and then click "Select folder."
+# 2. Requirements
+This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
 
-<img src="media/binaries-path.png"/>
-      
-* Back in the STM32CubeProgrammer window, on the right-hand side of the screen, if the "Port" is listed as "No DFU...," make sure your USB cable is connected both to your PC and the board, and then click the revolving arrows icon.
+## Hardware 
+* STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
+* 1 USB Type-C Cable (second USB-C cable required for flashing)
+* 1 Micro-USB Cable
+* Ethernet Cable
+* (Optional) WiFi Network SSID and Password
 
-<img src="media/refresh.png"/>
-     
-* When the device is recognized by the software, the port listing will be "USB" followed by a number, such as 1. The serial number of your board should also be listed beneath the port name.
+## Software
+* A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
-<img src="media/device-detected.png"/>
-    
-* You are ready to flash. Click the "Download" button to begin the flashing process.
-   * The STM32MP157F-DK2 will turn off and on several times throughout the flashing process. It is important to not unplug or disturb it during the process. Given the size of the image it will usually take **up to 45 minutes** to flash.
-   * It is worth noting that the LCD screen on the board will turn on with some output text during the flash process, so do not be alarmed.
+# 3. Hardware Setup
+See the reference image below for cable connections.
+<details>
+<summary>Reference Image with Connections</summary>
+<img src="./media/mp157f_board_setup.png" width="600">
+</details>
 
-<img src="media/begin-flash.png"/>
-   
-* When the flash has completed successfully, this pop-up in the STM32CubeProgrammer window will appear.
+Using the above image as reference, make the following connections:
+1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
+2. Connect the USB-C cable from a 5V/2.4A (up to 3A) power supply to the "PWR_IN" USB-C connector on the board, labeled **#2**.
+3. Connect the Micro-USB cable from your PC to the Micro-USB connector labeled **#3** on the reference image.
 
-<img src="media/flash-complete.png"/>
-   
-* Now, flip the large dipswitches on the underside of your board both to the "ON" position, and once again hit the reset button to properly boot the new image from the SD card.
+# 4. /IOTCONNECT: Cloud Account Setup
+An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
+The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
 
-<img src="media/switches-on.png"/>
-   
-* **For the first boot after flashing, the board takes a few minutes to turn on.**
 
-## Step 2: Serially Connect to the STM32MP157F-DK2
+* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
 
-* Using a USB-A to micro-USB cable, connect your board to your PC at the CN11 ST-LINK connector.
 
-     <img src="media/stlink.png"/>
 
-* Check and note which COM port the board is utilizing
-  * On Windows computers this can be seen by using the Device Manager
- 
-     <img src="media/device-manager.png"/>
+> [!NOTE]
+> Be sure to check any SPAM folder for the temporary password after registering.
 
-* Connect to the STM32MP157F-DK2 in a terminal emulator using these serial settings (your COM port number may be different):
+# 5. /IOTCONNECT: Device Template Setup
+A Device Template defines the type of telemetry the platform should expect to receive.
+* Download the pre-made [Device Template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/files/plitedemo-template.json?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
-     <img src="media/putty.png"/>
-     
+# 6. Device Software Setup
+1. Open a serial terminal emulator program such as TeraTerm.
+2. Ensure that your serial settings in your terminal emulator are set to:
+  - Baud Rate: 115200
+  - Data Bits: 8
+  - Stop Bits: 1
+  - Parity: None
+3. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
->After connecting to the board over serial, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
+>A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
+4. When prompted for a login, type `root` followed by the ENTER key.
+5. Execute system updates and install the IoTConnect Python Lite SDK with these commands:
+```
+sudo apt-get update
+sudo apt-get install python3-pip -y
+python3 -m pip install iotconnect-sdk-lite
+```
+6. Navigate to the proper directory and then run download and run the quickstart script with these commands:
+```
+cd /home/weston
+curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
+```
 
-## Step 3: Set Up and Run the Python Lite SDK Demo
-* Connect the board to the internet using an Ethernet connection
+# 7. Start the Application and Verify Data
+After the quickstart script is complete, you can run the example IoTConnect script with these commands:
+```
+cd /home/weston
+python3 quickstart.py
+```
 
-* Execute ```sudo apt-get update``` to check for and install updates for the system
+The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
 
-* For the rest of the demo setup and execution processes, follow the instructions in the [Python Lite SDK Quickstart Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/QUICKSTART.md)
+# 8. Troubleshooting
 
-      
+To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
+
+# 9. Resources
+* [Purchase the STM32MP157F-DK2](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731)
+* [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
+* [/IOTCONNECT Overview](https://www.iotconnect.io/)
+* [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

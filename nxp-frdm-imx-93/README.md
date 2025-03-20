@@ -1,16 +1,20 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Hardware Requirements](#2-hardware-requirements)
+2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-cloud-account-setup)
-5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Setup](#6-device-setup)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
+5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
+6. [Run Setup Scripts](#6-run-setup-scripts)
+7. [/IOTCONNECT: Create Device](#7-iotconnect-create-device)
+8. [Start the Application and Verify Data](#8-start-the-application-and-verify-data)
+9. [/IOTCONNECT: Import Dashboard Template](#9-iotconnect-import-dashboard-template)
+10. [/IOTCONNECT: Using the Dashboard](#10-iotconnect-using-the-dashboard)
+11. [Troubleshooting](#11-troubleshooting)
+12. [Resources](#12-resources)
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
+This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) demo by leveraging local AI on the NPU.
 
 <table>
   <tr>
@@ -19,83 +23,134 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
   </tr>
 </table>
 
-# 2. Hardware Requirements
+# 2. Requirements
+This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
+
+## Hardware 
 * NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
-* 1x Ethernet Cable (and a local router/switch with Internet connectivity)
-* (Optional) WiFi Network SSID and Password (more configuration is required for this method)
+* (Optional) Ethernet Cable
+* UVC-Compliant Webcam
+* HDMI Cable
+* 2nd Monitor
+* (Optional) WiFi Network SSID and Password
+
+## Software
+* A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/FRDM93-connections.jpg">
+<img src="./media/board_setup.png" width="600">
 </details>
 
-1. Connect an Ethernet cable from your LAN (router/switch) to the port labeled **#1** in the reference image.
-2. Connect a USB-C cable from a 5V power souce (such as your host machine) to the port labeled **#2** in the reference image.
-3. Connect a USB-C cable from your host machine to the port labeled **#3** in the reference image.
+Using the above image as reference, make the following connections:
+1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
+2. Connect a uvc-compliant webcam to the USB-A connector labeled **#4**.
+3. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
+4. Lastly, connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3** to power on the board.
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
+The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
 
-[/IOTCONNECT Free Trial (AWS Version)](https://subscription.iotconnect.io/subscribe?cloud=aws)
+
+* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
+
+
 
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
+# 5. /IOTCONNECT: Device Template Setup
+A Device Template defines the type of telemetry the platform should expect to receive.
+* Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
-# 5. /IOTCONNECT Device Template Setup
-A Device Template define the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/files/plitedemo-template.json) (**MUST** Right-Click and "Save-As" to get the raw json file)
-* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information, please see the [/IOTCONNECT Documentation](https://docs.iotconnect.io/iotconnect/) website.)
-
-# 6. Device Setup
-1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Device" (may be multiple).
-2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
-3. Ensure that your serial settings in your terminal emulator are set to:
+# 6. Run Setup Scripts
+1. Open a serial terminal emulator program such as TeraTerm.
+2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
   - Data Bits: 8
   - Stop Bits: 1
   - Parity: None
-4. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
+3. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
-5. When prompted for a login, type `root` followed by the ENTER key.
-6. Wifi Setup (**OPTIONAL**): To set up your board to use a wifi internet connection instead of an ethernet connection, you can follow the [simple guide in this same directory](WIFI.md).
-7. Run these commands to create and move into a directory for your demo files:
-   ```
-   mkdir /home/weston/demo
-   cd /home/weston/demo
-   ```
->[!TIP]
->To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
+4. When prompted for a login, type `root` followed by the ENTER key.
+5. Run the install script which will automate the installation of the i.MX eIQ Demo by perform the following actions:
+   * Install Dependencies
+   * Install /IOTCONNECT Python Lite SDK
+   * Download TFlite Models
+   * Optimize Models with [Vela Compiler](https://github.com/nxp-imx/ethos-u-vela)
+   * Start the interactive /IOTCONNECT onboarding script
 
-8. Run this command to install the /IOTCONNECT Python Lite SDK:
    ```
-   python3 -m pip install iotconnect-sdk-lite
-   ```
-9. Run this command to download and run the Quickstart setup script:
-   ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
+   cd /home/weston
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/scripts/imx93-install.sh' && bash ./imx93-install.sh
    ```
 
->[!IMPORTANT]
->The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
+# 7. /IOTCONNECT: Create Device
+The script started in the previous step will guide you through the following steps:
+
+1. Click the `Device` icon then the "Device" sub-menu
+2. At the top-right, click on the `Create Device` button
+3. Enter `FRDMiMX93` for both **Unique ID** and **Device Name**
+4. Select the entity in the drop-down (if this is a new/trial account, there is only one option)
+5. Select the template `eiqIOTC` from the template dropdown box
+6. Change the Device Certificate as "Use my certificate"
+7. Copy the Device Certificate displayed in the serial terminal and paste it into the box under "Certificate Text"
+
+>[!CAUTION]
+> Use the `Edit` -> `Copy` option as the Ctrl + C shortcut will interrupt the script.
+
+8. Click `Save & View`
+9. Click the "Paper and Cog" icon at top-right to download your device configuration file and save it to your working directory.
+10. Open the downloaded file in a text editor and paste the content into the serial terminal and press `enter`
+11. When prompted, press `y` and `enter` to download the eIQ AI Models
 
 >[!NOTE]
->This script primarily covers device and certificate creation in /IOTCONNECT. It will require some copy/paste between your browser and the terminal window.
+>This process will take just over 8 minutes.
 
-# 7. Using the Demo
-1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
+# 8. Start the Application and Verify Data
+From the `/home/weston` directory, use the following command to the demo application:
 ```
-cd /home/weston/demo
-python3 /home/weston/demo/quickstart.py
+python3 /home/weston/imx93-ai-demo.py
 ```
-2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
-* [Purchase the STM32MP257-EV1 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+The telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
+
+>[!IMPORTANT]
+>There needs to be a video capture device connected to the USB-A port on the board for the video to be processed.
+
+# 9. /IOTCONNECT: Import Dashboard Template
+
+* Download the demo [Dashboard Template](dms-demo/templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
+* **Download** the template then select `Create Dashboard` from the top of the page
+* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
+* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
+* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+
+# 10. /IOTCONNECT: Using the Dashboard
+
+The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
+<details>
+<summary>Table of Supported DSM Attributes</summary>
+<img src="./media/dsm_metrics.png" width="1000">
+</details>
+
+>[!TIP]
+>You can find this slide and others on the demo in Webinar Slides located in the **Resources** section.
+
+# 11. Troubleshooting
+
+To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
+
+# 12. Resources
+* [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
+* [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+* [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
