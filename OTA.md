@@ -19,14 +19,15 @@ After navigating into the "core-files" directory for your demo, modify any of th
 
 You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
 
-You are also able to modify the install.sh script (located in the "ota" directory) to choose whether or not you want the OTA update to automatically re-install the IoTConnect Python Lite SDK with the newest available version. To do this, open install.sh inside of your text editor and find this section of the script:
+Inside of the "ota" directory is a bare-bones version of the install.sh script. This script gets automatically run on the target device when the OTA package is received and extracted. 
+By default the script is only comments (no actions are necessary for the default demo), but if you want the OTA update to automatically re-install the IoTConnect Python Lite SDK with the newest available version, open install.sh inside of a text editor and find this section of the script:
 
 ```
 # ---------UN-COMMENT THIS COMMAND TO ENABLE SDK RE-INSTALLATION-------
 # python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 ```
-By default, the script **will not** re-install the SDK. To enable the re-install, simply backspace the "# " (remove the trailing space as well to align the command) and then save the file.
+Since it is commented out, the script **will not** re-install the SDK. To enable the re-install, simply backspace the "# " (remove the trailing space as well to align the command) and then save the file.
 
 A modified version that **will** re-install the SDK will look like this:
 ```
@@ -34,6 +35,33 @@ A modified version that **will** re-install the SDK will look like this:
 python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 ```
+
+If your OTA update includes additional files that need to go in specific directories (not in the same directory as the main IoTConnect program), you will need to make further modifications to install.sh to include commands to move the files to their desired directories.
+
+For example, adding this code to the end of install.sh will move any TFLITE model files from the current directory (where the tar.gz file was extracted and where the main IoTConnect program is) into the "/usr/bin/eiq-examples-git/models" directory:
+```
+# Define the target directories
+target_dir_tflite="/usr/bin/eiq-examples-git/models"
+
+# Loop through each file in the current directory
+for file in *; do
+  # Check if it's a file (not a directory)
+  if [ -f "$file" ]; then
+    case "$file" in
+      *.tflite)
+        # Move .tflite files to /usr/bin/eiq-examples-git/models
+        mv "$file" "$target_dir_tflite"
+        echo "Moved $file to $target_dir_tflite"
+        ;;
+      *)
+        # If the file doesn't match any condition, do nothing
+        ;;
+    esac
+  fi
+done
+```
+>[!NOTE]
+>For the IoTConnect Python Lite SDK, device certificates are stored in the same directory as the main IoTConnect program. Therefore, they do not need to be moved at all upon extraction. They will automatically overwrite the existing certificates.
 
 ## 3. Create OTA Package
 Within the "ota" directory for your demo, run this command:
