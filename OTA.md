@@ -15,7 +15,7 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Modify and Add Files
-After navigating into the "core-files" directory for your demo, modify any of the the files as desired. 
+After navigating into the "core-files" directory, modify any of the the files as desired. 
 
 You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
 
@@ -64,7 +64,7 @@ done
 >For the IoTConnect Python Lite SDK, device certificates are stored in the same directory as the main IoTConnect program. Therefore, they do not need to be moved at all upon extraction. They will automatically overwrite the existing certificates.
 
 ## 3. Create OTA Package
-Within the "ota" directory for your demo, run this command:
+Within the "core-files" directory, run this command:
 ```
 bash ./package-creation.sh
 ```
