@@ -36,10 +36,9 @@ python3 -m pip install --force-reinstall iotconnect-sdk-lite
 ```
 
 ## 3. Create OTA Package
-Within the "core-files" directory for your demo, run these commands:
+Within the "ota" directory for your demo, run this command:
 ```
-sudo chmod +x package-creation.sh
-./package-creation.sh
+bash ./package-creation.sh
 ```
 You now have an OTA package file called "ota-package.tar.gz"
 
