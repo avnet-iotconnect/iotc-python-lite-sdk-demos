@@ -71,6 +71,6 @@ python3 quickstart.py
 * Select your device's unique ID from the "Devices" drop-down
 * Click the blue "Update" button to initialize the OTA update
 
-## 7. View Update Reception in Device Console
+## 7. View Update in Device Console
 Shortly after sending the OTA update, you should see an interruption in the telemetry printout on the console of your device informing you that an OTA package was received, downloaded and executed. Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the program is already working again!
 
