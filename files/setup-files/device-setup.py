@@ -21,9 +21,9 @@ except subprocess.CalledProcessError as e:
         print(f'Error occurred while installing the Lite SDK: {e}')
         sys.exit(1)
   
-# Install API
+# Using pip to install or force reinstall the API
 try:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'iotconnect-rest-api'])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
     print('iotconnect-rest-api has been successfully installed.')
 except subprocess.CalledProcessError as e:
     print(f'Error occurred while installing iotconnect-rest-api: {e}')
