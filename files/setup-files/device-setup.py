@@ -36,18 +36,30 @@ from avnet.iotconnect.restapi.lib import device, config
 import avnet.iotconnect.restapi.lib.credentials as credentials
 import avnet.iotconnect.restapi.lib.apiurl as apiurl
 
-# Get user credentials
-print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
-email = input('Enter your IOTC login email address: ')
-psswd = getpass('Enter your IOTC login password: ')
-solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
-platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
-environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
-config.env = environment
-config.pf = platform
-config.skey = solutionkey
-apiurl.configure_using_discovery()
-credentials.authenticate(username=email, password=psswd)
+# Check login status and get user credentials if logged out
+logged_in = True
+if config.access_token is None:
+        logged_in = False
+else:
+    if config.token_expiry < _ts_now():
+        logged_in = False
+    elif should_refresh():
+        # It's been longer than an hour since we refreshed the token. We should refresh it now.
+        refresh()
+if logged_in == True:
+    print('Already logged into IoTConnect on this device.')
+else:    
+    print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
+    email = input('Enter your IOTC login email address: ')
+    psswd = getpass('Enter your IOTC login password: ')
+    solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
+    platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
+    environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
+    config.env = environment
+    config.pf = platform
+    config.skey = solutionkey
+    apiurl.configure_using_discovery()
+    credentials.authenticate(username=email, password=psswd)
 
 # Generate certificate/key
 subj = '/C=US/ST=IL/L=Chicago/O=IoTConnect/CN=device'
