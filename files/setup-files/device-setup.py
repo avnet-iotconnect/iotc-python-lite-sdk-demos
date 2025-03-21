@@ -58,13 +58,19 @@ except subprocess.CalledProcessError as e:
 # Create IOTC template
 t = template.get_by_template_code('plitedemo')
 if t is not None:
-    print("Standard device template not detected in IOTC instance. Adding it now...")
-    create_result: TemplateCreateResult = template.create('sample-device-template.json', new_template_code="plitedemo", new_template_name="plitedemo")
+    print("plitedemo template already exists in IOTC instance, skipping to device creation.")
+else:
+    print("plitedemo template not detected in IOTC instance. Adding it now...")
+    create_result: TemplateCreateResult = template.create('plitedemo_template.JSON', new_template_code="plitedemo", new_template_name="plitedemo")
     if create_result is None:
         raise Exception("Expected successful template creation")
 
+# Create IOTC Device
+with open('device-cert.pem', 'r') as file:
+    certificate = file.read()
+    result = device.create(template_guid=t.guid, duid=DUID, device_certificate=certificate)
+    print('create=', result)
 
-# create device
 
 # get device config
 
