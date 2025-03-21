@@ -14,6 +14,14 @@ if version.major != 3 or version.minor < 11:
     print(f'Python version must be at least 3.11. Detected version is {version.major}.{version.minor}!')
     sys.exit(1)
 
+# Remove python package that has dependencies that conflict with IoTConnect libararies
+try:
+    subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', azure-iot-device])
+    print('azure-iot-device has been successfully uninstalled.')
+except subprocess.CalledProcessError as e:
+    print(f'Error occurred while uninstalling azure-iot-device: {e}')
+
+
 # Using pip to install or force reinstall the Lite SDK
 try:
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-sdk-lite'])
