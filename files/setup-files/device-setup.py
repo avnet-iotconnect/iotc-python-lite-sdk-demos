@@ -36,7 +36,7 @@ from avnet.iotconnect.restapi.lib import device, config
 print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
 email = input('Enter your IOTC login email address: ')
 password = getpass('Enter your IOTC login password: ')
-solutionkey = input('Enter your IOTC solution key (if you don't know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
+solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
 platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
 environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
 command = f'iotconnect-cli configure -u {email} -p "{password}" --pf {platform} --env {environment} --skey={solutionkey}'
