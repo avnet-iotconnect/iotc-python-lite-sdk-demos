@@ -6,6 +6,7 @@ import urllib.request
 from getpass import getpass
 import re
 import argparse
+import datetime
 
 # Get the current version of Python
 version = sys.version_info
@@ -47,7 +48,7 @@ logged_in = True
 if config.access_token is None:
         logged_in = False
 else:
-    if config.token_expiry < _ts_now():
+    if config.token_expiry < datetime.datetime.now(datetime.timezone.utc).timestamp():
         logged_in = False
     elif should_refresh():
         # It's been longer than an hour since we refreshed the token. We should refresh it now.
