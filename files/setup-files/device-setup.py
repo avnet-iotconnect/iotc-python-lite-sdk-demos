@@ -16,7 +16,7 @@ if version.major != 3 or version.minor < 11:
 
 # Remove python package that has dependencies that conflict with IoTConnect libararies
 try:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', azure-iot-device])
+    subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', 'azure-iot-device'])
 except subprocess.CalledProcessError:
     pass
 
