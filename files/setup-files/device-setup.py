@@ -2,10 +2,6 @@ import sys
 import subprocess
 import json
 import os
-import avnet.iotconnect.restapi.lib.template as template
-from avnet.iotconnect.restapi.lib.error import InvalidActionError
-from avnet.iotconnect.restapi.lib.template import TemplateCreateResult
-from avnet.iotconnect.restapi.lib import device, config
 import urllib.request
 from getpass import getpass
 
@@ -30,7 +26,12 @@ try:
 except subprocess.CalledProcessError as e:
     print(f'Error occurred while installing iotconnect-rest-api: {e}')
     sys.exit(1)
-  
+
+import avnet.iotconnect.restapi.lib.template as template
+from avnet.iotconnect.restapi.lib.error import InvalidActionError
+from avnet.iotconnect.restapi.lib.template import TemplateCreateResult
+from avnet.iotconnect.restapi.lib import device, config
+
 # Get user credentials
 print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
 email = input('Enter your IOTC login email address: ')
