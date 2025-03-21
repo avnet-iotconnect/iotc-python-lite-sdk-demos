@@ -79,7 +79,6 @@ with open('device-cert.pem', 'r') as file:
     result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
     print('create=', result)
 
-
 # Create device config
 device_config = config.generate_device_json(device_id)
 with open('iotcDeviceConfig.json', 'w') as f:
