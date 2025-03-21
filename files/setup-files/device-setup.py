@@ -17,10 +17,8 @@ if version.major != 3 or version.minor < 11:
 # Remove python package that has dependencies that conflict with IoTConnect libararies
 try:
     subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', azure-iot-device])
-    print('azure-iot-device has been successfully uninstalled.')
-except subprocess.CalledProcessError as e:
-    print(f'Error occurred while uninstalling azure-iot-device: {e}')
-
+except subprocess.CalledProcessError:
+    pass
 
 # Using pip to install or force reinstall the Lite SDK
 try:
