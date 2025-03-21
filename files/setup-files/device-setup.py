@@ -4,6 +4,7 @@ import json
 import os
 import urllib.request
 from getpass import getpass
+import re
 
 # Get the current version of Python
 version = sys.version_info
