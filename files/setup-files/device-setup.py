@@ -69,10 +69,10 @@ else:
 
 # Create IOTC Device
 while True:
-    device_id = input('Enter a unique ID for your device (only alphanumeric chars allowed):')
-    if device_id.isalnum():
+    device_id = input('Enter a unique ID for your device (only alphanumeric chars and hyphens allowed):')
+    if re.match(r'^[a-zA-Z0-9-]+$', device_id):
         break
-    print('The unique ID can only include alphanumeric characters. Please try again.')
+    print('The unique ID can only include alphanumeric characters and hyphens. Please try again.')
 
 with open('device-cert.pem', 'r') as file:
     certificate = file.read()
