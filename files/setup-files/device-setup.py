@@ -5,6 +5,7 @@ import os
 import urllib.request
 from getpass import getpass
 import re
+import argparse
 
 # Get the current version of Python
 version = sys.version_info
@@ -32,20 +33,21 @@ import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib.error import InvalidActionError
 from avnet.iotconnect.restapi.lib.template import TemplateCreateResult
 from avnet.iotconnect.restapi.lib import device, config
+import avnet.iotconnect.restapi.lib.credentials as credentials
+import avnet.iotconnect.restapi.lib.apiurl as apiurl
 
 # Get user credentials
 print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
 email = input('Enter your IOTC login email address: ')
-password = getpass('Enter your IOTC login password: ')
+psswd = getpass('Enter your IOTC login password: ')
 solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
 platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
 environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
-command = f'iotconnect-cli configure -u {email} -p "{password}" --pf {platform} --env {environment} --skey={solutionkey}'
-try:
-    subprocess.check_call(command, shell=True)
-except subprocess.CalledProcessError as e:
-    print(f'IoTConnect Credentials Error: {e}')
-    sys.exit(1)
+config.env = environment
+config.pf = platform
+config.skey = solutionkey
+apiurl.configure_using_discovery()
+credentials.authenticate(username=email, password=psswd)
 
 # Generate certificate/key
 subj = '/C=US/ST=IL/L=Chicago/O=IoTConnect/CN=device'
@@ -71,10 +73,10 @@ else:
 
 # Create IOTC Device
 while True:
-    device_id = input('Enter a unique ID for your device (only alphanumeric chars and hyphens allowed):')
-    if re.match(r'^[a-zA-Z0-9-]+$', device_id):
+    device_id = input('Enter a unique ID for your device (only alphanumeric chars and non-endcap hyphens allowed):')
+    if re.match(r'^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$', device_id):
         break
-    print('The unique ID can only include alphanumeric characters and hyphens. Please try again.')
+    print('The unique ID can only include alphanumeric characters and non-endcap hyphens. Please try again.')
 
 with open('device-cert.pem', 'r') as file:
     certificate = file.read()
