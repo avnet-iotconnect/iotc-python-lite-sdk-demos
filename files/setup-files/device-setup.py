@@ -5,8 +5,10 @@ import os
 import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib.error import InvalidActionError
 from avnet.iotconnect.restapi.lib.template import TemplateCreateResult
-import avnet.iotconnect.restapi.lib.device as device
-'''
+from avnet.iotconnect.restapi.lib import device, config
+import urllib.request
+from getpass import getpass
+
 # Get the current version of Python
 version = sys.version_info
 # Check if the major version is 3 and the minor version is at least 11
@@ -32,7 +34,7 @@ except subprocess.CalledProcessError as e:
 # Get user credentials
 print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
 email = input('Enter your IOTC login email address: ')
-password = input('Enter your IOTC login password: ')
+password = getpass('Enter your IOTC login password: ')
 solutionkey = input('Enter your IOTC solution key (if you don't know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
 platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
 environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
@@ -48,18 +50,17 @@ subj = '/C=US/ST=IL/L=Chicago/O=IoTConnect/CN=device'
 days = 36500  # 100 years
 ec_curve = 'prime256v1'
 try:
-    subprocess.check_call(['openssl', 'ecparam', '-name', ec_curve, '-genkey', '-noout', '-out', '../core-files/device-pkey.pem'])
-    subprocess.check_call(['openssl', 'req', '-new', '-days', str(days), '-nodes', '-x509', '-subj', subj, '-key', '../core-files/device-pkey.pem', '-out', '../core-files/device-cert.pem'])
-        print('X509 credentials are now generated as device-cert.pem and device-pkey.pem.')
+    subprocess.check_call(['openssl', 'ecparam', '-name', ec_curve, '-genkey', '-noout', '-out', 'device-pkey.pem'])
+    subprocess.check_call(['openssl', 'req', '-new', '-days', str(days), '-nodes', '-x509', '-subj', subj, '-key', 'device-pkey.pem', '-out', 'device-cert.pem'])
+    print('X509 credentials are now generated as device-cert.pem and device-pkey.pem.')
 except subprocess.CalledProcessError as e:
     print(f'An error occurred while generating certificates: {e}', file=sys.stderr)
     sys.exit(1)
-'''
 
 # Create IOTC template
 t = template.get_by_template_code('plitedemo')
 if t is not None:
-    print("plitedemo template already exists in IOTC instance, skipping to device creation.")
+    print('plitedemo template already exists in IOTC instance, skipping to device creation.')
 else:
     print('plitedemo template not detected in IOTC instance. Adding it now...')
     create_result: TemplateCreateResult = template.create('plitedemo_template.JSON', new_template_code='plitedemo', new_template_name='plitedemo')
@@ -67,15 +68,26 @@ else:
         raise Exception("Expected successful template creation")
 
 # Create IOTC Device
-with open('../core-files/device-cert.pem', 'r') as file:
+while True:
+    device_id = input('Enter a unique ID for your device (only alphanumeric chars allowed):')
+    if device_id.isalnum():
+        break
+    print('The unique ID can only include alphanumeric characters. Please try again.')
+
+with open('device-cert.pem', 'r') as file:
     certificate = file.read()
-    result = device.create(template_guid=t.guid, duid=DUID, device_certificate=certificate)
+    result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
     print('create=', result)
 
 
 # Create device config
-device_config = config.generate_device_json('AAATESTDEVICE')
-with open('../core-files/iotcDeviceConfig.json', 'w') as f:
+device_config = config.generate_device_json(device_id)
+with open('iotcDeviceConfig.json', 'w') as f:
     f.write(device_config)
 
 # Download app.py
+try:
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/core-files/app.py', 'app.py')
+    print('app.py successfully downloaded. Run it with "python3 app.py".')
+except Exception as e:
+    print(f'Error downloading app file: {e}')
