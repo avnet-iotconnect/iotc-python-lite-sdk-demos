@@ -8,6 +8,23 @@ import re
 import argparse
 import datetime
 
+def configure_creds():
+    while True:
+        try:
+            email = input('Enter your IOTC login email address: ')
+            psswd = getpass('Enter your IOTC login password: ')
+            solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
+            platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
+            environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
+            config.env = environment
+            config.pf = platform
+            config.skey = solutionkey
+            apiurl.configure_using_discovery()
+            credentials.authenticate(username=email, password=psswd)
+            break
+        except Exception as e:
+            print(f'Error processing credentials, please try again: {e}')
+
 # Get the current version of Python
 version = sys.version_info
 # Check if the major version is 3 and the minor version is at least 11
@@ -15,26 +32,55 @@ if version.major != 3 or version.minor < 11:
     print(f'Python version must be at least 3.11. Detected version is {version.major}.{version.minor}!')
     sys.exit(1)
 
+# Check list of installed packages
+result = subprocess.check_output([sys.executable, "-m", "pip", "list"], stderr=subprocess.PIPE)
+installed_packages = result.decode('utf-8')
+
 # Remove python package that has dependencies that conflict with IoTConnect libararies
-try:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', 'azure-iot-device'])
-except subprocess.CalledProcessError:
-    pass
+if 'azure-iot-device' in installed_packages.lower():
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'uninstall', '-y', 'azure-iot-device'])
+    except subprocess.CalledProcessError as e:
+        print(f'Error occurred while uninstalling azure-iot-device: {e}')
 
 # Using pip to install or force reinstall the Lite SDK
-try:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-sdk-lite'])
-except subprocess.CalledProcessError as e:
+install = True
+if 'iotconnect-sdk-lite' in installed_packages.lower():
+    while True:
+        y_or_n = input('iotconnect-sdk-lite is already installed. Would you like to force-reinstall it with the newest available version? (answer with y/Y/n/N)')
+        if y_or_n in ['y', 'Y']:
+            break
+        elif y_or_n in ['n', 'N']:
+            install = False
+            break
+        else:
+            print('Invalid response, please only use y or Y for yes and n or N for No.')
+if install == True:
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-sdk-lite'])
+    except subprocess.CalledProcessError as e:
         print(f'Error occurred while installing the Lite SDK: {e}')
         sys.exit(1)
   
 # Using pip to install or force reinstall the API
-try:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
-    print('iotconnect-rest-api has been successfully installed.')
-except subprocess.CalledProcessError as e:
-    print(f'Error occurred while installing iotconnect-rest-api: {e}')
-    sys.exit(1)
+install = True
+if 'iotconnect-rest-api' in installed_packages.lower():
+    while True:
+        y_or_n = input('iotconnect-rest-api is already installed. Would you like to force-reinstall it with the newest available version? (answer with y/Y/n/N)')
+        if y_or_n in ['y', 'Y']:
+            break
+        elif y_or_n in ['n', 'N']:
+            install = False
+            break
+        else:
+            print('Invalid response, please only use y or Y for yes and n or N for No.')
+if install == True:
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
+        print('iotconnect-rest-api has been successfully installed.')
+    except subprocess.CalledProcessError as e:
+        print(f'Error occurred while installing iotconnect-rest-api: {e}')
+        sys.exit(1)
 
 import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib.error import InvalidActionError
@@ -50,23 +96,23 @@ if config.access_token is None:
 else:
     if config.token_expiry < datetime.datetime.now(datetime.timezone.utc).timestamp():
         logged_in = False
-    elif should_refresh():
+    elif config.token_time + 3600 < datetime.datetime.now(datetime.timezone.utc).timestamp() and os.environ.get('IOTC_API_NO_TOKEN_REFRESH') is None:
         # It's been longer than an hour since we refreshed the token. We should refresh it now.
-        refresh()
+        data = {
+        "refreshtoken": config.refresh_token
+        }
+        response = request(apiurl.ep_auth, "/Auth/refresh-token", json=data, headers={})
+        config.access_token = response.body.get_object_value("access_token")
+        config.refresh_token = response.body.get_object_value("refresh_token")
+        expires_in = response.body.get_object_value("expires_in")
+        config.token_time = _ts_now()
+        config.token_expiry = config.token_time + expires_in
+        config.write()
 if logged_in == True:
     print('Already logged into IoTConnect on this device.')
 else:    
     print('To use the IoTConnect API, you will need to enter your credentials. These will be stored for 24 hours and then deleted from memory for security.') 
-    email = input('Enter your IOTC login email address: ')
-    psswd = getpass('Enter your IOTC login password: ')
-    solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
-    platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
-    environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
-    config.env = environment
-    config.pf = platform
-    config.skey = solutionkey
-    apiurl.configure_using_discovery()
-    credentials.authenticate(username=email, password=psswd)
+    configure_creds()
 
 # Generate certificate/key
 subj = '/C=US/ST=IL/L=Chicago/O=IoTConnect/CN=device'
@@ -99,8 +145,20 @@ while True:
 
 with open('device-cert.pem', 'r') as file:
     certificate = file.read()
-    result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
-    print('create=', result)
+    try:
+        result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
+        print('create=', result)
+    except TypeError:
+        # TypeError is usually been about credentials expiring mid-session and becoming a None-type
+        print('There was a processing issue with your credentials, please re-enter them below.') 
+        configure_creds()
+        try:
+            result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
+            print('create=', result)
+        except Exception as e:
+            print(f"An exception occurred while attempting to create the device: {e}")
+    except Exception as e:
+            print(f"An exception occurred while attempting to create the device: {e}")
 
 # Create device config
 device_config = config.generate_device_json(device_id)
