@@ -17,7 +17,7 @@ def create_ota_payload():
     install_sh = os.path.join(script_dir, 'install.sh')
     
     # Define the tar.gz output file name
-    output_tar_gz = os.path.join(script_dir, 'ota-payload.tar.gz')
+    output_tar_gz = os.path.join(script_dir, 'output.tar.gz')
 
     # Create a .tar.gz file
     with tarfile.open(output_tar_gz, 'w:gz') as tar:
@@ -28,14 +28,15 @@ def create_ota_payload():
                     file_path = os.path.join(root, file)
                     # Add each file without its directory path
                     tar.add(file_path, arcname=file)
-        
-        # Add files from additional-files directory
+
+        # Add files from additional-files directory, excluding placeholder.txt
         if os.path.exists(additional_files_dir):
             for root, _, files in os.walk(additional_files_dir):
                 for file in files:
-                    file_path = os.path.join(root, file)
-                    # Add each file without its directory path
-                    tar.add(file_path, arcname=file)
+                    if file != 'placeholder.txt':  # Skip placeholder.txt
+                        file_path = os.path.join(root, file)
+                        # Add each file without its directory path
+                        tar.add(file_path, arcname=file)
         
         # Add the install.sh file
         if os.path.exists(install_sh):
