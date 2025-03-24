@@ -66,10 +66,10 @@ while True:
         d = device.get_by_duid(duid)
         # If a device matching the given duid is found
         if d is not None:
-        # Add its guid to the list
-        device_guid_list.append(d.guid)
-    else:
-        print('No device found matching the given DUID. Please try again.')
+            # Add its guid to the list
+            device_guid_list.append(d.guid)
+        else:
+            print('No device found matching the given DUID. Please try again.')
     elif resp in ['n', 'N']:
         break
     else:
