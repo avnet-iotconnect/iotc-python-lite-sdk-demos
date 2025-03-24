@@ -7,7 +7,6 @@ from getpass import getpass
 import re
 import argparse
 import datetime
-from .apirequest import Headers, request
 
 def configure_creds():
     while True:
@@ -89,6 +88,7 @@ from avnet.iotconnect.restapi.lib.template import TemplateCreateResult
 from avnet.iotconnect.restapi.lib import device, config
 import avnet.iotconnect.restapi.lib.credentials as credentials
 import avnet.iotconnect.restapi.lib.apiurl as apiurl
+from apirequest import Headers, request
 
 # Check login status and get user credentials if logged out
 logged_in = True
