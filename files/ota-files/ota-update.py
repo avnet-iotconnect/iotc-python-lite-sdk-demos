@@ -17,7 +17,7 @@ def create_ota_payload():
     install_sh = os.path.join(script_dir, 'install.sh')
     
     # Define the tar.gz output file name
-    output_tar_gz = os.path.join(script_dir, 'output.tar.gz')
+    output_tar_gz = os.path.join(script_dir, 'ota-payload.tar.gz')
 
     # Create a .tar.gz file
     with tarfile.open(output_tar_gz, 'w:gz') as tar:
