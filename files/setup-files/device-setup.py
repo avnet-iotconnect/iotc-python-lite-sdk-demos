@@ -146,19 +146,22 @@ while True:
 
 with open('device-cert.pem', 'r') as file:
     certificate = file.read()
-    try:
-        result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
-        print('create=', result)
-    except TypeError:
-        # TypeError is usually been about credentials expiring mid-session and becoming a None-type
-        print('There was a processing issue with your credentials, please re-enter them below.') 
-        configure_creds()
+    while True:
         try:
             result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
             print('create=', result)
+            break
+        except TypeError:
+            # TypeError is usually been about credentials expiring mid-session and becoming a None-type
+            print('There was a processing issue with your credentials, please re-enter them below.') 
+            configure_creds()
+            try:
+                result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
+                print('create=', result)
+                break
+            except Exception as e:
+                print(f"An exception occurred while attempting to create the device: {e}")
         except Exception as e:
-            print(f"An exception occurred while attempting to create the device: {e}")
-    except Exception as e:
             print(f"An exception occurred while attempting to create the device: {e}")
 
 # Create device config
