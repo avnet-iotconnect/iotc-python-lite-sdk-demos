@@ -4,10 +4,9 @@
 2. [Hardware Requirements](#2-hardware-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
-5. [/IOTCONNECT Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Setup](#6-device-setup)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+5. [Device Setup](#6-device-setup)
+6. [Using the Demo](#7-using-the-demo)
+7. [Resources](#8-resources)
 
 # 1. Introduction
 This guide is designed to walk through the steps to connect the TRIA Maaxboard 8ULP to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
@@ -49,12 +48,7 @@ An /IOTCONNECT account with AWS backend is required.  If you need to create an a
 
 See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
 
-# 5. /IOTCONNECT Device Template Setup
-A Device Template define the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/files/plitedemo-template.json) (**MUST** Right-Click and "Save-As" to get the raw json file)
-* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available or for more information, please see the [/IOTCONNECT Documentation](https://docs.iotconnect.io/iotconnect/) website.)
-
-# 6. Device Setup
+# 5. Device Setup
 1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that are in use by a "USB Serial Port" (should be 4 of them). You will use the **2nd-highest port number**. For example, if the 4 ports listed are COM46, COM47, COM48, and COM49, you will connect to COM48.
 2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
 3. Ensure that your serial settings in your terminal emulator are set to:
@@ -76,30 +70,22 @@ A Device Template define the type of telemetry the platform should expect to rec
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-7. Run this command to install the /IOTCONNECT Python Lite SDK:
+7. Run this command to download and run the device setup script:
    ```
-   python3 -m pip install iotconnect-sdk-lite
-   ```
-8. Run this command to download and run the Quickstart setup script:
-   ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
    ```
 
->[!IMPORTANT]
->The device template upload step of the quickstart script can be skipped since it was already taken care of in Step 5.
-
+# 6. Using the Demo
+1. Run the basic demo with this command:
+```
+python3 app.py
+```
 >[!NOTE]
->This script primarily covers device and certificate creation in /IOTCONNECT. It will require some copy/paste between your browser and the terminal window.
+>Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this directory with the command: ```cd /home/weston/demo```
 
-# 7. Using the Demo
-1. Move into the correct directory and run the basic demo with these commands (can be copy and pasted as one):
-```
-cd /home/weston/demo
-python3 /home/weston/demo/quickstart.py
-```
 2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 7. Resources
 * [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
