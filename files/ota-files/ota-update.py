@@ -2,8 +2,10 @@ import tarfile
 import os
 import shutil
 import avnet.iotconnect.restapi.lib.template as template
-from avnet.iotconnect.restapi.lib import firmware, upgrade, device, config, ota
+from avnet.iotconnect.restapi.lib import firmware, upgrade, device, config, ota, apiurl, util
 from avnet.iotconnect.restapi.lib.error import InvalidActionError, ConflictResponseError
+from avnet.iotconnect.restapi.lib.apirequest import request
+from http import HTTPMethod, HTTPStatus
 
 def create_ota_payload():
     # Get the current directory (the directory where the script is located)
@@ -45,26 +47,42 @@ TEMPLATE_CODE = 'plitedemo'
 FIRMWARE_NAME = 'AAATESTFW'
 DUID = 'apidemodev01'
 
-# Attempt to create firmware for specified template
+# Get template info (need GUID)
 t = template.get_by_template_code(TEMPLATE_CODE)
 try:
-  firmware_create_result = firmware.create(template_guid=t.guid, name=FIRMWARE_NAME, hw_version="1.0", initial_sw_version="v1.0", description="Initial version")
-  print(firmware_create_result)
+    # Attempt to create firmware for specified template
+    firmware_create_result = firmware.create(template_guid=t.guid, name=FIRMWARE_NAME, hw_version="1.0", initial_sw_version="v1.0", description="Initial version")
+    firmware_guid = firmware_create_result.newId
+    # Get firmware upgrade GUID for the new firmware
+    fw_upgrade_guid = firmware_create_result.firmwareUpgradeGuid
 except Exception as e:
-  print(f'Error occurred while trying to create Firmware: {e}')
+    if 'TemplateAlreadyAttachedWithFirmware' in str(e):
+        print('A firmware already exists for the selected template, so this OTA update will be an upgrade for that existing firmware.')
+        # Get existing firmware guid
+        response = request(apiurl.ep_firmware, '/Firmware', params={"TemplateName": TEMPLATE_CODE}, codes_ok=[HTTPStatus.NO_CONTENT])
+        firmware_info = response.data.get_one(dc=firmware.Firmware)
+        firmware_guid = firmware_info.guid
+        # Create an upgrade for existing firmware
+        fw_upgrade_create_result = upgrade.create(firmware_guid=firmware_guid)
+        fw_upgrade_guid = fw_upgrade_create_result.newId
+    else:
+        print(f'Error occurred while trying to create Firmware, exiting...: {e}')
+        sys.exit(1)
+        
+# fw_upgrade_guid now points to the FW upgrade guid for either new or existing firmware, so all bases are covered
 
-'''
-firmware_guid = firmware_create_result.newId
+# Upload the payload file to the upgrade
+upgrade.upload(fw_upgrade_guid, 'test.zip', file_name="filename-changed.zip")
+upgrade.publish(fw_upgrade_guid)
+
+
+
+
+
 upgrade_1_guid = firmware_create_result.firmwareUpgradeGuid
 
-# check what we get from the initial creation with the initial draft
-print('#0 firmware.get_by_guid', firmware.get_by_guid(firmware_guid))
 
-upgrade.upload(upgrade_1_guid, 'test.zip', file_name="filename-changed.zip")
-upgrade.publish(upgrade_1_guid)
 
-# check what we get with the newly uploaded files in the draft. Now we should have URLs.
-print('#2 firmware.get_by_guid', firmware.get_by_guid(firmware_guid))
 
 # create an empty new draft and upload two files.
 # NOTE: Test having no sw_version and generating a build number, so omit sw_version.
@@ -150,4 +168,4 @@ firmware.deprecate_match_name(FIRMWARE_NAME)
 device.delete_match_duid(DUID)
 
 template.delete_match_code(TEMPLATE_CODE)
-'''
+
