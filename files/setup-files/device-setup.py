@@ -11,11 +11,11 @@ import datetime
 def configure_creds():
     while True:
         try:
-            email = input('Enter your IOTC login email address: ')
-            psswd = getpass('Enter your IOTC login password: ')
-            solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform): ')
-            platform = input('Enter your IOTC platform (az for Azure or aws for AWS): ')
-            environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform): ')
+            email = input('Enter your IOTC login email address:')
+            psswd = getpass('Enter your IOTC login password:')
+            solutionkey = input('Enter your IOTC solution key (if you do not know your solution key, you can request it via a support ticket on the IoTConnect online platform):')
+            platform = input('Enter your IOTC platform (az for Azure or aws for AWS):')
+            environment = input('Enter your IOTC environment (can be found in the Key Vault of the IoTConnect online platform):')
             config.env = environment
             config.pf = platform
             config.skey = solutionkey
