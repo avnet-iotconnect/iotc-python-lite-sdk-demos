@@ -10,6 +10,7 @@ import avnet.iotconnect.restapi.lib.credentials as credentials
 from http import HTTPMethod, HTTPStatus
 import subprocess
 from getpass import getpass
+import datetime
 
 def create_ota_payload():
     # Get the current directory (the directory where the script is located)
