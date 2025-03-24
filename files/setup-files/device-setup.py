@@ -25,6 +25,14 @@ def configure_creds():
         except Exception as e:
             print(f'Error processing credentials, please try again: {e}')
 
+def get_device_id():
+    while True:
+        device_id = input('Enter a unique ID for your device (only alphanumeric chars and non-endcap hyphens allowed):')
+        if re.match(r'^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$', device_id):
+            return device_id
+        print('The unique ID can only include alphanumeric characters and non-endcap hyphens. Please try again.')
+
+
 # Get the current version of Python
 version = sys.version_info
 # Check if the major version is 3 and the minor version is at least 11
@@ -138,15 +146,10 @@ else:
         raise Exception("Expected successful template creation")
 
 # Create IOTC Device
-while True:
-    device_id = input('Enter a unique ID for your device (only alphanumeric chars and non-endcap hyphens allowed):')
-    if re.match(r'^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$', device_id):
-        break
-    print('The unique ID can only include alphanumeric characters and non-endcap hyphens. Please try again.')
-
 with open('device-cert.pem', 'r') as file:
     certificate = file.read()
     while True:
+        device_id = get_device_id()
         try:
             result = device.create(template_guid=t.guid, duid=device_id, device_certificate=certificate)
             print('create=', result)
@@ -160,9 +163,9 @@ with open('device-cert.pem', 'r') as file:
                 print('create=', result)
                 break
             except Exception as e:
-                print(f"An exception occurred while attempting to create the device: {e}")
+                print(f"An exception occurred while attempting to create the device, please try again.: {e}")
         except Exception as e:
-            print(f"An exception occurred while attempting to create the device: {e}")
+            print(f"An exception occurred while attempting to create the device, please try again.: {e}")
 
 # Create device config
 device_config = config.generate_device_json(device_id)
