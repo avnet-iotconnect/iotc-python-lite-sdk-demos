@@ -2,11 +2,6 @@ import tarfile
 import os
 import shutil
 import sys
-import avnet.iotconnect.restapi.lib.template as template
-from avnet.iotconnect.restapi.lib import firmware, upgrade, device, config, ota, apiurl, util
-from avnet.iotconnect.restapi.lib.error import InvalidActionError, ConflictResponseError
-from avnet.iotconnect.restapi.lib.apirequest import request
-import avnet.iotconnect.restapi.lib.credentials as credentials
 from http import HTTPMethod, HTTPStatus
 import subprocess
 from getpass import getpass
@@ -94,6 +89,12 @@ if install == True:
     except subprocess.CalledProcessError as e:
         print(f'Error occurred while installing iotconnect-rest-api: {e}')
         sys.exit(1)
+
+import avnet.iotconnect.restapi.lib.template as template
+from avnet.iotconnect.restapi.lib import firmware, upgrade, device, config, ota, apiurl, util
+from avnet.iotconnect.restapi.lib.error import InvalidActionError, ConflictResponseError
+from avnet.iotconnect.restapi.lib.apirequest import request
+import avnet.iotconnect.restapi.lib.credentials as credentials
 
 # Check login status and get user credentials if logged out
 logged_in = True
