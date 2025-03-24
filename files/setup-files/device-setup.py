@@ -7,6 +7,7 @@ from getpass import getpass
 import re
 import argparse
 import datetime
+from .apirequest import Headers, request
 
 def configure_creds():
     while True:
@@ -105,7 +106,7 @@ else:
         config.access_token = response.body.get_object_value("access_token")
         config.refresh_token = response.body.get_object_value("refresh_token")
         expires_in = response.body.get_object_value("expires_in")
-        config.token_time = _ts_now()
+        config.token_time = datetime.datetime.now(datetime.timezone.utc).timestamp()
         config.token_expiry = config.token_time + expires_in
         config.write()
 if logged_in == True:
