@@ -44,8 +44,35 @@ def create_ota_payload():
 create_ota_payload()
 
 TEMPLATE_CODE = 'plitedemo'
-FIRMWARE_NAME = 'AAATESTFW'
-DUID = 'apidemodev01'
+FIRMWARE_NAME = 'PLITEDEMO'
+
+# Get the device(s) unique ID(s) and corresponding GUID(s)
+device_guid_list = []
+while True:
+    duid = input('Enter the unique ID of the first device you wish to send this OTA to:')
+    d = device.get_by_duid(duid)
+    # If a device matching the given duid is found
+    if d is not None:
+        # Add its guid to the list
+        device_guid_list.append(d.guid)
+        break
+    else:
+        print('No device found matching the given DUID. Please try again.')
+while True:
+    resp = input('Is there another device you wish to send this OTA to? (y/Y or n/N)')
+    if resp in ['y', 'Y']:
+        duid = input('Enter the unique ID of the next device you wish to send this OTA to:')
+        d = device.get_by_duid(duid)
+        # If a device matching the given duid is found
+        if d is not None:
+        # Add its guid to the list
+        device_guid_list.append(d.guid)
+    else:
+        print('No device found matching the given DUID. Please try again.')
+    elif resp in ['n', 'N']:
+        break
+    else:
+        print('Invalid response, please only use y/Y for yes and n/N for No.')
 
 # Get template info (need GUID)
 t = template.get_by_template_code(TEMPLATE_CODE)
@@ -69,103 +96,15 @@ except Exception as e:
         print(f'Error occurred while trying to create Firmware, exiting...: {e}')
         sys.exit(1)
         
-# fw_upgrade_guid now points to the FW upgrade guid for either new or existing firmware, so all bases are covered
+# fw_upgrade_guid now points to the correct FW upgrade guid, regardless of if the firmware existed previously or not
 
 # Upload the payload file to the upgrade
-upgrade.upload(fw_upgrade_guid, 'test.zip', file_name="filename-changed.zip")
+upgrade.upload(fw_upgrade_guid, 'ota-payload.tar.gz', file_name='ota-payload.tar.gz')
+# Publish the firmware upgrade so it can be sent via OTA
 upgrade.publish(fw_upgrade_guid)
 
-
-
-
-
-upgrade_1_guid = firmware_create_result.firmwareUpgradeGuid
-
-
-
-
-# create an empty new draft and upload two files.
-# NOTE: Test having no sw_version and generating a build number, so omit sw_version.
-new_upgrade_create_result = upgrade.create(firmware_guid=firmware_guid)
-upgrade_2_guid = new_upgrade_create_result.newId
-
-upgrade.upload(upgrade_2_guid, 'test.zip')
-upgrade.upload(upgrade_2_guid, 'firmware.py', file_name='new-unit-test.py')
-
-# check what we get with the newly uploaded files in the new draft. Now we should have one original release and one draft.
-final_fw = firmware.get_by_guid(firmware_guid)
-
-print('#3 firmware.get_by_guid', final_fw)
-
-print('----')
-print('Upgrades#: ', len(final_fw.Upgrades))
-print(f"Releases#: {len(final_fw.releases())} ({final_fw.release_count()})")
-print(f"Drafts#: {len(final_fw.drafts())} ({final_fw.draft_count()})")
-print('Upgrade versions:', final_fw.Upgrades[0].software, final_fw.Upgrades[1].software)
-
-print('--')
-print(upgrade.get_by_guid(upgrade_1_guid).software, upgrade.get_by_guid(upgrade_1_guid).urls[0])
-print(upgrade.get_by_guid(upgrade_2_guid).software, upgrade.get_by_guid(upgrade_2_guid).urls[0])
-print(upgrade.get_by_guid(upgrade_2_guid).software, upgrade.get_by_guid(upgrade_2_guid).urls[1].name)
-print('----')
-
-# check what we get with published second draft as a "release".
-print('#4 firmware.get_by_guid', firmware.get_by_guid(firmware_guid))
-
-# test creation of a device with generated certificate and private key
-pkey_pem, cert_pem = config.generate_ec_cert_and_pkey(DUID)
-with open('device-pkey.pem', 'w') as pk_file:
-    pk_file.write(pkey_pem)
-with open('device-cert.pem', 'w') as cert_file:
-    cert_file.write(cert_pem)
-with open('device-cert.pem', 'r') as f:
-    certificate = f.read()
-device_create_result = device.create(template_guid=template_guid, duid=DUID, device_certificate=certificate)
-print('create=', device_create_result)
-
 try:
-    ota.push_to_entity(upgrade_1_guid)  # use the root entity
-    print("Success push_ota_to_entity upgrade_1_guid")
+    ota.push_to_device(fw_upgrade_guid, device_guid_list)
+    print("Successful OTA push!")
 except ConflictResponseError:
-    print("Failed push_ota_to_entity upgrade_1_guid!")
-
-try:
-    ota.push_to_device(upgrade_1_guid, [device_create_result.newid])
-    print("Success push_ota_to_device upgrade_1_guid")
-except ConflictResponseError:
-    print("Failed push_ota_to_device upgrade_1_guid!")
-
-# NOTE: We cannot use a draft to ota.push_to_entity(). We would expect it to fail.
-
-try:
-    ota.push_to_device(upgrade_2_guid, [device_create_result.newid], is_draft=True)
-    print("Success push_ota_to_device upgrade_2_guid")
-except ConflictResponseError:
-    print("Failed push_ota_to_device upgrade_2_guid!")
-
-upgrade.publish(upgrade_2_guid)
-
-try:
-    upgrade.publish(upgrade_2_guid)
-    print("FAILED Twice-Upgrade publish test!")
-except ConflictResponseError:
-    print("Twice-Upgrade publish test success")
-
-# now we should have two published firmwares with this guid
-print('#5 firmware.get_by_guid', firmware.get_by_guid(firmware_guid))
-
-upgrade.delete_match_guid(upgrade_2_guid)
-
-# there always has to be at least one fw upgrade available so we cannot delete both
-try:
-    upgrade.delete_match_guid(upgrade_1_guid)
-    print("FAILED Delete the only upgrade left test!")
-except ConflictResponseError:
-    print("Delete the only upgrade left - test success.")
-
-firmware.deprecate_match_name(FIRMWARE_NAME)
-
-device.delete_match_duid(DUID)
-
-template.delete_match_code(TEMPLATE_CODE)
-
+    print("Failed OTA push!")
