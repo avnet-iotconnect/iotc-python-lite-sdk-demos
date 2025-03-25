@@ -4,13 +4,8 @@
 
 import tarfile
 import os
-import shutil
 import sys
-from http import HTTPMethod, HTTPStatus
 import subprocess
-from getpass import getpass
-import datetime
-
 
 # Compresses all relevant files into a .tar.gz to be used for OTA deployment 
 def create_ota_payload():
@@ -97,10 +92,10 @@ def install_iotc_api():
     install = True
     if 'iotconnect-rest-api' in installed_packages.lower():
         while True:
-            y_or_n = input('iotconnect-rest-api is already installed. Would you like to force-reinstall it with the newest available version? (answer with y/Y/n/N)')
-            if y_or_n in ['y', 'Y']:
+            response = input('iotconnect-rest-api is already installed. Would you like to force-reinstall it with the newest available version? (answer with y/Y/n/N)')
+            if response in ['y', 'Y']:
                 break
-            elif y_or_n in ['n', 'N']:
+            elif response in ['n', 'N']:
                 install = False
                 break
             else:
@@ -119,7 +114,7 @@ def get_fw_upgrade_guid(template_code: str):
     # Check if specified template has firmware associated with it already
     t = template.get_by_template_code(template_code)
     # If no firmware exists for the template
-    if t.firmwareGuid == None:
+    if t.firmwareGuid is None:
         print("Template does not have firmware")
         # Create new firmware for the template
         while True:
@@ -150,8 +145,7 @@ install_iotc_api()
 
 # Now that the REST API is installed, its relevant libraries can be imported
 import avnet.iotconnect.restapi.lib.template as template
-from avnet.iotconnect.restapi.lib import firmware, upgrade, device, config, ota, apiurl, util
-from avnet.iotconnect.restapi.lib.apirequest import request
+from avnet.iotconnect.restapi.lib import firmware, upgrade, device, ota, apiurl, util
 import avnet.iotconnect.restapi.lib.credentials as credentials
 from avnet.iotconnect.restapi.lib.error import UsageError
 
