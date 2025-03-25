@@ -102,12 +102,8 @@ def install_iotc_api():
             else:
                 print('Invalid response, please only use y or Y for yes and n or N for No.')
     if install == True:
-        try:
-            subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
-            print('iotconnect-rest-api has been successfully installed.')
-        except subprocess.CalledProcessError as e:
-            print(f'Error occurred while installing iotconnect-rest-api: {e}')
-            sys.exit(1)
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
+        print('iotconnect-rest-api has been successfully installed.')
 
 
 # Create a FW upgrade for the associated template and get its GUID
