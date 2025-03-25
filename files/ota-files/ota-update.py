@@ -121,7 +121,7 @@ def get_fw_upgrade_guid(template_code: str):
                 break
             except UsageError as e:
                 print(f'Invalid firmware name, please try again: {e}')
-        firmware_create_result = firmware.create(template_guid=t.guid, name=firmware_name, hw_version="1.0", initial_sw_version="v1.0", description="Initial version")
+        firmware_create_result = firmware.create(template_guid=t.guid, name=firmware_name, hw_version="1.0", description="Initial version")
         firmware_guid = firmware_create_result.newId
         # Get firmware upgrade GUID for the new firmware
         fw_upgrade_guid = firmware_create_result.firmwareUpgradeGuid
@@ -156,7 +156,7 @@ device_guid_list, template_code = get_device_guids_and_template_code()
 fw_upgrade_guid = get_fw_upgrade_guid(template_code)
 
 # Upload the payload file to the FW upgrade
-upgrade.upload(fw_upgrade_guid, 'ota-payload.tar.gz', file_name='ota-payload.tar.gz')
+upgrade.upload(fw_upgrade_guid, 'ota-payload.tar.gz')
 
 # Publish the firmware upgrade so it can be sent via OTA
 upgrade.publish(fw_upgrade_guid)
