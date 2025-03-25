@@ -82,7 +82,7 @@ def get_device_guids_and_template_code():
             print('Invalid response, please only use y/Y for yes and n/N for No.')
     return device_guid_list, template_code
 
-
+# Check if the REST API is installed, and install it if its not
 def install_iotc_api():
     # Get the current version of Python
     version = sys.version_info
@@ -114,6 +114,7 @@ def install_iotc_api():
             sys.exit(1)
 
 
+# Create a FW upgrade for the associated template and get its GUID
 def get_fw_upgrade_guid(template_code: str):
     # Check if specified template has firmware associated with it already
     t = template.get_by_template_code(template_code)
