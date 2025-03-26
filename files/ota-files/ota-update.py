@@ -6,7 +6,25 @@ import tarfile
 import os
 import sys
 import subprocess
+import avnet.iotconnect.restapi.lib.template as template
+from avnet.iotconnect.restapi.lib import firmware, upgrade, device, ota, apiurl, util
+import avnet.iotconnect.restapi.lib.credentials as credentials
+from avnet.iotconnect.restapi.lib.error import UsageError
 
+'''
+Assumptions before running this script:
+1) The IoTConnect REST API is already installed on this computer
+2) The user is currently logged into their IoTConnect account on this machine via the REST API CLI
+3) A file called "ota-payload.tar.gz" which includes all of the relavant updated program files exists in this same directory
+
+Script Flow:
+1) The user inputs the unique IDs of all the devices they want the OTA sent to (all devices must use the same template)
+2) If the template for the specified devices does not have existing firmware, new firmware is created
+3) A new upgrade is created for the firmware for the template
+4) The file "ota-payload.tar.gz" is uploaded to the new upgrade
+5) The new upgrade is published so it is available for OTA
+6) The new upgrade is pushed to all of the devices that were specified
+'''
 
 # Get user to input the DUIDs of all devices to receive the OTA, and extract the GUIDs from those
 def get_device_guids_and_template_code():
@@ -47,34 +65,6 @@ def get_device_guids_and_template_code():
     return device_guid_list, template_code
 
 
-# Check if the REST API is installed, and install it if its not
-def install_iotc_api():
-    # Get the current version of Python
-    version = sys.version_info
-    # Check if the major version is 3 and the minor version is at least 11
-    if version.major != 3 or version.minor < 11:
-        print(f'Python version must be at least 3.11. Detected version is {version.major}.{version.minor}!')
-        sys.exit(1)
-    # Check list of installed packages
-    result = subprocess.check_output([sys.executable, "-m", "pip", "list"], stderr=subprocess.PIPE)
-    installed_packages = result.decode('utf-8')
-    # Using pip to install or force reinstall the API
-    install = True
-    if 'iotconnect-rest-api' in installed_packages.lower():
-        while True:
-            response = input('iotconnect-rest-api is already installed. Would you like to force-reinstall it with the newest available version? (answer with y/Y/n/N)')
-            if response in ['y', 'Y']:
-                break
-            elif response in ['n', 'N']:
-                install = False
-                break
-            else:
-                print('Invalid response, please only use y or Y for yes and n or N for No.')
-    if install == True:
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--upgrade', '--force-reinstall', 'iotconnect-rest-api'])
-        print('iotconnect-rest-api has been successfully installed.')
-
-
 # Create a FW upgrade for the associated template and get its GUID
 def get_fw_upgrade_guid(template_code: str):
     # Check if specified template has firmware associated with it already
@@ -105,15 +95,6 @@ def get_fw_upgrade_guid(template_code: str):
 
     
 #----------------MAIN---------------------
-
-# Check if the REST API is installed, and install it if its not
-install_iotc_api()
-
-# Now that the REST API is installed, its relevant libraries can be imported
-import avnet.iotconnect.restapi.lib.template as template
-from avnet.iotconnect.restapi.lib import firmware, upgrade, device, ota, apiurl, util
-import avnet.iotconnect.restapi.lib.credentials as credentials
-from avnet.iotconnect.restapi.lib.error import UsageError
 
 # Get the device GUID(s) that will receive the OTA, and the template code they use
 device_guid_list, template_code = get_device_guids_and_template_code()
