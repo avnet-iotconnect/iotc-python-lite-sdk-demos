@@ -68,7 +68,7 @@ Within the "ota-files" directory, run this command:
 ```
 bash ./generate-payload.sh
 ```
-You now have an OTA payload file called "ota-package.tar.gz"
+You now have an OTA payload file called "ota-payload.tar.gz"
 
 ## 4. Launch IoTConnect Program on Device
 For your board to receive the OTA update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called "app.py":
