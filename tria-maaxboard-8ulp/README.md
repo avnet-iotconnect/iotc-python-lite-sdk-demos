@@ -90,6 +90,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
    * Platform: aws
    * Environment: technology
    * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+     
    Your login command would be:
    ```
    iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
