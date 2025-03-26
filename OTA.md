@@ -64,13 +64,37 @@ done
 >For the IoTConnect Python Lite SDK, device certificates are stored in the same directory as the main IoTConnect program. Therefore, they do not need to be moved at all upon extraction. They will automatically overwrite the existing certificates.
 
 ## 3. Create OTA Package
-Within the "core-files" directory, run this command:
+Within the "ota-files" directory, run this command:
 ```
-bash ./package-creation.sh
+bash ./generate-payload.sh
 ```
-You now have an OTA package file called "ota-package.tar.gz"
+You now have an OTA payload file called "ota-package.tar.gz"
 
-## 4. Create Firmware in IoTConnect
+## 4. Launch IoTConnect Program on Device
+For your board to receive the OTA update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called "app.py":
+
+```
+cd /home/weston/
+python3 app.py
+```
+
+From here, you have the option to push the OTA update to your devices directly from you host machine's console (see step 5A) or you can upload the OTA payload to the online IoTConnect platform and push an OTA update from there (see step 5B).
+
+## 5A. Push OTA Update From Host Machine Console
+Navigate into the "ota-files" directory of you cloned repo (same place as "core-files" and "additional-files") and run this command:
+```
+python3 ota-update.py
+```
+You will be prompted to enter the unique IDs of the devices you wish to send the OTA to. If the firmware for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
+
+The "ota-payload.tar.gz" file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA update will be automatically pushed.
+
+You should then see this output in your host machine console:
+```
+Successful OTA push!
+```
+
+## 5B. Upload/Push OTA Update in IoTConnect Online Platform
 1) In the "Device" Page of IoTConnect, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
@@ -83,22 +107,14 @@ You now have an OTA package file called "ota-package.tar.gz"
 3) Navigate back to the Firmware page and find your new firmware name in the list
 4) Under the "Draft" column within the "Software Upgrades" column, click on the draft number (will be "1" for newly-created firmwares)
 5) Select the black square with the black arrow under "Actions" to publish your firmware and make it available for OTA
-
-## 5. Launch IoTConnect Program on Device
-For your board to receive the OTA update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program. For a board running the basic quickstart IoTConnect program, the required commands are:
-```
-cd /home/weston
-python3 quickstart.py
-```
-
-## 6. Send OTA Package
-* In the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
-* For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
-* Select the software version you chose for your firmware
-* For "Target" select "Devices" from the drop-down
-* Select your device's unique ID from the "Devices" drop-down
-* Click the blue "Update" button to initialize the OTA update
+6) In the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
+7) For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
+8) Select the software version you chose for your firmware
+9) For "Target" select "Devices" from the drop-down
+10) Select your device's unique ID from the "Devices" drop-down
+11) Click the blue "Update" button to initialize the OTA update
 
 ## 7. View Update in Device Console
-Shortly after sending the OTA update, you should see an interruption in the telemetry printout on the console of your device informing you that an OTA package was received, downloaded and executed. Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the program is already working again!
+Shortly after sending the OTA update via either method, you should see an interruption in the telemetry printout on the console of your device informing you that an OTA package was received, downloaded and executed. 
 
+Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations via the "install.sh" script included in the package. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the program is already working again!
