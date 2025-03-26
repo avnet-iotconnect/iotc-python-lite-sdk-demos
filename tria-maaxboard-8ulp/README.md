@@ -62,7 +62,13 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
 5. When prompted for a login, type `root` followed by the ENTER key.
-6. Run these commands to create and move into a directory for your demo files:
+6. Run these commands to update the core board packages and install necessary IoTConnect packages:
+   ```
+   sudo apt-get update
+   python3 -m pip install iotconnect-sdk-lite
+   python3 -m pip install iotconnect-rest-api
+   ```
+7. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
    cd /home/weston/demo
@@ -70,7 +76,30 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-7. Run this command to download and run the device setup script:
+7. Run this command to first protect your IoTConnect credentials:
+   ```
+   export HISTCONTROL=ignoreboth
+   ```
+   Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
+   ```
+   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+   ```
+  For example if these were your credentials:
+  * Email: john.doe@gmail.com
+  * Password: Abc123!
+  * Platform: aws
+  * Environment: technology
+  * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+  Your login command would be:
+  ```
+  iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+  ```
+  You will see this output in the console if your login succeeded:
+  ```
+  Logged in successfully.
+  ```
+
+9. Run this command to download and run the device setup script:
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
    ```
@@ -83,7 +112,7 @@ python3 app.py
 >[!NOTE]
 >Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this directory with the command: ```cd /home/weston/demo```
 
-2. View the dummy telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 7. Resources
 * [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
