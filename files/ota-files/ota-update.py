@@ -7,37 +7,6 @@ import os
 import sys
 import subprocess
 
-# Compresses all relevant files into a .tar.gz to be used for OTA deployment 
-def create_ota_payload():
-    # Get the current directory (the directory where the script is located)
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    # Define the paths for the core-files, additional-files, and install.sh
-    core_files_dir = os.path.join(script_dir, '..', 'core-files')
-    additional_files_dir = os.path.join(script_dir, '..', 'additional-files')
-    install_sh = os.path.join(script_dir, 'install.sh')
-    # Define the tar.gz output file name
-    output_tar_gz = os.path.join(script_dir, 'ota-payload.tar.gz')
-    # Create a .tar.gz file
-    with tarfile.open(output_tar_gz, 'w:gz') as tar:
-        # Add files from core-files directory
-        if os.path.exists(core_files_dir):
-            for root, _, files in os.walk(core_files_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    # Add each file without its directory path
-                    tar.add(file_path, arcname=file)
-        # Add files from additional-files directory, excluding placeholder.txt
-        if os.path.exists(additional_files_dir):
-            for root, _, files in os.walk(additional_files_dir):
-                for file in files:
-                    if file != 'placeholder.txt':  # Skip placeholder.txt
-                        file_path = os.path.join(root, file)
-                        # Add each file without its directory path
-                        tar.add(file_path, arcname=file)
-        # Add the install.sh file
-        if os.path.exists(install_sh):
-            tar.add(install_sh, arcname='install.sh')
-
 
 # Get user to input the DUIDs of all devices to receive the OTA, and extract the GUIDs from those
 def get_device_guids_and_template_code():
@@ -145,9 +114,6 @@ import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib import firmware, upgrade, device, ota, apiurl, util
 import avnet.iotconnect.restapi.lib.credentials as credentials
 from avnet.iotconnect.restapi.lib.error import UsageError
-
-# Compress relevant files into payload .tar.gz
-create_ota_payload()
 
 # Get the device GUID(s) that will receive the OTA, and the template code they use
 device_guid_list, template_code = get_device_guids_and_template_code()
