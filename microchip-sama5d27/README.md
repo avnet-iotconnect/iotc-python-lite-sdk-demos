@@ -80,17 +80,49 @@ A Device Template defines the type of telemetry the platform should expect to re
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 4. When prompted for a login, type `root` followed by the ENTER key.
-5. Execute system updates and install the IoTConnect Python Lite SDK with these commands:
+5. Run these commands to update the core board packages and install necessary IoTConnect packages:
 ```
 sudo apt-get update
 sudo apt-get install python3-pip -y
 python3 -m pip install iotconnect-sdk-lite
+python3 -m pip install iotconnect-rest-api
 ```
-6. Navigate to the proper directory and then run download and run the quickstart script with these commands:
-```
-cd /home/weston
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
-```
+6. Run these commands to create and move into a directory for your demo files:
+   ```
+   mkdir /home/weston/demo
+   cd /home/weston/demo
+   ```
+>[!TIP]
+>To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
+
+7. Run this command to first protect your IoTConnect credentials:
+   ```
+   export HISTCONTROL=ignoreboth
+   ```
+   Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
+   ```
+   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+   ```
+   For example if these were your credentials:
+   * Email: `john.doe@gmail.com`
+   * Password: Abc123!
+   * Platform: aws
+   * Environment: technology
+   * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+     
+   Your login command would be:
+   ```
+   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+   ```
+   You will see this output in the console if your login succeeded:
+   ```
+   Logged in successfully.
+   ```
+
+8. Run this command to download and run the device setup script:
+   ```
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
+   ```
 
 # 7. Start the Application and Verify Data
 After the quickstart script is complete, you can run the example IoTConnect script with these commands:
