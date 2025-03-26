@@ -88,21 +88,21 @@ python3 -m pip install iotconnect-sdk-lite
 python3 -m pip install iotconnect-rest-api
 ```
 6. Run these commands to create and move into a directory for your demo files:
-   ```
-   mkdir /home/weston/demo
-   cd /home/weston/demo
-   ```
+```
+mkdir /home/weston/demo
+cd /home/weston/demo
+```
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
 7. Run this command to first protect your IoTConnect credentials:
-   ```
-   export HISTCONTROL=ignoreboth
-   ```
+```
+export HISTCONTROL=ignoreboth
+```
    Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
-   ```
-   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
-   ```
+```
+iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+```
    For example if these were your credentials:
    * Email: `john.doe@gmail.com`
    * Password: Abc123!
@@ -111,13 +111,13 @@ python3 -m pip install iotconnect-rest-api
    * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
      
    Your login command would be:
-   ```
-   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-   ```
+```
+iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+```
    You will see this output in the console if your login succeeded:
-   ```
-   Logged in successfully.
-   ```
+```
+Logged in successfully.
+```
 
 8. Run this command to download and run the device setup script:
    ```
