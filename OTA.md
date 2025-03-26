@@ -102,6 +102,9 @@ Your login command would be:
 ```
 iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
 ```
+>[!IMPORTANT]
+>Notice that the password argument of the command is **the only arugment that is in quotes.** Make sure you pay attention to this detail. 
+
 You will see this output in the console if your login succeeded:
 ```
 Logged in successfully.
