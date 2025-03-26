@@ -116,6 +116,6 @@ python3 app.py
 2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 7. Resources
-* [Purchase the TRIA Maaxboard OSM93](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
+* [Purchase the TRIA Maaxboard 8ULP](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
