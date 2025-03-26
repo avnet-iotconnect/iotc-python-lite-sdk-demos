@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2025 Avnet
+# Authors: Zackary Andraka <zackary.andraka@avnet.com> et al.
+
 import sys
 import subprocess
 import urllib.request
