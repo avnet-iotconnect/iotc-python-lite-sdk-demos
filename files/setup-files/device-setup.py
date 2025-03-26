@@ -19,7 +19,7 @@ Assumptions before running this script:
 Script Flow:
 1) A new certificate and private key are generated for this device
 2) If the "plitedemo" template does not already exist for this IOTC entity, it is created
-3) The user inputs their desired unique ID for the device and it is created
+3) The user inputs a valid unique ID for the device and it is created
 4) A config file is generated for the device
 5) The basic starter IOTC python program is downloaded to this device
 '''
