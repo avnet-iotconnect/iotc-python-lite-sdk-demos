@@ -120,9 +120,9 @@ Logged in successfully.
 ```
 
 8. Run this command to download and run the device setup script:
-   ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
-   ```
+```
+curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
+```
 
 # 7. Start the Application and Verify Data
 After the quickstart script is complete, you can run the example IoTConnect script with these commands:
