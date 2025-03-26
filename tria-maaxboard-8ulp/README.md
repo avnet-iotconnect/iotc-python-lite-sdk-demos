@@ -85,7 +85,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
    iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
    ```
    For example if these were your credentials:
-   * Email: john.doe@gmail.com
+   * Email: `john.doe@gmail.com`
    * Password: Abc123!
    * Platform: aws
    * Environment: technology
