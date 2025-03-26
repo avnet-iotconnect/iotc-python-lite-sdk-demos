@@ -81,6 +81,32 @@ python3 app.py
 From here, you have the option to push the OTA update to your devices directly from you host machine's console (see step 5A) or you can upload the OTA payload to the online IoTConnect platform and push an OTA update from there (see step 5B).
 
 ## 5A. Push OTA Update From Host Machine Console
+Pushing an OTA update from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
+
+Run this command to first protect your IoTConnect credentials:
+```
+export HISTCONTROL=ignoreboth
+```
+Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
+```
+iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+```
+For example if these were your credentials:
+* Email: john.doe@gmail.com
+* Password: Abc123!
+* Platform: aws
+* Environment: technology
+* Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+     
+Your login command would be:
+```
+iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+```
+You will see this output in the console if your login succeeded:
+```
+Logged in successfully.
+```
+
 Navigate into the "ota-files" directory of you cloned repo (same place as "core-files" and "additional-files") and run this command:
 ```
 python3 ota-update.py
@@ -95,7 +121,7 @@ Successful OTA push!
 ```
 
 ## 5B. Upload/Push OTA Update in IoTConnect Online Platform
-1) In the "Device" Page of IoTConnect, on the blue toolbar at the bottom of the page select "Firmware"
+1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
    * Name your firmware (remember this name for later)
