@@ -76,7 +76,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-7. Run this command to first protect your IoTConnect credentials:
+8. Run this command to first protect your IoTConnect credentials:
    ```
    export HISTCONTROL=ignoreboth
    ```
