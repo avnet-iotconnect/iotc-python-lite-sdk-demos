@@ -84,20 +84,20 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
    ```
    iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
    ```
-  For example if these were your credentials:
-  * Email: john.doe@gmail.com
-  * Password: Abc123!
-  * Platform: aws
-  * Environment: technology
-  * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-  Your login command would be:
-  ```
-  iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-  ```
-  You will see this output in the console if your login succeeded:
-  ```
-  Logged in successfully.
-  ```
+   For example if these were your credentials:
+   * Email: john.doe@gmail.com
+   * Password: Abc123!
+   * Platform: aws
+   * Environment: technology
+   * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+   Your login command would be:
+   ```
+   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+   ```
+   You will see this output in the console if your login succeeded:
+   ```
+   Logged in successfully.
+   ```
 
 9. Run this command to download and run the device setup script:
    ```
