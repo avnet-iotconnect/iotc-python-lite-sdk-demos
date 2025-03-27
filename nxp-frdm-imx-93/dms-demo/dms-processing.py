@@ -23,7 +23,7 @@
 #   This helps reduce noise in the detection.
 #
 #   Thresholds and forced states are controlled by reading from a local JSON
-#   config file ("/home/weston/dms-config.json"), which is updated by your
+#   config file ("/home/weston/demo/dms-config.json"), which is updated by your
 #   IoTConnect script. No Flask endpoints are used for setting thresholds/states;
 #   we only use Flask for video streaming.
 #
@@ -151,7 +151,7 @@ transition_counts = {
 }
 
 # We set some default thresholds here, but they can be overridden by reading
-# from /home/weston/dms-config.json
+# from /home/weston/demo/dms-config.json
 THRESHOLD = 8            # # of consecutive frames needed to confirm a state transition
 EYE_RATIO_THRESHOLD = 0.20
 
@@ -169,7 +169,7 @@ forced_states = {
 #   and we read it each loop.
 # -----------------------------------------------------------------------------
 
-CONFIG_PATH = "/home/weston/dms-config.json"
+CONFIG_PATH = "/home/weston/demo/dms-config.json"
 
 def load_config_from_json():
     global THRESHOLD, EYE_RATIO_THRESHOLD
@@ -197,7 +197,7 @@ def load_config_from_json():
 # -----------------------------------------------------------------------------
 # JSON UTILS FOR DMS-DATA
 
-JSON_PATH = "/home/weston/dms-data.json"
+JSON_PATH = "/home/weston/demo/dms-data.json"
 
 def safe_read_json(path):
     with open(path, "r") as f:
@@ -214,7 +214,7 @@ def safe_write_json(path, data):
 
 def ensure_json_file_valid(json_path):
     """
-    Ensures /home/weston/dms-data.json exists and has valid JSON structure.
+    Ensures /home/weston/demo/dms-data.json exists and has valid JSON structure.
     If missing or invalid, create a default.
     """
     if not os.path.exists(json_path) or os.path.getsize(json_path) == 0:
@@ -267,7 +267,7 @@ left_eye_landmarks = None
 right_eye_landmarks = None
 
 # -----------------------------------------------------------------------------
-# UPDATE JSON: writes the current detection states + extra fields to /home/weston/dms-data.json
+# UPDATE JSON: writes the current detection states + extra fields to /home/weston/demo/dms-data.json
 # -----------------------------------------------------------------------------
 
 def update_json():
@@ -328,7 +328,7 @@ DETECT_MODEL = "face_detection_front_128_full_integer_quant.tflite"
 FACE_LANDMARK_MODEL = "face_landmark_192_full_integer_quant.tflite"
 EYE_LANDMARK_MODEL = "iris_landmark_quant.tflite"
 
-log_dir = "/home/weston/log"
+log_dir = "/home/weston/demo/log"
 stream_mode = "live"  # 'live', 'off', or 'freeze'
 frozen_snapshot = None
 
@@ -377,7 +377,7 @@ def update_json():
     global bbox_xmax
     global bbox_ymax
     
-    json_path = "/home/weston/dms-data.json"
+    json_path = "/home/weston/demo/dms-data.json"
 
     # Ensure the JSON file exists and is not empty before reading
     if not os.path.exists(json_path) or os.path.getsize(json_path) == 0:
