@@ -6,16 +6,16 @@
 #   This script runs on an NXP i.MX platform (e.g. i.MX93) and accomplishes the following:
 #    1) Starts the DMS (Driver Monitoring System) Python script as a subprocess.
 #    2) Connects to Avnet IoTConnect with your device configuration and credentials.
-#    3) Periodically reads /home/weston/dms-data.json for new detection states (yawning,
+#    3) Periodically reads /home/weston/demo/dms-data.json for new detection states (yawning,
 #       eyes_open, bounding box, etc.) and sends that telemetry to IoTConnect.
 #    4) Listens for IoTConnect commands (MQTT) such as 'image', 'get-ip', 'set-user-led',
 #       'set-thresholds', 'set-conditions', and acts on them:
 #        - "image": updates the DMS Flask server's stream mode via a local HTTPS POST.
 #        - "get-ip": returns the device's local IP address.
 #        - "set-user-led": example to set an RGB LED (just logs it by default).
-#        - "set-thresholds": writes new threshold values to /home/weston/dms-config.json
+#        - "set-thresholds": writes new threshold values to /home/weston/demo/dms-config.json
 #          so the DMS script can pick them up (no Flask usage).
-#        - "set-conditions": similarly writes forced states to /home/weston/dms-config.json.
+#        - "set-conditions": similarly writes forced states to /home/weston/demo/dms-config.json.
 #
 #   NOTE: We pass `verify=False` to requests.post(...) because we're using a self-signed
 #   certificate locally. This avoids certificate verification errors when connecting to
@@ -48,7 +48,7 @@ face_detection_model = ""
 face_landmark_model = ""
 eye_landmark_model = ""
 # Open the Python script and read its contents
-with open("/home/weston/dms-processing.py", 'r') as file:
+with open("/home/weston/demo/dms-processing.py", 'r') as file:
     dms_script = file.read()        
 
 # Iterate over each line in the script
@@ -95,7 +95,7 @@ def safe_read_json(path):
 # TELEMETRY DATA DICTIONARY
 # -----------------------------------------------------------------------------
 # This dictionary is periodically sent to IoTConnect. We update it with current
-# DMS data read from /home/weston/dms-data.json.
+# DMS data read from /home/weston/demo/dms-data.json.
 telemetry = {
     "dms_face_detection_model": face_detection_model,
     "dms_landmark_model": face_landmark_model,
@@ -141,15 +141,15 @@ def get_local_ip():
 # DMS CONFIG FILE UPDATER
 # -----------------------------------------------------------------------------
 # If IoTConnect commands change thresholds or forced states, we update
-# /home/weston/dms-config.json. The DMS script will poll this file periodically
+# /home/weston/demo/dms-config.json. The DMS script will poll this file periodically
 # (via load_config_from_json()) to apply the changes.
 # -----------------------------------------------------------------------------
 
-CONFIG_PATH = "/home/weston/dms-config.json"
+CONFIG_PATH = "/home/weston/demo/dms-config.json"
 
 def update_config_file(transition_threshold=None, eye_threshold=None, forced_states=None):
     """
-    Reads /home/weston/dms-config.json, updates any fields that are provided,
+    Reads /home/weston/demo/dms-config.json, updates any fields that are provided,
     and writes it back. If the file doesn't exist, we create a default structure.
     """
     # If file not present, create minimal defaults
@@ -369,13 +369,13 @@ def on_ota(msg: C2dOta):
 # -----------------------------------------------------------------------------
 def read_dms_data():
     """
-    Reads the current DMS data from /home/weston/dms-data.json (if present),
+    Reads the current DMS data from /home/weston/demo/dms-data.json (if present),
     and updates the 'telemetry' dictionary with new values. This data will be
     sent to IoTConnect on each loop iteration below.
     """
     global telemetry
     try:
-        dms_data = safe_read_json("/home/weston/dms-data.json")
+        dms_data = safe_read_json("/home/weston/demo/dms-data.json")
     except (json.JSONDecodeError, FileNotFoundError):
         print("WARNING: dms-data.json missing or invalid. Using defaults.")
         dms_data = {
@@ -422,7 +422,7 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 
 # Start up the DMS program as a separate process
 # (Make sure /usr/bin/eiq-examples-git/dms/dms-processing.py is the correct path)
-DMS_process = subprocess.Popen(["python3", "/home/weston/dms-processing.py"])
+DMS_process = subprocess.Popen(["python3", "/home/weston/demo/dms-processing.py"])
 
 try:
     # Gather local IP address to put in the telemetry
