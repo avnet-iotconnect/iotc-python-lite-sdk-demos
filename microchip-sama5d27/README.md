@@ -127,8 +127,8 @@ curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-s
 # 7. Start the Application and Verify Data
 After the quickstart script is complete, you can run the example IoTConnect script with these commands:
 ```
-cd /home/weston
-python3 quickstart.py
+cd /home/weston/demo
+python3 app.py
 ```
 
 The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
