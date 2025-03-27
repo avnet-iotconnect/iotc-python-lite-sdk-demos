@@ -7,12 +7,13 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
 
-cp ./dms-processing.py 
-# move dms-processing.py
+cp ./download_models.py /usr/bin/eiq-examples-git
 
-# move download_models.py 
+cd /usr/bin/eiq-examples-git
 
-# execute download_models.py
+python3 download_models.py
+
+cd /home/weston/demo
 
 # Create empty dms-data.json with read/write perms
 touch dms-data.json
@@ -31,6 +32,8 @@ for file in *.tflite; do
     cp "$file" "$DEST_DIR"
   fi
 done
+
+# Run python script that uses the API to delete the existing device and then create a new one with the same name but with the i.MX 93 template
 
 echo "Installation complete!"
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
