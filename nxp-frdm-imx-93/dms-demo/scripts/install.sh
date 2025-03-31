@@ -33,7 +33,8 @@ for file in *.tflite; do
   fi
 done
 
-# Run python script that uses the API to delete the existing device and then create a new one with the same name but with the i.MX 93 template
+# Run python script that uses the API to delete the existing device and then create a new one with the same name but with the AI vision demo template
+python3 device-replacement.py "eiqIOTC"
 
 echo "Installation complete!"
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
