@@ -48,6 +48,7 @@ t = template.get_by_template_code('plitedemo')
 if t is None:
     print('plitedemo template not detected in IOTC instance. Adding it now...')
     create_result = template.create('plitedemo_template.JSON', new_template_code='plitedemo', new_template_name='plitedemo')
+    t = template.get_by_template_code(template_code)
 
 # Create IOTC Device
 with open('device-cert.pem', 'r') as file:
