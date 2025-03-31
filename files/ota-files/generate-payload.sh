@@ -15,6 +15,7 @@ output_tar_gz="$script_dir/ota-payload.tar.gz"
 tar -czf "$output_tar_gz" -C "$script_dir" \
     $(find "$core_files_dir" -type f -exec basename {} \;) \
     $(find "$additional_files_dir" -type f ! -name "placeholder.txt" -exec basename {} \;) \
-    install.sh
+    install.sh \
+    device-replacement.py
 
 echo "OTA payload created successfully at $output_tar_gz"
