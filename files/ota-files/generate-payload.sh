@@ -7,7 +7,6 @@ script_dir=$(dirname "$(realpath "$0")")
 core_files_dir="$script_dir/../core-files"
 additional_files_dir="$script_dir/../additional-files"
 install_sh="$script_dir/install.sh"
-device_replacement_py="$script_dir/device-replacement.py"  # Add device-replacement.py explicitly
 
 # Define the tar.gz output file name
 output_tar_gz="$script_dir/ota-payload.tar.gz"
