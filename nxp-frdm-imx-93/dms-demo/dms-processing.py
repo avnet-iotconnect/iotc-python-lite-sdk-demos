@@ -6,28 +6,6 @@
 # you may not use this file except in compliance with the License.
 #
 # SPDX-License-Identifier: Apache-2.0
-#
-# -----------------------------------------------------------------------------
-# PURPOSE:
-#   This script performs face detection, landmark/eye/mouth detection,
-#   then streams results over HTTPS via Flask (so it can be embedded in an
-#   IoTConnect dashboard), and also displays them locally in an OpenCV window.
-#
-#   The four state values:
-#       "head_direction"
-#       "yawning"
-#       "eyes_open"
-#       "alert"
-#
-#   are updated if a candidate new value is confirmed over THRESHOLD consecutive frames.
-#   This helps reduce noise in the detection.
-#
-#   Thresholds and forced states are controlled by reading from a local JSON
-#   config file ("/home/weston/demo/dms-config.json"), which is updated by your
-#   IoTConnect script. No Flask endpoints are used for setting thresholds/states;
-#   we only use Flask for video streaming.
-#
-# -----------------------------------------------------------------------------
 
 import pathlib
 import sys
@@ -355,7 +333,6 @@ face_detector = FaceDetector(model_path = str(MODEL_PATH / DETECT_MODEL),
                              img_size = (target_dim, target_dim))
 face_mesher = FaceMesher(model_path=str((MODEL_PATH / FACE_LANDMARK_MODEL)), delegate_path = args.delegate)
 eye_mesher = EyeMesher(model_path=str((MODEL_PATH / EYE_LANDMARK_MODEL)), delegate_path = args.delegate)
-
 
 yawning = 2
 eyes_open = 2
