@@ -7,6 +7,8 @@ export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
 
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/CN=localhost"
+
 cp ./download_models.py /usr/bin/eiq-examples-git
 
 cd /usr/bin/eiq-examples-git
@@ -32,9 +34,6 @@ for file in *.tflite; do
     cp "$file" "$DEST_DIR"
   fi
 done
-
-# Run python script that uses the API to delete the existing device and then create a new one with the same name but with the AI vision demo template
-python3 device-replacement.py "eiqIOTC"
 
 echo "Installation complete!"
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
