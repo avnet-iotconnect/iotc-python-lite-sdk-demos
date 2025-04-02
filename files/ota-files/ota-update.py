@@ -2,14 +2,14 @@
 # Copyright (C) 2025 Avnet
 # Authors: Zackary Andraka <zackary.andraka@avnet.com> et al.
 
-import tarfile
 import os
 import sys
-import subprocess
 import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib import firmware, upgrade, device, ota, apiurl, util
 import avnet.iotconnect.restapi.lib.credentials as credentials
 from avnet.iotconnect.restapi.lib.error import UsageError
+from http import HTTPMethod
+from avnet.iotconnect.restapi.lib.apirequest import request
 
 '''
 Assumptions before running this script:
@@ -19,11 +19,12 @@ Assumptions before running this script:
 
 Script Flow:
 1) The user inputs the unique IDs of all the devices they want the OTA sent to (all devices must use the same template)
-2) If the template for the specified devices does not have existing firmware, new firmware is created
-3) A new upgrade is created for the firmware for the template
-4) The file "ota-payload.tar.gz" is uploaded to the new upgrade
-5) The new upgrade is published so it is available for OTA
-6) The new upgrade is pushed to all of the devices that were specified
+2) If the user wishes to change the template of the devices, they enter a new template code and the devices are updated to use it
+3) If the template for the specified devices does not have existing firmware, new firmware is created
+4) A new upgrade is created for the firmware for the template
+5) The file "ota-payload.tar.gz" is uploaded to the new upgrade
+6) The new upgrade is published so it is available for OTA
+7) The new upgrade is pushed to all of the devices that were specified
 '''
 
 # Get user to input the DUIDs of all devices to receive the OTA, and extract the GUIDs from those
@@ -65,6 +66,25 @@ def get_device_guids_and_template_code():
     return device_guid_list, template_code
 
 
+# Ask if device template needs to change, and change accordingly
+def update_template_selection(device_guid_list, template_code):
+    while True:
+        resp = input(f'The template code for the given devices is {template_code}. Does the template for the devices need to be changed? (y/Y or n/N)')
+        if resp in ['y', 'Y']:
+            new_template_code = input(f'Enter the template code you would like to switch the devices to:')
+            # Get selected template GUID
+            t = template.get_by_template_code(new_template_code)
+            # API call to update template for every device in the list
+            for dev_guid in device_guid_list:
+                response = request(apiurl.ep_device, f'/device-template/{dev_guid}/updatedevicetemplate', json={"templateGuid": t.guid}, method=HTTPMethod.PUT)
+            return
+        elif resp in ['n', 'N']:
+            print(f'Devices will continue using the {template_code} template')
+            return
+        else:
+            print('Invalid response, please only use y/Y for yes and n/N for No.')
+    
+
 # Create a FW upgrade for the associated template and get its GUID
 def get_fw_upgrade_guid(template_code: str):
     # Check if specified template has firmware associated with it already
@@ -98,6 +118,9 @@ def get_fw_upgrade_guid(template_code: str):
 
 # Get the device GUID(s) that will receive the OTA, and the template code they use
 device_guid_list, template_code = get_device_guids_and_template_code()
+
+# If device template needs to change, change it
+update_template_selection(device_guid_list, template_code)
 
 # Create a FW upgrade for the associated template and get its GUID
 fw_upgrade_guid = get_fw_upgrade_guid(template_code)
