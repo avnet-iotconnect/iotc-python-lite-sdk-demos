@@ -10,6 +10,7 @@ import avnet.iotconnect.restapi.lib.credentials as credentials
 from avnet.iotconnect.restapi.lib.error import UsageError
 from http import HTTPMethod
 from avnet.iotconnect.restapi.lib.apirequest import request
+import time
 
 '''
 Assumptions before running this script:
@@ -77,10 +78,10 @@ def update_template_selection(device_guid_list, template_code):
             # API call to update template for every device in the list
             for dev_guid in device_guid_list:
                 response = request(apiurl.ep_device, f'/device-template/{dev_guid}/updatedevicetemplate', json={"templateGuid": t.guid}, method=HTTPMethod.PUT)
-            return
+            return new_template_code
         elif resp in ['n', 'N']:
             print(f'Devices will continue using the {template_code} template')
-            return
+            return None
         else:
             print('Invalid response, please only use y/Y for yes and n/N for No.')
     
@@ -120,7 +121,9 @@ def get_fw_upgrade_guid(template_code: str):
 device_guid_list, template_code = get_device_guids_and_template_code()
 
 # If device template needs to change, change it
-update_template_selection(device_guid_list, template_code)
+new_template_code = update_template_selection(device_guid_list, template_code)
+if new_template_code is not None:
+    template_code = new_template_code
 
 # Create a FW upgrade for the associated template and get its GUID
 fw_upgrade_guid = get_fw_upgrade_guid(template_code)
