@@ -16,7 +16,7 @@ cd ./nxp-frdm-imx-93/dms-demo/scripts
 ```
 Then run this command to move the Driver Monitoring System AI Demo files into the correct folder for creating an OTA upgrade package:
 ```
-bash ./move-files.sh
+bash ./move-upgrade-files.sh
 ```
 Then run these commands to create the compressed OTA package:
 ```
