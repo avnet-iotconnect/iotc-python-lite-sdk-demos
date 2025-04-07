@@ -7,7 +7,7 @@
 # python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 
-#'''
+if true; then
 
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
@@ -35,7 +35,7 @@ cp /usr/bin/eiq-examples-git/dms/utils.py .
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
 echo "Camera Live Stream url: https://$board_ip:8080/live"
 
-#'''
+fi
 
 # Find and copy all .tflite files in the current directory to the models directory
 DEST_DIR="/usr/bin/eiq-examples-git/models"
