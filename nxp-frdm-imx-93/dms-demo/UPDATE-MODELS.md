@@ -2,7 +2,7 @@
 This guide will help you upgrade the basic IoTConnect Quickstart Demo (random-integer telemetry) to the Driver Monitoring System AI Demo with a single OTA update. The resulting demo will run default model files. After completing the steps in this guide, if you want to modify the demo to include custom model files, check out [this other guide].
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md) and followed [the guide to upgrade to the EIQ Vision AI Driver Monitoring System (DMS) Demo](./README.md), complete those first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md) and followed [the guide to upgrade to the EIQ Vision AI Driver Monitoring System (DMS) Demo](./README.md), complete those first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
