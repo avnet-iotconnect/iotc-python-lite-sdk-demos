@@ -25,13 +25,25 @@ bash ./generate-payload.sh
 ```
 Inside of the ```ota-files``` directory you should now see a file called ```ota-payload.tar.gz```
 
+## 3. Launch IoTConnect Program on Device
+For your board to receive the OTA update, it must be actively connected to IoTConnect. If it is not already, do this by running the main IoTConnect program on your board called "app.py":
 
-From here, you have the option to push the OTA update to your devices directly from you host machine's console (see step 3A) or you can upload the OTA payload to the online IoTConnect platform and push an OTA update from there (see step 3B).
+```
+cd /home/weston/demo
+python3 app.py
+```
 
-## 3A. Push OTA Update From Host Machine Console
+From here, you have the option to push the OTA update to your devices directly from you host machine's console (see step 4A) or you can upload the OTA payload to the online IoTConnect platform and push an OTA update from there (see step 4B).
+
+## 4A. Push OTA Update From Host Machine Console
 Pushing an OTA update from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
-Run this command to first protect your IoTConnect credentials:
+First make sure you install the IoTConnect REST API Python module to your host machine:
+```
+python3 -m pip install iotconnect-rest-api
+```
+
+Run this command to protect your IoTConnect credentials:
 ```
 export HISTCONTROL=ignoreboth
 ```
@@ -73,7 +85,7 @@ You should see this output when the OTA upgrade has been pushed:
 Successful OTA push!
 ```
 
-## 3B. Upload/Push OTA Update in IoTConnect Online Platform
+## 4B. Upload/Push OTA Update in IoTConnect Online Platform
 1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for the eiqIOTC template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
@@ -93,14 +105,14 @@ Successful OTA push!
 10) Select the unique ID(s) for your device(s) from the "Devices" drop-down
 11) Click the blue "Update" button to initialize the OTA update
 
-## 4. View Update in Device Console
+## 5. View Update in Device Console
 Shortly after sending the OTA update via either method, you should see an interruption in the telemetry printout on the console of your device informing you that an OTA package was received, downloaded and executed. 
 
 Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations via the "install.sh" script included in the package. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the new version of the program is already working!
 
-Steps 5 and 6 will walk you through setting up and using a dashboard for this demo on the online IoTConnect platform.
+Steps 6 and 7 will walk you through setting up and using a dashboard for this demo on the online IoTConnect platform.
 
-## 5. Import Dashboard Template
+## 6. Import Dashboard Template
 
 * Download the demo [Dashboard Template](templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
@@ -108,7 +120,7 @@ Steps 5 and 6 will walk you through setting up and using a dashboard for this de
 * **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
 * **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
 
-## 6. Using the Dashboard
+## 7. Using the Dashboard
 
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
