@@ -97,3 +97,23 @@ Successful OTA push!
 Shortly after sending the OTA update via either method, you should see an interruption in the telemetry printout on the console of your device informing you that an OTA package was received, downloaded and executed. 
 
 Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations via the "install.sh" script included in the package. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the new version of the program is already working!
+
+# 5. /IOTCONNECT: Import Dashboard Template
+
+* Download the demo [Dashboard Template](templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
+* **Download** the template then select `Create Dashboard` from the top of the page
+* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
+* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
+* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+
+# 6. /IOTCONNECT: Using the Dashboard
+
+The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
+<details>
+<summary>Table of Supported DSM Attributes</summary>
+<img src="./media/dsm_metrics.png" width="1000">
+</details>
+
+>[!TIP]
+>You can find this slide and others on the demo in the [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
+
