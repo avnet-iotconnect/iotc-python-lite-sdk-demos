@@ -12,9 +12,9 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 ## 2. Add New Model Files and Move Model Update Scripts
 Any new model files you wish to push to your board can be copied into the ```<your leading directories>/iotc-python-lite-sdk-demos/files/additional-files/``` folder of the cloned repo.
 
-Navigate to the ```scripts``` folder for this demo inside of the cloned repo:
+Navigate to the ```scripts``` folder for this demo inside of the cloned ```iotc-python-lite-sdk-demos``` repo:
 ```
-cd <your leading directories>/iotc-python-lite-sdk-demos/nxp-frdm-imx-93/dms-demo/scripts
+cd ./nxp-frdm-imx-93/dms-demo/scripts
 ```
 Then run this command to move the required files into the correct folder for creating an OTA upgrade package:
 ```
