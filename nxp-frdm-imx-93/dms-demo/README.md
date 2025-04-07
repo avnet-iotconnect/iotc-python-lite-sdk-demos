@@ -98,7 +98,7 @@ Shortly after sending the OTA update via either method, you should see an interr
 
 Additionally, the program is designed to re-start itself after the OTA files have been automatically decompressed and moved to their respective destinations via the "install.sh" script included in the package. There is no need for you to do any manual reboots or file manipulation. Your OTA update is complete and the new version of the program is already working!
 
-# 5. /IOTCONNECT: Import Dashboard Template
+## 5. /IOTCONNECT: Import Dashboard Template
 
 * Download the demo [Dashboard Template](templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
@@ -106,7 +106,7 @@ Additionally, the program is designed to re-start itself after the OTA files hav
 * **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
 * **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
 
-# 6. /IOTCONNECT: Using the Dashboard
+## 6. /IOTCONNECT: Using the Dashboard
 
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
