@@ -1,12 +1,12 @@
 # TRIA Maaxboard 8ULP QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Hardware Requirements](#2-hardware-requirements)
+2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
-5. [Device Setup](#6-device-setup)
-6. [Using the Demo](#7-using-the-demo)
-7. [Resources](#8-resources)
+5. [Device Setup](#5-device-setup)
+6. [Using the Demo](#6-using-the-demo)
+7. [Resources](#7-resources)
 
 # 1. Introduction
 This guide is designed to walk through the steps to connect the TRIA Maaxboard 8ULP to the Avnet /IOTCONNECT platform and demonstrate the standard IoT function of telemetry collection.
@@ -22,10 +22,15 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard 8
   </tr>
 </table>
 
-# 2. Hardware Requirements
+# 2. Requirements
+
+## Hardware
 * TRIA Maaxboard 8ULP [Purchase](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/60e2bb73-e479-4f76-821f-0b811ae52643/MaaXBoard-8ULP-User-Guide-v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-60e2bb73-e479-4f76-821f-0b811ae52643-oHYri7w) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-8ulp/?srsltid=AfmBOorNz2jO8e5kEJa7Yn3Qh_B-iuEQiawLVqTFyOsdT7U1ry41Dt_b)
 * 2x USB Type-C Cables
 * 1x Ethernet Cable (and a local router/switch with Internet connectivity)
+
+## Software
+* A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
