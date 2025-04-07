@@ -74,7 +74,7 @@ You now have an OTA payload file called "ota-payload.tar.gz"
 For your board to receive the OTA update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called "app.py":
 
 ```
-cd /home/weston/
+cd /home/weston/demo
 python3 app.py
 ```
 
@@ -83,7 +83,12 @@ From here, you have the option to push the OTA update to your devices directly f
 ## 5A. Push OTA Update From Host Machine Console
 Pushing an OTA update from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
-Run this command to first protect your IoTConnect credentials:
+First make sure you install the IoTConnect REST API Python module to your host machine:
+```
+python3 -m pip install iotconnect-rest-api
+```
+
+Run this command to protect your IoTConnect credentials:
 ```
 export HISTCONTROL=ignoreboth
 ```
