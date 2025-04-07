@@ -18,7 +18,7 @@ cd ./nxp-frdm-imx-93/dms-demo/scripts
 ```
 Then run this command to move the required files into the correct folder for creating an OTA upgrade package:
 ```
-bash ./move-model-update-files.sh
+bash ./move-model-files.sh
 ```
 ## 3. Modify DMS Processing File and Install Script
 For the updated demo to utilize the new TFLITE model(s) you are adding, you need to point to the new model file names in the ```dms-processing.py``` script.
