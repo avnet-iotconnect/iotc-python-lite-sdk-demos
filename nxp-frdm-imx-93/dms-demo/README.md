@@ -1,4 +1,4 @@
-# Upgrading from Basic Demo to AI DMS Demo
+# Upgrading from Basic Demo to EIQ Vision AI Driver Monitoring System (DMS) Demo
 This guide will help you upgrade the basic IoTConnect Quickstart Demo (random-integer telemetry) to the Driver Monitoring System AI Demo with a single OTA update. The resulting demo will run default model files. After completing the steps in this guide, if you want to modify the demo to include custom model files, check out [this other guide].
 
 >[!IMPORTANT]
