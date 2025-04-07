@@ -3,6 +3,12 @@
 # Copyright (C) 2024 Avnet
 # Authors: Zackary Andraka <zackary.andraka@avnet.com> et al.
 
+# ---------UN-COMMENT THIS COMMAND TO ENABLE SDK RE-INSTALLATION-------
+# python3 -m pip install --force-reinstall iotconnect-sdk-lite
+# ---------------------------------------------------------------------
+
+#'''
+
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
@@ -26,6 +32,11 @@ cp /usr/bin/eiq-examples-git/dms/eye_landmark.py .
 cp /usr/bin/eiq-examples-git/dms/face_landmark.py .
 cp /usr/bin/eiq-examples-git/dms/utils.py .
 
+board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
+echo "Camera Live Stream url: https://$board_ip:8080/live"
+
+#'''
+
 # Find and copy all .tflite files in the current directory to the models directory
 DEST_DIR="/usr/bin/eiq-examples-git/models"
 for file in *.tflite; do
@@ -36,5 +47,3 @@ for file in *.tflite; do
 done
 
 echo "Installation complete!"
-board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
-echo "Camera Live Stream url: https://$board_ip:8080/live"
