@@ -39,7 +39,7 @@ cd ../ota-files
 ```
 You will need to make these slight modifications to the ```install.sh``` script for this OTA update so only the required actions are executed:
 
-* Remove the ```#``` from lines 10 and 38 so the majority of the script becomes a comment block
+* In line 10, change the ```true``` to ```false```
 * If you wish to force-reinstall the IoTConnect Python Lite SDK on the board, remove the ```#``` from line 7 as well
 
 ## 4. Create OTA Payload
