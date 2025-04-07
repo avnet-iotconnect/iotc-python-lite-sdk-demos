@@ -14,13 +14,12 @@ Inside of the cloned repo, navigate to the ```scripts``` folder in this director
 ```
 cd ./nxp-frdm-imx-93/dms-demo/scripts
 ```
-Then run this command to move the Driver Monitoring System AI Demo files into the correct folder for creating an OTA upgrade package:
+Then run these commands to move the Driver Monitoring System AI Demo files into the correct folder for creating an OTA upgrade package, and then navigate to that folder:
 ```
 bash ./move-upgrade-files.sh
 cd ../../../files/ota-files
 ```
-
-If you wish to force-reinstall the IoTConnect Python Lite SDK on the board, modify ``install.sh`` to remove the ```#``` from line 7
+If you wish to force-reinstall the IoTConnect Python Lite SDK on the board, modify ``install.sh`` to remove the ```#``` from line 7.
 
 Then you can run this commands to create the compressed OTA package:
 ```
