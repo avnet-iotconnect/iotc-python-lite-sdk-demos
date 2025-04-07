@@ -111,7 +111,7 @@ Additionally, the program is designed to re-start itself after the OTA files hav
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
 <summary>Table of Supported DSM Attributes</summary>
-<img src="./media/dsm_metrics.png" width="1000">
+<img src="../media/dsm_metrics.png" width="1000">
 </details>
 
 >[!TIP]
