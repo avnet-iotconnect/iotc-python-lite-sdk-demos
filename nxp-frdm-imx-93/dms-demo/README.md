@@ -17,10 +17,13 @@ cd ./nxp-frdm-imx-93/dms-demo/scripts
 Then run this command to move the Driver Monitoring System AI Demo files into the correct folder for creating an OTA upgrade package:
 ```
 bash ./move-upgrade-files.sh
-```
-Then run these commands to create the compressed OTA package:
-```
 cd ../../../files/ota-files
+```
+
+If you wish to force-reinstall the IoTConnect Python Lite SDK on the board, modify ``install.sh`` to remove the ```#``` from line 7
+
+Then you can run this commands to create the compressed OTA package:
+```
 bash ./generate-payload.sh
 ```
 Inside of the ```ota-files``` directory you should now see a file called ```ota-payload.tar.gz```
