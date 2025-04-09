@@ -26,20 +26,6 @@ On Linux, you can use server_ca_cert_path="/etc/ssl/certs/DigiCert_Global_Root_C
 or server_ca_cert_path="/etc/ssl/certs/Amazon_Root_CA_1.pem" for AWS
 """
 
-@dataclass
-class ExampleAccelerometerData:
-    x: float
-    y: float
-    z: float
-
-
-@dataclass
-class ExampleSensorData:
-    temperature: float
-    humidity: float
-    accel: ExampleAccelerometerData
-
-
 def on_command(msg: C2dCommand):
     print("Received command", msg.command_name, msg.command_args, msg.ack_id)
     if msg.command_name == "set-user-led":
