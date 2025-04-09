@@ -46,6 +46,13 @@
             "requiredParam": false,
             "requiredAck": false,
             "isOTACommand": false
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
         }
     ],
     "messageVersion": "2.1",
