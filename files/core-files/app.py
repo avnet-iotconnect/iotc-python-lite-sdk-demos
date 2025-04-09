@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2024 Avnet
-# Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
+# Authors: Nikola Markovic <nikola.markovic@avnet.com> and Zackary Andraka <zackary.andraka@avnet.com> et al.
 # This is a self-updating app with OTA support that can update itself with a new OTA package.
 
 import random
 import sys
 import time
-from dataclasses import dataclass
 import subprocess
 import os
 import urllib.request
