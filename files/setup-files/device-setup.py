@@ -9,20 +9,6 @@ import re
 import avnet.iotconnect.restapi.lib.template as template
 from avnet.iotconnect.restapi.lib import device, config
 
-'''
-Assumptions before running this script:
-1) The IoTConnect REST API is already installed on this device
-2) The IoTConnect Python Lite SDK is already installed on this device
-3) The user is currently logged into their IoTConnect account on this machine via the REST API CLI
-
-
-Script Flow:
-1) A new certificate and private key are generated for this device
-2) If the "plitedemo" template does not already exist for this IOTC entity, it is created
-3) The user inputs a valid unique ID for the device and it is created
-4) A config file is generated for the device
-5) The basic starter IOTC python program is downloaded to this device
-'''
 
 # Prompts user for a unique device ID and verifies that it is a valid entry
 def get_input_device_id():
