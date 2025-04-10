@@ -9,7 +9,7 @@ additional_files_dir="$script_dir/../additional-files"
 install_sh="$script_dir/install.sh"
 
 # Define the tar.gz output file name
-output_tar_gz="$script_dir/ota-payload.tar.gz"
+output_tar_gz="$script_dir/update-payload.tar.gz"
 
 # Create the .tar.gz file
 tar -czf "$output_tar_gz" -C "$core_files_dir" \
@@ -19,4 +19,4 @@ tar -czf "$output_tar_gz" -C "$core_files_dir" \
     -C "$script_dir" \
     install.sh
 
-echo "OTA payload created successfully at $output_tar_gz"
+echo "Update payload created successfully at $output_tar_gz"
