@@ -64,5 +64,15 @@ device_guid_list, template_guid = get_device_guids_and_template_guid()
 file_download_command = command.get_with_name(template_guid, 'file-download')
 
 # For every device in the list, send the file-download command with the file URL
+success = 0
+failed = 0
 for device_guid in device_guid_list:
-    command.send(file_download_command.guid, device_guid, result['file'])
+    try:
+        command.send(file_download_command.guid, device_guid, result['file'])
+        print("Update command successful!")
+        success +=1
+    except Exception as e:
+        print(f"Error executing a command: {e}")
+        failed += 1
+print(f"Total successful commands: {success}")
+print(f"Total failed commands: {failed}")
