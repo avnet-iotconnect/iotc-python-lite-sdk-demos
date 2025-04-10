@@ -54,7 +54,7 @@ MY_APP_GUID = str(uuid.uuid4()).upper()
 MODULE_TYPE = storage.FILE_MODULE_FIRMWARE
 
 # Upload local file
-result = storage.create(MODULE_TYPE, MY_APP_GUID, file_path='ota-payload.tar.gz')
+result = storage.create(MODULE_TYPE, MY_APP_GUID, file_path='update-payload.tar.gz')
 print(result['file'])
 
 # Get user to input the DUIDs of all devices to receive the file, and extract the GUIDs from those as well as the template GUID 
