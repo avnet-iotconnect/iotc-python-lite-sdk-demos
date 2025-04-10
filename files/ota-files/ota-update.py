@@ -12,21 +12,6 @@ from http import HTTPMethod
 from avnet.iotconnect.restapi.lib.apirequest import request
 import time
 
-'''
-Assumptions before running this script:
-1) The IoTConnect REST API is already installed on this computer
-2) The user is currently logged into their IoTConnect account on this machine via the REST API CLI
-3) A file called "ota-payload.tar.gz" which includes all of the relavant updated program files exists in this same directory
-
-Script Flow:
-1) The user inputs the unique IDs of all the devices they want the OTA sent to (all devices must use the same template)
-2) If the user wishes to change the template of the devices, they enter a new template code and the devices are updated to use it
-3) If the template for the specified devices does not have existing firmware, new firmware is created
-4) A new upgrade is created for the firmware for the template
-5) The file "ota-payload.tar.gz" is uploaded to the new upgrade
-6) The new upgrade is published so it is available for OTA
-7) The new upgrade is pushed to all of the devices that were specified
-'''
 
 # Get user to input the DUIDs of all devices to receive the OTA, and extract the GUIDs from those
 def get_device_guids_and_template_code():
