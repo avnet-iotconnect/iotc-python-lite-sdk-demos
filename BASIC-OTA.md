@@ -19,7 +19,7 @@ After navigating into the "core-files" directory, modify any of the the files as
 
 You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
 
-Inside of the "ota" directory is a bare-bones version of the install.sh script. This script gets automatically run on the target device when the update package is received and extracted. 
+Inside of the ```update-files``` directory is a bare-bones version of the ```install.sh``` script. This script gets automatically run on the target device when the update package is received and extracted. 
 By default the script is only comments (no actions are necessary for the default demo), but if you want the update to automatically re-install the IoTConnect Python Lite SDK with the newest available version, open install.sh inside of a text editor and find this section of the script:
 
 ```
@@ -27,7 +27,7 @@ By default the script is only comments (no actions are necessary for the default
 # python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 ```
-Since it is commented out, the script **will not** re-install the SDK. To enable the re-install, simply backspace the "# " (remove the trailing space as well to align the command) and then save the file.
+Since it is commented out, the script **will not** re-install the SDK. To enable the re-install, simply backspace the ```# ``` (remove the trailing space as well to align the command) and then save the file.
 
 A modified version that **will** re-install the SDK will look like this:
 ```
@@ -36,9 +36,9 @@ python3 -m pip install --force-reinstall iotconnect-sdk-lite
 # ---------------------------------------------------------------------
 ```
 
-If your update package includes additional files that need to go in specific directories (not in the same directory as the main IoTConnect program), you will need to make further modifications to install.sh to include commands to move the files to their desired directories.
+If your update package includes additional files that need to go in specific directories (not in the same directory as the main IoTConnect program), you will need to make further modifications to ```install.sh``` to include commands to move the files to their desired directories.
 
-For example, adding this code to the end of install.sh will move any TFLITE model files from the current directory (where the .tar.gz file was extracted and where the main IoTConnect program is) into the "/usr/bin/eiq-examples-git/models" directory:
+For example, adding this code to the end of ```install.sh``` will move any TFLITE model files from the current directory (where the .tar.gz file was extracted and where the main IoTConnect program is) into the ```/usr/bin/eiq-examples-git/models``` directory:
 ```
 # Define the target directories
 target_dir_tflite="/usr/bin/eiq-examples-git/models"
@@ -64,14 +64,14 @@ done
 >For the IoTConnect Python Lite SDK, device certificates are stored in the same directory as the main IoTConnect program. Therefore, they do not need to be moved at all upon extraction. They will automatically overwrite the existing certificates.
 
 ## 3. Create Update Package
-Within the "update-files" directory, run this command:
+Within the ```update-files``` directory, run this command:
 ```
 bash ./generate-payload.sh
 ```
-You now have a payload file called "update-payload.tar.gz"
+You now have a payload file called ```update-payload.tar.gz```
 
 ## 4. Launch IoTConnect Program on Device
-For your board to receive the update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called "app.py":
+For your board to receive the update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called ```app.py```:
 
 ```
 cd /home/weston/demo
@@ -115,13 +115,13 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the "update-files" directory of you cloned repo (same place as "core-files" and "additional-files") and run this command:
+Navigate into the ```update-files``` directory of you cloned repo (same place as ```core-files``` and ```additional-files```) and run this command:
 ```
 python3 ota-update.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the OTA update to. If the firmware for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
 
-The "update-payload.tar.gz" file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA update will be automatically pushed.
+The ```update-payload.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA update will be automatically pushed.
 
 You should then see this output in your host machine console:
 ```
@@ -164,13 +164,13 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the "update-files" directory of you cloned repo (same place as "core-files" and "additional-files") and run this command:
+Navigate into the ```update-files``` directory of you cloned repo (same place as ```core-files``` and ```additional-files```) and run this command:
 ```
 python3 cmd-update.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the update to. All of the devices must use the same template. Any devices that use a template different from the first device entered will be rejected. 
 
-After entering your device IDs, the "update-payload.tar.gz" file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
+After entering your device IDs, the ```update-payload.tar.gz``` file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
 
 For every device that receives the command, you should see this ouput in your host machine console:
 ```
