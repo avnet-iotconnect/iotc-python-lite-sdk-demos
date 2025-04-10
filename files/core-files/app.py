@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2024 Avnet
-# Authors: Nikola Markovic <nikola.markovic@avnet.com> et al.
-# This is a self-updating app with OTA support that can update itself with a new OTA package.
+# Authors: Nikola Markovic <nikola.markovic@avnet.com> and Zackary Andraka <zackary.andraka@avnet.com> et al.
+# This is a self-updating app with support to update itself with a new update package via OTA or a command.
 
 import random
 import sys
