@@ -1,7 +1,7 @@
 # Creating and Deploying an Install Package for IoTConnect Python Lite Demos
 
 >[!IMPORTANT]
->Make sure you have completed the Quickstart Guide for your specific board before pushing any installation or update packages. There are basic, mandatory IoTConnect functionalities that are set up in the Quickstart process such as device onboarding and certificate creation.
+>Make sure you have completed the Quickstart Guide for your specific board before pushing any installation or update packages. There are basic, mandatory IoTConnect functionalities that are set up in the Quickstart process such as device onboarding and certificate creation. To find a device's Quickstart Guide, navigate back to the top directory of this repository and then navigate to the directory named after your specific device. The README within that directory will be the Quickstart Guide.
 
 ## Introduction
 This document will help you create and deploy an install package for any IoTConnect Python Lite SDK Demo.
