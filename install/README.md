@@ -1,12 +1,13 @@
 # Creating and Deploying an Update/Install Package for IoTConnect Python Lite Demos
 
 ## Introduction
-This document will help you create and deploy an update package for any IoTConnect Python Lite SDK Demo.
+This document will help you create and deploy an update/install package for any IoTConnect Python Lite SDK Demo.
 
-An update package can do any/all of the following:
+The package can do any/all of the following:
+* Add new files to a device
+* Install new modules/libraries on a device
 * Update existing demo files
 * Update certificates
-* Add new files to a demo (such as new AI models)
 * Re-install the IoTConnect Python Lite SDK with the newest available version.
 
 ## 1. Clone This Git Repository to Your Host Machine
@@ -15,11 +16,11 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Modify and Add Files
-After navigating into the "core-files" directory, modify any of the the files as desired. 
+After navigating into the ```/install/package/``` directory, modify ```app.py``` as desired. 
 
-You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the "additional-files" directory.
+You can add additional files to your demo (such as AI models or replacement certificates) by adding them to the ```/install/package/``` directory.
 
-Inside of the ```update-files``` directory is a bare-bones version of the ```install.sh``` script. This script gets automatically run on the target device when the update package is received and extracted. 
+Inside of the ```/install/package/``` directory is a bare-bones version of the ```install.sh``` script. This script gets automatically run on the target device when the update package is received and extracted. 
 By default the script is only comments (no actions are necessary for the default demo), but if you want the update to automatically re-install the IoTConnect Python Lite SDK with the newest available version, open install.sh inside of a text editor and find this section of the script:
 
 ```
@@ -64,23 +65,23 @@ done
 >For the IoTConnect Python Lite SDK, device certificates are stored in the same directory as the main IoTConnect program. Therefore, they do not need to be moved at all upon extraction. They will automatically overwrite the existing certificates.
 
 ## 3. Create Update Package
-Within the ```update-files``` directory, run this command:
+Within the ```/install/scripts/``` directory, run this command:
 ```
 bash ./generate-payload.sh
 ```
-You now have a payload file called ```update-payload.tar.gz```
+You now have a file called ```install-package.tar.gz``` in the ```/install/package/``` directory.
 
 ## 4. Launch IoTConnect Program on Device
 For your board to receive the update, it must be actively connected to IoTConnect. Do this by running the main IoTConnect program on your board called ```app.py```:
 
-```
-cd /home/weston/demo
-python3 app.py
-```
 
-From here, you have the option to push the update to your devices directly from you host machine's console as an OTA update (see step 5A), through an API device command (see step 5B), or you can upload the payload to the online IoTConnect platform and push an OTA update from there (see step 5C).
+From here, you have the option to push the package to your devices directly to your device in one of the following ways:
+* From you host machine's console as an OTA update (see step 5A)
+* Through an API device command (see step 5B)
+* Through the online IoTConnect platform as an OTA update (see step 5C)
+* Through a local file transfer (see step 5D)
 
-## 5A. Push OTA Update From Host Machine Console
+## 5A. Push Package via OTA Update From Host Machine Console
 Pushing an OTA update from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -115,13 +116,13 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the ```update-files``` directory of you cloned repo (same place as ```core-files``` and ```additional-files```) and run this command:
+Navigate into the ```/install/scripts/``` directory of you cloned repo and run this command:
 ```
 python3 ota-update.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the OTA update to. If the firmware for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
 
-The ```update-payload.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA update will be automatically pushed.
+The ```install-package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA update will be automatically pushed.
 
 You should then see this output in your host machine console:
 ```
@@ -129,7 +130,7 @@ Successful OTA push!
 ```
 
 
-## 5B. Push Update as Command From Host Machine Console
+## 5B. Push Package Through Command From Host Machine Console
 Pushing an update from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -164,13 +165,13 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the ```update-files``` directory of you cloned repo (same place as ```core-files``` and ```additional-files```) and run this command:
+Navigate into the ```/install/scripts/``` directory of you cloned repo and run this command:
 ```
 python3 cmd-update.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the update to. All of the devices must use the same template. Any devices that use a template different from the first device entered will be rejected. 
 
-After entering your device IDs, the ```update-payload.tar.gz``` file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
+After entering your device IDs, the ```install-package.tar.gz``` file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
 
 For every device that receives the command, you should see this ouput in your host machine console:
 ```
@@ -180,14 +181,14 @@ Update command successful!
 After the command is sent to all given devices, you will see a tally of successful and failed commands in your host machine console as well.
 
 
-## 5C. Upload/Push OTA Update in IoTConnect Online Platform
+## 5C. Upload and Push Package Through OTA Update in IoTConnect Online Platform
 1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
    * Name your firmware (remember this name for later)
    * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a firmware for it already exists in your IoTConnect instance)
    * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
-   * Select the "Browse" button in the "File" section and select your ```update-payload.tar.gz```
+   * Select the "Browse" button in the "File" section and select your ```install-package.tar.gz```
    * Add descriptions if you desire
    * Select the "Save" button
 3) Navigate back to the Firmware page and find your new firmware name in the list
@@ -199,6 +200,8 @@ After the command is sent to all given devices, you will see a tally of successf
 9) For "Target" select "Devices" from the drop-down
 10) Select your device's unique ID from the "Devices" drop-down
 11) Click the blue "Update" button to initialize the OTA update
+
+## 5D. Deliver Package Through Local File Transfer
 
 ## 6. View Update in Device Console
 Shortly after sending the update via any method, you should see an interruption in the telemetry printout on the console of your device informing you that an update package was received, downloaded and executed. 
