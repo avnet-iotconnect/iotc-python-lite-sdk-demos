@@ -69,7 +69,7 @@ failed = 0
 for device_guid in device_guid_list:
     try:
         command.send(file_download_command.guid, device_guid, result['file'])
-        print("Update command successful!")
+        print("Command successful!")
         success +=1
     except Exception as e:
         print(f"Error executing a command: {e}")
