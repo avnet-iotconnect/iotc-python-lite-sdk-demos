@@ -28,8 +28,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * STM32MP135F-DK [Purchase](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345651659229/?srsltid=AfmBOopijKmQ00ko1YYwjONN5cRH9akfAf_aqdRSphwy7iE1XhpDUiG0) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um2993-discovery-kit-with-1-ghz-stm32mp135fa-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp135f-dk.html)
 * 1 USB Type-C Cable
 * 1 Micro-USB Cable
-* Ethernet Cable
-* (Optional) WiFi Network SSID and Password
+* Ethernet Cable **or** WiFi Network SSID and Password
 
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
