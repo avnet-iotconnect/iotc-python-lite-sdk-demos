@@ -70,7 +70,7 @@ done
 ## 3. Create Package
 Within the ```/install/scripts/``` directory, run this command:
 ```
-bash ./generate-payload.sh
+bash ./generate-package.sh
 ```
 You now have a file called ```install-package.tar.gz``` in the ```/install/package/``` directory.
 
