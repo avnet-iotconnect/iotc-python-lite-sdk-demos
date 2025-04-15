@@ -26,8 +26,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
 * 1 USB Type-C Cable (second USB-C cable required for flashing)
 * 1 Micro-USB Cable
-* Ethernet Cable
-* (Optional) WiFi Network SSID and Password
+* Ethernet Cable **or** WiFi Network SSID and Password
 
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
