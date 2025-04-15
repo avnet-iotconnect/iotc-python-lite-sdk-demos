@@ -1,4 +1,4 @@
-# Creating and Deploying an Update for IoTConnect Python Lite Demos
+# Creating and Deploying an Update/Install Package for IoTConnect Python Lite Demos
 
 ## Introduction
 This document will help you create and deploy an update package for any IoTConnect Python Lite SDK Demo.
