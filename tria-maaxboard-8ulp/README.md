@@ -107,7 +107,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 
 9. Run this command to download and run the device setup script:
    ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/device-setup.py' && python3 device-setup.py
    ```
 
 # 6. Using the Demo
