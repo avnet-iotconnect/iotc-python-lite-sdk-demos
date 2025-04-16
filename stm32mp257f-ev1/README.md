@@ -36,7 +36,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/board_setup.jpeg" width="600">
+<img src="./media/board-setup.png" width="600">
 </details>
 
 Using the above image as reference, make the following connections:
