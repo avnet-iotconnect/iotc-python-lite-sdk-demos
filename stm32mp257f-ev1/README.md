@@ -57,42 +57,77 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > Be sure to check any SPAM folder for the temporary password after registering.
 
 
-
-
-
-
-
-
-
-
-## Step 1: Serially Connect to the STM32MP257F-EV1
-
-* Using a USB-A to micro-USC cable, connect your board to your PC at the USB_PWR/ST-LINK connector.
-
-     <img src="media/stlink.png"/>
-
+# 5. Device Setup
+1. Open a serial terminal emulator program such as TeraTerm.
+2. Ensure that your serial settings in your terminal emulator are set to:
+  - Baud Rate: 115200
+  - Data Bits: 8
+  - Stop Bits: 1
+  - Parity: None
+3. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
->This USB connection also serves as a power source for the board.
+>A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
+4. If prompted for a login, type `root` followed by the ENTER key.
+5. Run these commands to update the core board packages and install necessary IoTConnect packages:
+   ```
+   sudo apt-get update
+   python3 -m pip install iotconnect-sdk-lite
+   python3 -m pip install iotconnect-rest-api
+   ```
+6. Run these commands to create and move into a directory for your demo files:
+   ```
+   mkdir /home/weston/demo
+   cd /home/weston/demo
+   ```
+>[!TIP]
+>To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-* Check and note which COM port the board is utilizing
-  * On Windows computers this can be seen by using the Device Manager
- 
-     <img src="media/device-manager.png"/>
-
-* Connect to the STM32MP257F-EV1 in a terminal emulator using these serial settings (your COM port number may be different):
-
-     <img src="media/putty.png"/>
+7. Run this command to first protect your IoTConnect credentials:
+   ```
+   export HISTCONTROL=ignoreboth
+   ```
+   Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
+   ```
+   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+   ```
+   For example if these were your credentials:
+   * Email: `john.doe@gmail.com`
+   * Password: Abc123!
+   * Platform: aws
+   * Environment: technology
+   * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
      
+   Your login command would be:
+   ```
+   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+   ```
+   You will see this output in the console if your login succeeded:
+   ```
+   Logged in successfully.
+   ```
+
+8. Run this command to download and run the device setup script:
+   ```
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/device-setup.py' && python3 device-setup.py
+   ```
+
+# 6. Using the Demo
+1. Run the basic demo with this command:
+```
+python3 app.py
+```
 >[!NOTE]
->After connecting to the board over serial, you may need to press ENTER in the terminal window to get the actual terminal prompt text.
+>Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this directory with the command: ```cd /home/weston/demo```
 
-## Step 2: Set Up and Run the Python Lite SDK Demo
-* Connect the board to the internet using an ethernet connection on the ETH2 port
+2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-   <img src="media/ethernet.png"/>
+# 7. Troubleshooting
 
-* Execute ```sudo apt-get update``` to check for and install updates for the system
+To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
-* For the rest of the demo setup and execution processes, follow the instructions in the [Python Lite SDK Quickstart Guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/QUICKSTART.md)
 
-      
+# 8. Resources
+* [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3&srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3)
+* [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
+* [/IOTCONNECT Overview](https://www.iotconnect.io/)
+* [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
