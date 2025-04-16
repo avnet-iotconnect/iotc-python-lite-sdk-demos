@@ -69,7 +69,7 @@ This simple guide will help you download all the necessary files for flashing a 
 
 <img src="media/flash-complete.png"/>
    
-* Flip dipswitch 0 to the "closed" position while leaving the other dipswitches in the "OPEN" position. Push the reset button to properly boot the new image from the SD card.
+* Flip dipswitch 1 to the "closed" position while leaving the other dipswitches in the "OPEN" position. Push the reset button to properly boot the new image from the SD card.
 
 <img src="media/switches-boot.png"/>
    
