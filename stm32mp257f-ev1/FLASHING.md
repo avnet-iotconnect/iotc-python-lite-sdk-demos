@@ -16,11 +16,17 @@ This simple guide will help you download all the necessary files for flashing a 
   
       <img src="media/switches-flash.png"/>
       
-   * Connect and power the board from your host PC with a USB-C cable connected to the "USB_PWR STLINK" USB-C port.
+   * Power the board from your host PC with a USB-C cable connected to the "USB_PWR STLINK" USB-C port.
+   
+      <img src="media/power.png"/>
+
+   * Serially connect your board to your host PC with a USB-C cable connected to the "USB_DRD" USB-C port.
    
       <img src="media/power.png"/>
    
    * Insert a micro-SD (at least 8GB) card into the micro-SD card slot on the board.
+ 
+      <img src="media/sd-card.png"/>
       
    * Push the "RESET" button on your board to ensure it boots into flashing mode.
 
@@ -30,8 +36,8 @@ This simple guide will help you download all the necessary files for flashing a 
 
 <img src="media/open-file.png"/>
       
-* Navigate to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp1\flashlayout_st-image-weston\optee
-   * Select the FlashLayout_sdcard_stm32mp135F-dk-optee.tsv file and then click "Open." 
+* Navigate to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp2\flashlayout_st-image-weston\optee
+   * Select the FlashLayout_sdcard_stm32mp257f-ev1-optee.tsv file and then click "Open." 
    
 <img src="media/file-selection.png"/>
       
@@ -39,8 +45,8 @@ This simple guide will help you download all the necessary files for flashing a 
    
 <img src="media/browse.png"/>
    
-* Navigate once again to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp1
-   * Select the stm32mp1 folder and then click "Select folder."
+* Navigate once again to the directory where you have the unzipped image folder, and then navigate through the folder to get to this directory: {Your preliminary directory}\{downloaded image name}\images\stm32mp2
+   * Select the stm32mp2 folder and then click "Select folder."
 
 <img src="media/binaries-path.png"/>
       
@@ -55,9 +61,7 @@ This simple guide will help you download all the necessary files for flashing a 
 * You are ready to flash. Click the "Download" button to begin the flashing process.
 
 >[!NOTE]
->The STM32MP135F-DK will turn off and on several times throughout the flashing process. It is important to not unplug or disturb it during the process.
 >Given the size of the image it will usually take several minutes to flash.
->It is worth noting that the LCD screen on the board will turn on with some output text during the flash process, so do not be alarmed.
 
 <img src="media/begin-flash.png"/>
    
@@ -65,7 +69,7 @@ This simple guide will help you download all the necessary files for flashing a 
 
 <img src="media/flash-complete.png"/>
    
-* Flip dipswitches 1 and 3 to the "closed" position while leaving dipswitches 2 and 4 in the "OPEN" position. Push the reset button to properly boot the new image from the SD card.
+* Flip dipswitch 0 to the "closed" position while leaving the other dipswitches in the "OPEN" position. Push the reset button to properly boot the new image from the SD card.
 
 <img src="media/switches-boot.png"/>
    
