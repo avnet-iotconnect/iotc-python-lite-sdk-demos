@@ -9,8 +9,6 @@
 7. [Troubleshooting](#7-troubleshooting)
 8. [Resources](#8-resources)
 
-<img src="media/mp257-product.png"/> 
-
 # 1. Introduction
 This guide is designed to walk through the steps to connect the STM32MP257F-EV1 to the Avnet /IOTCONNECT platform and periodically send general telemetry data.
 
