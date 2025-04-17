@@ -1,5 +1,5 @@
 # IoTConnect Starter Demo: Package Creation and Deployment
-This guide will help you create and deliver a package based on the IoTConnect Starter Demo (random-integer telemetry) to the NXP FRDM i.MX 93.
+This guide will help you create and deliver a package based on the IoTConnect Starter Demo to the NXP FRDM i.MX 93.
 
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1.
