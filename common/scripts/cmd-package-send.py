@@ -9,6 +9,7 @@ from avnet.iotconnect.restapi.lib import storage, command, device, template, api
 import sys
 import urllib.request
 from http import HTTPMethod
+from avnet.iotconnect.restapi.lib.apirequest import request
 
 
 # Get user to input the DUIDs of all devices to receive the OTA, and extract the GUIDs from those
@@ -30,7 +31,7 @@ def get_device_guids_and_template_code():
             print('No device found matching the given DUID. Please try again.')
     while True:
         resp = input('Is there another device you wish to send this OTA to? (y/Y or n/N)')
-        if resp in ['y', 'Y']:
+        if resp.strip().lower() == 'y':
             duid = input('Enter the unique ID of the next device you wish to send this OTA to:')
             d = device.get_by_duid(duid)
             # If a device matching the given duid is found
@@ -43,7 +44,7 @@ def get_device_guids_and_template_code():
                     device_guid_list.append(d.guid)
             else:
                 print('No device found matching the given DUID. Please try again.')
-        elif resp in ['n', 'N']:
+        elif resp.strip().lower() == 'n':
             break
         else:
             print('Invalid response, please only use y/Y for yes and n/N for No.')
@@ -54,7 +55,7 @@ def get_device_guids_and_template_code():
 def update_template_selection(device_guid_list, template_code):
     while True:
         resp = input(f'The template code for the given devices is {template_code}. Does the template for the devices need to be changed? (y/Y or n/N)')
-        if resp in ['y', 'Y']:
+        if resp.strip().lower() == 'y':
             new_template_code = input(f'Enter the template code you would like to switch the devices to:')
             t = template.get_by_template_code(new_template_code)
             if t is None:
@@ -72,7 +73,7 @@ def update_template_selection(device_guid_list, template_code):
             for dev_guid in device_guid_list:
                 response = request(apiurl.ep_device, f'/device-template/{dev_guid}/updatedevicetemplate', json={"templateGuid": t.guid}, method=HTTPMethod.PUT)
             return new_template_code
-        elif resp in ['n', 'N']:
+        elif resp.strip().lower() == 'n':
             print(f'Devices will continue using the {template_code} template')
             return None
         else:
