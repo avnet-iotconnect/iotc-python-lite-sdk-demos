@@ -11,7 +11,7 @@
 
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93 to the Avnet /IOTCONNECT platform and demonstrate a Driver Monitoring Solution (DMS) demo by leveraging local AI on the NPU.
+This guide provides step-by-step instructions to set up the NXP FRDM i.MX 93 hardware and integrate it with IoTConnect, Avnet's robust IoT platform.
 
 <table>
   <tr>
@@ -111,7 +111,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 8. Run this command to download and run the device setup script:
    ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
    ```
 
 # 6. Using the Demo

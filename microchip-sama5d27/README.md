@@ -4,10 +4,9 @@
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Software Setup](#6-device-software-setup)
-7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
-8. [Resources](#8-resources)
+5. [Device Setup](#5-device-setup)
+6. [Using the Demo](#6-using-the-demo)
+7. [Resources](#8-resources)
 
 
 # 1. Introduction
@@ -64,12 +63,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-# 5. /IOTCONNECT: Device Template Setup
-A Device Template defines the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/files/plitedemo-template.json?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
-* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
-
-# 6. Device Software Setup
+# 5. Device Setup
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
@@ -121,10 +115,10 @@ Logged in successfully.
 
 8. Run this command to download and run the device setup script:
 ```
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/files/setup-files/device-setup.py' && python3 device-setup.py
+curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
 ```
 
-# 7. Start the Application and Verify Data
+# 6. Using the Demo
 After the quickstart script is complete, you can run the example IoTConnect script with these commands:
 ```
 cd /home/weston/demo
@@ -133,7 +127,7 @@ python3 app.py
 
 The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 7. Resources
 * [Purchase the Microchip SAMA5D27](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

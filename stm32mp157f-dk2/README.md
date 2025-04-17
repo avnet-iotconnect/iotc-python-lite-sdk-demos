@@ -4,11 +4,10 @@
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [/IOTCONNECT: Device Template Setup](#5-iotconnect-device-template-setup)
-6. [Device Software Setup](#6-device-software-setup)
-7. [Start the Application and Verify Data](#7-start-the-application-and-verify-data)
-8. [Troubleshooting](#8-troubleshooting)
-9. [Resources](#9-resources)
+5. [Device Setup](#5-device-setup)
+6. [Using the Demo](#6-using-the-demo)
+7. [Troubleshooting](#7-troubleshooting)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 This guide is designed to walk through the steps to connect the STM32MP157F-DK2 to the Avnet /IOTCONNECT platform and periodically send general telemetry data.
@@ -27,8 +26,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
 * 1 USB Type-C Cable (second USB-C cable required for flashing)
 * 1 Micro-USB Cable
-* Ethernet Cable
-* (Optional) WiFi Network SSID and Password
+* Ethernet Cable **or** WiFi Network SSID and Password
 
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
@@ -58,12 +56,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-# 5. /IOTCONNECT: Device Template Setup
-A Device Template defines the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/files/plitedemo-template.json?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
-* Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
-
-# 6. Device Software Setup
+# 5. Device Setup
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
@@ -74,32 +67,64 @@ A Device Template defines the type of telemetry the platform should expect to re
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 4. When prompted for a login, type `root` followed by the ENTER key.
-5. Execute system updates and install the IoTConnect Python Lite SDK with these commands:
-```
-sudo apt-get update
-sudo apt-get install python3-pip -y
-python3 -m pip install iotconnect-sdk-lite
-```
-6. Navigate to the proper directory and then run download and run the quickstart script with these commands:
-```
-cd /home/weston
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/refs/heads/main/scripts/quickstart.sh' && bash ./quickstart.sh
-```
+5. Run these commands to update the core board packages and install necessary IoTConnect packages:
+   ```
+   sudo apt-get update
+   python3 -m pip install iotconnect-sdk-lite
+   python3 -m pip install iotconnect-rest-api
+   ```
+6. Run these commands to create and move into a directory for your demo files:
+   ```
+   mkdir /home/weston/demo
+   cd /home/weston/demo
+   ```
+>[!TIP]
+>To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-# 7. Start the Application and Verify Data
-After the quickstart script is complete, you can run the example IoTConnect script with these commands:
-```
-cd /home/weston
-python3 quickstart.py
-```
+7. Run this command to first protect your IoTConnect credentials:
+   ```
+   export HISTCONTROL=ignoreboth
+   ```
+   Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
+   ```
+   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
+   ```
+   For example if these were your credentials:
+   * Email: `john.doe@gmail.com`
+   * Password: Abc123!
+   * Platform: aws
+   * Environment: technology
+   * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+     
+   Your login command would be:
+   ```
+   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
+   ```
+   You will see this output in the console if your login succeeded:
+   ```
+   Logged in successfully.
+   ```
 
-The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
+8. Run this command to download and run the device setup script:
+   ```
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
+   ```
 
-# 8. Troubleshooting
+# 6. Using the Demo
+1. Run the basic demo with this command:
+```
+python3 app.py
+```
+>[!NOTE]
+>Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this directory with the command: ```cd /home/weston/demo```
+
+2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+
+# 7. Troubleshooting
 
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
-# 9. Resources
+# 8. Resources
 * [Purchase the STM32MP157F-DK2](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
