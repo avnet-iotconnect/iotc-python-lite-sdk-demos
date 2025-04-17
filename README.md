@@ -17,7 +17,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 To get started connecting your board to IoTConnect, **first follow the Quickstart Guide within your board's specific directory in this repository.** This guide will help you flash any required images, get access to your device's console, and set up basic IoTConnect onboarding for your device.
 
 # Further Customization
-If you want to modify or add onto the basic IoTConnect starter application, you can do so by sending an installation package to your device. Check out the [package creation and deployment guide](./package-create-and-deploy/README.md) for instructions on how to do this. 
+If you want to modify or add onto the basic IoTConnect starter application, you can do so by sending an installation package to your device. Check out the [package creation and deployment guide](./common/README.md) for instructions on how to do this. 
 
 ## Licensing
 
