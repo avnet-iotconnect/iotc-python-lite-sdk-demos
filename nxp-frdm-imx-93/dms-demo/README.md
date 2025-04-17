@@ -53,7 +53,7 @@ From here, you have the option to push the package to your devices directly to y
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
-First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device. The main application directory for each supported device is noted in the specific device's directory's README within this repository (usually ```/home/weston/demo``` for Yocto-based devices).  
+First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
 
 After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and verify that there is a ```package.tar.gz``` present.
 
@@ -102,7 +102,7 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the ```/package-create-and-deploy/scripts/``` directory of you cloned repo and run this command:
+Navigate into the ```/common/scripts/``` directory of you cloned repo and run this command:
 ```
 python3 ota-package-send.py
 ```
@@ -150,7 +150,7 @@ You will see this output in the console if your login succeeded:
 Logged in successfully.
 ```
 
-Navigate into the ```/package-create-and-deploy/scripts/``` directory of you cloned repo and run this command:
+Navigate into the ```/common/scripts/``` directory of you cloned repo and run this command:
 ```
 python3 cmd-package-send.py
 ```
