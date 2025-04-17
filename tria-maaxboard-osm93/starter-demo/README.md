@@ -1,8 +1,8 @@
 # IoTConnect Starter Demo: Package Creation and Deployment
-This guide will help you create and deliver a package based on the IoTConnect Starter Demo (random-integer telemetry) to the NXP FRDM i.MX 93.
+This guide will help you create and deliver a package based on the IoTConnect Starter Demo (random-integer telemetry) to the Tria MaaXBoard OSM93.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1.
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-maaxboard-osm93/README.md), complete that first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
@@ -10,9 +10,9 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```nxp-frdm-imx-93/starter-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```tria-maaxboard-osm93/starter-demo/src/``` directory:
 ```
-cd ./nxp-frdm-imx-93/starter-demo/src/
+cd ./tria-maaxboard-osm93/starter-demo/src/
 ```
 By default, this directory contains the basic starter ```app.py``` and an starter ```install.sh``` script. 
 
