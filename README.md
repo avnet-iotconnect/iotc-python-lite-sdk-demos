@@ -21,7 +21,7 @@ If you want to modify or add onto the basic IoTConnect starter application, you 
 
 Within the directories for each device in this repository is a ```starter-demo``` directory with instructions on how to do this. 
 
-Some devices also include directories for pre-built demos such as the EIQ Vision AI Driver Monitoring System (DMS) Demo for the NXP FRDM i.MX 93. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo.
+Some devices also include directories for pre-built demos such as the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo) for the NXP FRDM i.MX 93. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo.
 
 ## Licensing
 
