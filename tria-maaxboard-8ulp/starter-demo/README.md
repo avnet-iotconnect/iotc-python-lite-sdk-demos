@@ -1,5 +1,5 @@
 # IoTConnect Starter Demo: Package Creation and Deployment
-This guide will help you create and deliver a package based on the IoTConnect Starter Demo (random-integer telemetry) to the Tria MaaXBoard 8ULP.
+This guide will help you create and deliver a package based on the IoTConnect Starter Demo to the Tria MaaXBoard 8ULP.
 
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-maaxboard-8ulp/README.md), complete that first and then return here to pick up on Step 1.
