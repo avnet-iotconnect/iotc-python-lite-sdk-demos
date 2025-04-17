@@ -18,7 +18,7 @@ By default, this directory contains the necessary files to upgrade from the basi
 
 If you wish to achieve something other than the default demo installation, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
 
-For example, if you wish to send new TFLITE models to your board and have the DMS application start using them, you would do the following:
+**For example, if you wish to send new TFLITE models to your board and have the DMS application start using them, you would do the following:**
 
 * Copy the new TFLITE models into the ```src``` directory
 * Modify ```dms-processing.py``` with the new model filenames (lines 351-353)
