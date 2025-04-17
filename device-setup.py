@@ -35,7 +35,7 @@ t = template.get_by_template_code('plitedemo')
 if t is None:
     print('plitedemo template not detected in IOTC instance. Adding it now...')
     # Download template
-    urllib.request.urlretrieve('https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/install/templates/plitedemo-template.json', 'plitedemo-template.json')
+    urllib.request.urlretrieve('https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json', 'plitedemo-template.json')
     create_result = template.create('plitedemo-template.json')
     t = template.get_by_template_code(template_code)
 
