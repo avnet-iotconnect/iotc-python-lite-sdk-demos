@@ -90,6 +90,8 @@ python3 -m pip install iotconnect-rest-api
 6. Run these commands to create and move into a directory for your demo files:
 ```
 mkdir /home/weston/demo
+```
+```
 cd /home/weston/demo
 ```
 >[!TIP]
