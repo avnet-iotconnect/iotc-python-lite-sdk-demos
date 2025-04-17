@@ -33,13 +33,15 @@ After those steps, all that will be contained in the package is:
 * An ```install.sh``` that has been modified to do nothing other than move the new model files into the appropriate directory on the board
 
 ## 3. Create Package
-
-Run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
+Navigate back to the ```dms-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 ```
 bash ./create-package.sh
 ```
+>[!NOTE]
+> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
+ 
 ## 4. Prepare Device to Receive Package
-The most basic way to deliver and run the install package is through a local file transfer. Usually this method would be used on a new board that does not yet have any IoTConnect program on it. See step 5A below for instructions on this method.
+The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for instructions on this method.
 
 For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main IoTConnect program on your board called ```app.py```:
 
