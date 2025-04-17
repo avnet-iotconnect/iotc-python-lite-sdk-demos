@@ -62,5 +62,5 @@ with open('iotcDeviceConfig.json', 'w') as f:
     f.write(device_config)
 
 # Download app.py
-urllib.request.urlretrieve('https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/package-create-and-deploy/package-contents/app.py', 'app.py')
+urllib.request.urlretrieve('https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py', 'app.py')
 print('app.py successfully downloaded. Run it with "python3 app.py".')
