@@ -1,5 +1,5 @@
 # EIQ Vision AI Driver Monitoring System (DMS) Demo: Package Creation and Deployment
-This guide will help you upgrade the basic IoTConnect Quickstart Demo (random-integer telemetry) to the Driver Monitoring System AI Demo with a single update. The resulting demo will run default model files. After completing the steps in this guide, if you want to modify the demo to include custom model files, check out [this other guide](./UPDATE-MODELS.md).
+This guide will help you upgrade the basic IoTConnect Starter Demo to the EIQ Vision AI Driver Monitoring System Demo with a single update. The resulting demo will run default model files. After completing the steps in this guide, if you want to modify the demo to include custom model files, check out [this other guide](./UPDATE-MODELS.md).
 
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1
