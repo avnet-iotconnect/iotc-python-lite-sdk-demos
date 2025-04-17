@@ -10,7 +10,7 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo, navigate to the ```nxp-frdm-imx-93/dms-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```nxp-frdm-imx-93/dms-demo/src/``` directory:
 ```
 cd ./nxp-frdm-imx-93/dms-demo/src/
 ```
