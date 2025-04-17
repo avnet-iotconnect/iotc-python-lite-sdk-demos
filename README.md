@@ -17,7 +17,11 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 To get started connecting your board to IoTConnect, **first follow the Quickstart Guide within your board's specific directory in this repository.** This guide will help you flash any required images, get access to your device's console, and set up basic IoTConnect onboarding for your device.
 
 # Further Customization
-If you want to modify or add onto the basic IoTConnect starter application, you can do so by sending an installation package to your device. Check out the [package creation and deployment guide](./common/README.md) for instructions on how to do this. 
+If you want to modify or add onto the basic IoTConnect starter application, you can do so by sending a software package to your device. 
+
+Within the directories for each device in this repository is a ```starter-demo``` directory with instructions on how to do this. 
+
+Some devices also include directories for pre-built demos such as the EIQ Vision AI Driver Monitoring System (DMS) Demo for the NXP FRDM i.MX 93. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo.
 
 ## Licensing
 
