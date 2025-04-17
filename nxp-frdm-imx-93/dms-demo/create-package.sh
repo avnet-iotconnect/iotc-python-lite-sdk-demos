@@ -10,4 +10,4 @@ tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
 
 cp ./package.tar.gz ../../common/
 
-echo "Created archive $ARCHIVE_NAME located in the common directory."
+echo "Created archive $ARCHIVE_NAME and copied it into the common directory."
