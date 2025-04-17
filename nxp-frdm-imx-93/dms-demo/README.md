@@ -24,8 +24,8 @@ For example, if you wish to send new TFLITE models to your board and have the DM
 * Modify ```dms-processing.py``` with the new model filenames (lines 351-353)
 * Modify ```install.sh``` to remove the unneccessary installation steps (change ```True`` in line 10 to ```False```)
 * Delete these files from ```src``` so the existing copies on the board are not overwritten:
-  *  download-models.py
-  *  app.py
+  *  ```download-models.py```
+  *  ```app.py```
 
 After those steps, all that will be contained in the package is:
 * The new model files
