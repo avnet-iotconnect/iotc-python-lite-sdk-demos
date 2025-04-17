@@ -1,8 +1,8 @@
-# EIQ Vision AI Driver Monitoring System (DMS) Demo: Package Creation and Deployment
-This guide will help you upgrade the basic IoTConnect Quickstart Demo (random-integer telemetry) to the Driver Monitoring System AI Demo with a single update. The resulting demo will run default model files. After completing the steps in this guide, if you want to modify the demo to include custom model files, check out [this other guide](./UPDATE-MODELS.md).
+# IoTConnect Starter Demo: Package Creation and Deployment
+This guide will help you create and deliver a package based on the IoTConnect Starter Demo (random-integer telemetry) to the NXP FRDM i.MX 93.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
@@ -10,30 +10,20 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```nxp-frdm-imx-93/dms-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```nxp-frdm-imx-93/starter-demo/src/``` directory:
 ```
-cd ./nxp-frdm-imx-93/dms-demo/src/
+cd ./nxp-frdm-imx-93/starter-demo/src/
 ```
-By default, this directory contains the necessary files to upgrade from the basic quickstart application to the DMS demo. If this is all you wish to do with this package, you may skip to step 3
+By default, this directory contains the basic starter ```app.py``` and an starter ```install.sh``` script. 
 
-If you wish to achieve something other than the default demo installation, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
+If you want to make a modification to ```app.py```, do that now. If you are not modifying ```app.py``` in this package, you may delete it from the directory.
 
-**For example, if you wish to send new TFLITE models to your board and have the DMS application start using them, you would do the following:**
+If you wish to add more source files to the package, copy them into the ```src``` directory.
 
-* Copy the new TFLITE models into the ```src``` directory
-* Modify ```dms-processing.py``` with the new model filenames (lines 351-353)
-* Modify ```install.sh``` to remove the unneccessary installation steps (change ```True`` in line 10 to ```False```)
-* Delete these files from ```src``` so the existing copies on the board are not overwritten:
-  *  ```download-models.py```
-  *  ```app.py```
-
-After those steps, all that will be contained in the package is:
-* The new model files
-* An updated ```dms-processing.py``` that knows to use the new model files
-* An ```install.sh``` that has been modified to do nothing other than move the new model files into the appropriate directory on the board
+If the device will need to perform some actions (move files, install libaries, etc.) after the package is received, modify ```install.sh``` to perform those actions. It will be automatically executed after the package is recevied and extracted on the device.
 
 ## 3. Create Package
-Navigate back to the ```dms-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
+Navigate back to the ```starter-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 ```
 bash ./create-package.sh
 ```
@@ -190,25 +180,3 @@ After the command is sent to all given devices, you will see a tally of successf
 Shortly after sending the update via any method, you should see an interruption in the telemetry printout on the console of your device informing you that an update package was received, downloaded and executed. 
 
 The program is designed to re-start itself after the update files have been automatically decompressed and the ```install.sh``` script is executed (if included). There is no need for you to do any manual reboots or file manipulation. Your package installation is complete and the program is working again already!
-
-Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS demo on the online IoTConnect platform.
-
-## 7. Import Dashboard Template
-
-* Download the demo [Dashboard Template](templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
-* **Download** the template then select `Create Dashboard` from the top of the page
-* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
-* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
-* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
-
-## 8. Using the Dashboard
-
-The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
-<details>
-<summary>Table of Supported DSM Attributes</summary>
-<img src="../media/dsm_metrics.png" width="1000">
-</details>
-
->[!TIP]
->You can find this slide and others on the demo in the [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
-
