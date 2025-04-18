@@ -42,7 +42,7 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard 8
   3. In the resulting page, download the zipped image folder
   4. Extract the zipped image folder, and then within that navigate into the ```image``` folder
   5. Extract the ```.bz2``` file within this folder to get the final ```.wic``` image file
-  6. Use an SD-card flashing software such as [Balena Etcher]() to flash the ```.wic``` file onto the micro-SD card
+  6. Use an SD-card flashing software such as [Balena Etcher](https://etcher.balena.io/) to flash the ```.wic``` file onto the micro-SD card
   7. After the flash is complete, insert the micro-SD card into the micro-SD card slot on the MaaXBoard until it clicks into place
   8. Power on (or reboot) the MaaXBoard with a USB-C cable and it will boot from the micro-SD card 
 
