@@ -88,7 +88,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
-5. When prompted for a login, type `root` followed by the ENTER key.
+5. When prompted for a login, type `root` for the username. If prompted for a password as well, use `avnet`.
 6. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
    sudo apt-get update
