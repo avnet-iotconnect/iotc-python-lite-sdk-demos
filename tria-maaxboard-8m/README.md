@@ -13,7 +13,7 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard 8
 
 <table>
   <tr>
-    <td><img src="./media/8m-product-image.jpg" width="6000"></td>
+    <td><img src="./media/8m-product-image.png" width="6000"></td>
     <td>MThe MaaXBoard is a low-cost, NXP i.MX 8M processor-based, single board computer ideal for embedded computing and smart edge IoT applications. The i.MX 8M family of application processors are based on the Arm® Cortex®-A53 and Cortex-M4 cores which provide industry-leading audio, voice, and video processing for applications that scale from consumer home audio to industrial building automation and embedded computers.</td>
   </tr>
 </table>
