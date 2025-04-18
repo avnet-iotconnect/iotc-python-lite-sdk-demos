@@ -80,7 +80,11 @@ The free subscription may be obtained directly from iotconnect.io or through the
 6. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
    sudo apt-get update
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
+   ```
+   ```
    python3 -m pip install iotconnect-rest-api
    ```
 >[!TIP]
@@ -89,6 +93,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 7. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
+   ```
+   ```
    cd /home/weston/demo
    ```
 8. Run this command to first protect your IoTConnect credentials:
@@ -114,7 +120,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
    ```
    Logged in successfully.
    ```
-Run this command to download and run the device setup script:
+   Run this command to download and run the device setup script:
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
    ```
