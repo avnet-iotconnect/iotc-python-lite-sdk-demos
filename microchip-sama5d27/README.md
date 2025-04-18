@@ -31,7 +31,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 * Flash Yocto Image to SD Card:
-  1. [Click here](https://www.linux4sam.org/bin/view/Linux4SAM/Sama5d27Som1EKMainPage#eMMC_support_on_SDMMC0) to download the latest image for the SAMA5D27.
+  1. [Click here](https://www.linux4sam.org/bin/view/Linux4SAM/Sama5d27Som1EKMainPage#eMMC_support_on_SDMMC0) to get to the page to download the latest image for the SAMA5D27.
   2. Download the image (link may have updated name that slightly differs from screenshot):
 
     <img src=".//media/image-download.png" alt="Yocto Image Download"/>

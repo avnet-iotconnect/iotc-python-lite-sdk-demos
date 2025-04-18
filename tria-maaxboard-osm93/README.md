@@ -22,7 +22,7 @@ a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-boar
 # 2. Requirements
 ## Hardware
 * Tria MaaXBoard OSM93 [Purchase](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/80927648-7b98-4063-b91e-a8cb2e51e8a6/MaaXBoard+OSM93+User+Guide+v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-80927648-7b98-4063-b91e-a8cb2e51e8a6-pf2HBHv) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
-* 1x USB Type-C Cables (included in kit)
+* 1x USB Type-C Cable
 * 1x USB to TTL Serial 3.3V Adapter Cable (must be purchased separately, this is [the cable used by Avnet's engineer](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1))
 >[!NOTE]
 >The USB to TTL Serial 3.3V Adapter Cable may require you to install a specific driver onto your host machine. The example cable linked above requires a [PL2303 driver](https://www.prolific.com.tw/us/showproduct.aspx?p_id=225&pcid=41).
@@ -80,7 +80,11 @@ The free subscription may be obtained directly from iotconnect.io or through the
 6. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
    sudo apt-get update
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
+   ```
+   ```
    python3 -m pip install iotconnect-rest-api
    ```
 >[!TIP]
@@ -89,6 +93,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 7. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
+   ```
+   ```
    cd /home/weston/demo
    ```
 8. Run this command to first protect your IoTConnect credentials:
@@ -114,7 +120,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
    ```
    Logged in successfully.
    ```
-Run this command to download and run the device setup script:
+   Run this command to download and run the device setup script:
    ```
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
    ```

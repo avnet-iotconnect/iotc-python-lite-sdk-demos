@@ -70,12 +70,18 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 6. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
    sudo apt-get update
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
+   ```
+   ```
    python3 -m pip install iotconnect-rest-api
    ```
 7. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
+   ```
+   ```
    cd /home/weston/demo
    ```
 >[!TIP]
