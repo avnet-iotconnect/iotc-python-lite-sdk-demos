@@ -1,479 +1,296 @@
 # SPDX-License-Identifier: MIT
-# Copyright (C) 2025 Avnet
-# Authors: Nikola Markovic <nikola.markovic@avnet.com>, Zackary Andraka <zackary.andraka@avnet.com>, et al.
-# -----------------------------------------------------------------------------
-# PURPOSE:
-#   This script runs on an NXP i.MX platform (e.g. i.MX93) and accomplishes the following:
-#    1) Starts the DMS (Driver Monitoring System) Python script as a subprocess.
-#    2) Connects to Avnet IoTConnect with your device configuration and credentials.
-#    3) Periodically reads /home/weston/demo/dms-data.json for new detection states (yawning,
-#       eyes_open, bounding box, etc.) and sends that telemetry to IoTConnect.
-#    4) Listens for IoTConnect commands (MQTT) such as 'image', 'get-ip', 'set-user-led',
-#       'set-thresholds', 'set-conditions', and acts on them:
-#        - "image": updates the DMS Flask server's stream mode via a local HTTPS POST.
-#        - "get-ip": returns the device's local IP address.
-#        - "set-user-led": example to set an RGB LED (just logs it by default).
-#        - "set-thresholds": writes new threshold values to /home/weston/demo/dms-config.json
-#          so the DMS script can pick them up (no Flask usage).
-#        - "set-conditions": similarly writes forced states to /home/weston/demo/dms-config.json.
-#
-#   NOTE: We pass `verify=False` to requests.post(...) because we're using a self-signed
-#   certificate locally. This avoids certificate verification errors when connecting to
-#   https://127.0.0.1:8080.
-#
-# -----------------------------------------------------------------------------
+# Copyright (C) 2024 Avnet
+# Authors: Zackary Andraka <zackary.andraka@avnet.com> et al.
+# This is a self-updating app with support to update itself with a new update package via OTA or a command.
 
-import random
 import sys
 import time
 import subprocess
-import json
-import socket
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import os
 import urllib.request
 import requests
-import fcntl
-import os
-import re
+import threading
+import asyncio
+from bleak import BleakClient, BleakScanner
+from bleak.backends.characteristic import BleakGATTCharacteristic
+import pexpect
+import struct
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks, DeviceConfigError
 from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
 from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dOta
 
-# -----------------------------------------------------------------------------
-# HELPER FUNCTIONS FOR SAFE JSON READ/WRITE
-# -----------------------------------------------------------------------------
-face_detection_model = ""
-face_landmark_model = ""
-eye_landmark_model = ""
-# Open the Python script and read its contents
-with open("/home/weston/demo/dms-processing.py", 'r') as file:
-    dms_script = file.read()        
 
-# Iterate over each line in the script
-for line in dms_script.splitlines():
-    if "DETECT_MODEL =" in line:
-        pattern = r'=\s*(.*)'
-        match = re.search(pattern, line)
-        if match:
-            face_detection_model = match.group(1).strip().strip('"') 
-    elif "FACE_LANDMARK_MODEL =" in line:
-        pattern = r'=\s*(.*)'
-        match = re.search(pattern, line)
-        if match:
-            face_landmark_model = match.group(1).strip().strip('"')
-    if "EYE_LANDMARK_MODEL =" in line:
-        pattern = r'=\s*(.*)'
-        match = re.search(pattern, line)
-        if match:
-            eye_landmark_model = match.group(1).strip().strip('"')
-
-
-def safe_write_json(path, data):
-    """
-    Writes JSON to the specified file using an exclusive lock so no other process
-    can write simultaneously, preventing file corruption.
-    """
-    with open(path, "w") as f:
-        fcntl.flock(f, fcntl.LOCK_EX)
-        json.dump(data, f, indent=2)
-        fcntl.flock(f, fcntl.LOCK_UN)
-
-def safe_read_json(path):
-    """
-    Reads JSON from the specified file using a shared lock so other processes
-    won't overwrite while reading.
-    """
-    with open(path, "r") as f:
-        fcntl.flock(f, fcntl.LOCK_SH)
-        data = json.load(f)
-        fcntl.flock(f, fcntl.LOCK_UN)
-    return data
-
-# -----------------------------------------------------------------------------
-# TELEMETRY DATA DICTIONARY
-# -----------------------------------------------------------------------------
-# This dictionary is periodically sent to IoTConnect. We update it with current
-# DMS data read from /home/weston/demo/dms-data.json.
-telemetry = {
-    "dms_face_detection_model": face_detection_model,
-    "dms_landmark_model": face_landmark_model,
-    "dms_eye_model": eye_landmark_model,
-    "dms_head_direction": 0,
-    "dms_yawning": 0,
-    "dms_eyes_open": 1, 
-    "dms_alert": 0,
-    "dms_bbox_xmin": 0,
-    "dms_bbox_ymin": 0,
-    "dms_bbox_xmax": 0,
-    "dms_bbox_ymax": 0,
-    "dms_pitch": 0,
-    "dms_roll": 0,
-    "dms_yaw_val": 0,
-    "dms_mouth_ratio": 0,
-    "dms_left_eye_ratio_smoothed": 0,
-    "dms_right_eye_ratio_smoothed": 0,
-    "camera_ip": ""
-}
-
-# -----------------------------------------------------------------------------
-# UTILITY TO GET LOCAL IP
-# -----------------------------------------------------------------------------
-
-def get_local_ip():
-    """
-    Attempt to find the local IP address by connecting to a public IP (like 8.8.8.8)
-    without sending data. This returns the interface IP used for outbound traffic.
-    If anything goes wrong, default to 127.0.0.1.
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+def extract_and_run_tar_gz(targz_filename: str):
     try:
-        s.connect(("8.8.8.8", 80))
-        ipaddr = s.getsockname()[0]
-    except Exception:
-        ipaddr = "127.0.0.1"
-    finally:
-        s.close()
-    return ipaddr
+        subprocess.run(('tar', '-xzvf', targz_filename, '--overwrite'), check=True)
+        current_directory = os.getcwd()
+        script_file_path = os.path.join(current_directory, 'install.sh')
+        if os.path.isfile(script_file_path):
+            try:
+                subprocess.run(['bash', script_file_path], check=True)
+                os.remove(script_file_path)
+                print('Successfully executed install.sh')
+                return True
+            except subprocess.CalledProcessError as e:
+                os.remove(script_file_path)
+                print(f'Error executing install.sh: {e}')
+                return False
+            except Exception as e:
+                os.remove(script_file_path)
+                print(f'An error occurred: {e}')
+                return False
+        else:
+            print('install.sh not found in the current directory.')
+            return True
+    except subprocess.CalledProcessError:
+        return False
 
-# -----------------------------------------------------------------------------
-# DMS CONFIG FILE UPDATER
-# -----------------------------------------------------------------------------
-# If IoTConnect commands change thresholds or forced states, we update
-# /home/weston/demo/dms-config.json. The DMS script will poll this file periodically
-# (via load_config_from_json()) to apply the changes.
-# -----------------------------------------------------------------------------
-
-CONFIG_PATH = "/home/weston/demo/dms-config.json"
-
-def update_config_file(transition_threshold=None, eye_threshold=None, forced_states=None):
-    """
-    Reads /home/weston/demo/dms-config.json, updates any fields that are provided,
-    and writes it back. If the file doesn't exist, we create a default structure.
-    """
-    # If file not present, create minimal defaults
-    if not os.path.exists(CONFIG_PATH):
-        base = {
-            "transition_threshold": 8,
-            "eye_ratio_threshold": 0.2,
-            "forced_states": {
-                "head_direction": None,
-                "yawning": None,
-                "eyes_open": None
-            }
-        }
-        safe_write_json(CONFIG_PATH, base)
-
-    # Read existing config
-    current = safe_read_json(CONFIG_PATH)
-
-    # Update threshold values if provided
-    if transition_threshold is not None:
-        current["transition_threshold"] = transition_threshold
-    if eye_threshold is not None:
-        current["eye_ratio_threshold"] = eye_threshold
-
-    # Update forced states if provided
-    if forced_states is not None:
-        # Merge with existing forced_states
-        if "forced_states" not in current:
-            current["forced_states"] = {
-                "head_direction": None,
-                "yawning": None,
-                "eyes_open": None
-            }
-        current["forced_states"].update(forced_states)
-
-    # Write updated config back to file
-    safe_write_json(CONFIG_PATH, current)
-
-
-# -----------------------------------------------------------------------------
-# COMMAND CALLBACKS
-# -----------------------------------------------------------------------------
 
 def on_command(msg: C2dCommand):
-    """
-    Called when a command arrives from IoTConnect. Checks command name and arguments,
-    then performs the requested action.
-    """
-    print("Received command", msg.command_name, msg.command_args, msg.ack_id)
-
-    if msg.command_name == "image":
-        # Expects exactly 1 argument: 'live', 'off', or 'snapshot'
+    global c
+    print('Received command', msg.command_name, msg.command_args, msg.ack_id)
+    if msg.command_name == 'file-download':
         if len(msg.command_args) == 1:
-            param = msg.command_args[0]
-            if param in ["live", "off", "snapshot"]:
-                # The DMS is presumably listening at https://127.0.0.1:8080/set_mode
-                # We must pass verify=False if using a self-signed cert (User Note).
-                url = "https://127.0.0.1:8080/set_mode"
-                payload = {"mode": param}
-                try:
-                    r = requests.post(url, json=payload, verify=False)
-                    if r.status_code == 200:
-                        print(f"Set mode to {param}. Response:", r.json())
-                        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, f"Set mode to {param}")
-                    else:
-                        print(f"Failed to set mode. Status {r.status_code}. Resp: {r.text}")
-                        c.send_command_ack(msg, C2dAck.CMD_FAILED, f"Failed with {r.status_code}")
-                except Exception as e:
-                    print("Error calling set_mode:", e)
-                    c.send_command_ack(msg, C2dAck.CMD_FAILED, str(e))
+            status_message = 'Downloading %s to device' % (msg.command_args[0])
+            response = requests.get(msg.command_args[0])
+            if response.status_code == 200:
+                with open('package.tar.gz', 'wb') as file:
+                    for chunk in response.iter_content(chunk_size=8192): 
+                        file.write(chunk)
+                print('File downloaded successfully and saved to package.tar.gz')
             else:
-                print("Unknown image param:", param)
-                c.send_command_ack(msg, C2dAck.CMD_FAILED, f"Unknown param {param}")
-        else:
-            print("Expected 1 argument for image command, got", len(msg.command_args))
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument for image command")
-
-    elif msg.command_name == "get-ip":
-        # Retrieve local IP
-        ip_addr = get_local_ip()
-        ack_message = f"The camera IP is: {ip_addr}"
-        print(ack_message)
-        if msg.ack_id is not None:
-            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, ack_message)
-
-    elif msg.command_name == "set-user-led":
-        # Example command with 3 arguments for R/G/B. We just log it here.
-        if len(msg.command_args) == 3:
-            r_val = int(msg.command_args[0])
-            g_val = int(msg.command_args[1])
-            b_val = int(msg.command_args[2])
-            status_message = f"Setting User LED to R:{r_val} G:{g_val} B:{b_val}"
+                print(f'Failed to download the file. Status code: {response.status_code}')
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, status_message)
             print(status_message)
+            extraction_success = extract_and_run_tar_gz('package.tar.gz')
+            print('Download command successful. Will restart the application...')
+            print('')
+            sys.stdout.flush()
+            os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
         else:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 3 arguments")
-            print("Expected three command arguments, but got", len(msg.command_args))
-
-    elif msg.command_name == "set-thresholds":
-        # Expect 2 arguments: [transition_threshold, eye_ratio_threshold]
-        if len(msg.command_args) == 2:
-            try:
-                t_thresh = int(msg.command_args[0])
-                e_thresh = float(msg.command_args[1])
-                update_config_file(transition_threshold=t_thresh, eye_threshold=e_thresh)
-                c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
-                                   f"Updated thresholds: transition={t_thresh}, eye={e_thresh}")
-            except Exception as e:
-                print("Error in set-thresholds command:", e)
-                c.send_command_ack(msg, C2dAck.CMD_FAILED, str(e))
-        else:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED,
-                               "Expected 2 arguments: transition_threshold, eye_ratio_threshold")
-
-    elif msg.command_name == "set-conditions":
-        # Expect 3 arguments: [head_direction, yawning, eyes_open]
-        # If you want to "unset" a forced state, you could pass 'null' or similar in IoTConnect.
-        if len(msg.command_args) == 3:
-            try:
-                hd = None if msg.command_args[0].lower() == "null" else int(msg.command_args[0])
-                yn = None if msg.command_args[1].lower() == "null" else int(msg.command_args[1])
-                eo = None if msg.command_args[2].lower() == "null" else int(msg.command_args[2])
-                forced = {
-                    "head_direction": hd,
-                    "yawning": yn,
-                    "eyes_open": eo
-                }
-                update_config_file(forced_states=forced)
-                c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
-                                   f"Forced states updated: {forced}")
-            except Exception as e:
-                print("Error in set-conditions command:", e)
-                c.send_command_ack(msg, C2dAck.CMD_FAILED, str(e))
-        else:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED,
-                               "Expected 3 arguments: head_direction, yawning, eyes_open")
-
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, 'Expected 1 argument')
+            print('Expected 1 command argument, but got', len(msg.command_args))	
     else:
-        # Not a recognized command
-        print(f"Command {msg.command_name} not implemented!")
+        print('Command %s not implemented!' % msg.command_name)
         if msg.ack_id is not None:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Not Implemented")
-
-# -----------------------------------------------------------------------------
-# OTA CALLBACK
-# -----------------------------------------------------------------------------
-def exit_and_restart():
-    print("")  # Print a blank line so it doesn't look as confusing in the output.
-    sys.stdout.flush()
-    # restart the process
-    os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
-
-
-def subprocess_run_with_print(args):
-    print("Running command:", ' '.join(args))
-    subprocess.run(args, check=True)
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, 'Not Implemented')
 
 
 def on_ota(msg: C2dOta):
-    # We just print the URL. The actual handling of the OTA request would be project specific.
-    print("Starting OTA downloads for version %s" % msg.version)
-    error_msg = None
+    global c
+    print('Starting OTA downloads for version %s' % msg.version)
     c.send_ota_ack(msg, C2dAck.OTA_DOWNLOADING)
+    extraction_success = False
     for url in msg.urls:
-        print("Downloading OTA file %s from %s" % (url.file_name, url.url))
+        print('Downloading OTA file %s from %s' % (url.file_name, url.url))
         try:
             urllib.request.urlretrieve(url.url, url.file_name)
         except Exception as e:
-            print("Encountered download error", e)
-            error_msg = "Download error for %s" % url.file_name
+            print('Encountered download error', e)
+            error_msg = 'Download error for %s' % url.file_name
             break
-        try:
-            if url.file_name.endswith(".tar.gz"):
-                subprocess_run_with_print(("tar", "-xzvf", url.file_name, "--overwrite"))
-                # If there is an ota-install.sh script in the OTA package, execute it
-                filename = "ota-install.sh"
-                current_directory = os.getcwd()
-                file_path = os.path.join(current_directory, filename)
-                if os.path.isfile(file_path):
-                    try:
-                        # Give the file executable permissions
-                        os.chmod(file_path, 0o755)
-                        print(f"{filename} is now executable.")
-                        # Execute the file
-                        subprocess.run(['bash', file_path], check=True)
-                        print(f"Successfully executed {filename}")
-                        # Delete the ota_install.sh file after execution
-                        os.remove(file_path)
-                        print(f"{filename} has been deleted.")
-
-                    except subprocess.CalledProcessError as e:
-                        print(f"Error executing {filename}: {e}")
-                    except Exception as e:
-                        print(f"An error occurred: {e}")
-                else:
-                    print(f"{filename} not found in the current directory.")
-            else:
-                print("ERROR: Unhandled file format for file %s" % url.file_name)
-                error_msg = "Processing error for %s" % url.file_name
+        if url.file_name.endswith('.tar.gz'):
+            extraction_success = extract_and_run_tar_gz(url.file_name)
+            if extraction_success is False:
                 break
-        except subprocess.CalledProcessError:
-            print("ERROR: Failed to install %s" % url.file_name)
-            error_msg = "Install error for %s" % url.file_name
-            break
-    if error_msg is not None:
-        c.send_ota_ack(msg, C2dAck.OTA_FAILED, error_msg)
-        print('Encountered a download processing error "%s". Not restarting.' % error_msg)  # In hopes that someone pushes a better update
-    else:
-        print("OTA successful. Will restart the application...")
+        else:
+            print('ERROR: Unhandled file format for file %s' % url.file_name)
+    if extraction_success is True:
+        print('OTA successful. Will restart the application...')
         c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)
-        exit_and_restart()
+        print('')
+        sys.stdout.flush()
+        os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
+    else:
+        print('Encountered a download processing error. Not restarting.')
 
 
-
-# -----------------------------------------------------------------------------
-# FUNCTION: read_dms_data
-# -----------------------------------------------------------------------------
-def read_dms_data():
-    """
-    Reads the current DMS data from /home/weston/demo/dms-data.json (if present),
-    and updates the 'telemetry' dictionary with new values. This data will be
-    sent to IoTConnect on each loop iteration below.
-    """
-    global telemetry
-    try:
-        dms_data = safe_read_json("/home/weston/demo/dms-data.json")
-    except (json.JSONDecodeError, FileNotFoundError):
-        print("WARNING: dms-data.json missing or invalid. Using defaults.")
-        dms_data = {
-            "head_direction": 5,
-            "yawning": 0,
-            "eyes_open": 2,
-            "alert": 3,
-            "bbox_xmin": 0,
-            "bbox_ymin": 0,
-            "bbox_xmax": 0,
-            "bbox_ymax": 0
-        }
-
-    telemetry["dms_head_direction"] = dms_data.get("head_direction", 5)
-    telemetry["dms_yawning"]        = dms_data.get("yawning", 0)
-    telemetry["dms_eyes_open"]      = dms_data.get("eyes_open", 2)
-    telemetry["dms_alert"]          = dms_data.get("alert", 3)
-    telemetry["dms_bbox_xmin"]      = dms_data.get("bbox_xmin", 0)
-    telemetry["dms_bbox_ymin"]      = dms_data.get("bbox_ymin", 0)
-    telemetry["dms_bbox_xmax"]      = dms_data.get("bbox_xmax", 0)
-    telemetry["dms_bbox_ymax"]      = dms_data.get("bbox_ymax", 0)
-    telemetry["dms_pitch"]                     = dms_data.get("pitch", 0)
-    telemetry["dms_roll"]                      = dms_data.get("roll", 0)
-    telemetry["dms_yaw_val"]                   = dms_data.get("yaw_val", 0)
-    telemetry["dms_mouth_ratio"]               = dms_data.get("mouth_ratio", 0)
-    telemetry["dms_left_eye_ratio_smoothed"]   = dms_data.get("left_eye_ratio_smoothed", 0)
-    telemetry["dms_right_eye_ratio_smoothed"]  = dms_data.get("right_eye_ratio_smoothed", 0)
-
-# -----------------------------------------------------------------------------
-# DISCONNECTION CALLBACK
-# -----------------------------------------------------------------------------
 def on_disconnect(reason: str, disconnected_from_server: bool):
-    """
-    Called when the device is disconnected from IoTConnect, either because
-    the server closed the connection or the client did.
-    """
-    print("Disconnected%s. Reason: %s" % (" from server" if disconnected_from_server else "", reason))
+    print('Disconnected%s. Reason: %s' % (' from server' if disconnected_from_server else '', reason))
 
-# -----------------------------------------------------------------------------
-# MAIN EXECUTION
-# -----------------------------------------------------------------------------
-# Start the DMS as a separate process, connect to IoTConnect, and loop.
-# -----------------------------------------------------------------------------
 
-# Start up the DMS program as a separate process
-# (Make sure /usr/bin/eiq-examples-git/dms/dms-processing.py is the correct path)
-DMS_process = subprocess.Popen(["python3", "/home/weston/demo/dms-processing.py"])
+telemetry = {
+    'temperature_deg_C': 0,
+    'battery_percentage': 0,
+    'battery_voltage': 0,
+    'battery_current': 0,
+    'battery_status': 'Not_Available',
+    'accel_x_mGs': 0,
+    'accel_y_mGs': 0,
+    'accel_z_mGs': 0,
+    'gyro_x_dps': 0,
+    'gyro_y_dps': 0,
+    'gyro_z_dps': 0,
+    'rms_speed_status_x': 'Not_Available',
+    'rms_speed_status_y': 'Not_Available',
+    'rms_speed_status_z': 'Not_Available',
+    'rms_speed_x_mmps': 0,
+    'rms_speed_y_mmps': 0,
+    'rms_speed_z_mmps': 0,
+    'freq_status_x': 'Not_Available',
+    'freq_status_y': 'Not_Available',
+    'freq_status_z': 'Not_Available',
+    'freq_x_hz': 0,
+    'freq_y_hz': 0,
+    'freq_z_hz': 0,
+    'freq_max_amp_x_ms2': 0,
+    'freq_max_amp_y_ms2': 0,
+    'freq_max_amp_z_ms2': 0,
+    'accel_peak_status_x': 'Not_Available',
+    'accel_peak_status_y': 'Not_Available',
+    'accel_peak_status_z': 'Not_Available',
+    'accel_peak_x_ms2': 0,
+    'accel_peak_y_ms2': 0,
+    'accel_peak_z_ms2': 0
+}
+
+temperature_characteristic = '00040000-0001-11e1-ac36-0002a5d5c51b'
+accel_and_gyro_characteristic = '00c00000-0001-11e1-ac36-0002a5d5c51b'
+battery_characteristic = '00020000-0001-11e1-ac36-0002a5d5c51b'
+rms_speed_characteristic = '00000007-0002-11e1-ac36-0002a5d5c51b'
+peak_acceleration_characteristic = '00000008-0002-11e1-ac36-0002a5d5c51b'
+freq_domain_characteristic = '00000009-0002-11e1-ac36-0002a5d5c51b'
+
+
+def setup_bluetooth():
+    setup_process = pexpect.spawn('bluetoothctl', encoding='utf-8')
+    setup_process.expect('#')
+    setup_process.sendline('power off')
+    time.sleep(1)
+    setup_process.sendline('power on')
+    time.sleep(1)
+    setup_process.close()
+
+
+def temperature_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    telemetry['temperature_deg_C'] = int.from_bytes(data[2:4], 'little') / 10.0
+
+
+def battery_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    telemetry['battery_percentage'] = int.from_bytes(data[2:4], 'little') / 10.0
+    telemetry['battery_voltage'] = int.from_bytes(data[4:6], 'little') / 1000.0
+    telemetry['battery_current'] = int.from_bytes(data[6:8], 'little')
+    status_options = ['Low Battery', 'Discharging', 'Plugged not Charging', 'Charging', 'Unknown']
+    telemetry['battery_status'] = status_options[data[8]]
+
+
+def freq_domain_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    status_options = ['Good', 'Warning', 'Alert']
+    data_binary_str = format(int.from_bytes((data)), '#0122b')[2:]
+    telemetry['freq_status_x'] = status_options[int(data_binary_str[18:20], 2)]
+    telemetry['freq_status_y'] = status_options[int(data_binary_str[20:22], 2)]
+    telemetry['freq_status_z'] = status_options[int(data_binary_str[22:24], 2)]
+    telemetry['freq_x_hz'] = (struct.unpack('<H', data[3:5])[0]) / 10.0
+    telemetry['freq_max_amp_x_ms2'] = (struct.unpack('<H', data[5:7])[0]) / 100.0
+    telemetry['freq_y_hz'] = (struct.unpack('<H', data[7:9])[0]) / 10.0
+    telemetry['freq_max_amp_y_ms2'] = (struct.unpack('<H', data[9:11])[0]) / 100.0
+    telemetry['freq_z_hz'] = (struct.unpack('<H', data[11:13])[0]) / 10.0
+    telemetry['freq_max_amp_z_ms2'] = (struct.unpack('<H', data[13:15])[0]) / 100.0
+
+
+def accel_gyro_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    telemetry['accel_x_mGs'] = int.from_bytes(data[2:4], byteorder='little', signed=True) / 1000.0
+    telemetry['accel_y_mGs'] = int.from_bytes(data[4:6], byteorder='little', signed=True) / 1000.0
+    telemetry['accel_z_mGs'] = int.from_bytes(data[6:8], byteorder='little', signed=True) / 1000.0
+    telemetry['gyro_x_dps'] = int.from_bytes(data[8:10], byteorder='little', signed=True) / 10.0
+    telemetry['gyro_y_dps'] = int.from_bytes(data[10:12], byteorder='little', signed=True) / 10.0
+    telemetry['gyro_z_dps'] = int.from_bytes(data[12:14], byteorder='little', signed=True) / 10.0
+
+
+def peak_accel_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    status_options = ['Good', 'Warning', 'Alert']
+    data_binary_str = format(int.from_bytes((data)), '#0122b')[2:]
+    telemetry['accel_peak_status_x'] = status_options[int(data_binary_str[18:20], 2)]
+    telemetry['accel_peak_status_y'] = status_options[int(data_binary_str[20:22], 2)]
+    telemetry['accel_peak_status_z'] = status_options[int(data_binary_str[22:24], 2)]
+    telemetry['accel_peak_x_ms2'] = struct.unpack('<f', data[3:7])[0]
+    telemetry['accel_peak_y_ms2'] = struct.unpack('<f', data[7:11])[0]
+    telemetry['accel_peak_z_ms2'] = struct.unpack('<f', data[11:15])[0]
+
+
+def rms_speed_data_handler(characteristic: BleakGATTCharacteristic, data: bytearray):
+    global telemetry
+    status_options = ['Good', 'Warning', 'Alert']
+    data_binary_str = format(int.from_bytes((data)), '#0122b')[2:]
+    telemetry['rms_speed_status_x'] = status_options[int(data_binary_str[18:20], 2)]
+    telemetry['rms_speed_status_y'] = status_options[int(data_binary_str[20:22], 2)]
+    telemetry['rms_speed_status_z'] = status_options[int(data_binary_str[22:24], 2)]
+    telemetry['rms_speed_x_mmps'] = struct.unpack('<f', data[3:7])[0]
+    telemetry['rms_speed_y_mmps'] = struct.unpack('<f', data[7:11])[0]
+    telemetry['rms_speed_z_mmps'] = struct.unpack('<f', data[11:15])[0]
+
+
+async def proteus_setup():
+    setup_bluetooth()
+    print('starting scan...')
+    device = await BleakScanner.find_device_by_name('PROTEUS')
+    if device is None:
+        print('ERROR: could not find PROTEUS device')
+        return
+    print('Connecting to device...')
+    async with BleakClient(device) as client:
+        print('Connected')
+        await client.start_notify(accel_and_gyro_characteristic, accel_gyro_data_handler)
+        await client.start_notify(rms_speed_characteristic, rms_speed_data_handler)
+        await client.start_notify(peak_acceleration_characteristic, peak_accel_data_handler)
+        await client.start_notify(freq_domain_characteristic, freq_domain_data_handler)
+        await client.start_notify(temperature_characteristic, temperature_data_handler)
+        await client.start_notify(battery_characteristic, battery_data_handler)
+        while True:
+            await asyncio.sleep(1)
+
+
+def proteus_loop():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(proteus_setup())
+    loop.close()
+
 
 try:
-    # Gather local IP address to put in the telemetry
-    ip_str = get_local_ip()
-    telemetry["camera_ip"] = ip_str
-    print(f"Camera IP at startup: {ip_str}")
-
-    # Load device config from iotcDeviceConfig.json
     device_config = DeviceConfig.from_iotc_device_config_json_file(
-        device_config_json_path="iotcDeviceConfig.json",
-        device_cert_path="device-cert.pem",
-        device_pkey_path="device-pkey.pem"
+        device_config_json_path='iotcDeviceConfig.json',
+        device_cert_path='device-cert.pem',
+        device_pkey_path='device-pkey.pem'
     )
 
-    # Create the IoTConnect client with our callbacks
     c = Client(
         config=device_config,
         callbacks=Callbacks(
-            ota_cb = on_ota,
+            ota_cb=on_ota,
             command_cb=on_command,
             disconnected_cb=on_disconnect
         )
     )
-
-    # Continuously ensure connection and send telemetry every 2 seconds
+    proteus_thread = threading.Thread(target=proteus_loop)
+    proteus_thread.start()
     while True:
         if not c.is_connected():
             print('(re)connecting...')
             c.connect()
             if not c.is_connected():
                 print('Unable to connect. Exiting.')
+                if proteus_thread and proteus_thread.is_alive():
+                    proteus_thread.join()
                 sys.exit(2)
 
-        # Read fresh data from dms-data.json, update our telemetry dict
-        read_dms_data()
-        # Send the telemetry to IoTConnect
         c.send_telemetry(telemetry)
-        # Wait before next iteration
-        time.sleep(2)
+        time.sleep(3)
 
-except DeviceConfigError as dce:
-    print(dce)
-    DMS_process.terminate()
+except Exception as e:
+    print(e)
+    if proteus_thread and proteus_thread.is_alive():
+        proteus_thread.join()
     sys.exit(1)
 
 except KeyboardInterrupt:
-    print("Exiting.")
-    DMS_process.terminate()
-    sys.exit(0)
-
-except Exception as ex:
-    print("Exception occurred:", ex)
-    DMS_process.terminate()
+    print('Exiting.')
+    if proteus_thread and proteus_thread.is_alive():
+        proteus_thread.join()
     sys.exit(0)
