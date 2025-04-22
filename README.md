@@ -12,6 +12,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp135f-dk.html))
 * [Tria MaaXBoard OSM93](tria-maaxboard-osm93) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-osm93/))
 * [Tria MaaXBoard 8ULP](tria-maaxboard-8ulp) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-8ulp/))
+* [Tria MaaXBoard 8M](tria-maaxboard-8m) - ([Product Link](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a)
 
 # Getting Started
 To get started connecting your board to IoTConnect, **first follow the Quickstart Guide within your board's specific directory in this repository.** This guide will help you flash any required images, get access to your device's console, and set up basic IoTConnect onboarding for your device.
