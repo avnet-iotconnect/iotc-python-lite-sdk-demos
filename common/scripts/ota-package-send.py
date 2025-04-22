@@ -63,7 +63,7 @@ def update_template_selection(device_guid_list, template_code):
             if t is None:
                 print(f'{new_template_code} template not detected in IOTC instance. Adding it now...')
                 # Download template
-                urllib.request.urlretrieve(f'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/install/templates/{new_template_code}-template.json', f'{new_template_code}-template.json')
+                urllib.request.urlretrieve(f'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/{new_template_code}-template.json', f'{new_template_code}-template.json')
                 create_result = template.create(f'{new_template_code}-template.json')
             # Get selected template GUID
             t = template.get_by_template_code(new_template_code)
