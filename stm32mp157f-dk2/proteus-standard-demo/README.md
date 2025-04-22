@@ -36,6 +36,9 @@ From here, you have the option to push the package to your devices directly to y
 * Through an API device command (see step 5C)
 * Through the online IoTConnect platform as an OTA (see step 5D)
 
+>[!IMPORTANT]
+> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (*"plitedemo"* to *"PROTEUS"*) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
