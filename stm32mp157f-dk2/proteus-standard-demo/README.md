@@ -39,6 +39,17 @@ From here, you have the option to push the package to your devices directly to y
 >[!IMPORTANT]
 > Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (*"plitedemo"* to *"PROTEUS"*) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
 
+
+## 5. PROTEUS Sensor Setup
+* For assembly, follow section 4.1 in the provided [getting started document](https://www.st.com/resource/en/user_manual/um3000-getting-started-with-the-stevalproteus1-evaluation-kit-for-condition-monitoring-based-on-the-24-ghz-stm32wb5mmg-module-stmicroelectronics.pdf) for the PROTEUS.
+
+>[!TIP]
+>Getting the battery connector to solidly seat into its slot on the main board is a bit tricky, so make sure you take your time on that step.
+  
+* After the sensor kit is assembled, power the board with a Micro-USB cable from a 5V source. While the device has a battery, its level of charge when it comes from the manufacturer can vary.
+
+* Using a small flathead screwdriver (the kind you might use to repair a set of eyeglasses), a straightened paperclip, or some type of small blunt pin, press and hold the S2 power switch down for 3 seconds. If you have the device sitting right-side-up on a desk with the Micro-USB connector facing to your left, the S2 button will be accessed through the only slot in the plastic casing that is facing you.
+
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
