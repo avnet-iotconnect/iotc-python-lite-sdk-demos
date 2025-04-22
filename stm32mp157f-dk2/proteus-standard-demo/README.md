@@ -24,7 +24,7 @@ Navigate back to the ```dms-demo``` directory and then run this command to creat
 bash ./create-package.sh
 ```
 >[!NOTE]
-> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
+> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 6B and 6C.
  
 ## 4. Prepare Device to Receive Package
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for instructions on this method.
@@ -32,9 +32,9 @@ The most basic way to deliver and run the install package is through a local fil
 For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main IoTConnect program on your board called ```app.py```:
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
-* From you host machine's console as an OTA (see step 5B)
-* Through an API device command (see step 5C)
-* Through the online IoTConnect platform as an OTA (see step 5D)
+* From you host machine's console as an OTA (see step 6B)
+* Through an API device command (see step 6C)
+* Through the online IoTConnect platform as an OTA (see step 6D)
 
 >[!IMPORTANT]
 > Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (*"plitedemo"* to *"PROTEUS"*) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
@@ -50,7 +50,9 @@ From here, you have the option to push the package to your devices directly to y
 
 * Using a small flathead screwdriver (the kind you might use to repair a set of eyeglasses), a straightened paperclip, or some type of small blunt pin, press and hold the S2 power switch down for 3 seconds. If you have the device sitting right-side-up on a desk with the Micro-USB connector facing to your left, the S2 button will be accessed through the only slot in the plastic casing that is facing you.
 
-## 5A. Deliver Package Through Local File Transfer
+* 
+
+## 6A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
@@ -67,7 +69,7 @@ Lastly, execute the ```install.sh``` script to perform any additional file movem
 bash ./install.sh
 ```
 
-## 5B. Push Package via OTA From Host Machine Console
+## 6B. Push Package via OTA From Host Machine Console
 Pushing an OTA from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -115,7 +117,7 @@ You should then see this output in your host machine console:
 Successful OTA push!
 ```
 
-## 5C. Push Package Through Command From Host Machine Console
+## 6C. Push Package Through Command From Host Machine Console
 Pushing an package from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -166,7 +168,7 @@ Command successful!
 After the command is sent to all given devices, you will see a tally of successful and failed commands in your host machine console as well.
 
 
-## 5D. Upload and Push Package Through OTA in IoTConnect Online Platform
+## 6D. Upload and Push Package Through OTA in IoTConnect Online Platform
 1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
