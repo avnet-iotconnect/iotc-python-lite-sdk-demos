@@ -131,7 +131,7 @@ python3 app.py
 
 # 7. Troubleshooting
 
-To return the board to an out-of-box state, you can flash a fresh image onto the SD card. For instructions on this process, refer to the ["Populate the target and boot the image" page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
+To return the board to an out-of-box state, you can flash a fresh image onto the SD card. For instructions on this process, refer to the "Populate the target and boot the image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
 
 
 # 8. Resources
