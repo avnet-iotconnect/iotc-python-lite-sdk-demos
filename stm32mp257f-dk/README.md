@@ -1,4 +1,4 @@
-# STM32MP257F-EV1 Quickstart
+# STM32MP257F-DK Quickstart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -10,12 +10,12 @@
 8. [Resources](#8-resources)
 
 # 1. Introduction
-This guide is designed to walk through the steps to connect the STM32MP257F-EV1 to the Avnet /IOTCONNECT platform and periodically send general telemetry data.
+This guide is designed to walk through the steps to connect the STM32MP257F-DK to the Avnet /IOTCONNECT platform and periodically send general telemetry data.
 
 <table>
   <tr>
     <td><img src="media/mp257-product.png" width="6000"></td>
-    <td>The STM32MP257F-EV1 Evaluation board is designed as a complete demonstration and development platform for the STMicroelectronics STM32MP257FAI3 based on the Arm® Cortex® A35 and M33.he product leverages the capabilities of STM32MP2 series microprocessors to allow users to develop applications using STM32 MPU OpenSTLinux distribution software for the main processor (Arm®dual core Cortex®‑A35) and STM32CubeMP2 software for the coprocessor (Arm® Cortex®‑M33). The product includes an ST-LINK embedded debug tool, LEDs, push-buttons, three 1 Gbit/s Ethernet, two CAN FD, one USB Type-C® DRD connector, two USB Host Type-A connectors, one mini PCIE connector, one LCD LVDS display connector, one LCD DSI connector, one camera connector, microSD™ card, eMMC, and NOR flash memory. To expand the functionality of the STM32MP257F-EV1 Evaluation board, one GPIO expansion connector is also available for Raspberry Pi® shields, and one mikroBUS™ expansion connector.</td>
+    <td>The STM32MP257F-DK Discovery kit is designed as a complete demonstration and development platform for the STMicroelectronics STM32MP257FAK3 based on the Arm® Cortex® A35 and M33. The product leverages the capabilities of STM32MP2 series microprocessors to allow users to develop applications using STM32 MPU OpenSTLinux Distribution software for the main processor (Arm® dual core Cortex®‑A35) and STM32CubeMP2 software for the coprocessor (Arm® Cortex®‑M33).</td>
   </tr>
 </table>
 
@@ -23,7 +23,7 @@ This guide is designed to walk through the steps to connect the STM32MP257F-EV1 
 This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
 
 ## Hardware 
-* STM32MP257F-EV1 [Purchase](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooi8P39Xi7OPSW1CMYH3uWdvLvtFk_jceqzKMmL64x2kRm2Roxa&srsltid=AfmBOooi8P39Xi7OPSW1CMYH3uWdvLvtFk_jceqzKMmL64x2kRm2Roxa) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3359-evaluation-board-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html)
+* STM32MP257F-DK [Purchase](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-dk/EVOLVE-115914011/) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html)
 * 1 USB Type-C Cable
 * Ethernet Cable **or** WiFi Network SSID and Password
 
@@ -40,6 +40,7 @@ See the reference image below for cable connections.
 Using the above image as reference, make the following connections:
 1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
 2. Connect the USB-C cable from a your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2**.
+3. Install the included micro-SD card into the micro-SD slot labeled **#3** on the underside of the board (make sure it clicks into place).
 
 # 4. /IOTCONNECT: Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
@@ -134,7 +135,7 @@ To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.
 
 
 # 8. Resources
-* [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3&srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3)
+* [Purchase the STM32MP257F-DK](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-dk/EVOLVE-115914011/)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
