@@ -74,6 +74,9 @@ The free subscription may be obtained directly from iotconnect.io or through the
    sudo apt-get update
    ```
    ```
+   sudo apt-get install python3-pip -y
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
    ```
    ```
