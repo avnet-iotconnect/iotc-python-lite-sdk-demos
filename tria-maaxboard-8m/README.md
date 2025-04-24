@@ -94,6 +94,9 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
    sudo apt-get update
    ```
    ```
+   sudo apt-get install python3-pip -y
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
    ```
    ```
