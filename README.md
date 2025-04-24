@@ -7,12 +7,13 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Product Link](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/))
-* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html))
-* [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html))
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp135f-dk.html))
-* [Tria MaaXBoard OSM93](tria-maaxboard-osm93) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-osm93/))
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html))
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html))
+* [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html))
+* [Tria MaaXBoard 8M](tria-maaxboard-8m) - ([Product Link](https://www.tria-technologies.com/product/maaxboard/))
 * [Tria MaaXBoard 8ULP](tria-maaxboard-8ulp) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-8ulp/))
-* [Tria MaaXBoard 8M](tria-maaxboard-8m) - ([Product Link](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a)
+* [Tria MaaXBoard OSM93](tria-maaxboard-osm93) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-osm93/))
 
 # Getting Started
 To get started connecting your board to IoTConnect, **first follow the Quickstart Guide within your board's specific directory in this repository.** This guide will help you flash any required images, get access to your device's console, and set up basic IoTConnect onboarding for your device.
