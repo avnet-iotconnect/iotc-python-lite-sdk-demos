@@ -77,6 +77,12 @@ The free subscription may be obtained directly from iotconnect.io or through the
    sudo apt-get install python3-pip -y
    ```
    ```
+   wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/main/stm32mp135f-dk/cffi-1.17.1-cp311-cp311-linux_armv7l.whl
+   ```
+   ```
+   python3 -m pip install ./cffi-1.17.1-cp311-cp311-linux_armv7l.whl
+   ```
+   ```
    python3 -m pip install iotconnect-sdk-lite
    ```
    ```
