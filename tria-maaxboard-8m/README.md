@@ -33,18 +33,11 @@ This guide is designed to walk through the steps to connect the TRIA Maaxboard 8
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
   
 * Flash Yocto Image to SD Card:
-  1. [Click here](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px) to get to the MaaXBoard's product page on Avnet.com
-  2. Scroll down the page and on click on the "Reference Designs" tab.
-  3. Under "Image Package" click on the link for the Yocto Out of Box Image (link may have updated name that slightly differs from screenshot):
-
-    <img src=".//media/image-download-link.png" alt="Yocto Image Download"/>
-
-  3. In the resulting page, download the zipped image folder
-  4. Extract the zipped image folder, and then within that navigate into the ```image``` folder
-  5. Extract the ```.bz2``` file within this folder to get the final ```.wic``` image file
-  6. Use an SD-card flashing software such as [Balena Etcher](https://etcher.balena.io/) to flash the ```.wic``` file onto the micro-SD card
-  7. After the flash is complete, insert the micro-SD card into the micro-SD card slot on the MaaXBoard until it clicks into place
-  8. Power on (or reboot) the MaaXBoard with a USB-C cable and it will boot from the micro-SD card 
+  1. [Click here](https://s3.us-east-1.amazonaws.com/downloads.iotconnect.io/images/avnet-image-full-maaxboard-20231215021741.rootfs.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA4PPV7VOCQGW7DHFD%2F20250428%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250428T202511Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCICtFfmTyTUGfpuD%2F7jl5yTk%2BKs3eT2vdxWXX4bQCV0OvAiEA%2BotBiKNT0XzXa0GxOW1kjPyxPK4XDhy8y7G1hs%2F8%2BZ8q8QIIfhAAGgw4NTc4OTg3MjQyMjkiDHJAUts7nEdqRAaxPirOAuO5nTL9KNDgsGHig5a3KFqQPWtmfjfVhY9iWGXLE9sIl%2BYl6gjMqzUn04Kf%2BVpCQr0U8DHOiJyfzC3OsldsVoLwVLDXDT7UPbyVxr9ls11sSm6ZhtP5EQd8QfOnM87Aem6BPU5tuJp%2B1gOwutQ7Bj5pm35JMPh7Fa38fDLyShJe7%2BRM12bRLPK8Az3FDojvoQL7GVRT%2FqIAKJERv3JlpCJ3mkxRNHQnw33T12%2BX6FQqfdvUUWdeXImo7RST6pAnRfR01aLiqYmyTDXoKcyXWkrNxW9vOdvu2DRg%2Fw7w0zO85lBmfKXsspNK7%2Fm4DTNWcaZ%2FFnlayZT%2Bxt1%2FUTvI63%2F96hDrf9EwbO6d1sKfrTY0eN%2FKR21uaPn%2BjRsB9Up%2BT03wRrrtR82g8Ij4MsQYubQGBMcAc6D8R7Ln8GWpcP3vYeRRBbbRMQyHML2wC7gw6PW%2BwAY6rQLhuIEQ67X9VGk3ruc%2FakUv%2FRBw7%2Ftj3xiHA4%2FOCUd8OSyYGeVnQUmGAO7mYZsysx6MeA0KklMR9kBuTNemT%2F8MVg3018smTVDjKPaZa2NKw4Ced41BbfXjPpPZmfE3WsC3VUGqSTihWRgsu%2BvQy5dPMl1XpEivZD6hgZ21BtPUi9jaTRvBtzG26hqqAnVKPTNSqG1UBHRU820J3Nthd0z2571yG21ticuqJ%2FNdCsARzHeOMRnHDUD%2FfTRsiegnBzXWqGLWxveM5bOZitkBgYPhqunN2FChP0e%2FdFqD%2FTDmjiJ5IDSXpyHUOQHfu7tJsUmVZOIJRLSlFqlsXvWpQoNyItPo5go9IG2xZ%2F9cnhO7iBRZElCyNJl1t%2B8r1JqP3uGLxGvNeEfJjxCELZpj&X-Amz-Signature=14d1aee9de7f0d75deb3caa028b01d646591de29258f5cc71695e771eac44f6a&X-Amz-SignedHeaders=host&response-content-disposition=attachment) to download a zipped Yocto image file for the MaaXBoard
+  3. Extract the zipped image file to get access to the actual ```.wic``` image file
+  4. Use an SD-card flashing software such as [Balena Etcher](https://etcher.balena.io/) to flash the ```.wic``` file onto the micro-SD card
+  5. After the flash is complete, insert the micro-SD card into the micro-SD card slot on the MaaXBoard until it clicks into place
+  6. Power on (or reboot) the MaaXBoard with a USB-C cable and it will boot from the micro-SD card 
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
@@ -88,7 +81,7 @@ See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconne
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
-5. When prompted for a login, type `root` for the username. If prompted for a password as well, use `avnet`.
+5. When prompted for a login, type `root` for the username. You should not be prompted for a password as long as you use the provided image.
 6. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
    sudo apt-get update
