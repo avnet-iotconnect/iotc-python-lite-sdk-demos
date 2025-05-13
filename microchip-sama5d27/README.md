@@ -166,7 +166,7 @@ openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
     * iotcDeviceConfig.json
       
 >[!IMPORTANT]
->These files must be copied **individually** into the ```/home/weston/demo``` directory, they cannot be wrapped inside of another folder.
+>These files must be copied **individually** into the ```/home/weston/demo``` directory. They cannot be wrapped inside of another folder.
 
 21. In the terminal of your board, navigate to the ```/home/weston/demo``` directory and then run this command to download the basic quickstart IoTConnect application called ```app.py```:
 ```
