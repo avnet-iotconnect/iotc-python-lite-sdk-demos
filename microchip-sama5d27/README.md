@@ -152,7 +152,7 @@ curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-s
 15. Click on "Connection Info" on the right side of the device page above the processor icon.
 16. In the resulting pop-up, click on the yellow/green certificate icon to download a zip file containing your device's certificates, and then close the pop-up.
 17. Extract the zip folder and then rename the ```.pem``` file to ```device-pkey.pem``` and the ```.crt``` file to ```device-cert.crt```.
-18. Still on your host machine, use this command within the unzipped certificates folder to convert the ```.crt``` file to another ```.pem``` file (Python Lite SDK only uses ```.pem``` files):
+18. Still on your host machine, use this command within the unzipped certificates folder to convert the ```.crt``` file to another ```.pem``` file (application is expecting ```.pem``` files):
 ```
 openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
 ```
