@@ -14,6 +14,9 @@ This script is executed on a host PC to send a software package through an OTA u
 
 ## Templates
 
+### AIMP1-template.json
+This IoTConnect template is used for devices that run the ST X-LINUX-AI Vision Demo, such as the STM32MP135F-DK.
+
 ### eiqIOTC-template.json
 This IoTConnect template is used for devices that run the NXP EIQ Vision AI DMS Demo, such as the NXP FRDM i.MX 93.
 
