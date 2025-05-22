@@ -71,10 +71,13 @@ The free subscription may be obtained directly from iotconnect.io or through the
 4. When prompted for a login, type `root` followed by the ENTER key.
 5. Run these commands to update the core board packages and install necessary IoTConnect packages:
    ```
-   sudo apt-get update
+   su
    ```
    ```
-   sudo apt-get install python3-pip -y
+   apt-get update
+   ```
+   ```
+   apt-get install python3-pip -y
    ```
    ```
    wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/main/stm32mp135f-dk/cffi-1.17.1-cp311-cp311-linux_armv7l.whl
