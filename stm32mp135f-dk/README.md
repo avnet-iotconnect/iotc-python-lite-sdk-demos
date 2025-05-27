@@ -80,16 +80,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
    apt-get install python3-pip -y
    ```
    ```
-   wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/main/stm32mp135f-dk/cffi-1.17.1-cp311-cp311-linux_armv7l.whl
-   ```
-   ```
-   python3 -m pip install ./cffi-1.17.1-cp311-cp311-linux_armv7l.whl
-   ```
-   ```
    python3 -m pip install iotconnect-sdk-lite
-   ```
-   ```
-   python3 -m pip install iotconnect-rest-api
    ```
 6. Run these commands to create and move into a directory for your demo files:
    ```
@@ -101,34 +92,43 @@ The free subscription may be obtained directly from iotconnect.io or through the
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
-7. Run this command to first protect your IoTConnect credentials:
-   ```
-   export HISTCONTROL=ignoreboth
-   ```
-   Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account on the device:
-   ```
-   iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
-   ```
-   For example if these were your credentials:
-   * Email: `john.doe@gmail.com`
-   * Password: Abc123!
-   * Platform: aws
-   * Environment: technology
-   * Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-     
-   Your login command would be:
-   ```
-   iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-   ```
-   You will see this output in the console if your login succeeded:
-   ```
-   Logged in successfully.
-   ```
+7. In a web browser, navigate to console.iotconnect.io and log into your account.
+8. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown select "Device."
+9. Now in the resulting Device page, click on the "Templates" tab of the blue toolbar at the bottom of the screen.
+10. In a separate browser tab, navigate to [the GitHub page for the default device template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json) and download the raw template file (button with a down arrow).
+11. Back in the IoTConnect browser tab, click on the "Create Template" button in the top-right of the screen.
+12. Click on the "Import" button in the top-right of the resulting screen.
+13. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
+14. Click on the "Devices" tab of the blue toolbar at the bottom of the screen.
+15. In the resulting page, click on the "Create Device" button in the top-right of the screen.
+16. Customize the "Unique ID" and "Device Name" fields to your needs.
+17. Select the most appropriate option for your device from the "Entity" dropdown (only for organization, does not affect connectivity).
+18. Select "plitedemo" from the "Template" dropdown.
+19. In the resulting "Device Certificate" field, make sure "Auto-generated" is selected.
+20. Click the "Save and View" buton to go to the page for your new device.
+21. Click on "Connection Info" on the right side of the device page above the processor icon.
+22. In the resulting pop-up, click on the yellow/green certificate icon to download a zip file containing your device's certificates, and then close the pop-up.
+23. Extract the zip folder and then rename the ```.pem``` file to ```device-pkey.pem``` and the ```.crt``` file to ```device-cert.crt```.
+24. Still on your host machine, use this command within the unzipped certificates folder to convert the ```.crt``` file to another ```.pem``` file (application is expecting ```.pem``` files):
+```
+openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
+```
+>[!NOTE]
+>If you are using a Windows host machine, this command is most easily performed via Git Bash. Using CMD or Powershell may require additional configuration of openssl.
+    
+25. Back in your device's page in IoTConnect, click on the black/white/green paper-and-cog icon in the top-right of the device page (just above "Connection Info") to download your device's configuration file.
+26. Using SCP (or WinSCP) copy these 3 files into the ```/home/weston/demo``` directory of your board:
+    * device-cert.pem
+    * device-pkey.pem
+    * iotcDeviceConfig.json
+      
+>[!IMPORTANT]
+>These files must be copied **individually** into the ```/home/weston/demo``` directory. They cannot be wrapped inside of another folder.
 
-8. Run this command to download and run the device setup script:
-   ```
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
-   ```
+27. In the terminal of your board, navigate to the ```/home/weston/demo``` directory and then run this command to download the basic quickstart IoTConnect application called ```app.py```:
+```
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
+```
 
 # 6. Using the Demo
 1. Run the basic demo with this command:
