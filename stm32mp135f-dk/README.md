@@ -82,6 +82,9 @@ The free subscription may be obtained directly from iotconnect.io or through the
    ```
    python3 -m pip install iotconnect-sdk-lite
    ```
+   ```
+   python3 -m pip install requests
+   ```
 6. Run these commands to create and move into a directory for your demo files:
    ```
    mkdir /home/weston/demo
