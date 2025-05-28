@@ -71,7 +71,13 @@ If ```package.tar.gz``` is there, run this command to decompress the file and ov
 ```
 tar -xzf package.tar.gz --overwrite
 ```
-Lastly, execute the ```install.sh``` script to perform any additional file movements/modifications that you programmed into your install package:
+Navigate to your device in the "Device" page of IoTConnect in your browser and locate the "Template" selection (mid-left on the page)
+
+Click the "pen and paper" icon next to the template name to open a dropdown where you select a new template.
+
+Select the "AIMP1" template.
+
+Lastly, back in your device terminal, execute the ```install.sh``` script to perform any additional file movements/modifications that you programmed into your install package:
 ```
 bash ./install.sh
 ```
@@ -188,7 +194,7 @@ After the command is sent to all given devices, you will see a tally of successf
 3) Navigate back to the Firmware page and find your new firmware name in the list
 4) Under the "Draft" column within the "Software Upgrades" column, click on the draft number (will be "1" for newly-created firmwares)
 5) Select the black square with the black arrow under "Actions" to publish your firmware and make it available for OTA
-6) Navigate to your device in back in the "Device" page and locate the "Template" selection (mid-left on the page)
+6) Navigate to your device back in the "Device" page and locate the "Template" selection (mid-left on the page)
 7) Click the "pen and paper" icon next to the template name to open a dropdown where you select a new template.
 8) Select the "AIMP1" template.
 9) Back in the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
