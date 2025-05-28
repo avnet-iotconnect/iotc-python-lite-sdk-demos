@@ -101,8 +101,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 7. In a web browser, navigate to console.iotconnect.io and log into your account.
 8. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown select "Device."
 9. Now in the resulting Device page, click on the "Templates" tab of the blue toolbar at the bottom of the screen.
-10. In a separate browser tab, navigate to [the GitHub page for the default device template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json) and download the raw template file (button with a down arrow).
-11. Back in the IoTConnect browser tab, click on the "Create Template" button in the top-right of the screen.
+10. Right-click and then click "save as" on [this link to the default device template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json) to download the raw template file.
+11. Back in IoTConnect, click on the "Create Template" button in the top-right of the screen.
 12. Click on the "Import" button in the top-right of the resulting screen.
 13. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
 14. Click on the "Devices" tab of the blue toolbar at the bottom of the screen.
