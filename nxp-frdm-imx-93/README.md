@@ -167,14 +167,14 @@ wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-dem
 ```
 
 # 6. Using the Demo
-1. Run the basic demo with this command:
+Run the basic demo with this command:
 ```
 python3 app.py
 ```
 >[!NOTE]
 >Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this directory with the command: ```cd /home/weston/demo```
 
-2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 7. EIQ Vison AI Driver Monitoring System Demo
 After completing the basic demo setup, you will be able to perfrom an OTA update to automatically install and begin running the EIQ Vision AI Driver Monitoring System Demo on your NXP i.MX 93. Refer to [this guide](./dms-demo/README.md).
