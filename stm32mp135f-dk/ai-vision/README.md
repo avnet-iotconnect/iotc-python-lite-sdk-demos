@@ -23,7 +23,7 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 ## 3. Customize Package
 Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp135f-dk/ai-vision/src/``` directory:
 ```
-cd ./stm32mp135f-dk/ai-vision/src/
+cd ./stm32mp135f-dk/ai-vision/
 ```
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the AI Vision demo.
 
