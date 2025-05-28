@@ -138,7 +138,7 @@ curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-s
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown select "Device."
 3. Now in the resulting Device page, click on the "Templates" tab of the blue toolbar at the bottom of the screen.
-4. In a separate browser tab, navigate to [the GitHub page for the default device template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json) and download the raw template file (button with a down arrow).
+4. Right-click and then click "save link as" on [this link to the default device template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json) to download the raw template file.
 5. Back in the IoTConnect browser tab, click on the "Create Template" button in the top-right of the screen.
 6. Click on the "Import" button in the top-right of the resulting screen.
 7. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
