@@ -23,17 +23,17 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 ## 3. Customize Package
 Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp135f-dk/ai-vision/src/``` directory:
 ```
-cd ./stm32mp135f-dk/ai-vision/
+cd ./stm32mp135f-dk/ai-vision/src
 ```
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the AI Vision demo.
 
 ## 4. Create Package
-Navigate back to the ```ai-vision``` directory and then run this command to create ```install-package.tar.gz``` which includes the necessary demo files and installation script:
+Navigate back to the ```ai-vision``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 ```
 bash ./create-package.sh
 ```
 >[!NOTE]
-> At the end of the package creation script, ```install-package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 7B and 7C.
+> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 7B and 7C.
 
 ## 5. Physically Set Up Demo Equipment
 * Using a stand, adhesive, zip-ties, or some other type of binding utility, secure your USB camera in a position to be looking at your designated detection area.
@@ -62,14 +62,14 @@ From here, you have the option to push the package to your devices directly to y
 ## 7A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
-First find the active IP address of your device and then use that IP address to copy ```install-package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
+First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
 
-After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and verify that there is a ```install-package.tar.gz``` present.
+After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and verify that there is a ```package.tar.gz``` present.
 
-If ```install-package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
+If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
 
 ```
-tar -xzf install-package.tar.gz --overwrite
+tar -xzf package.tar.gz --overwrite
 ```
 Lastly, execute the ```install.sh``` script to perform any additional file movements/modifications that you programmed into your install package:
 ```
@@ -117,7 +117,7 @@ python3 ota-package-send.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. You will also be asked if you need to change the template for your device. Enter "Y" and then enter "AIMP1" for the new template name. If AIMP1 does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created (can be whatever you want).
 
-The ```install-package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA package will be automatically pushed.
+The ```package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA package will be automatically pushed.
 
 You should then see this output in your host machine console:
 ```
@@ -165,7 +165,7 @@ python3 cmd-package-send.py
 ```
 You will be prompted to enter the unique IDs of the devices you wish to send the package to. All of the devices must use the same template. Any devices that use a template different from the first device entered will be rejected. 
 
-After entering your device IDs, the ```install-package.tar.gz``` file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
+After entering your device IDs, the ```package.tar.gz``` file you generated previously will be automatically uploaded and the command will be automatically pushed to all given devices.
 
 For every device that receives the command, you should see this ouput in your host machine console:
 ```
@@ -182,7 +182,7 @@ After the command is sent to all given devices, you will see a tally of successf
    * Name your firmware (remember this name for later)
    * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a firmware for it already exists in your IoTConnect instance)
    * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
-   * Select the "Browse" button in the "File" section and select your ```install-package.tar.gz```
+   * Select the "Browse" button in the "File" section and select your ```package.tar.gz```
    * Add descriptions if you desire
    * Select the "Save" button
 3) Navigate back to the Firmware page and find your new firmware name in the list
