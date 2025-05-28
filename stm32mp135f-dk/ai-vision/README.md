@@ -7,7 +7,7 @@ This guide will help you upgrade the basic IoTConnect Starter Demo to the X-LINU
 ## 1. Add AIMP1 Template to IoTConnect
 Log into your IoTConnect account at [console.iotconnect.io](console.iotconnect.io) and navigate to the Device page, and then to the Templates page. Check to see if the **AIMP1** template is present in the list.
 
-If it is not present, download the template by right-clicking [this link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/AIMP1-template.json) and then clicking "Save As" to save it to your PC.
+If it is not present, download the template by right-clicking [this link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/AIMP1-template.json) and then clicking "save link as" to save it to your PC.
 
 Back in the online IoTConnect Templates page, click the "Create Template" button in the top-right.
 
