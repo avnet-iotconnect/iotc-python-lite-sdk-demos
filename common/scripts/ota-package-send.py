@@ -121,7 +121,7 @@ if new_template_code is not None:
 fw_upgrade_guid = get_fw_upgrade_guid(template_code)
 
 # Upload the payload file to the FW upgrade
-upgrade.upload(fw_upgrade_guid, '../install-package.tar.gz')
+upgrade.upload(fw_upgrade_guid, '../package.tar.gz')
 
 # Publish the firmware upgrade so it can be sent via OTA
 upgrade.publish(fw_upgrade_guid)
