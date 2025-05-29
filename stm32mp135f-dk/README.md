@@ -107,7 +107,7 @@ Option B is more manual but does not have that potential Solution Key obstacle.
 ## Option A: Onboard Device via REST API (Requires Solution Key)
 1. Run these commands to install the IoTConnect REST API python module:
 ```
-apt-get install python3-cffi
+apt-get install python3-cffi -y
 ```   
 ```
 python3 -m pip install iotconnect-rest-api
