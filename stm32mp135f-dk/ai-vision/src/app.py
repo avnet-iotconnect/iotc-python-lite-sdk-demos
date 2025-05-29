@@ -134,13 +134,13 @@ def get_object_data():
     file_lines = file_lines[1:]
     objects_string = ""
     object_data.classification_a = re.sub(r'[%()\d]+', '', file_lines[0])
-    object_data.confidence_a = int(re.sub('\D', '', file_lines[0]))
+    object_data.confidence_a = int(re.sub(r'\D', '', file_lines[0]))
     if len(file_lines) > 1:
         object_data.classification_b = re.sub(r'[%()\d]+', '', file_lines[1])
-        object_data.confidence_b = int(re.sub('\D', '', file_lines[1]))
+        object_data.confidence_b = int(re.sub(r'\D', '', file_lines[1]))
     if len(file_lines) > 2:
         object_data.classification_c = re.sub(r'[%()\d]+', '', file_lines[2])
-        object_data.confidence_c = int(re.sub('\D', '', file_lines[2]))
+        object_data.confidence_c = int(re.sub(r'\D', '', file_lines[2]))
     index = 0
     for object in file_lines:
         objects_string += object
