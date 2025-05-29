@@ -2,7 +2,7 @@
 This guide will help you upgrade the basic IoTConnect Starter Demo to the X-LINUX-AI Vision Demo with a single update.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp135f-dk/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp157f-dk2/README.md), complete that first and then return here to pick up on Step 1
 
 ## 1. Add AIMP1 Template to IoTConnect
 Log into your IoTConnect account at [awspoc.iotconnect.io](https://awspoc.iotconnect.io) and navigate to the Device page, and then to the Templates page. Check to see if the **AIMP1** template is present in the list.
@@ -21,9 +21,9 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 3. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp135f-dk/ai-vision/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp157f-dk2/ai-vision/src/``` directory:
 ```
-cd ./stm32mp135f-dk/ai-vision/src
+cd ./stm32mp157f-dk2/ai-vision/src
 ```
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the AI Vision demo.
 
@@ -47,7 +47,7 @@ bash ./create-package.sh
 >[!NOTE]
 > The detection program works best with good lighting and non-glossy objects against a non-glossy background with good color-contrast versus the colors of the objects being detected. Ideally the objects are between 6 and 24 inches away from the camera lens (depends on size of object). 
 
-* Plug your USB camera into a USB port on the STM32MP135F-DK
+* Plug your USB camera into a USB port on the STM32MP157F-DK2
  
 ## 6. Prepare Device to Receive Package
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for instructions on this method.
