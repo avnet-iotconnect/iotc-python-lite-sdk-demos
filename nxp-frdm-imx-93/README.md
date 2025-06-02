@@ -72,19 +72,22 @@ The free subscription may be obtained directly from iotconnect.io or through the
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 4. When prompted for a login, type `root` followed by the ENTER key.
 5. Run these commands to update the core board packages and install necessary IoTConnect packages:
-   ```
-   sudo apt-get update
-   ```
-   ```
-   python3 -m pip install iotconnect-sdk-lite
-   ```
+```
+sudo apt-get update
+```
+```
+python3 -m pip install iotconnect-sdk-lite
+```
+```
+python3 -m pip install requests
+```
 6. Run these commands to create and move into a directory for your demo files:
-   ```
-   mkdir /home/weston/demo
-   ```
-   ```
-   cd /home/weston/demo
-   ```
+```
+mkdir /home/weston/demo
+```
+```
+cd /home/weston/demo
+```
 >[!TIP]
 >To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your borswer and the terminal.
 
