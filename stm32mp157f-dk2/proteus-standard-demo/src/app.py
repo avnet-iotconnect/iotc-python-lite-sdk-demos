@@ -5,109 +5,30 @@
 
 import sys
 import time
-import subprocess
-import os
-import urllib.request
-import requests
 import threading
 import asyncio
+import struct
+import pexpect
 from bleak import BleakClient, BleakScanner
 from bleak.backends.characteristic import BleakGATTCharacteristic
-import pexpect
-import struct
 
-from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks, DeviceConfigError
-from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
-from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dOta
-
-
-def extract_and_run_tar_gz(targz_filename: str):
-    try:
-        subprocess.run(('tar', '-xzvf', targz_filename, '--overwrite'), check=True)
-        current_directory = os.getcwd()
-        script_file_path = os.path.join(current_directory, 'install.sh')
-        if os.path.isfile(script_file_path):
-            try:
-                subprocess.run(['bash', script_file_path], check=True)
-                os.remove(script_file_path)
-                print('Successfully executed install.sh')
-                return True
-            except subprocess.CalledProcessError as e:
-                os.remove(script_file_path)
-                print(f'Error executing install.sh: {e}')
-                return False
-            except Exception as e:
-                os.remove(script_file_path)
-                print(f'An error occurred: {e}')
-                return False
-        else:
-            print('install.sh not found in the current directory.')
-            return True
-    except subprocess.CalledProcessError:
-        return False
+from avnet.iotconnect.sdk.lite import Client, C2dCommand, Callbacks
+from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
 
 
 def on_command(msg: C2dCommand):
-    global c
-    print('Received command', msg.command_name, msg.command_args, msg.ack_id)
-    if msg.command_name == 'file-download':
-        if len(msg.command_args) == 1:
-            status_message = 'Downloading %s to device' % (msg.command_args[0])
-            response = requests.get(msg.command_args[0])
-            if response.status_code == 200:
-                with open('package.tar.gz', 'wb') as file:
-                    for chunk in response.iter_content(chunk_size=8192): 
-                        file.write(chunk)
-                print('File downloaded successfully and saved to package.tar.gz')
-            else:
-                print(f'Failed to download the file. Status code: {response.status_code}')
+    print("Received command", msg.command_name, msg.command_args, msg.ack_id)
+    if msg.command_name == "set-user-led":
+        if len(msg.command_args) == 3:
+            status_message = "Setting User LED to R:%d G:%d B:%d" % (
+                int(msg.command_args[0]), int(msg.command_args[1]), int(msg.command_args[2]))
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, status_message)
             print(status_message)
-            extraction_success = extract_and_run_tar_gz('package.tar.gz')
-            print('Download command successful. Will restart the application...')
-            print('')
-            sys.stdout.flush()
-            os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
         else:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, 'Expected 1 argument')
-            print('Expected 1 command argument, but got', len(msg.command_args))	
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 3 arguments")
+            print("Expected three command arguments, but got", len(msg.command_args))
     else:
-        print('Command %s not implemented!' % msg.command_name)
-        if msg.ack_id is not None:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, 'Not Implemented')
-
-
-def on_ota(msg: C2dOta):
-    global c
-    print('Starting OTA downloads for version %s' % msg.version)
-    c.send_ota_ack(msg, C2dAck.OTA_DOWNLOADING)
-    extraction_success = False
-    for url in msg.urls:
-        print('Downloading OTA file %s from %s' % (url.file_name, url.url))
-        try:
-            urllib.request.urlretrieve(url.url, url.file_name)
-        except Exception as e:
-            print('Encountered download error', e)
-            error_msg = 'Download error for %s' % url.file_name
-            break
-        if url.file_name.endswith('.tar.gz'):
-            extraction_success = extract_and_run_tar_gz(url.file_name)
-            if extraction_success is False:
-                break
-        else:
-            print('ERROR: Unhandled file format for file %s' % url.file_name)
-    if extraction_success is True:
-        print('OTA successful. Will restart the application...')
-        c.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)
-        print('')
-        sys.stdout.flush()
-        os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
-    else:
-        print('Encountered a download processing error. Not restarting.')
-
-
-def on_disconnect(reason: str, disconnected_from_server: bool):
-    print('Disconnected%s. Reason: %s' % (' from server' if disconnected_from_server else '', reason))
+        print("Command %s not implemented!" % msg.command_name)
 
 
 telemetry = {
@@ -254,32 +175,14 @@ def proteus_loop():
 
 
 try:
-    device_config = DeviceConfig.from_iotc_device_config_json_file(
-        device_config_json_path='iotcDeviceConfig.json',
-        device_cert_path='device-cert.pem',
-        device_pkey_path='device-pkey.pem'
-    )
-
     c = Client(
-        config=device_config,
         callbacks=Callbacks(
-            ota_cb=on_ota,
-            command_cb=on_command,
-            disconnected_cb=on_disconnect
+            command_cb=on_command
         )
     )
     proteus_thread = threading.Thread(target=proteus_loop)
     proteus_thread.start()
     while True:
-        if not c.is_connected():
-            print('(re)connecting...')
-            c.connect()
-            if not c.is_connected():
-                print('Unable to connect. Exiting.')
-                if proteus_thread and proteus_thread.is_alive():
-                    proteus_thread.join()
-                sys.exit(2)
-
         c.send_telemetry(telemetry)
         time.sleep(3)
 
