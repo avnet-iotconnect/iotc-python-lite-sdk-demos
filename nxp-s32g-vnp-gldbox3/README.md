@@ -1,4 +1,4 @@
-# NXP FRDM i.MX 93 Development Board QuickStart
+# NXP GoldBox 3 Vehicle Networking Development Platform QuickStart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -11,28 +11,30 @@
 
 
 # 1. Introduction
-This guide provides step-by-step instructions to set up the NXP FRDM i.MX 93 hardware and integrate it with IoTConnect, Avnet's robust IoT platform.
+This guide provides step-by-step instructions to set up the NXP GoldBox 3 Vehicle Networking Development Platform hardware and integrate it with IoTConnect, Avnet's robust IoT platform.
 
 <table>
   <tr>
-    <td><img src="./media/FRDM93.png" width="6000"></td>
-    <td>The FRDM i.MX 93 development board is a low-cost and compact development board featuring the i.MX93 applications processor. Equipped with an onboard IW612 module, featuring NXP's Tri-Radio solution with Wi-Fi 6 + Bluetooth 5.4 + 802.15.4, the board is ideal for developing modern Industrial and IoT applications.</td>
+    <td><img src="./media/goldbox3-product-image.png" width="6000"></td>
+    <td>The NXP GoldBox 3 is a compact, highly optimized and integrated reference design engineered for vehicle computer, service-oriented gateway (SoG), domain control applications, high-performance processing, safety and security applications.
+
+The NXP GoldBox 3 highlights the S32G3 network processor by offering high-performance computing capacity, real-time network performance, multi-Gigabit packet acceleration and security and rich input/output (I/O) targeting central gateway, domain controller, firmware over-the-air (FOTA), secure key management, smart antenna and high-performance central compute nodes.
+
+Based on the S32G-VNP-RDB3, the GoldBox 3 is an excellent form-factor for customer or project demonstrations and evaluations, as well as in-vehicle testing and rapid prototyping.</td>
   </tr>
 </table>
 
 # 2. Requirements
 
 ## Hardware 
-* NXP FRDM i.MX 93 Development Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
-* 2x USB Type-C Cables (included in kit)
-* (Optional) Ethernet Cable
-* UVC-Compliant Webcam
-* HDMI Cable
-* 2nd Monitor
-* (Optional) WiFi Network SSID and Password
+* NXP GoldBox 3 Vehicle Networking Development Platform [Purchase](https://www.nxp.com/part/S32G-VNP-GLDBOX3) | [User Manual & Kit Contents](https://www.nxp.com/webapp/Download?colCode=S32G-VNP-GLDBOX3UG) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/GOLDBOX-3)
+* Power Adapater and Cable (included in kit)
+* Micro-USB Cable (included in kit)
+* Ethernet Cable (included in kit)
 
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
+* [USB-to-UART Driver](https://ftdichip.com/drivers/d2xx-drivers/) for FTDI devices
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
