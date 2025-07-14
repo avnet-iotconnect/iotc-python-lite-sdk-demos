@@ -63,16 +63,16 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > Be sure to check any SPAM folder for the temporary password after registering.
 
 # 5. Device Setup
-1. Open a serial terminal emulator program such as TeraTerm.
+1. Open a serial terminal emulator program such as TeraTerm PuTTY.
 2. Ensure that your serial settings in your terminal emulator are set to:
   - Baud Rate: 115200
   - Data Bits: 8
   - Stop Bits: 1
   - Parity: None
-3. Starting with the lowest COM port value for "USB Serial Device" in the Device Manager list, attempt to connect to your board via the terminal emulator
+3. Starting with the lowest COM port value for "USB Serial Port" in the Device Manager list, attempt to connect to your board via the terminal emulator
 >[!NOTE]
 >A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
-4. When prompted for a login, type `root` followed by the ENTER key.
+4. When prompted for a login, type `bluebox` followed by the ENTER key, and then `bluebox` again for the password, followed by the ENTER key.
 5. Run these commands to update the core board packages and install necessary IoTConnect packages:
 ```
 sudo apt-get update
