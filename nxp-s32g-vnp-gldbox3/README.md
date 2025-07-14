@@ -15,7 +15,7 @@ This guide provides step-by-step instructions to set up the NXP GoldBox 3 Vehicl
 
 <table>
   <tr>
-    <td><img src="./media/goldbox3-product-image.png" width="6000"></td>
+    <td><img src="./media/goldbox-product.png" width="6000"></td>
     <td>The NXP GoldBox 3 is a compact, highly optimized and integrated reference design engineered for vehicle computer, service-oriented gateway (SoG), domain control applications, high-performance processing, safety and security applications.
 
 The NXP GoldBox 3 highlights the S32G3 network processor by offering high-performance computing capacity, real-time network performance, multi-Gigabit packet acceleration and security and rich input/output (I/O) targeting central gateway, domain controller, firmware over-the-air (FOTA), secure key management, smart antenna and high-performance central compute nodes.
