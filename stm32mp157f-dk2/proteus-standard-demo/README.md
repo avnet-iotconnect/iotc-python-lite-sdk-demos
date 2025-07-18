@@ -41,12 +41,12 @@ From here, you have the option to push the package to your devices directly to y
 
 
 ## 5. PROTEUS Sensor Setup
-* For assembly, follow section 4.1 in the provided [getting started document](https://www.st.com/resource/en/user_manual/um3000-getting-started-with-the-stevalproteus1-evaluation-kit-for-condition-monitoring-based-on-the-24-ghz-stm32wb5mmg-module-stmicroelectronics.pdf) for the PROTEUS.
+For assembly, follow section 4.1 in the provided [getting started document](https://www.st.com/resource/en/user_manual/um3000-getting-started-with-the-stevalproteus1-evaluation-kit-for-condition-monitoring-based-on-the-24-ghz-stm32wb5mmg-module-stmicroelectronics.pdf) for the PROTEUS.
 
 >[!TIP]
 >Getting the battery connector to solidly seat into its slot on the main board is a bit tricky, so make sure you take your time on that step.
   
-* After the sensor kit is assembled, power the board with a Micro-USB cable from a 5V source. While the device has a battery, its level of charge when it comes from the manufacturer can vary.
+After the sensor kit is assembled, power the board with a Micro-USB cable from a 5V source. While the device has a battery, its level of charge when it comes from the manufacturer can vary.
 
 To prepare your ST PROTEUS pack for the demo, you will need to make sure it is loaded with the correct firmware file (`STSW-PROTEUS_1_1_1.bin` available in the `src` directory). Since the firmware flashing will be done from a smartphone, you will need to send and save this file to your smartphone (email is probably the easiest way). 
 
