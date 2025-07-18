@@ -48,7 +48,7 @@ For assembly, follow section 4.1 in the provided [getting started document](http
   
 After the sensor kit is assembled, power the board with a Micro-USB cable from a 5V source. While the device has a battery, its level of charge when it comes from the manufacturer can vary.
 
-To prepare your ST PROTEUS pack for the demo, you will need to make sure it is loaded with the correct firmware file (`STSW-PROTEUS_1_1_1.bin` available in the `src` directory). Since the firmware flashing will be done from a smartphone, you will need to send and save this file to your smartphone (email is probably the easiest way). 
+To prepare your ST PROTEUS pack for the demo, you will need to make sure it is loaded with the correct firmware file (`STSW-PROTEUS_1_1_1.bin` available in this directory). Since the firmware flashing will be done from a smartphone, you will need to send and save this file to your smartphone (email is probably the easiest way). 
 
 After assembling your PROTEUS sensor module, power it on using a micro-usb cable.
 
