@@ -22,7 +22,7 @@ This simple guide will help you download all the necessary files for flashing a 
 
    * Serially connect your board to your host PC with a USB-C cable connected to the "USB_DRD" USB-C port.
    
-      <img src="media/power.png"/>
+      <img src="media/serial-connect.png"/>
    
    * Insert a micro-SD (at least 8GB) card into the micro-SD card slot on the board.
  
