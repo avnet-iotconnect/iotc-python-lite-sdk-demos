@@ -1,6 +1,9 @@
 # Standard PROTEUS Demo: Package Creation and Deployment
 This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP257F-DK to the standard PROTEUS sensor pack demo with a single package.
 
+>[!NOTE]
+> Make sure your PROTEUS sensor pack is loaded with the correct firmware by following [this PROTEUS setup guide](PROTEUS-SETUP.md) before attempting to run this demo.
+
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp257f-dk/README.md), complete that first and then return here to pick up on Step 1
 
