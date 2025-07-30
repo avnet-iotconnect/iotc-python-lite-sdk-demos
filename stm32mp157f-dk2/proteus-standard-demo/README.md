@@ -1,6 +1,9 @@
 # Standard PROTEUS Demo: Package Creation and Deployment
 This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP157F-DK2 to the standard PROTEUS sensor pack demo with a single package.
 
+>[!NOTE]
+> Make sure your PROTEUS sensor pack is loaded with the correct firmware by following [this PROTEUS setup guide](PROTEUS-SETUP.md) before attempting to run this demo.
+
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp157f-dk2/README.md), complete that first and then return here to pick up on Step 1
 
@@ -32,19 +35,20 @@ The most basic way to deliver and run the install package is through a local fil
 For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main IoTConnect program on your board called ```app.py```:
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
-* From you host machine's console as an OTA (see step 6B)
-* Through an API device command (see step 6C)
-* Through the online IoTConnect platform as an OTA (see step 6D)
+* From you host machine's console as an OTA (see step 5B)
+* Through an API device command (see step 5C)
+* Through the online IoTConnect platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
 > Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (`plitedemo` to `PROTEUS`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+
 
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
 
-After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and verify that there is a ```package.tar.gz``` present.
+After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and verify that there is a ```package.tar.gz``` present.
 
 If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
 
@@ -95,7 +99,7 @@ Navigate into the ```/common/scripts/``` directory of you cloned repo and run th
 ```
 python3 ota-package-send.py
 ```
-You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. If the template for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
+You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. If the firmware for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
 
 The ```package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA package will be automatically pushed.
 
