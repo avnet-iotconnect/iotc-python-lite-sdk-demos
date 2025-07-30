@@ -95,7 +95,7 @@ Navigate into the ```/common/scripts/``` directory of you cloned repo and run th
 ```
 python3 ota-package-send.py
 ```
-You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. If the firmware for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
+You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. If the template for your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be created.
 
 The ```package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing firmware, and the OTA package will be automatically pushed.
 
