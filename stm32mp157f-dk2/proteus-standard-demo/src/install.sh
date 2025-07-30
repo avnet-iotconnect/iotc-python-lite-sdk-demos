@@ -13,5 +13,4 @@ mkswap /swapfile
 swapon /swapfile
 echo "Installing bleak python library, may take several minutes to complete."
 pip3 install bleak
-pip3 install blue_st_sdk-1.5.0-py3-none-any.whl
 echo "Installation complete!"
