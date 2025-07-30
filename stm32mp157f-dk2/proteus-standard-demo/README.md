@@ -40,7 +40,7 @@ From here, you have the option to push the package to your devices directly to y
 * Through the online IoTConnect platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (`plitedemo` to `proteus`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (to `proteus`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
 
 
 ## 5A. Deliver Package Through Local File Transfer
