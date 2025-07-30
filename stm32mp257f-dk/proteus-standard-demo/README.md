@@ -13,9 +13,9 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp157f-dk2/proteus-standard-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp257f-dk/proteus-standard-demo/src/``` directory:
 ```
-cd ./stm32mp157f-dk2/proteus-standard-demo/src/
+cd ./stm32mp257f-dk/proteus-standard-demo/src/
 ```
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3
 
