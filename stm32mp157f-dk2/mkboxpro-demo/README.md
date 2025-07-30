@@ -1,5 +1,8 @@
-# Standard PROTEUS Demo: Package Creation and Deployment
-This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP157F-DK2 to the standard PROTEUS sensor pack demo with a single package.
+# MKBOXPRO Demo: Package Creation and Deployment
+This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP157F-DK2 to the MKBOXPRO sensor pack demo with a single package.
+
+>[!NOTE]
+> Make sure your MKBOXPRO sensor pack is loaded with the correct firmware by following [this MKBOXPRO setup guide](MKBOXPRO-SETUP.md) before attempting to run this demo.
 
 >[!IMPORTANT]
 > If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp157f-dk2/README.md), complete that first and then return here to pick up on Step 1
@@ -10,9 +13,9 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp157f-dk2/proteus-standard-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp157f-dk2/mkboxpro-demo/src/``` directory:
 ```
-cd ./stm32mp157f-dk2/proteus-standard-demo/src/
+cd ./stm32mp157f-dk2/mkboxpro-demo/src/
 ```
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3
 
@@ -32,36 +35,15 @@ The most basic way to deliver and run the install package is through a local fil
 For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main IoTConnect program on your board called ```app.py```:
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
-* From you host machine's console as an OTA (see step 6B)
-* Through an API device command (see step 6C)
-* Through the online IoTConnect platform as an OTA (see step 6D)
+* From you host machine's console as an OTA (see step 5B)
+* Through an API device command (see step 5C)
+* Through the online IoTConnect platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (*"plitedemo"* to *"PROTEUS"*) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (to `mkboxpro`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
 
 
-## 5. PROTEUS Sensor Setup
-For assembly, follow section 4.1 in the provided [getting started document](https://www.st.com/resource/en/user_manual/um3000-getting-started-with-the-stevalproteus1-evaluation-kit-for-condition-monitoring-based-on-the-24-ghz-stm32wb5mmg-module-stmicroelectronics.pdf) for the PROTEUS.
-
->[!TIP]
->Getting the battery connector to solidly seat into its slot on the main board is a bit tricky, so make sure you take your time on that step.
-  
-After the sensor kit is assembled, power the board with a Micro-USB cable from a 5V source. While the device has a battery, its level of charge when it comes from the manufacturer can vary.
-
-To prepare your ST PROTEUS pack for the demo, you will need to make sure it is loaded with the correct firmware file (`STSW-PROTEUS_1_1_1.bin` available in this directory). Since the firmware flashing will be done from a smartphone, you will need to send and save this file to your smartphone (email is probably the easiest way). 
-
-After assembling your PROTEUS sensor module, power it on using a micro-usb cable.
-
-On a smartphone (IOS or Android), install the ST BLE Sensor App. Turn your phone's bluetooth on, and then open the app. The PROTEUS module should be discovered. If not, refresh the page until it is. Take note of the MAC address of your PROTEUS, including the colons. You will need to use this in the config file during the next step.
-
-After tapping on your PROTEUS in the device discovery screen, tap on the gear icon in the top-right of your screen, and then "Firmware Upgrade" in the resulting pop-up. Tap on the blue folder icon, select the `STSW-PROTEUS_1_1_1.bin` file, and then tap the "UPGRADE" button to flash the firmware.
-
-After the flash has completed, the PROTEUS will automatically reboot and you can close out of the app on your phone.
-
->[!NOTE]
->Before connecting the PROTEUS to a new device, it is advised to manually reboot the sensor pack to ensure it is not still connected to another device. Using a small flathead screwdriver (the >kind you might use to repair a set of eyeglasses), a straightened paperclip, or some type of small blunt pin, press and hold the S2 power switch down for 3 seconds. If you have the device >sitting right-side-up on a desk with the Micro-USB connector facing to your left, the S2 button will be accessed through the only slot in the plastic casing that is facing you.
-
-## 6A. Deliver Package Through Local File Transfer
+## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
@@ -78,7 +60,7 @@ Lastly, execute the ```install.sh``` script to perform any additional file movem
 bash ./install.sh
 ```
 
-## 6B. Push Package via OTA From Host Machine Console
+## 5B. Push Package via OTA From Host Machine Console
 Pushing an OTA from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -126,7 +108,7 @@ You should then see this output in your host machine console:
 Successful OTA push!
 ```
 
-## 6C. Push Package Through Command From Host Machine Console
+## 5C. Push Package Through Command From Host Machine Console
 Pushing an package from your local machine requires you to be logged into your IoTConnect account so it can utilize the IoTConnect REST API.
 
 First make sure you install the IoTConnect REST API Python module to your host machine:
@@ -177,7 +159,7 @@ Command successful!
 After the command is sent to all given devices, you will see a tally of successful and failed commands in your host machine console as well.
 
 
-## 6D. Upload and Push Package Through OTA in IoTConnect Online Platform
+## 5D. Upload and Push Package Through OTA in IoTConnect Online Platform
 1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
