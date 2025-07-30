@@ -37,14 +37,14 @@ From here, you have the option to push the package to your devices directly to y
 * Through the online IoTConnect platform as an OTA (see step 6D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (*"plitedemo"* to *"PROTEUS"*) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (`plitedemo` to `PROTEUS`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
 
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure copy) command. 
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main application directory of the device (```/home/weston/demo```).  
 
-After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and verify that there is a ```package.tar.gz``` present.
+After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and verify that there is a ```package.tar.gz``` present.
 
 If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
 
