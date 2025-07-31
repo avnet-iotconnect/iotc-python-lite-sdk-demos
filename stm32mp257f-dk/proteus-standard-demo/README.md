@@ -27,7 +27,7 @@ Navigate back to the ```proteus-standard-demo``` directory and then run this com
 bash ./create-package.sh
 ```
 >[!NOTE]
-> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 6B and 6C.
+> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
  
 ## 4. Prepare Device to Receive Package
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for instructions on this method.
