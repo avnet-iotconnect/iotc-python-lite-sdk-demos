@@ -22,7 +22,7 @@ By default, this directory contains the necessary files to upgrade from the basi
 If you wish to achieve something other than that, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
 
 ## 3. Create Package
-Navigate back to the ```dms-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
+Navigate back to the ```proteus-standard-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 ```
 bash ./create-package.sh
 ```
