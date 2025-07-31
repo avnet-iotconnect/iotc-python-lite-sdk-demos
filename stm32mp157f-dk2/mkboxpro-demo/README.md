@@ -17,7 +17,7 @@ Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ``
 ```
 cd ./stm32mp157f-dk2/mkboxpro-demo/src/
 ```
-By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3
+By default, this directory contains the necessary files to upgrade from the basic quickstart application to the MKBOXPRO sensor pack demo. If this is all you wish to do with this package, you may move to step 3.
 
 If you wish to achieve something other than that, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
 
