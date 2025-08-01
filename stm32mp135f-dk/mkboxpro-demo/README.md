@@ -1,14 +1,14 @@
-# Standard PROTEUS Demo: Package Creation and Deployment
-This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP157F-DK2 to the standard PROTEUS sensor pack demo with a single package.
+# MKBOXPRO Demo: Package Creation and Deployment
+This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP135F-DK to the MKBOXPRO sensor pack demo with a single package.
 
 >[!IMPORTANT]
-> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP157F-DK2 is loaded with a Scarthgap image before procedding through any other steps.
+> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP135F-DK2 is loaded with a Scarthgap image before procedding through any other steps.
 
 >[!NOTE]
-> Make sure your PROTEUS sensor pack is loaded with the correct firmware by following [this PROTEUS setup guide](PROTEUS-SETUP.md) before attempting to run this demo.
+> Make sure your MKBOXPRO sensor pack is loaded with the correct firmware by following [this MKBOXPRO setup guide](MKBOXPRO-SETUP.md) before attempting to run this demo.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp157f-dk2/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp135f-dk/README.md), complete that first and then return here to pick up on Step 1
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
@@ -16,21 +16,21 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 >On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
 ## 2. Customize Package
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp157f-dk2/proteus-standard-demo/src/``` directory:
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp135f-dk/mkboxpro-demo/src/``` directory:
 ```
-cd ./stm32mp157f-dk2/proteus-standard-demo/src/
+cd ./stm32mp135f-dk/mkboxpro-demo/src/
 ```
-By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3
+By default, this directory contains the necessary files to upgrade from the basic quickstart application to the MKBOXPRO sensor pack demo. If this is all you wish to do with this package, you may move to step 3.
 
 If you wish to achieve something other than that, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
 
 ## 3. Create Package
-Navigate back to the ```proteus-standard-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
+Navigate back to the ```mkboxpro-demo``` directory and then run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 ```
 bash ./create-package.sh
 ```
 >[!NOTE]
-> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 6B and 6C.
+> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common``` directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
  
 ## 4. Prepare Device to Receive Package
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for instructions on this method.
@@ -43,7 +43,7 @@ From here, you have the option to push the package to your devices directly to y
 * Through the online IoTConnect platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (to `proteus`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
+> Upgrading from the basic quickstart demo to the PROTEUS demo requires a template change (to `mkboxpro`) for the device in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you will have to manually change your device's template on your device's page in the online IoTConnect platform.
 
 
 ## 5A. Deliver Package Through Local File Transfer

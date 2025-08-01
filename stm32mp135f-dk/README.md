@@ -34,7 +34,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
 >[!NOTE]
->STM32MP135F-DK must be running a Scarthgap (the newest) image release for the X-LINUX-AI expansion demo. Follow [this flashing guide](FLASHING.md) to download and flash the most up-to-date image to your board. 
+>STM32MP135F-DK must be running a Scarthgap (or newer) image release for the X-LINUX-AI expansion demo. The BLE demos utilize a pre-compiled .whl file that specifically requires Python 3.12, which is the version found in Scarthgap images. Follow [this flashing guide](FLASHING.md) to download and flash an image to your board. 
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
