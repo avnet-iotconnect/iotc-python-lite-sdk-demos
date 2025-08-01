@@ -203,7 +203,7 @@ async def mkboxpro_setup():
 def mkboxpro_loop():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(proteus_setup())
+    loop.run_until_complete(mkboxpro_setup())
     loop.close()
 
 
