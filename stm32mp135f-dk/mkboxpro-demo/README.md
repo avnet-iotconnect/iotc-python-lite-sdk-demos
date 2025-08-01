@@ -2,13 +2,13 @@
 This guide will help you upgrade the basic IoTConnect Starter Demo on the STM32MP135F-DK to the MKBOXPRO sensor pack demo with a single package.
 
 >[!IMPORTANT]
-> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP157F-DK2 is loaded with a Scarthgap image before procedding through any other steps.
+> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP135F-DK2 is loaded with a Scarthgap image before procedding through any other steps.
 
 >[!NOTE]
 > Make sure your MKBOXPRO sensor pack is loaded with the correct firmware by following [this MKBOXPRO setup guide](MKBOXPRO-SETUP.md) before attempting to run this demo.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp357f-dk/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp135f-dk/README.md), complete that first and then return here to pick up on Step 1
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
