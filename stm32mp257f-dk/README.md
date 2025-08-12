@@ -31,7 +31,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 
 >[!NOTE]
->STM32MP257F-DK must be running a Scarthgap (the newest) image release for the X-LINUX-AI expansion demo. Follow [this flashing guide](FLASHING.md) to download and flash the most up-to-date image to your board. 
+>STM32MP257F-DK must be running a Scarthgap (the newest) image release for the X-LINUX-AI expansion demo. For instructions on flashing this image to the board, refer to the "Populate the target and boot the image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image)
 
 # 3. Hardware Setup
 See the reference image below for cable connections.
