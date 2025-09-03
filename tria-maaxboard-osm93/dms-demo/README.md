@@ -3,7 +3,7 @@ This guide will help you upgrade the basic IoTConnect Starter Demo to the EIQ Vi
 with a single update.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-maaxboard-osm93/README.md), complete that first and then return here to pick up on Step 1
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
