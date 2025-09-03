@@ -49,8 +49,43 @@ bash ./create-package.sh
 > so it can be readily accessed by the scripts used in optional steps 5B and 5C.
  
 ## 4. Prepare Device to Receive Package
-The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for 
-instructions on this method.
+To locally view the live DMS video feed, you will need to connect a [AES-ACC-MAAX-DISP2 MIPI ribbbon-cable display](https://www.avnet.com/americas/product/avnet-engineering-services/aes-acc-maax-disp2/evolve-57464320/) 
+to the MIPI_DSI port of your board. After connecting the display with the ribbon cable in the correct orientation 
+(contacts facing in towards the board), you will need to configure the board to utilize the display. Execute the following:
+
+```apt-get install nano```
+```cd ~```
+```mkdir mount```
+```mount /dev/mmcblk0p1 mount/```
+```nano mount/uEnv.txt```
+
+Now in the nano editor, find the line that says
+
+```
+# Display can support mipi
+#dtoverlay_display=mipi
+```
+
+Un-comment the ```#dtoverlay_display=mipi``` line so that the file now reads
+
+```
+# Display can support mipi
+dtoverlay_display=mipi
+```
+
+Save the change, exit the file and then execute ```sync``` followed by ```reboot``` to solidify the change. When the
+board boots, on the display you should now see a terminal with boot sequence messages followed by a gray home screen. 
+When the DMS demo runs, a live-feed window will appear on this screen.
+
+Next, plug a USB camera into a USB port on the board. Both basic UVC camera sensors and more sophisticated webcams have
+been tested to work with this board and demo, so most USB camera options available should work without issue.
+
+>[!NOTE]
+> It is highly recommended that you reboot again after plugging the USB camera into the board to help ensure that the camera 
+> device comes up as `/dev/video0` which is the default configuration for the demo.
+
+Now it is time to deliver the demo installation package. The most basic way to deliver and run the install package is 
+through a local file transfer. See step 5A below for instructions on this method.
 
 For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main 
 IoTConnect program on your board called ```app.py```
@@ -233,8 +268,8 @@ Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS
 * Download the demo [Dashboard Template](./FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
 * **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
-* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
-* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+* **Select** `eiqIOTC` for **template** and your device's name for **device** 
+* **Enter** a name and click `Save` to complete the import
 
 ## 8. Using the Dashboard
 
@@ -243,7 +278,4 @@ The Driver Safety Monitor demo solution will look for a variety of facial attrib
 <summary>Table of Supported DSM Attributes</summary>
 <img src="../media/dsm_metrics.png" width="1000">
 </details>
-
->[!TIP]
->You can find this slide and others on the demo in the [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
 
