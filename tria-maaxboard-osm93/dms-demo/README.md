@@ -261,21 +261,4 @@ The program is designed to re-start itself after the update files have been auto
 ```install.sh``` script is executed (if included). There is no need for you to do any manual reboots or file manipulation. 
 Your package installation is complete and the program is working again already!
 
-Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS demo on the online IoTConnect platform.
-
-## 7. Import Dashboard Template
-
-* Download the demo [Dashboard Template](./DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
-* **Download** the template then select `Create Dashboard` from the top of the page
-* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
-* **Select** `eiqIOTC` for **template** and your device's name for **device** 
-* **Enter** a name and click `Save` to complete the import
-
-## 8. Using the Dashboard
-
-The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
-<details>
-<summary>Table of Supported DSM Attributes</summary>
-<img src="../media/dsm_metrics.png" width="1000">
-</details>
-
+You should soon see the live video feed appear on your display with the DMS alerts and bounding box as the telemetry is sent ot IoTConnect.
