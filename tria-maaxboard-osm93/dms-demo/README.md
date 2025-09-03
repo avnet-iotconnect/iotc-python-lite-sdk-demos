@@ -265,7 +265,7 @@ Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS
 
 ## 7. Import Dashboard Template
 
-* Download the demo [Dashboard Template](./FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
+* Download the demo [Dashboard Template](./DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
 * **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
 * **Select** `eiqIOTC` for **template** and your device's name for **device** 
