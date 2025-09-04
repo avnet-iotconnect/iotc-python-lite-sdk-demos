@@ -53,9 +53,13 @@ to the MIPI_DSI port of your board. After connecting the display with the ribbon
 (contacts facing in towards the board), you will need to configure the board to utilize the display. Execute the following:
 
 ```apt-get install nano```
+
 ```cd ~```
+
 ```mkdir mount```
+
 ```mount /dev/mmcblk0p1 mount/```
+
 ```nano mount/uEnv.txt```
 
 Now in the nano editor, find the line that says
@@ -72,16 +76,31 @@ Un-comment the ```#dtoverlay_display=mipi``` line so that the file now reads
 dtoverlay_display=mipi
 ```
 
-Save the change, exit the file and then execute ```sync``` followed by ```reboot``` to solidify the change. When the
-board boots, on the display you should now see a terminal with boot sequence messages followed by a gray home screen. 
+If you wish to use a MIPI ribbon cable camera module for the demo, you also must locate this section of the file:
+
+```
+# Camera can support ov5640
+#dtoverlay_camera=ov5640
+```
+
+Un-comment the ```#dtoverlay_camera=ov5640``` line so that the file now reads
+
+```
+# Camera can support ov5640
+dtoverlay_camera=ov5640
+```
+
+Save the changes, and exit the file. If you haven't already, connect your MIPI camera (ensure correct cable orientation, 
+contacts facing away from USB/ethernet ports) or USB camera to the board now.
+
+Execute these commands to solidify your configuration changes and bring up the board with them:
+
+```sync```
+
+```reboot```
+
+When the board boots, on the display you should now see a terminal with boot sequence messages followed by a gray home screen. 
 When the DMS demo runs, a live-feed window will appear on this screen.
-
-Next, plug a USB camera into a USB port on the board. Both basic UVC camera sensors and more sophisticated webcams have
-been tested to work with this board and demo, so most USB camera options available should work without issue.
-
->[!NOTE]
-> It is highly recommended that you reboot again after plugging the USB camera into the board to help ensure that the camera 
-> device comes up as `/dev/video0` which is the default configuration for the demo.
 
 Now it is time to deliver the demo installation package. The most basic way to deliver and run the install package is 
 through a local file transfer. See step 5A below for instructions on this method.

@@ -346,6 +346,16 @@ def update_json():
 # -----------------------------------------------------------------------------
 # MODEL LOADING & FLASK SETUP
 
+def safe_read(cap, retries=10, delay=0.1):
+    """Try reading from the camera several times before failing."""
+    for _ in range(retries):
+        ret, frame = cap.read()
+        if ret and frame is not None:
+            return frame
+        time.sleep(delay)
+    raise RuntimeError("Camera did not return a frame")
+
+
 app = Flask(__name__)
 MODEL_PATH = pathlib.Path("/usr/bin/eiq-examples-git/models/")
 DETECT_MODEL = "face_detection_front_128_full_integer_quant.tflite"
@@ -365,10 +375,7 @@ parser.add_argument('-d', '--delegate', default='', help='delegate path')
 args = parser.parse_args()
 
 cap = cv2.VideoCapture(args.input, cv2.CAP_V4L2)
-ret, frame = cap.read()
-if not ret:
-    print("Can't read frame from source file", args.input)
-    sys.exit(-1)
+frame = safe_read(cap, retries=20, delay=0.2)
 
 h, w, _ = frame.shape
 target_dim = max(w, h)
