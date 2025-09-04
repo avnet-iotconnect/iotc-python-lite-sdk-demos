@@ -11,7 +11,7 @@ if true; then
 
 export PIP_ROOT_USER_ACTION=ignore  # Suppresses venv warning
 
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy==1.26.4 opencv-python requests filelock networkx
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
 
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem -subj "/CN=localhost"
 
@@ -45,5 +45,7 @@ for file in *.tflite; do
     cp "$file" "$DEST_DIR"
   fi
 done
+
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install --force-reinstall numpy==1.26.4
 
 echo "Installation complete!"
