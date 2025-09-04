@@ -52,15 +52,25 @@ To locally view the live DMS video feed, you will need to connect a [AES-ACC-MAA
 to the MIPI_DSI port of your board. After connecting the display with the ribbon cable in the correct orientation 
 (contacts facing in towards the board), you will need to configure the board to utilize the display. Execute the following:
 
-```apt-get install nano```
+```
+apt-get install nano
+```
 
-```cd ~```
+```
+cd ~
+```
 
-```mkdir mount```
+```
+mkdir mount
+```
 
-```mount /dev/mmcblk0p1 mount/```
+```
+mount /dev/mmcblk0p1 mount/
+```
 
-```nano mount/uEnv.txt```
+```
+nano mount/uEnv.txt
+```
 
 Now in the nano editor, find the line that says
 
@@ -95,9 +105,13 @@ contacts facing away from USB/ethernet ports) or USB camera to the board now.
 
 Execute these commands to solidify your configuration changes and bring up the board with them:
 
-```sync```
+```
+sync
+```
 
-```reboot```
+```
+reboot
+```
 
 When the board boots, on the display you should now see a terminal with boot sequence messages followed by a gray home screen. 
 When the DMS demo runs, a live-feed window will appear on this screen.
