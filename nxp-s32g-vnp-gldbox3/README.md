@@ -49,7 +49,7 @@ See the reference images below for cable connections.
 </details>
 
 Using the above images as reference, make the following connections:
-1. Connect the power cable to the 12V DC port labeled**#1**.
+1. Connect the power cable to the 12V DC port labeled **#1**.
 2. Connect the included micro-USB cable to the UART0 port labeled **#2**.
 3. Lastly, connect an ethernet cable to the middle port on the bottom row labeled **#3**
    (the default image for this device is configured to use this specific port for internet connectivity).
