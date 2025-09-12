@@ -1,10 +1,11 @@
 # IoTConnect Starter Demo: Package Creation and Deployment
 
-This guide will help you create and deliver a package based on the IoTConnect Starter Demo to the Microchip SAMA5D27.
+This guide will help you create and deliver a package based on the IoTConnect Starter Demo to the Microchip SAMA7D65
+Curiosity Kit.
 
 > [!IMPORTANT]
 > If you have not yet followed
-> the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-sama5d27/README.md),
+> the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-sama7d65-curiosity/README.md),
 > complete that first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
@@ -15,11 +16,12 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 
 ## 2. Customize Package
 
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```microchip-sama5d27/starter-demo/src/```
+Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the
+```microchip-sama7d65-curiosity/starter-demo/src/```
 directory:
 
 ```
-cd ./microchip-sama5d27/starter-demo/src/
+cd ./microchip-sama7d65-curiosity/starter-demo/src/
 ```
 
 By default, this directory contains the basic starter ```app.py``` and an starter ```install.sh``` script.
@@ -29,14 +31,16 @@ you may delete it from the directory.
 
 If you wish to add more source files to the package, copy them into the ```src``` directory.
 
-If the device will need to perform some actions (move files, install libaries, etc.) after the package is received,
-modify ```install.sh``` to perform those actions. It will be automatically executed after the package is recevied and
-extracted on the device.
+If the device will need to perform some actions (move files, install libraries, etc.) after the package is received,
+modify
+```install.sh``` to perform those actions. It will be automatically executed after the package is received and extracted
+on the device.
 
 ## 3. Create Package
 
 Navigate back to the ```starter-demo``` directory and then run this command to create ```package.tar.gz``` which
-includes the necessary demo files and installation script:
+includes
+the necessary demo files and installation script:
 
 ```
 bash ./create-package.sh
@@ -44,7 +48,8 @@ bash ./create-package.sh
 
 > [!NOTE]
 > At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common```
-> directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
+> directory
+> so it can be readily accessed by the scripts used in optional steps 5B and 5C.
 
 ## 4. Prepare Device to Receive Package
 
@@ -62,13 +67,13 @@ From here, you have the option to push the package to your devices directly to y
 
 ## 5A. Deliver Package Through Local File Transfer
 
-To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure
-copy) command.
+To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp```
+(secure copy) command.
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main
 application directory of the device (```/home/weston/demo```).
 
-After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and
+After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and
 verify that there is a ```package.tar.gz``` present.
 
 If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
@@ -123,8 +128,9 @@ iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env techn
 ```
 
 > [!IMPORTANT]
-> Notice that the password argument of the command is **the only arugment that is in quotes.** Make sure you pay
-> attention to this detail.
+> Notice that the password argument of the command is **the only argument that is in quotes.** Make sure you pay
+> attention
+> to this detail.
 
 You will see this output in the console if your login succeeded:
 
@@ -139,8 +145,9 @@ python3 ota-package-send.py
 ```
 
 You will be prompted to enter the unique IDs of the devices you wish to send the OTA package to. If the firmware for
-your listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware
-to be created.
+your
+listed devices does not yet have an associated firmware, you will also be prompted for a name for the new firmware to be
+created.
 
 The ```package.tar.gz``` file you generated previously will be automatically uploaded to an upgrade for the new/existing
 firmware, and the OTA package will be automatically pushed.
@@ -190,7 +197,7 @@ iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env techn
 ```
 
 > [!IMPORTANT]
-> Notice that the password argument of the command is **the only arugment that is in quotes.** Make sure you pay
+> Notice that the password argument of the command is **the only argument that is in quotes.** Make sure you pay
 > attention to this detail.
 
 You will see this output in the console if your login succeeded:
@@ -209,9 +216,10 @@ You will be prompted to enter the unique IDs of the devices you wish to send the
 the same template. Any devices that use a template different from the first device entered will be rejected.
 
 After entering your device IDs, the ```package.tar.gz``` file you generated previously will be automatically uploaded
-and the command will be automatically pushed to all given devices.
+and
+the command will be automatically pushed to all given devices.
 
-For every device that receives the command, you should see this ouput in your host machine console:
+For every device that receives the command, you should see this output in your host machine console:
 
 ```
 Command successful!
@@ -228,7 +236,8 @@ machine console as well.
     * Select the blue "Create Firmware" button in the top-right of the screen
     * Name your firmware (remember this name for later)
     * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a
-      firmware for it already exists in your IoTConnect instance)
+      firmware
+      for it already exists in your IoTConnect instance)
     * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
     * Select the "Browse" button in the "File" section and select your ```package.tar.gz```
     * Add descriptions if you desire
@@ -251,4 +260,5 @@ of your device informing you that an update package was received, downloaded and
 
 The program is designed to re-start itself after the update files have been automatically decompressed and the
 ```install.sh``` script is executed (if included). There is no need for you to do any manual reboots or file
-manipulation. Your package installation is complete and the program is working again already!
+manipulation.
+Your package installation is complete and the program is working again already!

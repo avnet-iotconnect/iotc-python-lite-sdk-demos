@@ -1,4 +1,4 @@
-# STM32MP157F-DK2 QuickStart
+# Microchip SAMA7D65-Curiosity Kit Quickstart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -6,18 +6,23 @@
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
 6. [Using the Demo](#6-using-the-demo)
-7. [Troubleshooting](#7-troubleshooting)
-8. [Resources](#8-resources)
+7. [Resources](#8-resources)
 
 # 1. Introduction
 
-This guide is designed to walk through the steps to connect the STM32MP157F-DK2 to the Avnet /IOTCONNECT platform and
-periodically send general telemetry data.
+This guide provides step-by-step instructions to set up the **Microchip SAMA7D65-Curiosity Kit hardware** and integrate
+it
+with **IoTConnect**, Avnet's robust IoT platform. The SAMA7D65-Curiosity Kit hardware platform provides flexible options
+for IoT
+application development, enabling secure device onboarding, telemetry collection, and over-the-air (OTA) updates.
 
 <table>
   <tr>
-    <td><img src="./media/mp157-product.png" width="6000"></td>
-    <td>The STM32MP157F-DK2 Discovery kit leverages the capabilities of the increased-frequency 800 MHz microprocessors in the STM32MP157 product line to allow users to develop applications easily using STM32 MPU OpenSTLinux Distribution software for the main processor and STM32CubeMP1 software for the coprocessor. It includes an ST-LINK embedded debug tool, LEDs, push-buttons, one Ethernet 1-Gbit/s connector, one USB Type-C® OTG connector, four USB Host Type-A connectors, one HDMI® transceiver, one stereo headset jack with analog microphone, and one microSD™ connector. To expand the functionality of the STM32MP157D-DK1 and STM32MP157F-DK2 Discovery kits, two GPIO expansion connectors are also available for ARDUINO® and Raspberry Pi® shields. Additionally, the STM32MP157F-DK2 Discovery kit features an LCD display with a touch panel, and Wi‑Fi® and Bluetooth® Low Energy capability.</td>
+    <td><img src=".//media/sama7d65-product.png" width="6000"></td>
+    <td>The SAMA7D65-Curiosity Kit is a development board for evaluating  and prototyping with Microchip SAMA7D65 microprocessor (MPU).  
+The SAMA7D65 MPU is a high-performance  ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz.  The board allows 
+evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and 
+LVDS w/ 2D graphics, dual Gigabit Ethernet w/ TSN and CAN-FD.</td>
   </tr>
 </table>
 
@@ -28,37 +33,57 @@ replicated in other environments.
 
 ## Hardware
 
-*
-STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
-* 1 USB Type-C Cable (second USB-C cable required for flashing)
-* 1 Micro-USB Cable
-* Ethernet Cable **or** WiFi Network SSID and Password
+* Microchip EV63J76A (SAMA7D65 Curiosity
+  Kit) [Purchase](https://www.microchip.com/en-us/development-tool/EV63J76A) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
+* Ethernet Cable
+* USB-C Cable (included in kit)
+* Standard SD Card or micro-SD Card with Standard-Size Adapter (included in kit)
+* USB to TTL Serial 3.3V Adapter Cable (must be purchased separately,
+  click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
+  to see the cable used by Avnet's engineer)
+
+> [!NOTE]
+> The USB to TTL Serial 3.3V Adapter Cable may require you to install a specific driver onto your host machine. The
+> example cable linked above requires
+> a [PL2303 driver](https://www.prolific.com.tw/us/showproduct.aspx?p_id=225&pcid=41).
 
 ## Software
 
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
+* Flash Yocto Image to SD Card:
+    1. [Click here](https://developerhelp.microchip.com/xwiki/bin/view/applications/linux4sam/Boards/sama7d65curosity/#HDemoarchives)
+       to get to the page to download the latest image for the SAMA7D65.
+    2. Download the image (link may have updated name that slightly differs from screenshot):
 
-> [!NOTE]
-> STM32MP157F-DK2 must be running a Scarthgap (or newer) image release for the X-LINUX-AI expansion demo. The BLE demos
-> utilize a pre-compiled .whl file that specifically requires Python 3.12, which is the version found in Scarthgap images.
-> Follow [this flashing guide](FLASHING.md) to download and flash an image to your board.
+    <img src=".//media/image-download.png" alt="Yocto Image Download"/>
+
+    3. Follow the "Create a SD card with the demo" section of the instructions to flash the image to an SD card.
 
 # 3. Hardware Setup
 
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/mp157f_board_setup.png" width="600">
+<img src="./media/board-connections.png" width="600">
 </details>
 
 Using the above image as reference, make the following connections:
 
-1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you
-   instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
-2. Connect the USB-C cable from a 5V/2.4A (up to 3A) power supply to the "PWR_IN" USB-C connector on the board, labeled
-   **#2**.
-3. Connect the Micro-USB cable from your PC to the Micro-USB connector labeled **#3** on the reference image.
+1. Connect the included USB-C cable from your PC to the USB-C connector labeled **#1**.
+2. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#2**.
+3. Insert the SD card (or micro-SD card with an adapter) into the slot labeled **#3**.
+4. Connect your USB to TTL Serial 3.3V Adapter Cable to the appropriate pins on the J35 debug header labeled **#4**.
+
+J35 Pinout: GND - OPEN - OPEN - RX - TX - OPEN
+
+Color-coded connections from suggested USB to TTL adapter cable: BLACK - OPEN - OPEN - WHITE - GREEN - OPEN
+
+> [!NOTE]
+> If your USB to TTL adapter cable has one larger connector (usually all 6 pins) instead of individual wires, that is
+> still fine as long as the GND, RX, and TX pins line up correctly. It should also be noted that usually on USB to TTL
+> adapters, **the RX female slot should line up with the TX pin on the board (and vice versa).** If you are unsure, try
+> RX-to-TX and TX-to-RX first and if the serial connection does not work, then try RX-to-RX and TX-to-TX.
 
 # 4. /IOTCONNECT: Cloud Account Setup
 
@@ -85,8 +110,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 - Stop Bits: 1
 - Parity: None
 
-3. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to
-   connect to your board via the terminal emulator
+3. Noting the new COM port in your Device Manager list, attempt to connect to your board via
+   the terminal emulator
 
 > [!NOTE]
 > A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key
@@ -96,22 +121,14 @@ The free subscription may be obtained directly from iotconnect.io or through the
 5. Run these commands to update the core board packages and install necessary IoTConnect packages:
 
 ```
-su
-```
-
-```
-apt-get update
-```
-
-```
-apt-get install python3-pip -y
+sudo opkg update
 ```
 
 ```
 python3 -m pip install iotconnect-sdk-lite requests
 ```
 
-6. Run this command to create and move into a directory for your demo files:
+6. Then run these commands to create and move into a directory for your demo files:
 
 ```
 mkdir -p /home/weston/demo && cd /home/weston/demo
@@ -130,11 +147,7 @@ Option B is more manual but does not have that potential Solution Key obstacle.
 
 ## Option A: Onboard Device via REST API (Requires Solution Key)
 
-1. Run these commands to install the IoTConnect REST API python module:
-
-```
-apt-get install python3-cffi -y
-```   
+1. Run this command to install the IoTConnect REST API python module:
 
 ```
 python3 -m pip install iotconnect-rest-api
@@ -176,7 +189,8 @@ Logged in successfully.
 4. Lastly, run this command to download and run the device setup script:
 
 ```
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
+wget -q --content-disposition 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
+
 ```
 
 ## Option B: Onboard Device via Online IoTConnect Platform
@@ -235,25 +249,18 @@ wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-dem
 
 # 6. Using the Demo
 
-1. Run the basic demo with this command:
+After the device setup is complete, you can run the example IoTConnect script with these commands:
 
 ```
+cd /home/weston/demo
 python3 app.py
 ```
 
-> [!NOTE]
-> Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this
-> directory with the command: ```cd /home/weston/demo```
+The random-integer telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
 
-2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+# 7. Resources
 
-# 7. Troubleshooting
-
-To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
-
-# 8. Resources
-
-* [Purchase the STM32MP157F-DK2](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731)
-* [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
+* [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.microchip.com/en-us/development-tool/EV63J76A)
+* [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

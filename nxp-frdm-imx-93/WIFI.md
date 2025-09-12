@@ -1,7 +1,7 @@
-
 # WiFi Setup Guide for NXP FRDM-i.MX93 with Yocto
 
-This guide explains how to set up and connect WiFi on the NXP FRDM-i.MX93 running Yocto. It includes instructions for ensuring connections persist after reboots.
+This guide explains how to set up and connect WiFi on the NXP FRDM-i.MX93 running Yocto. It includes instructions for
+ensuring connections persist after reboots.
 
 ---
 
@@ -14,7 +14,7 @@ This guide explains how to set up and connect WiFi on the NXP FRDM-i.MX93 runnin
 
 ---
 
-## WiFi 
+## WiFi
 
 ### Step 1: Load WiFi Module
 
@@ -28,7 +28,8 @@ modprobe moal mod_para=/lib/firmware/nxp/wifi_mod_para.conf
 
 ### Step 2 (Optional): Create a Systemd Service File to Bring Up WiFi Devices
 
-1. Add the moal module to load at boot with the correct parameters, create a modprobe configuration file to pass the parameters, and then create a new service file for the WiFi setup:
+1. Add the moal module to load at boot with the correct parameters, create a modprobe configuration file to pass the
+   parameters, and then create a new service file for the WiFi setup:
    ```bash
    echo "moal mod_para=nxp/wifi_mod_para.conf" > /etc/modules-load.d/moal.conf
    echo "options moal mod_para=nxp/wifi_mod_para.conf" > /etc/modprobe.d/moal.conf
@@ -133,7 +134,8 @@ Agent registered
 
 #### 5. Connect to a Wi-Fi Network
 
-Use the following command to connect to your chosen network. Replace `wifi_xxxx_xxxxxxxxxxxx_managed_psk` with the identifier of your target network:
+Use the following command to connect to your chosen network. Replace `wifi_xxxx_xxxxxxxxxxxx_managed_psk` with the
+identifier of your target network:
 
 ```bash
 connect wifi_xxxx_xxxxxxxxxxxx_managed_psk
@@ -217,11 +219,12 @@ Press **`Ctrl + C`** to stop the ping command.
 ### Step 5: Make Wi-Fi Persistent Across Reboots
 
 1. Ensure that the Wi-Fi module is loaded during boot using the `wifi-setup.service` file created earlier.
-2. Confirm that the network configuration file exists in the `/var/lib/connman/` directory. Verify that the `Favorite` and `AutoConnect` fields are set to `true` in the network’s settings file.
-
+2. Confirm that the network configuration file exists in the `/var/lib/connman/` directory. Verify that the `Favorite`
+   and `AutoConnect` fields are set to `true` in the network’s settings file.
 
 ---
 
 ## Additional Resources
 
-For more detailed information, refer to the [i.MX Linux User's Guide](https://www.nxp.com/docs/en/user-guide/IMX_LINUX_USERS_GUIDE.pdf).
+For more detailed information, refer to
+the [i.MX Linux User's Guide](https://www.nxp.com/docs/en/user-guide/IMX_LINUX_USERS_GUIDE.pdf).
