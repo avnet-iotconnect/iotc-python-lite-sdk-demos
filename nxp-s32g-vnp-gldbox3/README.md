@@ -37,17 +37,22 @@ Based on the S32G-VNP-RDB3, the GoldBox 3 is an excellent form-factor for custom
 * [USB-to-UART Driver](https://ftdichip.com/drivers/d2xx-drivers/) for FTDI devices
 
 # 3. Hardware Setup
-See the reference image below for cable connections.
+See the reference images below for cable connections.
 <details>
-<summary>Reference Image with Connections</summary>
-<img src="./media/board_setup.png" width="600">
+<summary>Reference Image with Front Connections</summary>
+<img src="./media/board-connections-0.png" width="600">
 </details>
 
-Using the above image as reference, make the following connections:
-1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
-2. Connect a uvc-compliant webcam to the USB-A connector labeled **#4**.
-3. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
-4. Lastly, connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3** to power on the board.
+<details>
+<summary>Reference Image with Rear Connections</summary>
+<img src="./media/board-connections-1.png" width="600">
+</details>
+
+Using the above images as reference, make the following connections:
+1. Connect the power cable to the 12V DC port labeled**#1**.
+2. Connect the included micro-USB cable to the UART0 port labeled **#2**.
+3. Lastly, connect an ethernet cable to the middle port on the bottom row labeled **#3**
+   (the default image for this device is configured to use this specific port for internet connectivity).
 
 # 4. Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.
