@@ -93,7 +93,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
 4. If prompted for a login, type `root` followed by the ENTER key.
-5. Run these commands to update the core board packages and install necessary IoTConnect packages:
+5. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
 su
@@ -122,7 +122,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-From here, to onboard your device into IoTConnect you have two options.
+From here, to onboard your device into /IOTCONNECT you have two options.
 
 Option A is more automated but currently requires a Solution Key that must be requested from Avnet.
 
@@ -130,7 +130,7 @@ Option B is more manual but does not have that potential Solution Key obstacle.
 
 ## Option A: Onboard Device via REST API (Requires Solution Key)
 
-1. Run these commands to install the IoTConnect REST API python module:
+1. Run these commands to install the /IOTCONNECT REST API python module:
 
 ```
 apt-get install python3-cffi -y
@@ -140,13 +140,13 @@ apt-get install python3-cffi -y
 python3 -m pip install iotconnect-rest-api
 ```
 
-2. Now run this command to protect your IoTConnect credentials:
+2. Now run this command to protect your /IOTCONNECT credentials:
 
 ```
 export HISTCONTROL=ignoreboth
 ```
 
-3. Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect
+3. Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT
    account on the device:
 
 ```
@@ -179,7 +179,7 @@ Logged in successfully.
 curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
 ```
 
-## Option B: Onboard Device via Online IoTConnect Platform
+## Option B: Onboard Device via Online /IOTCONNECT Platform
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
@@ -188,7 +188,7 @@ curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-s
 4. Right-click and then click "save link as"
    on [this link to the default device template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json)
    to download the raw template file.
-5. Back in the IoTConnect browser tab, click on the "Create Template" button in the top-right of the screen.
+5. Back in the /IOTCONNECT browser tab, click on the "Create Template" button in the top-right of the screen.
 6. Click on the "Import" button in the top-right of the resulting screen.
 7. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
 8. Click on the "Devices" tab of the blue toolbar at the bottom of the screen.
