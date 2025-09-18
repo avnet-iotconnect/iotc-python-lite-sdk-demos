@@ -1,4 +1,4 @@
-# Flashing a fresh Yocto image to your STM32MP135F-DK
+# Flashing a Yocto image to the STM32MP135F-DK
 
 # Introduction
 
