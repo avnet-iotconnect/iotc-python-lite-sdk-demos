@@ -33,7 +33,8 @@ and set up basic IoTConnect onboarding for your device.
 To explore setting up AWS Greengrass Lite on some of these same devices and deploying python demos through pre-built or custom
 components, check out the [IoTConnect Python Greengrass Demos repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/tree/main) 
 as well as the [IoTConnect Python Greengrass SDK repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-sdk/tree/main) 
-and the [IoTConnect Python Greengrass SDK repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-sdk/tree/main) which support those demos.
+and the [IoTConnect Python Greengrass Components repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-components/tree/main) 
+which support those demos.
 
 # Further Customization
 
