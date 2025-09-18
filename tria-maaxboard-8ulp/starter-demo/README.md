@@ -1,10 +1,10 @@
-# IoTConnect Starter Demo: Package Creation and Deployment
+# /IOTCONNECT Starter Demo: Package Creation and Deployment
 
-This guide will help you create and deliver a package based on the IoTConnect Starter Demo to the Tria MaaXBoard 8ULP.
+This guide will help you create and deliver a package based on the /IOTCONNECT Starter Demo to the Tria MaaXBoard 8ULP.
 
 > [!IMPORTANT]
 > If you have not yet followed
-> the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-maaxboard-8ulp/README.md),
+> the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-maaxboard-8ulp/README.md),
 > complete that first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
@@ -51,14 +51,14 @@ bash ./create-package.sh
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for
 instructions on this method.
 
-For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main
-IoTConnect program on your board called ```app.py```:
+For your board to receive the package through /IOTCONNECT, it must be actively connected. Do this by running the main
+/IOTCONNECT program on your board called ```app.py```:
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
 
 * From you host machine's console as an OTA (see step 5B)
 * Through an API device command (see step 5C)
-* Through the online IoTConnect platform as an OTA (see step 5D)
+* Through the online /IOTCONNECT platform as an OTA (see step 5D)
 
 ## 5A. Deliver Package Through Local File Transfer
 
@@ -86,22 +86,22 @@ bash ./install.sh
 
 ## 5B. Push Package via OTA From Host Machine Console
 
-Pushing an OTA from your local machine requires you to be logged into your IoTConnect account so it can utilize the
-IoTConnect REST API.
+Pushing an OTA from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the
+/IOTCONNECT REST API.
 
-First make sure you install the IoTConnect REST API Python module to your host machine:
+First make sure you install the /IOTCONNECT REST API Python module to your host machine:
 
 ```
 python3 -m pip install iotconnect-rest-api
 ```
 
-Run this command to protect your IoTConnect credentials:
+Run this command to protect your /IOTCONNECT credentials:
 
 ```
 export HISTCONTROL=ignoreboth
 ```
 
-Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account
+Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT account
 on the device:
 
 ```
@@ -153,22 +153,22 @@ Successful OTA push!
 
 ## 5C. Push Package Through Command From Host Machine Console
 
-Pushing an package from your local machine requires you to be logged into your IoTConnect account so it can utilize the
-IoTConnect REST API.
+Pushing an package from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the
+/IOTCONNECT REST API.
 
-First make sure you install the IoTConnect REST API Python module to your host machine:
+First make sure you install the /IOTCONNECT REST API Python module to your host machine:
 
 ```
 python3 -m pip install iotconnect-rest-api
 ```
 
-Run this command to protect your IoTConnect credentials:
+Run this command to protect your /IOTCONNECT credentials:
 
 ```
 export HISTCONTROL=ignoreboth
 ```
 
-Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect account
+Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT account
 on the device:
 
 ```
@@ -220,15 +220,15 @@ Command successful!
 After the command is sent to all given devices, you will see a tally of successful and failed commands in your host
 machine console as well.
 
-## 5D. Upload and Push Package Through OTA in IoTConnect Online Platform
+## 5D. Upload and Push Package Through OTA in /IOTCONNECT Online Platform
 
-1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "
+1) In the "Device" Page of the online /IOTCONNECT platform, on the blue toolbar at the bottom of the page select "
    Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
     * Select the blue "Create Firmware" button in the top-right of the screen
     * Name your firmware (remember this name for later)
     * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a
-      firmware for it already exists in your IoTConnect instance)
+      firmware for it already exists in your /IOTCONNECT instance)
     * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
     * Select the "Browse" button in the "File" section and select your ```package.tar.gz```
     * Add descriptions if you desire
@@ -237,7 +237,7 @@ machine console as well.
 4) Under the "Draft" column within the "Software Upgrades" column, click on the draft number (will be "1" for
    newly-created firmwares)
 5) Select the black square with the black arrow under "Actions" to publish your firmware and make it available for OTA
-6) In the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
+6) In the "Firmware" page of /IOTCONNECT, select the "OTA Updates" button in the top-right of the screen
 7) For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
 8) Select the software version you chose for your firmware
 9) For "Target" select "Devices" from the drop-down
