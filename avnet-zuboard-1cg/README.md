@@ -37,7 +37,13 @@ of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a 
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
 
-# 3. Hardware Setup
+# 3. Linux Image Flashing
+
+Download the compressed publicly-available Linux image for the ZUBoard-1CG available [here](https://downloads.iotconnect.io/partners/avnet/disk-images/tria_zub1cg_2023_2_sdimage_20241029.img.gz)
+and flash the image to a micro-SD card using a software program such as Balena Etcher. After flashing, insert the micro-SD
+card into the micro-SD card slot on the board before proceeding to the next step.
+
+# 4. Hardware Setup
 
 See the reference image below for cable connections.
 <details>
@@ -57,7 +63,7 @@ card slot to power-on the board. You will see additional LEDs illuminate as the 
 
 <img src="./media/on-button.png">
 
-# 4. Cloud Account Setup
+# 5. Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.
@@ -72,7 +78,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-# 5. Device Setup
+# 6. Device Setup
 
 1. With the board powered on and connected to your host machine, open your Device Manager list and note the COM port
    being utilized by your adapter cable.
@@ -113,7 +119,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 
 The next step will be to onboard your ZUBoard-1CG into IoTConnect.
 
-## 6. Onboard Device via Online IoTConnect Platform
+# 7. Onboard Device via Online IoTConnect Platform
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
@@ -167,7 +173,7 @@ openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
 wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
 ```
 
-# 6. Using the Demo
+# 8. Using the Demo
 
 1. Run the basic demo with this command:
 
@@ -181,7 +187,7 @@ python3 app.py
 
 2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Resources
+# 9. Resources
 
 * [Purchase the Tria MaaXBoard OSM93](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
