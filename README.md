@@ -24,13 +24,18 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 
 # Getting Started
 
-To get started connecting your board to IoTConnect, **first follow the Quickstart Guide within your board's specific
+To get started connecting your board to /IOTCONNECT, **first follow the Quickstart Guide within your board's specific
 directory in this repository.** This guide will help you flash any required images, get access to your device's console,
-and set up basic IoTConnect onboarding for your device.
+and set up basic /IOTCONNECT onboarding for your device.
+
+# AWS Greengrass Demos Enablement
+
+To explore setting up AWS Greengrass Lite on some of these same devices and deploying python demos through pre-built or custom
+components, check out the [/IOTCONNECT Python Greengrass Demos repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/tree/main).
 
 # Further Customization
 
-If you want to modify or add onto the basic IoTConnect starter application, you can do so by sending a software package
+If you want to modify or add onto the basic /IOTCONNECT starter application, you can do so by sending a software package
 to your device.
 
 Within the directories for each device in this repository is a ```starter-demo``` directory with instructions on how to

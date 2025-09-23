@@ -1,9 +1,9 @@
 # EIQ Vision AI Driver Monitoring System (DMS) Demo: Package Creation and Deployment
-This guide will help you upgrade the basic IoTConnect Starter Demo to the EIQ Vision AI Driver Monitoring System Demo 
+This guide will help you upgrade the basic /IOTCONNECT Starter Demo to the EIQ Vision AI Driver Monitoring System Demo 
 with a single update.
 
 >[!IMPORTANT]
-> If you have not yet followed the [IoTConnect quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1
+> If you have not yet followed the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md), complete that first and then return here to pick up on Step 1
 
 ## 1. Clone This Git Repository to Your Host Machine
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
@@ -51,19 +51,19 @@ bash ./create-package.sh
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for 
 instructions on this method.
 
-For your board to receive the package through IoTConnect, it must be actively connected. Do this by running the main 
-IoTConnect program on your board called ```app.py```
+For your board to receive the package through /IOTCONNECT, it must be actively connected. Do this by running the main 
+/IOTCONNECT program on your board called ```app.py```
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
 * From you host machine's console as an OTA (see step 5B)
 * Through an API device command (see step 5C)
-* Through the online IoTConnect platform as an OTA (see step 5D)
+* Through the online /IOTCONNECT platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the EIQ DMS demo requires a template change (to `eiqIOTC`) for the device 
-> in IoTConnect. If you send the package via OTA or command from your host PC, this is taken care of during that process. 
-> If you are sending the package through a local file transfer or through an OTA via the IoTConnect online platform, you 
-> will have to manually change your device's template on your device's page in the online IoTConnect platform.
+> Upgrading from the basic quickstart demo to the EIQ DMS demo requires a template change (to `eiqIOTC`, template file available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/eiqIOTC-template.json)) for the device 
+> in /IOTCONNECT. If you send the package via OTA or command from your host PC, this is taken care of during that process. 
+> If you are sending the package through a local file transfer or through an OTA via the /IOTCONNECT online platform, you 
+> will have to manually change your device's template on your device's page in the online /IOTCONNECT platform.
 
 ## 5A. Deliver Package Through Local File Transfer
 To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` 
@@ -87,19 +87,19 @@ bash ./install.sh
 ```
 
 ## 5B. Push Package via OTA From Host Machine Console
-Pushing an OTA from your local machine requires you to be logged into your IoTConnect account so it can utilize the 
-IoTConnect REST API.
+Pushing an OTA from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the 
+/IOTCONNECT REST API.
 
-First make sure you install the IoTConnect REST API Python module to your host machine:
+First make sure you install the /IOTCONNECT REST API Python module to your host machine:
 ```
 python3 -m pip install iotconnect-rest-api
 ```
 
-Run this command to protect your IoTConnect credentials:
+Run this command to protect your /IOTCONNECT credentials:
 ```
 export HISTCONTROL=ignoreboth
 ```
-Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect 
+Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT 
 account on the device:
 ```
 iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
@@ -140,19 +140,19 @@ Successful OTA push!
 ```
 
 ## 5C. Push Package Through Command From Host Machine Console
-Pushing an package from your local machine requires you to be logged into your IoTConnect account so it can utilize the 
-IoTConnect REST API.
+Pushing an package from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the 
+/IOTCONNECT REST API.
 
-First make sure you install the IoTConnect REST API Python module to your host machine:
+First make sure you install the /IOTCONNECT REST API Python module to your host machine:
 ```
 python3 -m pip install iotconnect-rest-api
 ```
 
-Run this command to protect your IoTConnect credentials:
+Run this command to protect your /IOTCONNECT credentials:
 ```
 export HISTCONTROL=ignoreboth
 ```
-Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect 
+Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT 
 account on the device:
 ```
 iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
@@ -196,13 +196,13 @@ After the command is sent to all given devices, you will see a tally of successf
 machine console as well.
 
 
-## 5D. Upload and Push Package Through OTA in IoTConnect Online Platform
-1) In the "Device" Page of the online IoTConnect platform, on the blue toolbar at the bottom of the page select "Firmware"
+## 5D. Upload and Push Package Through OTA in /IOTCONNECT Online Platform
+1) In the "Device" Page of the online /IOTCONNECT platform, on the blue toolbar at the bottom of the page select "Firmware"
 2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
    * Select the blue "Create Firmware" button in the top-right of the screen
    * Name your firmware (remember this name for later)
    * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a firmware 
-   * for it already exists in your IoTConnect instance)
+   * for it already exists in your /IOTCONNECT instance)
    * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
    * Select the "Browse" button in the "File" section and select your ```package.tar.gz```
    * Add descriptions if you desire
@@ -210,7 +210,7 @@ machine console as well.
 3) Navigate back to the Firmware page and find your new firmware name in the list
 4) Under the "Draft" column within the "Software Upgrades" column, click on the draft number (will be "1" for newly-created firmwares)
 5) Select the black square with the black arrow under "Actions" to publish your firmware and make it available for OTA
-6) In the "Firmware" page of IoTConnect, select the "OTA Updates" button in the top-right of the screen
+6) In the "Firmware" page of /IOTCONNECT, select the "OTA Updates" button in the top-right of the screen
 7) For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
 8) Select the software version you chose for your firmware
 9) For "Target" select "Devices" from the drop-down
@@ -225,7 +225,7 @@ The program is designed to re-start itself after the update files have been auto
 ```install.sh``` script is executed (if included). There is no need for you to do any manual reboots or file manipulation. 
 Your package installation is complete and the program is working again already!
 
-Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS demo on the online IoTConnect platform.
+Steps 7 and 8 will walk you through setting up and using a dashboard for the DMS demo on the online /IOTCONNECT platform.
 
 ## 7. Import Dashboard Template
 
