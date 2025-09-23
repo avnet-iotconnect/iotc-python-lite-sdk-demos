@@ -60,7 +60,7 @@ From here, you have the option to push the package to your devices directly to y
 * Through the online /IOTCONNECT platform as an OTA (see step 5D)
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the EIQ DMS demo requires a template change (to `eiqIOTC`, available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/eiqIOTC-template.json)) for the device 
+> Upgrading from the basic quickstart demo to the EIQ DMS demo requires a template change (to `eiqIOTC`, template file available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/eiqIOTC-template.json)) for the device 
 > in /IOTCONNECT. If you send the package via OTA or command from your host PC, this is taken care of during that process. 
 > If you are sending the package through a local file transfer or through an OTA via the /IOTCONNECT online platform, you 
 > will have to manually change your device's template on your device's page in the online /IOTCONNECT platform.
