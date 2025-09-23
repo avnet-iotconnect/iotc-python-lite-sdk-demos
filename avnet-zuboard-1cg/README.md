@@ -1,4 +1,4 @@
-# Tria MaaXBoard OSM93 QuickStart
+# Avnet ZUBOARD 1CG QuickStart
 
 1. [Introduction](#1-introduction)
 2. [Hardware Requirements](#2-hardware-requirements)
@@ -10,14 +10,16 @@
 
 # 1. Introduction
 
-This guide is designed to walk through the steps to connect the Tria MaaXBoard OSM93 to the Avnet /IOTCONNECT platform
+This guide is designed to walk through the steps to connect the Avnet ZUBOARD 1CG to the Avnet /IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
 <table>
   <tr>
-    <td><img src="./media/OSM93-top-down.png" width="6000"></td>
-    <td>The MaaXBoard OSM93 features an energy-efficient, combination CPU/MPU/NPU, high-performance OSM compute system based on the NXP i.MX93 processor. The i.MX 93 device is architected with 3 separate processing domains: An application domain that includes two Arm® Cortex®-A55 (2.7 GHz) cores,
-a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-board AI accelerator, Arm® Ethos-U65 MicroNPU for machine learning and computer vision applications.</td>
+    <td><img src="./media/zuboard-product.png" width="6000"></td>
+    <td>The ZUBoard 1CG provides the flexibility and versatility for engineers to experiment with and learn the AMD 
+Zynq® UltraScale+™ architecture. The affordable ZU1CG device features 81K programmable logic cells with a Dual-core Arm® 
+Cortex®-A53 MPCore™ and Dual-core Arm Cortex-R5F MPCore, as well as cache and on-chip memory. The board also features 1GB 
+of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a microSD card slot.</td>
   </tr>
 </table>
 
@@ -25,17 +27,9 @@ a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-boar
 
 ## Hardware
 
-* Tria MaaXBoard
-  OSM93 [Purchase](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/80927648-7b98-4063-b91e-a8cb2e51e8a6/MaaXBoard+OSM93+User+Guide+v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-80927648-7b98-4063-b91e-a8cb2e51e8a6-pf2HBHv) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-osm93/?srsltid=AfmBOooL0Urtjf-giP8lPzs6dEfdVctJvArptaDqgqr9XMGEeMTIqkF_)
-* USB Type-C Cable
-* USB to TTL Serial 3.3V Adapter Cable (must be purchased separately,
-  click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
-  to see the cable used by Avnet's engineer)
-
-> [!NOTE]
-> The USB to TTL Serial 3.3V Adapter Cable may require you to install a specific driver onto your host machine. The
-> example cable linked above requires a [PL2303 driver](https://www.prolific.com.tw/us/showproduct.aspx?p_id=225&pcid=41).
-
+* Avnet ZUBOARD 1CG [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/) | [Product Guide](https://www.avnet.com/opasdata/d120001/medias/docus/298/FY25_1574_Tria_ZUBoard_1CG_Product_Brief-2_vp.pdf) | [All Resources](https://www.tria-technologies.com/product/zuboard-1cg/)
+* 15V/3A USB-C Power Supply (not included in kit, click [here](https://www.amazon.com/dp/B09LTV8XLC?ref=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&ref_=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&social_share=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&titleSource=true) to see the supply used by Avnet's engineer)
+* Micro-USB cable (for serial communication)
 * Ethernet Cable (and a local router/switch with Internet connectivity)
 
 ## Software
@@ -48,20 +42,20 @@ a real time domain includes an Arm® Cortex®-M33 (250 MHz) core, and an on-boar
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/OSM-93-connections.png">
+<img src="./media/board-connections.png">
 </details>
 
-1. Connect an Ethernet cable from your LAN (router/switch) to the "ETH_A" port on the board.
-2. Connect a USB-C cable from a 5V power source (such as your host machine) to the "POWER/USB_A" port on your board.
-3. Connect your USB to TTL Serial 3.3V Adapter Cable to the appropriate pins on the A55 debug header.
+1. Connect your 15V/3A USB-C power supply to the USB-C connector of the board labeled **#1**.
+2. Connect the micro-USB cable from your PC to the micro-USB connector on the board labeled **#2**.
+3. Connect an ethernet cable from your router/switch to the ethernet connector on the board labeled **#3**.
+
+After all connections have been made, press the SW7 button (shown below) in the corner of the board closest to the micro-SD 
+card slot to power-on the board. You will see additional LEDs illuminate as the board boots up.
 
 > [!NOTE]
-> The A55 debug header is the **lower** row of 3 pins, the upper row should be left open.
+> You do not need to hold down the SW7 power button, a quick click is sufficient.
 
-> [!IMPORTANT]
-> When connecting the wires of your USB to TTL Serial 3.3V Adapter Cable, the "TXD" pin of the board should connect to
-> the "RXD" wire of your cable. Similarly, the "RXD" pin of the board should connect to the "TXD" wire of your cable. "
-> GND" connects to "GND".
+<img src="./media/on-button.png">
 
 # 4. Cloud Account Setup
 
@@ -82,11 +76,6 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 1. With the board powered on and connected to your host machine, open your Device Manager list and note the COM port
    being utilized by your adapter cable.
-
-> [!TIP]
-> If you do not see your cable in the COM port list, check for it in the "Other devices" section. You may need to
-> install/select the driver for the cable to get it to be recognized as a COM port connection.
-
 2. Open a terminal emulator program such as TeraTerm or PuTTY on your host machine.
 3. Ensure that your serial settings in your terminal emulator are set to:
 
@@ -105,7 +94,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 6. Run these commands to begin to configure your board for IoTConnect:
 
 ```
-sudo apt-get update
+sudo opkg update
 ```
 
 ```
@@ -118,63 +107,13 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 
 > [!TIP]
 > To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the
-> window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
+> window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser
+> and
 > the terminal.
 
-From here, to onboard your device into IoTConnect you have two options.
+The next step will be to onboard your ZUBoard-1CG into IoTConnect.
 
-Option A is more automated but currently requires a Solution Key that must be requested from Avnet.
-
-Option B is more manual but does not have that potential Solution Key obstacle.
-
-## Option A: Onboard Device via REST API (Requires Solution Key)
-
-1. Run these commands to install the IoTConnect REST API python module:
-
-```
-python3 -m pip install iotconnect-rest-api
-```
-
-2. Now run this command to protect your IoTConnect credentials:
-
-```
-export HISTCONTROL=ignoreboth
-```
-
-3. Then run this IoTConnect REST API CLI command (with your credentials substituted in) to log into your IoTConnect
-   account on the device:
-
-```
-iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
-```
-
-For example if these were your credentials:
-
-* Email: `john.doe@gmail.com`
-* Password: Abc123!
-* Platform: aws
-* Environment: technology
-* Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-
-Your login command would be:
-
-```
-iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-```
-
-You will see this output in the console if your login succeeded:
-
-```
-Logged in successfully.
-```
-
-4. Lastly, run this command to download and run the device setup script:
-
-```
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
-```
-
-## Option B: Onboard Device via Online IoTConnect Platform
+## 6. Onboard Device via Online IoTConnect Platform
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
