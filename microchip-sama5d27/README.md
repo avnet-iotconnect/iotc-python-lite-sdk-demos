@@ -82,17 +82,11 @@ sudo apt-get update
 sudo apt-get install python3-pip -y
 ```
 ```
-python3 -m pip install iotconnect-sdk-lite
-```
-```
-python3 -m pip install requests
+python3 -m pip install iotconnect-sdk-lite requests
 ```
 6. Then run these commands to create and move into a directory for your demo files:
 ```
-mkdir /home/weston/demo
-```
-```
-cd /home/weston/demo
+mkdir -p /home/weston/demo && cd /home/weston/demo
 ```
 
 >[!TIP]
