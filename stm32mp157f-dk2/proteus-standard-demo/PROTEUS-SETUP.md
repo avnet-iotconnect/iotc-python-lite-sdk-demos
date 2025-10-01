@@ -1,4 +1,4 @@
-# How to Setup the PROTEUS Sensor PAck
+# How to Setup the PROTEUS Sensor Pack
 
 To prepare your ST PROTEUS pack for the demo, you will need to make sure it is loaded with the correct firmware file (
 `STSW-PROTEUS_1_1_1.bin` available in this directory). Since the firmware flashing will be done from a smartphone, you
