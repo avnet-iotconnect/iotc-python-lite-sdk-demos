@@ -1,4 +1,4 @@
-# Avnet ZUBOARD-1CG QuickStart
+# Tria Vision AI-KIT 6490 Quickstart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-hardware-requirements)
@@ -10,16 +10,14 @@
 
 # 1. Introduction
 
-This guide is designed to walk through the steps to connect the Avnet ZUBOARD 1CG to the Avnet /IOTCONNECT platform
+This guide is designed to walk through the steps to connect the Tria Vision AI-KIT 6490 to the Avnet /IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
 <table>
   <tr>
-    <td><img src="./media/zuboard-product.png" width="6000"></td>
-    <td>The ZUBoard 1CG provides the flexibility and versatility for engineers to experiment with and learn the AMD 
-Zynq® UltraScale+™ architecture. The affordable ZU1CG device features 81K programmable logic cells with a Dual-core Arm® 
-Cortex®-A53 MPCore™ and Dual-core Arm Cortex-R5F MPCore, as well as cache and on-chip memory. The board also features 1GB 
-of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a microSD card slot.</td>
+    <td><img src="./media/6490-product-image.png" width="6000"></td>
+    <td>The Vision AI-KIT 6490 features an energy-efficient, multi-camera, SMARC 2.1.1 compute module, based on the 
+Qualcomm QCS6490 SOC device</td>
   </tr>
 </table>
 
@@ -27,43 +25,38 @@ of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a 
 
 ## Hardware
 
-* Avnet ZUBOARD 1CG [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/) | [Product Guide](https://www.avnet.com/opasdata/d120001/medias/docus/298/FY25_1574_Tria_ZUBoard_1CG_Product_Brief-2_vp.pdf) | [All Resources](https://www.tria-technologies.com/product/zuboard-1cg/)
-* 15V/3A USB-C Power Supply (not included in kit, click [here](https://www.amazon.com/dp/B09LTV8XLC?ref=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&ref_=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&social_share=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&titleSource=true) to see the supply used by Avnet's engineer)
-* Micro-USB cable (for serial communication)
-* Ethernet Cable (and a local router/switch with Internet connectivity)
+* Tria Vision AI-KIT 6490 (Available for purchase from Avnet soon!) | [Product Brief](https://d7rh5s3nxmpy4.cloudfront.net/CMP7377/files/FY26_1712_Qualcomm_Vision-AI_Dev_Board_Product_Brief.pdf) | [All Resources](https://www.tria-technologies.com/product/vision-ai-kit-6490/)
+* USB to TTL Serial 3.3V Adapter Cable (must be purchased separately, click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
+* Wi-Fi (ethernet not enabled in default device state)
 
 ## Software
 
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
 
-# 3. Linux Image Flashing
+# 3. Hardware Setup
 
-Download the compressed publicly-available Linux image for the ZUBoard-1CG available [here](https://downloads.iotconnect.io/partners/avnet/disk-images/tria_zub1cg_2023_2_sdimage_20241029.img.gz)
-and flash the image to a micro-SD card using a software program such as Balena Etcher. After flashing, insert the micro-SD
-card into the micro-SD card slot on the board before proceeding to the next step.
-
-# 4. Hardware Setup
-
-See the reference image below for cable connections.
+See the reference images below for cable connections.
 <details>
-<summary>Reference Image with Connections</summary>
-<img src="./media/board-connections.png">
+<summary>General Reference Image for Cable Connections</summary>
+<img src="./media/6490-connections-0.png">
 </details>
 
-1. Connect your 15V/3A USB-C power supply to the USB-C connector of the board labeled **#1**.
-2. Connect the micro-USB cable from your PC to the micro-USB connector on the board labeled **#2**.
-3. Connect an ethernet cable from your router/switch to the ethernet connector on the board labeled **#3**.
+<details>
+<summary>Reference Image for Serial Connection Pinout</summary>
+<img src="./media/6490-connections-1.png">
+</details>
 
-After all connections have been made, press the SW7 button (shown below) in the corner of the board closest to the micro-SD 
-card slot to power-on the board. You will see additional LEDs illuminate as the board boots up.
+1. Connect your 9V USB-C power supply to the USB-C connector of the board labeled **#1**.
+2. Connect the serial adapter cable from your PC to the appropriate pins on the rear of the kit labeled **#2**. (See the
+second reference image for pinout help)
 
-> [!NOTE]
-> You do not need to hold down the SW7 power button, a quick click is sufficient.
+After all connections have been made, press the S1 button (shown below) in the corner of the board to power-on the board. 
+You will see additional LED activity as the board boots up.
 
-<img src="./media/on-button.png">
+<img src="./media/power-button.png">
 
-# 5. Cloud Account Setup
+# 4. Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.
@@ -78,7 +71,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > [!NOTE]
 > Be sure to check any SPAM folder for the temporary password after registering.
 
-# 6. Device Setup
+# 5. Device Setup
 
 1. With the board powered on and connected to your host machine, open your Device Manager list and note the COM port
    being utilized by your adapter cable.
@@ -96,11 +89,12 @@ The free subscription may be obtained directly from iotconnect.io or through the
 > A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key
 > to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
-5. When prompted for a login, type `root` followed by the ENTER key.
+5. When prompted for a login, type `root` followed by the ENTER key. For the default image, the password should be `oelinux123`.
+
 6. Run these commands to begin to configure your board for IoTConnect:
 
 ```
-sudo opkg update
+opkg update
 ```
 
 ```
@@ -119,7 +113,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 
 The next step will be to onboard your ZUBoard-1CG into IoTConnect.
 
-# 7. Onboard Device via Online IoTConnect Platform
+# 6. Onboard Device via Online IoTConnect Platform
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
@@ -173,7 +167,7 @@ openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
 wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
 ```
 
-# 8. Using the Demo
+# 7. Using the Demo
 
 1. Run the basic demo with this command:
 
@@ -187,8 +181,7 @@ python3 app.py
 
 2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Resources
-
-* [Purchase the Avnet ZUBoard-1CG](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/)
+# 8. Resources
+* Available for purchase from Avnet soon!
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
