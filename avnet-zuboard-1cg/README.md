@@ -10,13 +10,13 @@
 
 # 1. Introduction
 
-This guide is designed to walk through the steps to connect the Avnet ZUBOARD 1CG to the Avnet /IOTCONNECT platform
+This guide is designed to walk through the steps to connect the Avnet ZUBOARD-1CG to the Avnet /IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
 <table>
   <tr>
     <td><img src="./media/zuboard-product.png" width="6000"></td>
-    <td>The ZUBoard 1CG provides the flexibility and versatility for engineers to experiment with and learn the AMD 
+    <td>The ZUBoard-1CG provides the flexibility and versatility for engineers to experiment with and learn the AMD 
 Zynq® UltraScale+™ architecture. The affordable ZU1CG device features 81K programmable logic cells with a Dual-core Arm® 
 Cortex®-A53 MPCore™ and Dual-core Arm Cortex-R5F MPCore, as well as cache and on-chip memory. The board also features 1GB 
 of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a microSD card slot.</td>
@@ -27,7 +27,7 @@ of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a 
 
 ## Hardware
 
-* Avnet ZUBOARD 1CG [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/) | [Product Guide](https://www.avnet.com/opasdata/d120001/medias/docus/298/FY25_1574_Tria_ZUBoard_1CG_Product_Brief-2_vp.pdf) | [All Resources](https://www.tria-technologies.com/product/zuboard-1cg/)
+* Avnet ZUBOARD-1CG [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/) | [Product Guide](https://www.avnet.com/opasdata/d120001/medias/docus/298/FY25_1574_Tria_ZUBoard_1CG_Product_Brief-2_vp.pdf) | [All Resources](https://www.tria-technologies.com/product/zuboard-1cg/)
 * 15V/3A USB-C Power Supply (not included in kit, click [here](https://www.amazon.com/dp/B09LTV8XLC?ref=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&ref_=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&social_share=cm_sw_r_cso_cp_apin_dp_DA3J2KXP34BX7WYTTDAJ&titleSource=true) to see the supply used by Avnet's engineer)
 * Micro-USB cable (for serial communication)
 * Ethernet Cable (and a local router/switch with Internet connectivity)
