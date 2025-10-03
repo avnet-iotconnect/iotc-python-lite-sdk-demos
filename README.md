@@ -10,7 +10,6 @@ completed this work for a subset of board as outlined in the following section.
 
 The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
-* [Avnet ZUBoard-1CG](avnet-zuboard-1cg) - ([Product Link](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/))
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity) - ([Product Link](https://www.microchip.com/en-us/development-tool/EV63J76A))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Product Link](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/))
@@ -23,6 +22,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [Tria MaaXBoard 8ULP](tria-maaxboard-8ulp) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-8ulp/))
 * [Tria MaaXBoard OSM93](tria-maaxboard-osm93) - ([Product Link](https://www.tria-technologies.com/product/maaxboard-osm93/))
 * [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490) - ([Product Link](https://www.tria-technologies.com/product/vision-ai-kit-6490/))
+* [Tria ZUBOARD-1CG](tria-zuboard-1cg) - ([Product Link](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/))
 
 # Getting Started
 

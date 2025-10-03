@@ -23,7 +23,7 @@ directory:
 cd ./nxp-frdm-imx-93/starter-demo/src/
 ```
 
-By default, this directory contains the basic starter ```app.py``` and an starter ```install.sh``` script.
+By default, this directory contains the basic starter ```app.py``` and a starter ```install.sh``` script.
 
 If you want to make a modification to ```app.py```, do that now. If you are not modifying ```app.py``` in this package,
 you may delete it from the directory.

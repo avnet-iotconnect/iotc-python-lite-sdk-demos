@@ -1,10 +1,10 @@
 # /IOTCONNECT Starter Demo: Package Creation and Deployment
 
-This guide will help you create and deliver a package based on the /IOTCONNECT Starter Demo to the Avnet ZUBoard-1CG.
+This guide will help you create and deliver a package based on the /IOTCONNECT Starter Demo to the Tria ZUBOARD-1CG.
 
 > [!IMPORTANT]
 > If you have not yet followed
-> the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/avnet-zuboard-1cg/README.md),
+> the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-zuboard-1cg/README.md),
 > complete that first and then return here to pick up on Step 1.
 
 ## 1. Clone This Git Repository to Your Host Machine
@@ -16,13 +16,13 @@ Clone a copy of this repo to your local PC. This is where you will make changes/
 ## 2. Customize Package
 
 Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the
-```avnet-zuboard-1cg/starter-demo/src/``` directory:
+```tria-zuboard-1cg/starter-demo/src/``` directory:
 
 ```
-cd ./avnet-zuboard-1cg/starter-demo/src/
+cd ./tria-zuboard-1cg/starter-demo/src/
 ```
 
-By default, this directory contains the basic starter ```app.py``` and an starter ```install.sh``` script.
+By default, this directory contains the basic starter ```app.py``` and a starter ```install.sh``` script.
 
 If you want to make a modification to ```app.py```, do that now. If you are not modifying ```app.py``` in this package,
 you may delete it from the directory.
