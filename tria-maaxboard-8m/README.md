@@ -255,6 +255,6 @@ python3 app.py
 
 # 7. Resources
 
-* [Purchase the TRIA Maaxboard 8ULP](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
+* [Purchase the TRIA Maaxboard 8M](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

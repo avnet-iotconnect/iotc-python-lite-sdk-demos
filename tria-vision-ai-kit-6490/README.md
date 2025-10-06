@@ -1,12 +1,13 @@
 # Tria Vision AI-KIT 6490 Quickstart
 
 1. [Introduction](#1-introduction)
-2. [Requirements](#2-hardware-requirements)
+2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
-6. [Using the Demo](#6-using-the-demo)
-7. [Resources](#7-resources)
+6. [Onboard Device via Online /IOTCONNECT Platform](#6-onboard-device-via-online-iotconnect-platform)
+7. [Using the Demo](#7-using-the-demo)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 

@@ -6,8 +6,9 @@
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
 6. [Using the Demo](#6-using-the-demo)
-7. [Troubleshooting](#7-troubleshooting)
-8. [Resources](#8-resources)
+7. [EIQ Vison AI Driver Monitoring System Demo](#7-eiq-vison-ai-driver-monitoring-system-demo)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 

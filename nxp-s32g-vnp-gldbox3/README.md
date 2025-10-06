@@ -6,8 +6,7 @@
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
 6. [Using the Demo](#6-using-the-demo)
-7. [Troubleshooting](#7-troubleshooting)
-8. [Resources](#8-resources)
+7. [Resources](#7-resources)
 
 # 1. Introduction
 
@@ -250,20 +249,9 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. EIQ Vison AI Driver Monitoring System Demo
+# 7. Resources
 
-After completing the basic demo setup, you will be able to perform an OTA update to automatically install and begin
-running the EIQ Vision AI Driver Monitoring System Demo on your NXP i.MX 93. Refer
-to [this guide](./dms-demo/README.md).
-
-# 8. Troubleshooting
-
-To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
-
-# 9. Resources
-
-* [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
-* [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
+* [Purchase the NXP GoldBox 3 Vehicle Networking Development Platform](https://www.nxp.com/part/S32G-VNP-GLDBOX3))
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

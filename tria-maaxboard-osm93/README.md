@@ -1,7 +1,7 @@
 # Tria MaaXBoard OSM93 QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Hardware Requirements](#2-hardware-requirements)
+2. [Hardware Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Cloud Account Setup](#4-cloud-account-setup)
 5. [Device Setup](#5-device-setup)

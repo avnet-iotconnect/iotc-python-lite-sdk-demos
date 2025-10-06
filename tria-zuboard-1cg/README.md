@@ -1,12 +1,14 @@
 # Tria ZUBOARD-1CG QuickStart
 
 1. [Introduction](#1-introduction)
-2. [Requirements](#2-hardware-requirements)
-3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Using the Demo](#6-using-the-demo)
-7. [Resources](#7-resources)
+2. [Requirements](#2-requirements)
+3. [Linux Image Flashing](#3-linux-image-flashing)
+4. [Hardware Setup](#4-hardware-setup)
+5. [Cloud Account Setup](#5-cloud-account-setup)
+6. [Device Setup](#6-device-setup)
+7. [Onboard Device via Online /IOTCONNECT Platform](#7-onboard-device-via-online-iotconnect-platform)
+8. [Using the Demo](#8-using-the-demo)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -114,8 +116,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 > [!TIP]
 > To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser
-> and
-> the terminal.
+> and the terminal.
 
 The next step will be to onboard your ZUBoard-1CG into /IOTCONNECT.
 
