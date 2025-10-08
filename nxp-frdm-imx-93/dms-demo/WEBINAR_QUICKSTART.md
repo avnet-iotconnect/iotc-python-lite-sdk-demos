@@ -66,7 +66,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 # 5. /IOTCONNECT: Device Template Setup
 A Device Template defines the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](../../common/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Download the pre-made [Device Template](../../common/templates/eiqIOTC-template.json?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
 # 6. Run Setup Scripts
