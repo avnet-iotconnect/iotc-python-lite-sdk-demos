@@ -18,7 +18,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 
 <table>
   <tr>
-    <td><img src="./media/FRDM93.png" width="6000"></td>
+    <td><img src="../media/FRDM93.png" width="6000"></td>
     <td>The FRDM i.MX 93 development board is a low-cost and compact development board featuring the i.MX93 applications processor. Equipped with an onboard IW612 module, featuring NXP's Tri-Radio solution with Wi-Fi 6 + Bluetooth 5.4 + 802.15.4, the board is ideal for developing modern Industrial and IoT applications.</td>
   </tr>
 </table>
@@ -42,7 +42,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/board_setup.png" width="600">
+<img src="../media/board_setup.png" width="600">
 </details>
 
 Using the above image as reference, make the following connections:
@@ -66,7 +66,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 # 5. /IOTCONNECT: Device Template Setup
 A Device Template defines the type of telemetry the platform should expect to receive.
-* Download the pre-made [Device Template](dms-demo/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
+* Download the pre-made [Device Template](../../common/templates/eiqIOTC_template.JSON?raw=1) (**MUST** Right-Click and "Save-As" to get the raw json file)
 * Import the template into your /IOTCONNECT instance. (A guide on [Importing a Device Template](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/import_device_template.md) is available.)
 
 # 6. Run Setup Scripts
@@ -127,7 +127,7 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 # 9. /IOTCONNECT: Import Dashboard Template
 
-* Download the demo [Dashboard Template](dms-demo/templates/FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
+* Download the demo [Dashboard Template](FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
 * **Download** the template then select `Create Dashboard` from the top of the page
 * **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
 * **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
@@ -138,7 +138,7 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
 <summary>Table of Supported DSM Attributes</summary>
-<img src="./media/dsm_metrics.png" width="1000">
+<img src="../media/dsm_metrics.png" width="1000">
 </details>
 
 >[!TIP]
@@ -146,10 +146,10 @@ The Driver Safety Monitor demo solution will look for a variety of facial attrib
 
 # 11. Troubleshooting
 
-To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
+To return the board to an out-of-box state, refer to the [flashing](../FLASHING.md) guide.
 
 # 12. Resources
-* [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
+* [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
