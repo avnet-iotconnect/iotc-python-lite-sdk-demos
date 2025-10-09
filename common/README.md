@@ -1,7 +1,17 @@
 # /IOTCONNECT Python Lite SDK Demos Common Directory
 
-This directory contains scripts and templates that can be used in the device setup process as well as the software
-package creation process across many (if not all) supported devices in this repository.
+This directory contains files that can be used across many (if not all) supported devices in this repository.
+
+## General Guides
+
+### REST-API-ONBOARD.md
+
+This guide walks through the process of utilizing the /IOTCONNECT REST API to automate the device onboarding process for 
+supported boards.
+
+### UI-ONBOARD.md
+
+This guide walks through the process of utilizing the /IOTCONNECT online user interface for the device onboarding process.
 
 ## Scripts
 

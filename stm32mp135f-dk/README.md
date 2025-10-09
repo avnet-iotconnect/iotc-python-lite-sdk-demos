@@ -5,9 +5,10 @@
 3. [Hardware Setup](#3-hardware-setup)
 4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
-6. [Using the Demo](#6-using-the-demo)
-7. [Troubleshooting](#7-troubleshooting)
-8. [Resources](#8-resources)
+6. [Onboard Device](#6-onboard-device)
+7. [Using the Demo](#7-using-the-demo)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -132,120 +133,20 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser
 > and the terminal.
 
-From here, to onboard your device into /IOTCONNECT you have two options.
+# 6. Onboard Device
 
-Option A is more automated but currently requires a Solution Key that must be requested from Avnet.
+The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
-Option B is more manual but does not have that potential Solution Key obstacle.
+Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-## Option A: Onboard Device via REST API (Requires Solution Key)
+> [!TIP]
+> If you have obtained a solution key for your /IOTCONNECT account from Softweb Solutions, you can utilize the /IOTCONNECT 
+> REST API to automate the device onboarding process via shell scripts. Check out [this guide](../common/general-guides/REST-API-ONBOARD.md) 
+> for more info on that.
 
-1. Run these commands to install the /IOTCONNECT REST API python module:
+# 7. Using the Demo
 
-```
-apt-get install python3-cffi -y
-```   
-
-```
-python3 -m pip install iotconnect-rest-api
-```
-
-2. Now run this command to protect your /IOTCONNECT credentials:
-
-```
-export HISTCONTROL=ignoreboth
-```
-
-3. Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT
-   account on the device:
-
-```
-iotconnect-cli configure -u my@email.com -p "MyPassword" --pf mypf --env myenv --skey=mysolutionkey
-```
-
-For example if these were your credentials:
-
-* Email: `john.doe@gmail.com`
-* Password: Abc123!
-* Platform: aws
-* Environment: technology
-* Solution Key: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-
-Your login command would be:
-
-```
-iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env technology --skey=AbCdEfGhIjKlMnOpQrStUvWxYz1234567890
-```
-
-You will see this output in the console if your login succeeded:
-
-```
-Logged in successfully.
-```
-
-4. Lastly, run this command to download and run the device setup script:
-
-```
-curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/device-setup.py' && python3 device-setup.py
-```
-
-## Option B: Onboard Device via Online /IOTCONNECT Platform
-
-1. In a web browser, navigate to console.iotconnect.io and log into your account.
-2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
-   select "Device."
-3. Now in the resulting Device page, click on the "Templates" tab of the blue toolbar at the bottom of the screen.
-4. Right-click and then click "save link as"
-   on [this link to the default device template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json)
-   to download the raw template file.
-5. Back in the /IOTCONNECT browser tab, click on the "Create Template" button in the top-right of the screen.
-6. Click on the "Import" button in the top-right of the resulting screen.
-7. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
-8. Click on the "Devices" tab of the blue toolbar at the bottom of the screen.
-9. In the resulting page, click on the "Create Device" button in the top-right of the screen.
-10. Customize the "Unique ID" and "Device Name" fields to your needs.
-11. Select the most appropriate option for your device from the "Entity" dropdown (only for organization, does not
-    affect connectivity).
-12. Select "plitedemo" from the "Template" dropdown.
-13. In the resulting "Device Certificate" field, make sure "Auto-generated" is selected.
-14. Click the "Save and View" buton to go to the page for your new device.
-15. Click on "Connection Info" on the right side of the device page above the processor icon.
-16. In the resulting pop-up, click on the yellow/green certificate icon to download a zip file containing your device's
-    certificates, and then close the pop-up.
-17. Extract the zip folder and then rename the ```.pem``` file to ```device-pkey.pem``` and the ```.crt``` file to
-    ```device-cert.crt```.
-18. Still on your host machine, use this command within the unzipped certificates folder to convert the ```.crt``` file
-    to another ```.pem``` file (application is expecting ```.pem``` files):
-
-```
-openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
-```
-
-> [!NOTE]
-> If you are using a Windows host machine, this command is most easily performed via Git Bash. Using CMD or Powershell
-> may require additional configuration of openssl.
-
-19. Back in your device's page in /IOTCONNECT, click on the black/white/green paper-and-cog icon in the top-right of the
-    device page (just above "Connection Info") to download your device's configuration file.
-20. Using SCP (or WinSCP) copy these 3 files into the ```/home/weston/demo``` directory of your board:
-    * device-cert.pem
-    * device-pkey.pem
-    * iotcDeviceConfig.json
-
-> [!IMPORTANT]
-> These files must be copied **individually** into the ```/home/weston/demo``` directory. They cannot be wrapped inside
-> another folder.
-
-21. In the terminal of your board, navigate to the ```/home/weston/demo``` directory and then run this command to
-    download the basic quickstart /IOTCONNECT application called ```app.py```:
-
-```
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
-```
-
-# 6. Using the Demo
-
-1. Run the basic demo with this command:
+Run the basic demo with this command:
 
 ```
 python3 app.py
@@ -255,13 +156,13 @@ python3 app.py
 > Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this
 > directory with the command: ```cd /home/weston/demo```
 
-2. View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Troubleshooting
+# 8. Troubleshooting
 
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
-# 8. Resources
+# 9. Resources
 
 * [Purchase the STM32MP135F-DK](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345659849803/?srsltid=AfmBOopquBKia0rOHMSNs21TNvnk7RXm224OmsFITHs0A9LhuKjX4zHK)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
