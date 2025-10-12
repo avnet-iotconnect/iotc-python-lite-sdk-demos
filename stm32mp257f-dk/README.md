@@ -56,7 +56,7 @@ Using the above image as reference, make the following connections:
 
 1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you
    instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
-2. Connect the USB-C cable from a your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2
+2. Connect the USB-C cable from your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2
    **.
 3. Install the included micro-SD card into the micro-SD slot labeled **#3** on the underside of the board (make sure it
    clicks into place).
