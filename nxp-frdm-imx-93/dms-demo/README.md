@@ -48,6 +48,23 @@ bash ./create-package.sh
 > so it can be readily accessed by the scripts used in optional steps 5B and 5C.
  
 ## 4. Prepare Device to Receive Package
+Before the software update package, you must first connect the following additional hardware to your board
+
+* UVC-Compliant Webcam
+* 2nd Monitor (to view live video feed with AI VISION overlays)
+* HDMI Cable
+
+See the reference image below for cable connections (including connections from the starter demo).
+
+<img src="../media/board_setup.png" width="600">
+
+1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish
+   to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
+2. Connect one of the included USB cables from your PC to the USB-C connector labeled **#2**.
+3. Connect the other included USB cable from your PC to the USB-C connector labeled **#3**.
+4. Connect a UVC-compliant webcam to the USB-A connector labeled **#4**.
+5. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
+
 The most basic way to deliver and run the install package is through a local file transfer. See step 5A below for 
 instructions on this method.
 
