@@ -31,9 +31,6 @@ Avnet's robust IoT platform.
   Board [Purchase](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
 * (Optional) Ethernet Cable
-* UVC-Compliant Webcam
-* HDMI Cable
-* 2nd Monitor
 * (Optional) WiFi Network SSID and Password
 
 ## Software
@@ -46,17 +43,15 @@ Avnet's robust IoT platform.
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/board_setup.png" width="600">
+<img src="./media/basic_board_setup.png" width="600">
 </details>
 
 Using the above image as reference, make the following connections:
 
 1. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you instead wish
    to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
-2. Connect a uvc-compliant webcam to the USB-A connector labeled **#4**.
-3. Connect an HDMI cable from a monitor/display to the HDMI connector port labeled **#5**.
-4. Lastly, connect the included USB cables from your PC to the USB-C connectors labeled **#2** and **#3** to power on
-   the board.
+2. Connect one of the included USB cables from your PC to the USB-C connector labeled **#2**.
+3. Connect the other included USB cable from your PC to the USB-C connector labeled **#3**.
 
 # 4. Cloud Account Setup
 
@@ -145,7 +140,7 @@ to [this guide](./dms-demo/README.md).
 
 # 9. Troubleshooting
 
-To return the board to an out-of-box state, refer to the [flashing.md](flashing.md) guide.
+To return the board to an out-of-box state, refer to the [flashing](FLASHING.md) guide.
 
 # 10. Resources
 
