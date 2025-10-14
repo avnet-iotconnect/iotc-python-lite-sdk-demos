@@ -163,7 +163,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
 # 9. Resources
-
+* Explore connecting the STM32MP135F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/QuickStart.md)
 * [Purchase the STM32MP135F-DK](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345659849803/?srsltid=AfmBOopquBKia0rOHMSNs21TNvnk7RXm224OmsFITHs0A9LhuKjX4zHK)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

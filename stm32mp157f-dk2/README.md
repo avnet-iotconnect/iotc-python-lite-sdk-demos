@@ -159,7 +159,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
 # 9. Resources
-
+* Explore connecting the STM32MP157F-DK2 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp157f-dk2/QuickStart.md)
 * [Purchase the STM32MP157F-DK2](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

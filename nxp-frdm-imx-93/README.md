@@ -143,7 +143,7 @@ to [this guide](./dms-demo/README.md).
 To return the board to an out-of-box state, refer to the [flashing](FLASHING.md) guide.
 
 # 10. Resources
-
+* Explore connecting the NXP FRDM i.MX 93 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/QuickStart.md)
 * [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
