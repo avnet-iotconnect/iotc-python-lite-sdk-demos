@@ -43,7 +43,7 @@ Avnet's robust IoT platform.
 See the reference image below for cable connections.
 <details>
 <summary>Reference Image with Connections</summary>
-<img src="./media/basic_board_setup.png" width="600">
+<img src="./media/FRDM93-connections.jpg" width="600">
 </details>
 
 Using the above image as reference, make the following connections:
