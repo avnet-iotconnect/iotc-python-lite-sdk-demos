@@ -1,3 +1,6 @@
+> [!TIP]
+> To setup and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/)
+
 # STM32MP135F-DK QuickStart
 
 1. [Introduction](#1-introduction)
@@ -163,7 +166,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
 # 9. Resources
-* Explore connecting the STM32MP135F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/QuickStart.md)
+* Explore connecting the STM32MP135F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/)
 * [Purchase the STM32MP135F-DK](https://www.avnet.com/shop/us/products/stmicroelectronics/stm32mp135f-dk-3074457345659849803/?srsltid=AfmBOopquBKia0rOHMSNs21TNvnk7RXm224OmsFITHs0A9LhuKjX4zHK)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
