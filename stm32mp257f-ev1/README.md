@@ -1,3 +1,6 @@
+> [!TIP]
+> To setup and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
+
 # STM32MP257F-EV1 Quickstart
 
 1. [Introduction](#1-introduction)
@@ -150,7 +153,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
 # 9. Resources
-* Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/QuickStart.md)
+* Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
 * [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3&srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
