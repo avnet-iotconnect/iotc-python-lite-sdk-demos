@@ -1,3 +1,6 @@
+> [!TIP]
+> To setup and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
+
 # STM32MP257F-DK Quickstart
 
 1. [Introduction](#1-introduction)
@@ -156,7 +159,7 @@ process, refer to the "Populate the target and boot the
 image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
 
 # 9. Resources
-* Explore connecting the STM32MP257F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/QuickStart.md)
+* Explore connecting the STM32MP257F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
 * [Purchase the STM32MP257F-DK](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-dk/EVOLVE-115914011/)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
