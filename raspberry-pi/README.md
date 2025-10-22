@@ -1,7 +1,7 @@
 # Raspberry Pi QuickStart
 
 > [!TIP]
-> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberrypi/)
+> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -178,7 +178,7 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 9. Resources
-* Explore connecting the Raspberry Pi through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberrypi/)
+* Explore connecting the Raspberry Pi through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
 * Purchase the Raspberry Pi:
   * [Raspberry Pi 5 (4GB RAM)](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346)
   * [Raspberry Pi 5 (8GB RAM)](https://www.newark.com/raspberry-pi/rpi5-8gb-single/rpi-5-board-2-4ghz-8gb-arm-cortex/dp/81AK1348)
