@@ -1,5 +1,5 @@
 > [!TIP]
-> To setup and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
+> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
 
 # STM32MP257F-EV1 Quickstart
 

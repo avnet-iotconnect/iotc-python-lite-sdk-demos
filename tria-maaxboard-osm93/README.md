@@ -64,7 +64,7 @@ See the reference image below for cable connections.
 > the "RXD" wire of your cable. Similarly, the "RXD" pin of the board should connect to the "TXD" wire of your cable. "
 > GND" connects to "GND".
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.

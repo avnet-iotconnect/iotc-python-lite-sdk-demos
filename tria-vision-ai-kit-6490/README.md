@@ -3,7 +3,7 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-cloud-account-setup)
+4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
@@ -57,7 +57,7 @@ You will see additional LED activity as the board boots up.
 
 <img src="./media/power-button.png">
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.

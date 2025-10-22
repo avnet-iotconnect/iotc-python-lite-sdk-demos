@@ -1,9 +1,12 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 
+>[!TIP]
+> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
+
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [Cloud Account Setup](#4-cloud-account-setup)
+4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
@@ -53,7 +56,7 @@ Using the above image as reference, make the following connections:
 2. Connect one of the included USB cables from your PC to the USB-C connector labeled **#2**.
 3. Connect the other included USB cable from your PC to the USB-C connector labeled **#3**.
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.
@@ -143,7 +146,7 @@ to [this guide](./dms-demo/README.md).
 To return the board to an out-of-box state, refer to the [flashing](FLASHING.md) guide.
 
 # 10. Resources
-* Explore connecting the NXP FRDM i.MX 93 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/QuickStart.md)
+* Explore connecting the NXP FRDM i.MX 93 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
 * [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
 * [Purchase the FRDM i.MX 93 Board](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)

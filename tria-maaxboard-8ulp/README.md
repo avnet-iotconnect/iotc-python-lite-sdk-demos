@@ -55,7 +55,7 @@ See the reference image below for cable connections.
 2. Connect a USB-C cable from a 5V power source (such as your host machine) to the "USB0/POWER" port on your board.
 3. Connect a USB-C cable from your host machine to the "Debug" port for connection to the console.
 
-# 4. Cloud Account Setup
+# 4. /IOTCONNECT: Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.

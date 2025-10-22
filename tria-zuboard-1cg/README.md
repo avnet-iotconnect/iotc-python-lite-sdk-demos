@@ -4,7 +4,7 @@
 2. [Requirements](#2-requirements)
 3. [Linux Image Flashing](#3-linux-image-flashing)
 4. [Hardware Setup](#4-hardware-setup)
-5. [Cloud Account Setup](#5-cloud-account-setup)
+5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
 6. [Device Setup](#6-device-setup)
 7. [Onboard Device via Online /IOTCONNECT Platform](#7-onboard-device-via-online-iotconnect-platform)
 8. [Using the Demo](#8-using-the-demo)
@@ -65,7 +65,7 @@ card slot to power-on the board. You will see additional LEDs illuminate as the 
 
 <img src="./media/on-button.png">
 
-# 5. Cloud Account Setup
+# 5. /IOTCONNECT: Cloud Account Setup
 
 An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
 available.
