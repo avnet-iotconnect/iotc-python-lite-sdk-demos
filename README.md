@@ -15,6 +15,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity) - ([Product Link](https://www.microchip.com/en-us/development-tool/EV63J76A))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Product Link](https://www.avnet.com/shop/us/products/nxp/frdm-imx93-3074457345660216004/))
 * [NXP GoldBox 3 Vehicle Networking Development Platform](nxp-s32g-vnp-gldbox3) - ([Product Link](https://www.nxp.com/part/S32G-VNP-GLDBOX3))
+* [Raspberry Pi](raspberry-pi) - ([Product Link](https://www.raspberrypi.com/products/raspberry-pi-5/))
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp135f-dk.html))
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html))
 * [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk) - ([Product Link](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html))
