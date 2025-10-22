@@ -1,7 +1,7 @@
+# STM32MP135F-DK QuickStart
+
 > [!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/)
-
-# STM32MP135F-DK QuickStart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
