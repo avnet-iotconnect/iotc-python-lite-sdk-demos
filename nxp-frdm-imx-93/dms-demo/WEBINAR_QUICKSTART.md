@@ -1,4 +1,5 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
+[Purchase the FRDM-IMX93](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -27,7 +28,7 @@ This guide is designed to walk through the steps to connect the NXP FRDM i.MX 93
 This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
 
 ## Hardware 
-* NXP FRDM i.MX 93 Development Board [Purchase](https://export.farnell.com/nxp/frdm-imx93/frdm-development-board-for-i-mx/dp/4626785) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
+* NXP FRDM i.MX 93 Development Board [Purchase](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
 * Ethernet Cable
 * Webcam
