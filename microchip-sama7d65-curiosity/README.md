@@ -38,7 +38,7 @@ replicated in other environments.
   Kit) [Purchase](https://www.microchip.com/en-us/development-tool/EV63J76A) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
 * Ethernet Cable
 * USB-C Cable (included in kit)
-* Standard SD Card or micro-SD Card with Standard-Size Adapter (included in kit)
+* Standard SD Card or Micro-SD Card with Standard-Size Adapter (included in kit)
 * USB to TTL Serial 3.3V Adapter Cable (must be purchased separately,
   click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
   to see the cable used by Avnet's engineer)
@@ -73,7 +73,7 @@ Using the above image as reference, make the following connections:
 
 1. Connect the included USB-C cable from your PC to the USB-C connector labeled **#1**.
 2. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#2**.
-3. Insert the SD card (or micro-SD card with an adapter) into the slot labeled **#3**.
+3. Insert the SD card (or Micro-SD card with an adapter) into the slot labeled **#3**.
 4. Connect your USB to TTL Serial 3.3V Adapter Cable to the appropriate pins on the J35 debug header labeled **#4**.
 
 J35 Pinout: GND - OPEN - OPEN - RX - TX - OPEN

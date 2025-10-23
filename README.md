@@ -10,6 +10,7 @@ completed this work for a subset of board as outlined in the following section.
 
 The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
+* [Microchip Curiosity PIC64GX1000 Kit](microchip-pic64gx1000) - ([Product Link](https://www.microchip.com/en-us/development-tool/curiosity-pic64gx1000-kit))
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk) - ([Product Link](https://www.avnet.com/americas/product/microchip/mpfs-disco-kit/evolve-67810612/))
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Product Link](https://www.microchip.com/en-us/product/atsama5d27-som1))
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity) - ([Product Link](https://www.microchip.com/en-us/development-tool/EV63J76A))

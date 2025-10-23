@@ -27,7 +27,7 @@ This guide has been written and tested to work on a Windows 10/11 PC. However, t
 * Microchip ATSAMA5D27-SOM1-EK [Purchase](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj) | [User Manual & Kit Contents](https://onlinedocs.microchip.com/oxy/GUID-4F28D8A1-1A8D-4973-B7C3-4F63D191E011-en-US-4/index.html) | [All Resources](https://www.microchip.com/en-us/development-tool/atsama5d27-som1-ek1)
 * Ethernet Cable
 * Micro-USB Cable (included in kit)
-* Standard SD Card (or micro-SD Card with Standard-Size Adapter)
+* Standard SD Card (or Micro-SD Card with Standard-Size Adapter)
 
 ## Software
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
@@ -50,7 +50,7 @@ See the reference image below for cable connections.
 Using the above image as reference, make the following connections:
 1. Connect the included micro-USB cable from your PC to the connector labeled **#1**.
 2. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#2**.
-3. Insert the SD card (or micro-SD card with an adapter) into the slot labeled **#3**.
+3. Insert the SD card (or Micro-SD card with an adapter) into the slot labeled **#3**.
 
 # 4. /IOTCONNECT: Cloud Account Setup
 An /IOTCONNECT account with AWS backend is required.  If you need to create an account, a free trial subscription is available.

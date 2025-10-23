@@ -42,8 +42,8 @@ of ISSI LPDDR4 with non-volatile boot options in the 256Mb ISSI QSPI Flash or a 
 # 3. Linux Image Flashing
 
 Download the compressed publicly-available Linux image for the ZUBoard-1CG available [here](https://downloads.iotconnect.io/partners/avnet/disk-images/tria_zub1cg_2023_2_sdimage_20241029.img.gz)
-and flash the image to a micro-SD card using a software program such as Balena Etcher. After flashing, insert the micro-SD
-card into the micro-SD card slot on the board before proceeding to the next step.
+and flash the image to a Micro-SD card using a software program such as Balena Etcher. After flashing, insert the Micro-SD
+card into the Micro-SD card slot on the board before proceeding to the next step.
 
 # 4. Hardware Setup
 
@@ -57,7 +57,7 @@ See the reference image below for cable connections.
 2. Connect the micro-USB cable from your PC to the micro-USB connector on the board labeled **#2**.
 3. Connect an ethernet cable from your router/switch to the ethernet connector on the board labeled **#3**.
 
-After all connections have been made, press the SW7 button (shown below) in the corner of the board closest to the micro-SD 
+After all connections have been made, press the SW7 button (shown below) in the corner of the board closest to the Micro-SD 
 card slot to power-on the board. You will see additional LEDs illuminate as the board boots up.
 
 > [!NOTE]
