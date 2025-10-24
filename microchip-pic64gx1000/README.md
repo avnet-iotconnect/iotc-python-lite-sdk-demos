@@ -134,7 +134,7 @@ python3 -m pip install iotconnect-sdk-lite requests --break-system-packages
 Then run these commands to create and move into a directory for your demo files:
 
 ```
-mkdir -p /home/weston/demo && cd /home/weston/demo
+sudo mkdir -p /home/weston/demo && cd /home/weston/demo
 ```
 
 ```
