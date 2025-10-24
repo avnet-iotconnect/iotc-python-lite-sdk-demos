@@ -25,8 +25,7 @@ and demonstrate the standard IoT function of telemetry collection.
 
 ## Hardware
 
-* TRIA Maaxboard
-  8M [Purchase](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a) | [User Manual](https://www.avnet.com/wcm/connect/3cb1a777-3aa8-4394-9ba8-135d9ffa1470/MaaXBoard-Linux-Yocto-UserManual-V2.1.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-3cb1a777-3aa8-4394-9ba8-135d9ffa1470-oPqIZjK) | [All Resources](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px)
+* TRIA MaaXBoard 8M [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-mc-sbc-imx8m-g/evolve-47976882/) | [User Manual](https://www.avnet.com/wcm/connect/3cb1a777-3aa8-4394-9ba8-135d9ffa1470/MaaXBoard-Linux-Yocto-UserManual-V2.1.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-3cb1a777-3aa8-4394-9ba8-135d9ffa1470-oPqIZjK) | [All Resources](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px?srsltid=AfmBOopeNzX_SULx91T_mZ4G3i89BZBufmM_6u_ZXKRWNVNT9a6Bm2Px)
 * 1x USB Type-C Cable
 * 1x USB to TTL Serial 3.3V Adapter Cable (must be purchased separately, this
   is [the cable used by Avnet's engineer](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1))
@@ -159,7 +158,6 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-
-* [Purchase the TRIA Maaxboard 8M](https://www.avnet.com/americas/products/avnet-boards/avnet-board-families/maaxboard/maaxboard/?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a?srsltid=AfmBOoo1v6O9g0ca3zFihNOWXG8QfxUKQ-tUa7ulkIOv9Cw2jWph8f7a)
+* [Purchase the TRIA Maaxboard 8M](https://www.avnet.com/americas/product/avnet-engineering-services/aes-mc-sbc-imx8m-g/evolve-47976882/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

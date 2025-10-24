@@ -34,8 +34,7 @@ replicated in other environments.
 
 ## Hardware
 
-* Microchip EV63J76A (SAMA7D65 Curiosity
-  Kit) [Purchase](https://www.microchip.com/en-us/development-tool/EV63J76A) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
+* Microchip EV63J76A (SAMA7D65 Curiosity Kit) [Purchase](https://www.avnet.com/americas/product/microchip/ev63j76a/evolve-118945047/) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
 * Ethernet Cable
 * USB-C Cable (included in kit)
 * Standard SD Card or Micro-SD Card with Standard-Size Adapter (included in kit)
@@ -167,7 +166,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Resources
 
-* [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.microchip.com/en-us/development-tool/EV63J76A)
+* [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.avnet.com/americas/product/microchip/ev63j76a/evolve-118945047/)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

@@ -139,7 +139,6 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 9. Resources
-
 * [Purchase the Tria ZUBOARD-1CG](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

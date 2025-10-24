@@ -32,9 +32,9 @@ replicated in other environments.
 
 ## Hardware
 
-* STM32MP257F-EV1 [Purchase](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooi8P39Xi7OPSW1CMYH3uWdvLvtFk_jceqzKMmL64x2kRm2Roxa&srsltid=AfmBOooi8P39Xi7OPSW1CMYH3uWdvLvtFk_jceqzKMmL64x2kRm2Roxa) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3359-evaluation-board-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html)
+* STM32MP257F-EV1 [Purchase](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/evolve-115913010/) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3359-evaluation-board-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1.html)
 * 1 USB Type-C Cable
-* Ethernet Cable **or** WiFi Network SSID and Password
+* Ethernet Cable **or** Wi-Fi Network SSID and Password
 
 ## Software
 
@@ -154,7 +154,7 @@ To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.
 
 # 9. Resources
 * Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
-* [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/EVOLVE-115913010?srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3&srsltid=AfmBOooAHUQziwkvqEaTUEpkOMEPe3mBb9f7nGFUYUb5SVkUTCq1emN3)
+* [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/evolve-115913010/)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

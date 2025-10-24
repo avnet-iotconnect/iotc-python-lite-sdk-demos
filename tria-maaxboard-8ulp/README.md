@@ -33,8 +33,7 @@ and demonstrate the standard IoT function of telemetry collection.
 
 ## Hardware
 
-* TRIA MaaXBoard
-  8ULP [Purchase](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/60e2bb73-e479-4f76-821f-0b811ae52643/MaaXBoard-8ULP-User-Guide-v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-60e2bb73-e479-4f76-821f-0b811ae52643-oHYri7w) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-8ulp/?srsltid=AfmBOorNz2jO8e5kEJa7Yn3Qh_B-iuEQiawLVqTFyOsdT7U1ry41Dt_b)
+* TRIA MaaXBoard 8ULP [Purchase](https://www.avnet.com/americas/product/avnet-engineering-services/aes-maaxb-8ulp-sk-g/evolve-57290182/) | [User Manual](https://www.avnet.com/wps/wcm/connect/onesite/60e2bb73-e479-4f76-821f-0b811ae52643/MaaXBoard-8ULP-User-Guide-v1.0.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE.Z18_NA5A1I41L0ICD0ABNDMDDG0000-60e2bb73-e479-4f76-821f-0b811ae52643-oHYri7w) | [All Resources](https://www.avnet.com/wps/portal/us/products/avnet-boards/avnet-board-families/maaxboard/maaxboard-8ulp/?srsltid=AfmBOorNz2jO8e5kEJa7Yn3Qh_B-iuEQiawLVqTFyOsdT7U1ry41Dt_b)
 * 2x USB Type-C Cables
 * 1x Ethernet Cable (and a local router/switch with Internet connectivity)
 
@@ -136,7 +135,6 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-
-* [Purchase the TRIA MaaXBoard 8ULP](https://www.avnet.com/shop/us/products/avnet-engineering-services/aes-maaxb-8ulp-sk-g-3074457345648110677/)
+* [Purchase the TRIA MaaXBoard 8ULP](https://www.avnet.com/americas/product/avnet-engineering-services/aes-maaxb-8ulp-sk-g/evolve-57290182/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

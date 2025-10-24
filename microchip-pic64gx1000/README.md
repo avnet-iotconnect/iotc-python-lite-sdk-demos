@@ -34,7 +34,7 @@ replicated in other environments.
 
 ## Hardware
 
-* Microchip Curiosity PIC64GX1000 Kit [Purchase](https://www.avnet.com/americas/product/microchip/mpfs-disco-kit/evolve-67810612/) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU64/ProductDocuments/SupportingCollateral/PIC64GX_Curiosity_Kit_User_Guide.pdf) | [All Resources](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917)
+* Microchip Curiosity PIC64GX1000 Kit [Purchase](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU64/ProductDocuments/SupportingCollateral/PIC64GX_Curiosity_Kit_User_Guide.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/curiosity-pic64gx1000-kit)
 * Ethernet Cable
 * USB-C Cable (included in kit)
 * Micro-SD card (included in kit)

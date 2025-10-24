@@ -34,7 +34,7 @@ evaluations, as well as in-vehicle testing and rapid prototyping.</td>
 ## Hardware
 
 * NXP GoldBox 3 Vehicle Networking Development
-  Platform [Purchase](https://www.nxp.com/part/S32G-VNP-GLDBOX3) | [User Manual & Kit Contents](https://www.nxp.com/webapp/Download?colCode=S32G-VNP-GLDBOX3UG) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/GOLDBOX-3)
+  Platform [Purchase](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/) | [User Manual & Kit Contents](https://www.nxp.com/webapp/Download?colCode=S32G-VNP-GLDBOX3UG) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/GOLDBOX-3)
 * Power Adapter and Cable (included in kit)
 * Micro-USB Cable (included in kit)
 * Ethernet Cable (included in kit)
@@ -156,7 +156,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Resources
 
-* [Purchase the NXP GoldBox 3 Vehicle Networking Development Platform](https://www.nxp.com/part/S32G-VNP-GLDBOX3))
+* [Purchase the NXP GoldBox 3 Vehicle Networking Development Platform](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
