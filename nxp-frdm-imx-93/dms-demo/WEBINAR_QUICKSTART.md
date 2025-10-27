@@ -1,5 +1,5 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
-[Purchase the FRDM-IMX93](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
+[Purchase the FRDM i.MX 93 Board](https://export.farnell.com/nxp/frdm-imx93/frdm-development-board-for-i-mx/dp/4626785)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
