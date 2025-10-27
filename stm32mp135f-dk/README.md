@@ -2,7 +2,7 @@
 
 > [!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp135f-dk/)
-
+* [Purchase the STM32MP135F-DK](https://www.newark.com/stmicroelectronics/stm32mp135f-dk/discovery-kit-32bit-arm-cortex/dp/68AK9977)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
