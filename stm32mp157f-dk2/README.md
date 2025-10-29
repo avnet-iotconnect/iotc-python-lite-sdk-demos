@@ -1,7 +1,7 @@
+# STM32MP157F-DK2 QuickStart
+[Purchase STM32MP157F-DK2 ](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731)
 > [!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp157f-dk2/)
-
-# STM32MP157F-DK2 QuickStart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
