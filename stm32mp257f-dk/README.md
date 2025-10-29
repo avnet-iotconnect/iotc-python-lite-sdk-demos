@@ -1,7 +1,7 @@
+# STM32MP257F-DK QuickStart
+[Purchase STM32MP257F-DK](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-kit-arm-cortex-a35-m33f/dp/21AM3759)
 > [!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
-
-# STM32MP257F-DK Quickstart
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -33,7 +33,7 @@ replicated in other environments.
 ## Hardware
 
 *
-STM32MP257F-DK [Purchase](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-dk/EVOLVE-115914011/) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html)
+STM32MP257F-DK [Purchase](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-kit-arm-cortex-a35-m33f/dp/21AM3759) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html)
 * 1 USB Type-C Cable
 * Ethernet Cable **or** WiFi Network SSID and Password
 
