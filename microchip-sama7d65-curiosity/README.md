@@ -1,5 +1,5 @@
 # Microchip SAMA7D65-Curiosity Kit Quickstart
-
+[Purchase Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
@@ -34,7 +34,7 @@ replicated in other environments.
 
 ## Hardware
 
-* Microchip EV63J76A (SAMA7D65 Curiosity Kit) [Purchase](https://www.avnet.com/americas/product/microchip/ev63j76a/evolve-118945047/) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
+* Microchip EV63J76A (SAMA7D65 Curiosity Kit) [Purchase](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ProductDocuments/UserGuides/SAMA7D65-Curiosity-Kit-User-Guide-DS50003806.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/EV63J76A)
 * Ethernet Cable
 * USB-C Cable (included in kit)
 * Standard SD Card or Micro-SD Card with Standard-Size Adapter (included in kit)
