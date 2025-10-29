@@ -1,5 +1,5 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
-
+[Purchase NXP FRDM i.MX 93 Development Board](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
 >[!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
 
@@ -30,7 +30,7 @@ Avnet's robust IoT platform.
 
 ## Hardware
 
-* NXP FRDM i.MX 93 Development Board [Purchase](https://export.farnell.com/nxp/frdm-imx93/frdm-development-board-for-i-mx/dp/4626785) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
+* NXP FRDM i.MX 93 Development Board [Purchase](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905) | [User Manual & Kit Contents](https://docs.nxp.com/bundle/UM12181/page/topics/frdm-imx93_overview.html) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
 * 2x USB Type-C Cables (included in kit)
 * (Optional) Ethernet Cable
 * (Optional) WiFi Network SSID and Password
