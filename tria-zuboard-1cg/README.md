@@ -1,5 +1,5 @@
 # Tria ZUBOARD-1CG QuickStart
-
+[Purchase Tria ZUBOARD-1CG](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Linux Image Flashing](#3-linux-image-flashing)
