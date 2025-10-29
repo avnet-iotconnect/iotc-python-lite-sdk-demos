@@ -1,4 +1,5 @@
 # Microchip Curiosity PIC64GX1000 Kit QuickStart
+[Purchase Microchip Curiosity PIC64GX1000 Kit](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
