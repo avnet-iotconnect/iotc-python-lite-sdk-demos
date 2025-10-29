@@ -1,5 +1,5 @@
 # TRIA Maaxboard 8M QuickStart
-
+[Purchse TRIA MaaXBoard 8M](https://www.avnet.com/americas/product/avnet-engineering-services/aes-mc-sbc-imx8m-g/evolve-47976882/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
