@@ -1,5 +1,5 @@
 # NXP GoldBox 3 Vehicle Networking Development Platform QuickStart
-
+[Purchase NXP GoldBox 3](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
