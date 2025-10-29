@@ -1,5 +1,5 @@
 # Tria MaaXBoard OSM93 QuickStart
-
+[Purchase Tria MaaXBoard OSM93](https://www.avnet.com/americas/product/avnet-engineering-services/aes-maaxb-osm93-dk-g/evolve-67866610/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
