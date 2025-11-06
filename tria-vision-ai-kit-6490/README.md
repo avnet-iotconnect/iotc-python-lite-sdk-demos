@@ -144,7 +144,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Going Further with the /IOTCONNECT Vision-AI Demo
+# 8. Going Further with the /IOTCONNECT Vision-AI Demo (Optional)
 
 Head over to [this additional guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-vision-ai-kit-6490/vision-ai/README.md) to enable the cloud-controlled Vision-AI demo that reports inference and system status telemetry directly to /IOTCONNECT!
 
