@@ -7,7 +7,8 @@
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+8. [Going Further with the /IOTCONNECT Vision-AI Demo](#8-going-further-with-the-iotconnect-vision-ai-demo)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -27,8 +28,11 @@ Qualcomm QCS6490 SOC device</td>
 ## Hardware
 
 * Tria Vision AI-KIT 6490 (Available for purchase from Avnet soon!) | [Product Brief](https://d7rh5s3nxmpy4.cloudfront.net/CMP7377/files/FY26_1712_Qualcomm_Vision-AI_Dev_Board_Product_Brief.pdf) | [All Resources](https://www.tria-technologies.com/product/vision-ai-kit-6490/)
-* USB to TTL Serial 3.3V Adapter Cable (must be purchased separately, click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
+* USB-C Cable for Flashing and USB-ADB Debug (included)
+* USB-C 12VDC Power Supply and Cable (included)
 * Ethernet Cable (not inlcuded)
+* (Optional for UART Debug) USB to TTL Serial 3.3V Adapter Cable (not included, click [here](https://www.amazon.com/Serial-Adapter-Signal-Prolific-Windows/dp/B07R8BQYW1/ref=sr_1_1_sspa?dib=eyJ2IjoiMSJ9.FmD0VbTCaTkt1T0GWjF9bV9JG8X8vsO9mOXf1xuNFH8GM1jsIB9IboaQEQQBGJYV_o_nruq-GD0QXa6UOZwTpk1x_ISqW9uOD5XoQcFwm3mmgmOJG--qv3qo5MKNzVE4aKtjwEgZcZwB_d7hWTgk11_JJaqLFd1ouFBFoU8aMUWHaEGBbj5TtX4T6Z_8UMSFS4H1lh2WF5LRprjLkSLUMF656W-kCM4MGU5xLU5npMw.oUFW_sOLeWrhVW0VapPsGa03-dpdq8k5rL4asCbLmDs&dib_tag=se&keywords=detch+usb+to+ttl+serial+cable&qid=1740167263&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1)
+* (Optional for Local Console Access) USB Mouse and Keyboard 
 
 ## Software
 
@@ -37,24 +41,31 @@ Qualcomm QCS6490 SOC device</td>
 
 # 3. Hardware Setup
 
-See the reference images below for cable connections.
+See the reference image below for cable connections.
 <details>
 <summary>General Reference Image for Cable Connections</summary>
 <img src="./media/6490-connections-0.png">
 </details>
 
-<details>
-<summary>Reference Image for Serial Connection Pinout</summary>
-<img src="./media/6490-connections-1.png">
-</details>
-
-1. Connect your 9V USB-C power supply to the USB-C connector of the board labeled **#1**.
+1. Connect your 12VDC USB-C power supply to the USB-C connector of the board labeled **#1**.
 2. Connect the serial adapter cable from your PC to the appropriate pins on the rear of the kit labeled **#2**. (See the
 second reference image for pinout help)
 3. Connect your ethernet cable from your switch/router to the ethernet port on the board labeled **#3**.
+4. (Optional) If you plan to use a USB mouse and keyboard, connect them to the USB-A ports on the board.
+5. (Optional) If you plan to communicate with the board via USB-ADB, connect your second USB-C cable from your host PC
+to the other USB-C connector on the board next to the ethernet port.
+6. (Optional) If you plan to communicate with the board via UART, connect your USB to TTL cable to rear pins of the board
+as shown in the image below
 
-After all connections have been made, press the S1 button (shown below) in the corner of the board to power-on the board. 
-You will see additional LED activity as the board boots up.
+<details>
+<summary>Reference Image for UART Serial Connection Pinout</summary>
+<img src="./media/6490-connections-1.png">
+</details>
+
+For more guidance on setting up the different communication options, see page 30 of [Tria's Startup Guide](https://avnet.com/wcm/connect/137a97f1-eb6e-48ba-89a4-40b024558593/Vision+AI-KIT+6490+Startup+Guide+v1.3.pdf?MOD=AJPERES&attachment=true&id=1761931434976) for the board. 
+
+To power-on the board, after all connections have been made, hold down the S1 button (shown below) in the corner of the board 
+for a 2-3 seconds until the large red LED above the USB-C power connector turns off. 
 
 <img src="./media/power-button.png">
 
@@ -93,7 +104,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 5. When prompted for a login, type `root` followed by the ENTER key. For the default image, the password should be `oelinux123`.
 
-6. Run these commands to begin to configure your board for /IOTCONNECT:
+6. Run these commands (less than 1 minute to complete) to configure your board for /IOTCONNECT:
 
 ```
 opkg update
@@ -133,7 +144,15 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
-* Available for purchase from Avnet soon!
+# 8. Going Further with the /IOTCONNECT Vision-AI Demo
+
+Additional guide **coming soon** to walk through the easy setup to enable the Vision-AI demo that reports inference telemetry directly to /IOTCONNECT.
+
+Check out this dashboard for the Vision AI-KIT 6490 being showcased at Embedded World NA!
+
+<img src="./media/vision-ai-dash.png">
+
+# 9. Resources
+* [Purchase the Tria Vision AI-KIT 6490](https://www.newark.com/avnet/sm2-sk-qcs6490-ep6-kit001/dev-kit-64bit-arm-cortex-a55-a78/dp/51AM9843)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
