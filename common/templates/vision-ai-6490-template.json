@@ -1,0 +1,3217 @@
+{
+    "code": "VAI6490",
+    "name": "VAI6490",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "D0_Name",
+            "displayName": "",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Name",
+            "displayName": "",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Pose_Confidence",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Pose_Confidence",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Nose",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Eye",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Eye",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Ear",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Ear",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Shoulder",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Shoulder",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Elbow",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Elbow",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Wrist",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Wrist",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Hip",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Hip",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Knee",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Knee",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Left_Ankle",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Right_Ankle",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Nose",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Eye",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Eye",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Ear",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Ear",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Shoulder",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Shoulder",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Elbow",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Elbow",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Wrist",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Wrist",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Hip",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Hip",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Knee",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Knee",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Left_Ankle",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Right_Ankle",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "X",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Connections",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_usage",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "%",
+            "attributeColor": "#f44e3b",
+            "aggregateTypes": []
+        },
+        {
+            "name": "gpu_usage",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "%",
+            "attributeColor": "#16a5a5",
+            "aggregateTypes": []
+        },
+        {
+            "name": "memory_usage",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "%",
+            "attributeColor": "#7b64ff",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_temp",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "C",
+            "attributeColor": "#68bc00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "gpu_temp",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "C",
+            "attributeColor": "#fa28ff",
+            "aggregateTypes": []
+        },
+        {
+            "name": "memory_temp",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "C",
+            "attributeColor": "#fcc400",
+            "aggregateTypes": []
+        },
+        {
+            "name": "auto_cycle_state",
+            "displayName": "",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "demo_state",
+            "displayName": "",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "critical",
+            "displayName": "",
+            "type": "DECIMAL",
+            "description": "constant",
+            "unit": "",
+            "attributeColor": "#d33115",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Number_Objects_Detected",
+            "displayName": "",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Number_Objects_Detected",
+            "displayName": "",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_0",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_1",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_2",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_3",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_4",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_5",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_6",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_7",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_8",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_9",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_10",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_11",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_12",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_13",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_14",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_15",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_16",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_17",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_18",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Object_19",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_0",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_1",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_2",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_3",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_4",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_5",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_6",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_7",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_8",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_9",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_10",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_11",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_12",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_13",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_14",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_15",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_16",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_17",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_18",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Object_19",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Rectangle",
+                    "displayName": "",
+                    "type": "ARRAY",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Classification_0",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Classification_1",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Classification_2",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Classification_3",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D0_Classification_4",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Classification_0",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Classification_1",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Classification_2",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Classification_3",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "D1_Classification_4",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "",
+            "childs": [
+                {
+                    "name": "ID",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Confidence",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "Stop Demo",
+            "command": "stop_demo",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Start Demo",
+            "command": "start_demo",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4ED0R",
+    "capability": "0",
+    "properties": {
+        "description": null,
+        "dataFrequency": "5",
+        "fileSupport": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
