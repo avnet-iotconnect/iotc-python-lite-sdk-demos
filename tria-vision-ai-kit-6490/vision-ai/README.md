@@ -4,7 +4,7 @@ as well as be controlled by commands from /IOTCONNECT.
 
 > [!NOTE]
 > Currently, this demo supports sending AI inference data for the Pose Detection, 
-> Object Detection, and Image Classification demos.
+> Object Detection, and Image Classification demos. The other demos still run, but the only telemetry sent for them is the system status data.
 
 ## 1. Acquire and Connect Additional Hardware
 In addition to the hardware used in the basic demo QuickStart, you will need this hardware to properly enable the Vision-AI demo:
