@@ -50,3 +50,7 @@ This is the basic /IOTCONNECT template for all devices running the starter demo.
 ### proteus-template.json
 
 This /IOTCONNECT template is used for devices that run the standard PROTEUS Demo, such as the STM32MP157F-DK2.
+
+### vision-ai-kit-6490-template.json
+
+This /IOTCONNECT template is used for the Tria Vision AI-KIT to run the Vision-AI demo.
