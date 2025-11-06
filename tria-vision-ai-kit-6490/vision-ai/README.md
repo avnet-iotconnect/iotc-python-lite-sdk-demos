@@ -24,7 +24,7 @@ In addition to the hardware used in the basic demo QuickStart, you will need thi
 * 1 **Active** mini-DP to HDMI adapter
 
 > [!IMPORTANT]
-> The mini-DP to HDMI adapter must be **active** so to avoid purchasing the wrong product it is recommended to use the adpater used and tested by Avnet's engineer available [here](https://www.amazon.com/Cable-Matters-DisplayPort-Supporting-Technology/dp/B00PJ3LSIG/ref=sr_1_1?crid=XR4HA3U2IVD0&dib=eyJ2IjoiMSJ9.7o239haE8CcYdAqsOPF7Se6OXe8Sz47i-Az7Mq9_PvLySbMg4xxB8QbnT7rNODDTxSh882r-DD24OPLilxONY3rqmtq2d-y9-PdgAE7xHVKKFR7sSypCPC5w6yW8QYkxKJag31Qy-DlnbIz1F9XIBGWrG6Ric9NSsSSTfHpZG58gk_bvzo6qGpsQa11HI9C3rp4MSgjK6X5zBcp_98AzK_elv_1tTuomClMsDK_tZuw.c21P4pWnM5M33qDFmO5u0CjFbJWeyxQZ93-Fv3nExKw&dib_tag=se&keywords=cable+matters+mini+dp+to+hdmi&qid=1762415607&sprefix=%2Caps%2C84&sr=8-1).
+> The mini-DP to HDMI adapter must be **active** so to avoid purchasing the wrong product it is recommended to use the adapter used and tested by Avnet's engineer available [here](https://www.amazon.com/Cable-Matters-DisplayPort-Supporting-Technology/dp/B00PJ3LSIG/ref=sr_1_1?crid=XR4HA3U2IVD0&dib=eyJ2IjoiMSJ9.7o239haE8CcYdAqsOPF7Se6OXe8Sz47i-Az7Mq9_PvLySbMg4xxB8QbnT7rNODDTxSh882r-DD24OPLilxONY3rqmtq2d-y9-PdgAE7xHVKKFR7sSypCPC5w6yW8QYkxKJag31Qy-DlnbIz1F9XIBGWrG6Ric9NSsSSTfHpZG58gk_bvzo6qGpsQa11HI9C3rp4MSgjK6X5zBcp_98AzK_elv_1tTuomClMsDK_tZuw.c21P4pWnM5M33qDFmO5u0CjFbJWeyxQZ93-Fv3nExKw&dib_tag=se&keywords=cable+matters+mini+dp+to+hdmi&qid=1762415607&sprefix=%2Caps%2C84&sr=8-1).
 
 * (Optional) 1 USB Mouse
 
@@ -56,7 +56,7 @@ The two template files can be copied out to a different local location on your P
 
 ## 3. Import Device Template into /IOTCONNECT
 
-Follow these steps to import the `VAI6490-template.json` template into /IOTCONNECT so your Vision AI-KIT 6490 can be configured to send commands and recieve the correct telemetry:
+Follow these steps to import the `VAI6490-template.json` template into /IOTCONNECT so your Vision AI-KIT 6490 can be configured to send commands and receive the correct telemetry:
 
 1. In /IOTCONNECT, go to the navy-blue vertical toolbar on the left side of your screen and hover over the “processor” icon.
 2. In the resulting drop-down menu, click on “Device”.
@@ -97,7 +97,7 @@ bash ./quickstart.sh
 ```
 
 13. After the script has started, it will instruct you to start the device-creation process (which you have already done) and then to press ENTER to generate a certificate.
-Press ENTER and the certificate will be printed and then you can copy that certificate (including the BEGIN and END lines” and paste it into “Certificate Text” box in the
+Press ENTER and the certificate will be printed and then you can copy that certificate (including the BEGIN and END lines) and paste it into “Certificate Text” box in the
 /IOTCONNECT device creation page where you left off.
 14. As instructed by the script, click the “Save & View” button to be taken to the new device page and then in the top-right section of the new device page, to the right of
 the red “DISCONNECTED” status, you will see an icon that is a white paper with a green processor and a black cog on it. Click on that icon to download the device configuration JSON file.
@@ -133,7 +133,7 @@ Back in the directory `/var/rootdirs/opt/QCS6490-Vision-AI-Demo` on your board, 
 bash ./launch_visionai_with_env.sh
 ```
 
-You will see the local demo dashboard come up on your monitor, and a steady stream oF output from the console including periodic system status telemetry being sent to /IOTCONNECT.
+You will see the local demo dashboard come up on your monitor, and a steady stream of output from the console including periodic system status telemetry being sent to /IOTCONNECT.
 
 > [!TIP]
 > If directly after launching the demo you see in the console output that no cameras were detected, try power cycling the board and running it again. This usually only happens
