@@ -7,7 +7,7 @@
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
-8. [Going Further with the /IOTCONNECT Vision-AI Demo](#8-going-further-with-the-iotconnect-vision-ai-demo)
+8. [Going Further with the /IOTCONNECT Vision-AI Demo (Optional)](#8-going-further-with-the-iotconnect-vision-ai-demo-optional)
 9. [Resources](#9-resources)
 
 # 1. Introduction
