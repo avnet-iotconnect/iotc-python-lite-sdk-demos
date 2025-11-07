@@ -90,7 +90,7 @@ A Device Template defines the type of telemetry the platform should expect to re
 
    ```
    cd /home/weston
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/src/install.sh' && bash ./install.sh
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/scripts/quickstart.sh' && bash ./quickstart.sh
    ```
 
 # 7. /IOTCONNECT: Create Device
