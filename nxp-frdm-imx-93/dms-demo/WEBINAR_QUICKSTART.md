@@ -89,8 +89,8 @@ A Device Template defines the type of telemetry the platform should expect to re
    * Start the interactive /IOTCONNECT onboarding script
 
    ```
-   cd /home/weston
-   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk/blob/main/scripts/quickstart.sh' && bash ./quickstart.sh
+   mkdir -p /home/weston/demo && cd /home/weston/demo
+   curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/dms-demo/direct-install.sh' && bash ./direct-install.sh
    ```
 
 # 7. /IOTCONNECT: Create Device
@@ -116,9 +116,9 @@ The script started in the previous step will guide you through the following ste
 >This process will take just over 8 minutes.
 
 # 8. Start the Application and Verify Data
-From the `/home/weston` directory, use the following command to the demo application:
+From the `/home/weston/demo` directory, use the following command to the demo application:
 ```
-python3 /home/weston/imx93-ai-demo.py
+python3 /home/weston/demo/app.py
 ```
 
 The telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
