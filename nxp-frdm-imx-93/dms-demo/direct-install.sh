@@ -121,6 +121,6 @@ PIP_ROOT_USER_ACTION=ignore python3 -m pip install --force-reinstall numpy==1.26
 # ---- Completion ----
 echo ""
 echo "Installation complete! You can now run the /IOTCONNECT script:"
-echo "python3 /home/weston/app.py"
+echo "python3 /home/weston/demo/app.py"
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
 echo "Camera Live Stream url: https://$board_ip:8080/live"
