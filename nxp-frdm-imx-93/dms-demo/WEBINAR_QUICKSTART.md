@@ -128,14 +128,23 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 # 9. /IOTCONNECT: Import Dashboard Template
 
-* Download the demo [Dashboard Template](FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
-* **Download** the template then select `Create Dashboard` from the top of the page
-* **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
-* **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
-* **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+1. **Download** the demo [Dashboard Template](FRDM_i.MX_93_DSM_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As)
+2. **Download** the template then select `Create Dashboard` from the top of the page
+3. **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
+4. **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
+5. **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+6. To get the "Live View" to display your webcam, edit the widget and update the IP address which was displayed in the terminal after installation.
+It should have looked like this:
+<pre><code>
+Installation complete! You can now run the /IOTCONNECT script:
+python3 /home/weston/demo/app.py
+Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
+</code></pre>
+
+7. **Click** `Save` in the upper-right corner to comit the dashboard.
 
 # 10. /IOTCONNECT: Using the Dashboard
-
+<img src="../media/dashboard_reduced.png">
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
 <summary>Table of Supported DSM Attributes</summary>
