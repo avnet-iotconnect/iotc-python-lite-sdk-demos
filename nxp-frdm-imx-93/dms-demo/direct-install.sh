@@ -21,7 +21,7 @@ askyn() {
 }
 
 echo "Installing dependencies..."
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy opencv-python requests filelock networkx
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install flask numpy==1.26.4 opencv-python requests filelock networkx
 
 echo "Installing /IOTCONNECT SDK..."
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install iotconnect-sdk-lite  
@@ -107,6 +107,8 @@ else
     echo "Skipping eIQ AI Models download."
 fi
 
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install --force-reinstall numpy==1.26.4
+
 # Create empty dms-data.json with read/write perms
 touch dms-data.json
 chmod 666 dms-data.json
@@ -115,8 +117,6 @@ cp /usr/bin/eiq-examples-git/dms/face_detection.py .
 cp /usr/bin/eiq-examples-git/dms/eye_landmark.py .
 cp /usr/bin/eiq-examples-git/dms/face_landmark.py .
 cp /usr/bin/eiq-examples-git/dms/utils.py .
-
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install --force-reinstall numpy==1.26.4
 
 # ---- Completion ----
 echo ""
