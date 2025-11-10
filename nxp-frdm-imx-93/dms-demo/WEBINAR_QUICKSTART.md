@@ -113,7 +113,7 @@ The script started in the previous step will guide you through the following ste
 11. When prompted, press `y` and `enter` to download the eIQ AI Models
 
 >[!NOTE]
->This process will take just over <b><u>8 minutes</u></b>.
+>This process will take about <b><u>8 minutes</u></b>.
 
 # 8. Start the Application and Verify Data
 From the `/home/weston/demo` directory, use the following command to the demo application:
