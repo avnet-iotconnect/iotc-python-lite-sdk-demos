@@ -22,51 +22,40 @@ Follow these steps on onboard your device into /IOTCONNECT via the online user i
 
 9. In the resulting page, click on the "Create Device" button in the top-right of the screen.
 
-10. Customize the "Unique ID" and "Device Name" fields to your needs.
+10. Customize the "Unique ID" and "Device Name" fields to your needs (both fields should be identical though).
 
 11. Select the most appropriate option for your device from the "Entity" dropdown (only for organization, does not
     affect connectivity).
 
 12. Select "plitedemo" from the "Template" dropdown.
 
-13. In the resulting "Device Certificate" field, make sure "Auto-generated" is selected.
+13. In the resulting "Device Certificate" field, select "Use my certificate." Leave this page as-is for now, you will finish it later.
 
-14. Click the "Save and View" buton to go to the page for your new device.
-
-15. Click on "Connection Info" on the right side of the device page above the processor icon.
-
-16. In the resulting pop-up, click on the yellow/green certificate icon to download a zip file containing your device's
-    certificates, and then close the pop-up.
-
-17. Extract the zip folder and then rename the ```.pem``` file to ```device-pkey.pem``` and the ```.crt``` file to
-    ```device-cert.crt```.
-
-18. Still on your host machine, use this command within the unzipped certificates folder to convert the ```.crt``` file
-    to another ```.pem``` file (application is expecting ```.pem``` files):
+14. Swapping over to the terminal of your device, navigate to the directory `/home/weston/demo` (should have been created previously)
+    and download the Python Lite SDK QuickStart script using this command:
 
 ```
-openssl x509 -in device-cert.crt -out device-cert.pem -outform PEM
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/quickstart.sh
 ```
 
-> [!NOTE]
-> If you are using a Windows host machine, this command is most easily performed via Git Bash. Using CMD or Powershell
-> may require additional configuration of openssl.
+15. Execute the downloaded QuickStart script with this command:
 
-19. Back in your device's page in /IOTCONNECT, click on the black/white/green paper-and-cog icon in the top-right of the
+```
+bash ./quickstart.sh
+```
+
+16. When prompted, press ENTER to have the script print out the generated device certificate.
+
+17. Copy the device certificate text (including BEGIN and END lines) and paste the text into the certificate box in the /IOTCONNECT device creation page.  
+
+18. Click the "Save and View" button to go to the page for your new device.
+
+19. Now on your device's page in /IOTCONNECT, click on the black/white/green paper-and-cog icon in the top-right of the
     device page (just above "Connection Info") to download your device's configuration file.
 
-20. Using SCP (or WinSCP) copy these 3 files into the ```/home/weston/demo``` directory of your board:
-    * device-cert.pem
-    * device-pkey.pem
-    * iotcDeviceConfig.json
+20. Open the configuration file in a text editor and copy its entirety to your clipboard.
 
-> [!IMPORTANT]
-> These files must be copied **individually** into the ```/home/weston/demo``` directory. They cannot be wrapped inside
-> of another folder.
+21. Back in the terminal of your device, paste the contents of the configuration file from your clipboard as instructed by the next step
+    of the script, and then press ENTER.
 
-21. In the terminal of your board, navigate to the ```/home/weston/demo``` directory and then run this command to
-    download the basic quickstart /IOTCONNECT application called ```app.py```:
-
-```
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
-```
+22. The script will then download the basic starter app (app.py). The onboarding process is complete.  
