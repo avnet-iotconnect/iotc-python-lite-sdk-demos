@@ -29,6 +29,10 @@ configuration file, and download the basic starter application.
 
 This script is executed on a host PC to send a software package through an OTA update to one or more target devices.
 
+### quickstart.sh
+
+This script is run to onboard devices for most devices in this repository and downloads the basic starter application afterwards.
+
 ## Templates
 
 ### AIMP1-template.json
