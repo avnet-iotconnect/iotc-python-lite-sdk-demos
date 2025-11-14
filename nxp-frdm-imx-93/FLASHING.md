@@ -16,10 +16,9 @@ then flash the image to the board.
 
 # 3. Download Image Files
 
-* Go to
-  NXP's [FRDM-IMX93 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93)
-* Click on the "Design Resources" tab and then scroll down to the "Software" section
-* Click the "Download" button next to "FRDM-IMX93 Demo Images"
+* Go to the "Software" section of
+  NXP's [FRDM-IMX93 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93#software)
+* Click the "Download" button next to the Rev 4.0 entry of "FRDM-IMX93 Demo Images"
 * Accept the Software License Agreement and the download should automatically start
 
 # 4. Organize Files for Flashing
