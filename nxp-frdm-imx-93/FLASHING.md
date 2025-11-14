@@ -37,6 +37,9 @@ then flash the image to the board.
 # 5. Prepare Hardware for Flashing
 
 * Set the boot dip-switches (SW1) to (1)ON-(2)OFF-(3)OFF-(4)OFF for Serial Download mode
+
+<img src="media/dip-switch-flash.png">
+  
 * Connect a USB-C cable from your host machine to the USB1_C port (located next to the audio jack) on the i.MX 93
 
 > [!IMPORTANT]
@@ -54,5 +57,8 @@ then flash the image to the board.
   ```
 * Wait until the flash is complete (should take ~5 minutes)
 * Change the boot dip-switches (SW1) back to (1)OFF-(2)ON-(3)OFF-(4)OFF for eMMC boot mode
+
+<img src="media/dip-switch-boot.png">
+  
 * Reboot the board by unplugging the power cable and plugging it back in
 * Your i.MX 93 now has booted with a fresh default image on it
