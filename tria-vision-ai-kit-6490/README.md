@@ -148,7 +148,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 Head over to [this additional guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-vision-ai-kit-6490/vision-ai/README.md) to enable the cloud-controlled Vision-AI demo that reports inference and system status telemetry directly to /IOTCONNECT!
 
-Check out this dashboard for the Vision AI-KIT 6490 being showcased at Embedded World NA!
+Check out this dashboard for the Vision AI-KIT 6490 that was showcased at Embedded World NA 2025!
 
 <img src="./media/vision-ai-dash.png">
 
