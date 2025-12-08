@@ -166,8 +166,13 @@ if ${do_download}; then
 fi
 
 cat <<END
-If you are connecting via a serial terminal, ensure that the content of iotcDeviceConfig.json matches what you pasted (type "cat iotcDeviceConfig.json" at the prompt to view it). In some cases, pasting text into a serial terminal can cause it to skip characters. If using TeraTerm on Windows, enter a 10ms "Transmit delay" for both lines and characters in the Settings -> Serial Port dialog.
+If you are connecting via a serial terminal, ensure that the content of iotcDeviceConfig.json matches what you 
+pasted (type "cat iotcDeviceConfig.json" at the prompt to view it). In some cases, pasting text into a serial 
+terminal can cause it to skip characters. If using TeraTerm on Windows, enter a 10ms "Transmit delay" for both 
+lines and characters in the Settings -> Serial Port dialog.
+
 The Quickstart setup is complete.
+
 You can now run this command on the command line to execute the basic demo:
 python3 app.py
 END
