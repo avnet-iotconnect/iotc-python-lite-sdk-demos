@@ -121,7 +121,7 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 8. Resources
-* [Purchase the Microchip SAMA5D27](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj)
+* [Purchase the Microchip SAMA5D27](https://www.newark.com/microchip/atsama5d27-som1-ek1/eval-board-32bit-mpu-arm-cortex/dp/44AC2213)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
