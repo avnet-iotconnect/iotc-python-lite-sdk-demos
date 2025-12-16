@@ -24,7 +24,7 @@ This guide provides step-by-step instructions to set up the **Microchip SAMA5D27
 This guide has been written and tested to work on a Windows 10/11 PC. However, there is no reason this can't be replicated in other environments.
 
 ## Hardware 
-* Microchip ATSAMA5D27-SOM1-EK [Purchase](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354) | [User Manual & Kit Contents](https://onlinedocs.microchip.com/oxy/GUID-4F28D8A1-1A8D-4973-B7C3-4F63D191E011-en-US-4/index.html) | [All Resources](https://www.microchip.com/en-us/development-tool/atsama5d27-som1-ek1)
+* Microchip ATSAMA5D27-SOM1-EK [Purchase](https://www.newark.com/microchip/atsama5d27-som1-ek1/eval-board-32bit-mpu-arm-cortex/dp/44AC2213) | [User Manual & Kit Contents](https://onlinedocs.microchip.com/oxy/GUID-4F28D8A1-1A8D-4973-B7C3-4F63D191E011-en-US-4/index.html) | [All Resources](https://www.microchip.com/en-us/development-tool/atsama5d27-som1-ek1)
 * Ethernet Cable
 * Micro-USB Cable (included in kit)
 * Standard SD Card (or Micro-SD Card with Standard-Size Adapter)
