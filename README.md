@@ -10,6 +10,7 @@ completed this work for a subset of board as outlined in the following section.
 
 The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
+* [Arduino Uno Q](arduino-uno-q) - ([Purchase Link](https://www.newark.com/arduino/abx00162/uno-q-sbc-2gb-arm-cortex-a53-m33f/dp/59AM1209))
 * [Microchip Curiosity PIC64GX1000 Kit](microchip-pic64gx1000) - ([Purchase Link](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917))
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk) - ([Purchase Link](https://www.avnet.com/americas/product/microchip/mpfs-disco-kit/evolve-67810612/))
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Purchase Link](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj))
