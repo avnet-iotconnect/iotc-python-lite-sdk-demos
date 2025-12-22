@@ -18,7 +18,7 @@ for IoT application development, enabling secure device onboarding, telemetry co
 
 <table>
   <tr>
-    <td><img src=".//media/polarfire-product.png" width="6000"></td>
+    <td><img src=".//media/rzg3e-product.png" width="6000"></td>
     <td>This open-source development kit features a quad-core, 64-bit CPU cluster based on the RISC-V application-class 
 processor that supports Linux® and real-time applications, a rich set of peripherals and 95K of low-power, high-performance 
 FPGA logic elements. The kit is ready for rapid testing of applications in an easy-to-use hardware development platform and 
@@ -126,12 +126,12 @@ execute the command `ip a` and note the `inet` IP address of your board under th
 and transfer them to your RZ/G3E:
 
 ```
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/rensas-rzg3e-evk/scripts/deps-download.sh && bash ./deps-download.sh <IP-ADDRESS>
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/renesas-rzg3e-evk/scripts/deps-download.sh && bash ./deps-download.sh <IP-ADDRESS>
 ```
 6. Now **back in a terminal on the RZ/G3E** run this command to download and execute a script that will install the transferred packages:
 
 ```
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/rensas-rzg3e-evk/scripts/deps-install.sh && bash ./deps-install.sh
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/renesas-rzg3e-evk/scripts/deps-install.sh && bash ./deps-install.sh
 ```
 
 7. Then run this command to create and move into a directory for your demo files:
