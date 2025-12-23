@@ -37,7 +37,7 @@ replicated in other environments.
 
 ## Hardware
 
-* Renesas RZ/G3E Evaluation Board Kit [Purchase]() | [User Manual](https://www.renesas.com/en/document/mah/rz-smarc-series-carrier-board-ii-users-manual-hardware?r=25574801) | [All Resources](https://www.renesas.com/en/design-resources/boards-kits/rz-g3e-evkit?srsltid=AfmBOoqkLQfH7gyWHOem2U-duZ3bwaM7khGy20z2v4WJy6npgNdgVsm5)
+* Renesas RZ/G3E Evaluation Board Kit [Purchase](https://www.renesas.com/en/design-resources/boards-kits/rz-g3e-evkit?srsltid=AfmBOoqkLQfH7gyWHOem2U-duZ3bwaM7khGy20z2v4WJy6npgNdgVsm5#parametric_options) | [User Manual](https://www.renesas.com/en/document/mah/rz-smarc-series-carrier-board-ii-users-manual-hardware?r=25574801) | [All Resources](https://www.renesas.com/en/design-resources/boards-kits/rz-g3e-evkit?srsltid=AfmBOoqkLQfH7gyWHOem2U-duZ3bwaM7khGy20z2v4WJy6npgNdgVsm5)
 * Micro-USB Cable (included)
 * Ethernet Cable (not included)
 * 5V 3A+ Power Supply with USB-C Cable (not included, available [here](https://www.amazon.com/GeeekPi-Power-Supply-Raspberry-Adapter/dp/B0CQ2DL2RW/ref=sr_1_1?crid=1HVAMOTDQVQIA&dib=eyJ2IjoiMSJ9.54Hy6_AH2LRHKVp1qP3yruFT6h-yJhMyQ1fLB57xI8EPno1RK8bqOvyMSa1MB6ZxlWGMcWabsS50biNBzs9gyUu4HCQkJxDXxa0fzkJS8HowmIoaXPRmsl8_qnpaj8Z8BSZzkqAjjCmUGDEyrW2ozuUmzLDJbx7WXInW_ejGGwqXVtxPexzQCf5Q9NlYDTZi9JUplqFyamUnHbgtzOGSMR_jH0EvWeFpR61PZV_4B-4.dmo7FF4m94Q1Kcg7coHunypWQkkQTnk5OIViaC4DtoU&dib_tag=se&keywords=geeekpi+27w&qid=1766181206&sprefix=geeekpi+27w%2Caps%2C150&sr=8-1))

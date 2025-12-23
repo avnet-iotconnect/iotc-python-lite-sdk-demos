@@ -1,5 +1,5 @@
 # Raspberry Pi QuickStart
-[Purchase your Raspberry Pi Kit](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/tree/main/raspberry-pi#hardware)
+[Purchase your Raspberry Pi Kit](https://www.newark.com/raspberry-pi/rpi5-8gb-single/rpi-5-board-2-4ghz-8gb-arm-cortex/dp/81AK1348)
 > [!TIP]
 > To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
 
@@ -146,10 +146,10 @@ sudo mkdir -p /home/weston/demo && cd /home/weston/demo
 sudo chown -R username:username /home/weston/demo
 ```
 
-For example if your username was `demo` your command would be
+For example if your username was `TestUser` your command would be
 
 ```
-sudo chown -R demo:demo /home/weston/demo
+sudo chown -R TestUser:TestUser /home/weston/demo
 ```
 
 > [!TIP]

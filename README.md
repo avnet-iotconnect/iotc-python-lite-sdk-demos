@@ -15,6 +15,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk) - ([Purchase Link](https://www.avnet.com/americas/product/microchip/mpfs-disco-kit/evolve-67810612/))
 * [Microchip ATSAMA5D27-SOM1](microchip-sama5d27) - ([Purchase Link](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354/?srsltid=AfmBOorYtSqVK7BDtS-_h4NDc21QKb7yCg1XAcTrRP8ydEuLJZFjeglj))
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity) - ([Purchase Link](https://www.avnet.com/americas/product/microchip/ev63j76a/evolve-118945047/))
+* [NVIDIA Jetson Orin NX](nvidia-jetson-orin) - ([Purchase Link](https://www.newark.com/seeed-studio/110110144/recomputer-j4011-edge-ai-device/dp/74AK7856))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Purchase Link](https://export.farnell.com/nxp/frdm-imx93/frdm-development-board-for-i-mx/dp/4626785))
 * [NXP GoldBox 3 Vehicle Networking Development Platform](nxp-s32g-vnp-gldbox3) - ([Purchase Link](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/))
 * [Raspberry Pi](raspberry-pi) - ([Purchase Link](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346))
