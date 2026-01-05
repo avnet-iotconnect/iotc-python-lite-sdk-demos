@@ -103,32 +103,29 @@ Once you are in the device's console execute this command (with your wireless ne
 the network settings for your board:
 
 ```
-wpa_passphrase "SSID" "PASSWORD" | sudo tee /etc/wpa_supplicant/wpa_supplicant.conf
+sudo nmcli device wifi connect "YOUR-SSID" password "YOUR-PASSWORD"
 ```
 > [!TIP]
 > For example if your network's SSID was `HomeOffice` and the password was `Security123!` then the command you would enter 
 > would be:
 > ```
-> wpa_passphrase "HomeOffice" "Security123!" | sudo tee /etc/wpa_supplicant/wpa_supplicant.conf
+> sudo nmcli device wifi connect "HomeOffice" password "Security123!"
 > ```
 
 After that command you will be prompted to set and confirm a sudo password for your device. After doing so, execute this 
-command to set up the Wi-Fi authetication on the correct network interface:
+command to make your device autconnect to the network after rebooting in the future (again substituting in your actual SSID):
 
 ```
-sudo /usr/sbin/wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf
+sudo nmcli connection modify "YOUR-SSID" connection.autoconnect-priority 10
 ```
-> [!NOTE]
-> Warnings from this command can be ignored.
 
-Then, run this command to start a DHCP client and get an IP address for your board:
+Then, run this command and note the IP address for the wlan0 interface:
 
 ```
-sudo dhcpcd wlan0
+ip a
 ```
 > [!TIP]
-> This IP address can be used to locally connect to the device via SSH instead of having to utilize ADB for the remainder of
-> the QuickStart.
+> This IP address can now be used to locally connect to the device via SSH instead of having to utilize ADB.
 
 Next, run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
