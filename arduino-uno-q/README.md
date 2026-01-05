@@ -127,7 +127,8 @@ Then, run this command to start a DHCP client and get an IP address for your boa
 sudo dhcpcd wlan0
 ```
 > [!TIP]
-> This IP address can be used to locally connect to the device via SSH in the future instead of having to utilize ADB.
+> This IP address can be used to locally connect to the device via SSH instead of having to utilize ADB for the remainder of
+> the QuickStart.
 
 Next, run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
