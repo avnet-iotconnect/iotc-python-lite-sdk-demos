@@ -119,14 +119,6 @@ command to make your device autconnect to the network after rebooting in the fut
 sudo nmcli connection modify "YOUR-SSID" connection.autoconnect-priority 10
 ```
 
-Then, run this command and note the IP address for the wlan0 interface:
-
-```
-ip a
-```
-> [!TIP]
-> This IP address can now be used to locally connect to the device via SSH instead of having to utilize ADB.
-
 Next, run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
