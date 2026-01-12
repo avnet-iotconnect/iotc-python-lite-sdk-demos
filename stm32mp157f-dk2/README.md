@@ -126,11 +126,6 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-
-```
-apt-get install python3-cffi -y
-```   
-
 # 6. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.

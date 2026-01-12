@@ -10,7 +10,7 @@
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
-8. [EIQ Vision AI Driver Monitoring System Demo](#8-eiq-vison-ai-driver-monitoring-system-demo)
+8. [EIQ Vision AI Driver Monitoring System Demo](#8-eiq-vision-ai-driver-monitoring-system-demo)
 9. [Troubleshooting](#9-troubleshooting)
 10. [Resources](#10-resources)
 

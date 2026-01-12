@@ -83,7 +83,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 
 # 5. Device Setup
 
-1. Open a serial terminal emulator program such as TeraTerm PuTTY.
+1. Open a serial terminal emulator program such as TeraTerm or PuTTY.
 2. Ensure that your serial settings in your terminal emulator are set to:
 
 - Baud Rate: 115200

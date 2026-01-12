@@ -35,7 +35,7 @@ would do the following:**
 
 * Copy the new TFLITE models into the ```src``` directory
 * Modify ```dms-processing.py``` with the new model filenames (lines 351-353)
-* Modify ```install.sh``` to remove the unnecessary installation steps (change ```True`` in line 10 to ```False```)
+* Modify ```install.sh``` to remove the unnecessary installation steps (change ```True``` in line 10 to ```False```)
 * Delete these files from ```src``` so the existing copies on the board are not overwritten:
     * ```download-models.py```
     * ```app.py```
@@ -143,7 +143,7 @@ IoTConnect program on your board called ```app.py```
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
 
-* From you host machine's console as an OTA (see step 5B)
+* From your host machine's console as an OTA (see step 5B)
 * Through an API device command (see step 5C)
 * Through the online IoTConnect platform as an OTA (see step 5D)
 
@@ -353,4 +353,4 @@ manipulation.
 Your package installation is complete and the program is working again already!
 
 You should soon see the live video feed appear on your display with the DMS alerts and bounding box as the telemetry is
-sent ot IoTConnect.
+sent to IoTConnect.

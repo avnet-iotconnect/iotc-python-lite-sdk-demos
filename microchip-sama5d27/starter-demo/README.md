@@ -29,8 +29,8 @@ you may delete it from the directory.
 
 If you wish to add more source files to the package, copy them into the ```src``` directory.
 
-If the device will need to perform some actions (move files, install libaries, etc.) after the package is received,
-modify ```install.sh``` to perform those actions. It will be automatically executed after the package is recevied and
+If the device will need to perform some actions (move files, install libraries, etc.) after the package is received,
+modify ```install.sh``` to perform those actions. It will be automatically executed after the package is received and
 extracted on the device.
 
 ## 3. Create Package
@@ -56,7 +56,7 @@ For your board to receive the package through /IOTCONNECT, it must be actively c
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
 
-* From you host machine's console as an OTA (see step 5B)
+* From your host machine's console as an OTA (see step 5B)
 * Through an API device command (see step 5C)
 * Through the online /IOTCONNECT platform as an OTA (see step 5D)
 
@@ -68,7 +68,7 @@ copy) command.
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main
 application directory of the device (```/home/weston/demo```).
 
-After the file transfer is complete, open a terminal on your device, naviagte to the main application directory, and
+After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and
 verify that there is a ```package.tar.gz``` present.
 
 If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
@@ -123,7 +123,7 @@ iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env techn
 ```
 
 > [!IMPORTANT]
-> Notice that the password argument of the command is **the only arugment that is in quotes.** Make sure you pay
+> Notice that the password argument of the command is **the only argument that is in quotes.** Make sure you pay
 > attention to this detail.
 
 You will see this output in the console if your login succeeded:
@@ -190,7 +190,7 @@ iotconnect-cli configure -u john.doe@gmail.com -p "Abc123!" --pf aws --env techn
 ```
 
 > [!IMPORTANT]
-> Notice that the password argument of the command is **the only arugment that is in quotes.** Make sure you pay
+> Notice that the password argument of the command is **the only argument that is in quotes.** Make sure you pay
 > attention to this detail.
 
 You will see this output in the console if your login succeeded:
@@ -211,7 +211,7 @@ the same template. Any devices that use a template different from the first devi
 After entering your device IDs, the ```package.tar.gz``` file you generated previously will be automatically uploaded
 and the command will be automatically pushed to all given devices.
 
-For every device that receives the command, you should see this ouput in your host machine console:
+For every device that receives the command, you should see this output in your host machine console:
 
 ```
 Command successful!

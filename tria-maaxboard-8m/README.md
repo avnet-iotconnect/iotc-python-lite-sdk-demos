@@ -1,5 +1,5 @@
 # TRIA Maaxboard 8M QuickStart
-[Purchse TRIA MaaXBoard 8M](https://www.avnet.com/americas/product/avnet-engineering-services/aes-mc-sbc-imx8m-g/evolve-47976882/)
+[Purchase TRIA MaaXBoard 8M](https://www.avnet.com/americas/product/avnet-engineering-services/aes-mc-sbc-imx8m-g/evolve-47976882/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
@@ -11,7 +11,7 @@
 
 # 1. Introduction
 
-This guide is designed to walk through the steps to connect the TRIA Maaxboard 8ULP to the Avnet /IOTCONNECT platform
+This guide is designed to walk through the steps to connect the TRIA MaaXBoard 8M to the Avnet /IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
 <table>

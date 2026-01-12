@@ -29,7 +29,7 @@ then flash the image to the board.
 * Using 7-Zip (or another unzipping utility that supports ZST files), unzip this file (keeping the same destination
   directory):
   ```imx-image-full-imx93frdm.rootfs.wic.zst```
-* Before proceeding to the next step, very that these 3 files are all within the same folder:  
+* Before proceeding to the next step, verify that these 3 files are all within the same folder:  
   ```imx-image-full-imx93frdm.rootfs.wic```  
   ```imx-boot-imx93frdm-sd.bin-flash_singleboot```  
   ```uuu.exe```

@@ -112,8 +112,8 @@ sudo nmcli device wifi connect "YOUR-SSID" password "YOUR-PASSWORD"
 > sudo nmcli device wifi connect "HomeOffice" password "Security123!"
 > ```
 
-After that command you will be prompted to set and confirm a sudo password for your device. After doing so, execute this 
-command to make your device autconnect to the network after rebooting in the future (again substituting in your actual SSID):
+After that command you will be prompted to set and confirm a sudo password for your device. After doing so, execute this
+command to make your device autoconnect to the network after rebooting in the future (again substituting in your actual SSID):
 
 ```
 sudo nmcli connection modify "YOUR-SSID" connection.autoconnect-priority 10

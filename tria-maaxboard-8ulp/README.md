@@ -1,5 +1,5 @@
 # TRIA MaaXBoard 8ULP QuickStart
-[Purchse TRIA MaaXBoard 8ULP](https://www.avnet.com/americas/product/avnet-engineering-services/aes-maaxb-8ulp-sk-g/evolve-57290182/)
+[Purchase TRIA MaaXBoard 8ULP](https://www.avnet.com/americas/product/avnet-engineering-services/aes-maaxb-8ulp-sk-g/evolve-57290182/)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)

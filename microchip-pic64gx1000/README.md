@@ -22,7 +22,7 @@ for IoT application development, enabling secure device onboarding, telemetry co
     <td>The Curiosity PIC64GX1000 Kit features a quad-core, 64-bit CPU cluster based on the RISC-V application-class 
 processor that supports Linux® and real-time applications, a rich set of peripherals. The kit is ready for rapid testing 
 of applications in an easy-to-use hardware development platform and offers a MikroBUS™ expansion header for Click boards™, 
-a ™ MIPI®  CSI 2 Rx  connector, and an HDMI output. The expansion boards can be controlled using protocols like I2C and SPI. 
+a MIPI® CSI 2 Rx connector, and an HDMI output. The expansion boards can be controlled using protocols like I2C and SPI. 
 1GB of DDR4 memory is available as well as a microSD® card slot for booting Linux. Communication interfaces include one 
 Gigabit Ethernet connector and three UART connections via the USB type C connector and debug via the USB-to-JTAG channel.</td>
   </tr>
