@@ -1,6 +1,6 @@
 # Onboarding a Device to /IOTCONNECT via Online User Interface
 
-Follow these steps on onboard your device into /IOTCONNECT via the online user interface.
+Follow these steps to onboard your device into /IOTCONNECT via the online user interface.
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
 

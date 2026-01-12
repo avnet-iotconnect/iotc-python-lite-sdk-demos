@@ -98,10 +98,10 @@ else
 fi
 
 cat <<END
----- IoTconnect Python Lite SDK Quickstart ----
+---- IoTConnect Python Lite SDK Quickstart ----
 This script will help guide you through the setup this device with IoTConnect.
 Ensure that you have read the guide at https://github.com/avnet-iotconnect/iotc-python-lite-sdk on how to install the lite SDK before proceeding.
-If you are already familiar with IoTconnect you can follow these simple steps:
+If you are already familiar with IoTConnect you can follow these simple steps:
 - Create the device template by uploading TBD link to template.
 - Create a new device and:
   - Select your Entity and the newly created template.

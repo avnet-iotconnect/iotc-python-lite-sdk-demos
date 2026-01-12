@@ -1,8 +1,8 @@
 # Standard PROTEUS Demo: Package Creation and Deployment
-This guide will help you upgrade the basic /IOTCONNECT Starter Demo on the STM32MP135F-DK2 to the standard PROTEUS sensor pack demo with a single package.
+This guide will help you upgrade the basic /IOTCONNECT Starter Demo on the STM32MP135F-DK to the standard PROTEUS sensor pack demo with a single package.
 
 >[!IMPORTANT]
-> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP135F-DK is loaded with a Scarthgap image before procedding through any other steps.
+> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP135F-DK is loaded with a Scarthgap image before proceeding through any other steps.
 
 >[!NOTE]
 > Make sure your PROTEUS sensor pack is loaded with the correct firmware by following [this PROTEUS setup guide](PROTEUS-SETUP.md) before attempting to run this demo.
@@ -20,7 +20,7 @@ Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ``
 ```
 cd ./stm32mp135f-dk/proteus-standard-demo/src/
 ```
-By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3
+By default, this directory contains the necessary files to upgrade from the basic quickstart application to the standard PROTEUS sensor pack demo. If this is all you wish to do with this package, you may move to step 3.
 
 If you wish to achieve something other than that, you will need to modify, add, and/or remove files to/from ```src``` accordingly.
 

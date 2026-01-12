@@ -4,7 +4,7 @@ This repository contains various guides and demos that utilize
 the [/IOTCONNECT Python Lite SDK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk) to connect devices to the
 Avnet /IOTCONNECT platform and showcase telemetry reporting and cloud-to-device command functionality.
 The Python Lite SDK may be used to enable /IOTCONNECT on a wide variety of development boards/platforms. Avnet has
-completed this work for a subset of board as outlined in the following section.
+completed this work for a subset of boards as outlined in the following section.
 
 # Pre-Enabled Development Boards
 
@@ -38,7 +38,7 @@ and set up basic /IOTCONNECT onboarding for your device.
 
 # AWS Greengrass Demos Enablement
 
-To explore setting up AWS Greengrass Lite on some of these same devices and deploying python demos through pre-built or custom
+To explore setting up AWS Greengrass Lite on some of these same devices and deploying Python demos through pre-built or custom
 components, check out the [/IOTCONNECT Python Greengrass Demos repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/tree/main).
 
 # Further Customization

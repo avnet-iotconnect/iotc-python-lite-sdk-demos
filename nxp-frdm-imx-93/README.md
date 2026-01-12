@@ -1,7 +1,7 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 [Purchase NXP FRDM i.MX 93 Development Board](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
 >[!TIP]
-> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
+> To set up and connect this device using the **AWS Greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -10,7 +10,7 @@
 5. [Device Setup](#5-device-setup)
 6. [Onboard Device](#6-onboard-device)
 7. [Using the Demo](#7-using-the-demo)
-8. [EIQ Vison AI Driver Monitoring System Demo](#8-eiq-vison-ai-driver-monitoring-system-demo)
+8. [EIQ Vision AI Driver Monitoring System Demo](#8-eiq-vison-ai-driver-monitoring-system-demo)
 9. [Troubleshooting](#9-troubleshooting)
 10. [Resources](#10-resources)
 
@@ -105,7 +105,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 ```
 
 > [!TIP]
-> To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the
+> To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
@@ -134,7 +134,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. EIQ Vison AI Driver Monitoring System Demo
+# 8. EIQ Vision AI Driver Monitoring System Demo
 
 After completing the basic demo setup, you will be able to perform an OTA update to automatically install and begin
 running the EIQ Vision AI Driver Monitoring System Demo on your NXP i.MX 93. Refer

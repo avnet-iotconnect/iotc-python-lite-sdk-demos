@@ -1,7 +1,7 @@
 # Raspberry Pi QuickStart
 [Purchase your Raspberry Pi Kit](https://www.newark.com/raspberry-pi/rpi5-8gb-single/rpi-5-board-2-4ghz-8gb-arm-cortex/dp/81AK1348)
 > [!TIP]
-> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
+> To set up and connect this device using the **AWS Greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)

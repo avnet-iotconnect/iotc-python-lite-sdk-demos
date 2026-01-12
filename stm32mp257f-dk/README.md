@@ -1,7 +1,7 @@
 # STM32MP257F-DK QuickStart
 [Purchase STM32MP257F-DK](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-kit-arm-cortex-a35-m33f/dp/21AM3759)
 > [!TIP]
-> To set up and connect this device using the **AWS greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
+> To set up and connect this device using the **AWS Greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -122,7 +122,7 @@ mkdir -p /home/weston/demo && cd /home/weston/demo
 ```
 
 > [!TIP]
-> To gain access to "copy" and "paste" functions inside of a Putty terminal window, you can CTRL+RIGHTCLICK within the
+> To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
