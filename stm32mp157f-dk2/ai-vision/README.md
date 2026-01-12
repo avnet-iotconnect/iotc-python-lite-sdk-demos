@@ -87,7 +87,7 @@ For your board to receive the package through /IOTCONNECT, it must be actively c
 
 From here, you have the option to push the package to your devices directly to your device in one of the following ways:
 
-* From you host machine's console as an OTA (see step 7B)
+* From your host machine's console as an OTA (see step 7B)
 * Through an API device command (see step 7C)
 * Through the online /IOTCONNECT platform as an OTA (see step 7D)
 

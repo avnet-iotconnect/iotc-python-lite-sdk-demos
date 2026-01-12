@@ -141,7 +141,7 @@ python3 /home/weston/demo/app.py
 Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
 </code></pre>
 
-7. **Click** `Save` in the upper-right corner to comit the dashboard.
+7. **Click** `Save` in the upper-right corner to commit the dashboard.
 
 # 10. /IOTCONNECT: Using the Dashboard
 <img src="../media/dashboard_reduced.png">
