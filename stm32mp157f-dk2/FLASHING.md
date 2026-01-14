@@ -8,7 +8,7 @@ and then flash the image to the board.
 # Guide
 
 * To download the zipped image
-  folder, [click here](https://saleshosted.z13.web.core.windows.net/sdk/st/stmp1/proteus/OSTL_6.1_IoTConnect_Compatible.zip).
+  folder, [click here](https://downloads.iotconnect.io/images/stm32mp1-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip).
 * Unzip the folder to a known location.
 * Download and Install the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) software (
   the utility for flashing the image to the device).
