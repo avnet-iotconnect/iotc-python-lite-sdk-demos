@@ -41,9 +41,9 @@ and then flash the image to the board.
 
 <img src="media/open-file.png"/>
 
-* Navigate to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then navigate
+* Navigate to the directory where you have the unzipped "stm32mp1-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06" folder, and then navigate
   through the folder to get to this directory: {Your preliminary
-  directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1\flashlayout_st-image-weston\optee
+  directory}\stm32mp1-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06\images\stm32mp1\flashlayout_st-image-weston\optee
     * Select the FlashLayout_sdcard_stm32mp157F-dk2-optee.tsv file and then click "Open."
 
 <img src="media/file-selection.png"/>
@@ -52,9 +52,9 @@ and then flash the image to the board.
 
 <img src="media/browse.png"/>
 
-* Navigate once again to the directory where you have the unzipped "OpenSTLinux_IoTConnect_Compatible" folder, and then
+* Navigate once again to the directory where you have the unzipped image folder, and then
   navigate through the folder to get to this directory: {Your preliminary
-  directory}\OSTL_6.1_IoTConnect_Compatible\images\stm32mp1
+  directory}\stm32mp1-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06\images\stm32mp1
     * Select the stm32mp1 folder and then click "Select folder."
 
 <img src="media/binaries-path.png"/>
@@ -71,7 +71,7 @@ and then flash the image to the board.
 
 * You are ready to flash. Click the "Download" button to begin the flashing process.
     * The STM32MP157F-DK2 will turn off and on several times throughout the flashing process. It is important to not
-      unplug or disturb it during the process. Given the size of the image it will usually take **up to 45 minutes** to
+      unplug or disturb it during the process. Given the size of the image it will usually take **up to 15 minutes** to
       flash.
     * It is worth noting that the LCD screen on the board will turn on with some output text during the flash process,
       so do not be alarmed.
