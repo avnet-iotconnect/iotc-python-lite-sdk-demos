@@ -1,4 +1,5 @@
 # Tria Vision AI-KIT 6490 Quickstart
+[Purchase the Tria Vision AI-KIT 6490](https://www.newark.com/avnet/sm2-sk-qcs6490-ep6-kit001/dev-kit-64bit-arm-cortex-a55-a78/dp/51AM9843)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
