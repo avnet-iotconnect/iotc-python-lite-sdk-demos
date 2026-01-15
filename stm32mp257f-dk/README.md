@@ -160,7 +160,7 @@ image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm
 
 # 9. Resources
 * Explore connecting the STM32MP257F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)
-* [Purchase the STM32MP257F-DK](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-dk/EVOLVE-115914011/)
+* [Purchase the STM32MP257F-DK](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-board-arm-cortex-a35/dp/21AM3759)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
