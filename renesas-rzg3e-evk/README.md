@@ -1,5 +1,5 @@
 # Renesas RZ/G3E Evaluation Board Kit QuickStart
- [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.renesas.com/en/design-resources/boards-kits/rz-g3e-evkit?srsltid=AfmBOoqkLQfH7gyWHOem2U-duZ3bwaM7khGy20z2v4WJy6npgNdgVsm5#parametric_options)
+ [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
@@ -168,6 +168,6 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 9. Resources
 
-* [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.renesas.com/en/design-resources/boards-kits/rz-g3e-evkit?srsltid=AfmBOoqkLQfH7gyWHOem2U-duZ3bwaM7khGy20z2v4WJy6npgNdgVsm5#parametric_options)
+* [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
