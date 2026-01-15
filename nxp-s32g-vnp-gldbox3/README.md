@@ -1,5 +1,5 @@
 # NXP GoldBox 3 Vehicle Networking Development Platform QuickStart
-[Purchase NXP GoldBox 3](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/)
+[Purchase NXP GoldBox 3](https://www.newark.com/nxp/s32g-vnp-gldbox/ref-design-board-vehicle-n-w-processor/dp/37AJ9124)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
@@ -156,7 +156,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Resources
 
-* [Purchase the NXP GoldBox 3 Vehicle Networking Development Platform](https://www.avnet.com/americas/product/nxp/s32g-vnp-gldbox3/evolve-64413515/)
+* [Purchase the NXP GoldBox 3 Vehicle Networking Development Platform](https://www.newark.com/nxp/s32g-vnp-gldbox/ref-design-board-vehicle-n-w-processor/dp/37AJ9124)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
