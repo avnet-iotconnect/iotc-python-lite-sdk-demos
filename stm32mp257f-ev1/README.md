@@ -154,7 +154,7 @@ To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.
 
 # 9. Resources
 * Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
-* [Purchase the STM32MP257F-EV1](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp257f-ev1/evolve-115913010/)
+* [Purchase the STM32MP257F-EV1](https://www.newark.com/stmicroelectronics/stm32mp257f-ev1/eval-brd-arm-cortex-a35-m33-m0/dp/13AM6530)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
