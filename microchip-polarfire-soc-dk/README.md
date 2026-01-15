@@ -179,7 +179,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 9. Resources
 
-* [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.avnet.com/americas/product/microchip/mpfs-disco-kit/evolve-67810612/)
+* [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
