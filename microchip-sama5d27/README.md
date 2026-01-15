@@ -1,5 +1,5 @@
 # Microchip SAMA5D27 Quickstart
-[Purchase Microchip ATSAMA5D27-SOM1-EK](https://www.avnet.com/shop/us/products/microchip/atsama5d27-som1-ek-3074457345633909354)
+[Purchase Microchip ATSAMA5D27-SOM1-EK](https://www.newark.com/microchip/atsama5d27-som1-ek1/eval-board-32bit-mpu-arm-cortex/dp/44AC2213)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
