@@ -166,7 +166,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Resources
 
-* [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.avnet.com/americas/product/microchip/ev63j76a/evolve-118945047/)
+* [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
