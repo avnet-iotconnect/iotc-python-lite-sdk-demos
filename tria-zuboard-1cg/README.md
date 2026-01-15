@@ -1,5 +1,5 @@
 # Tria ZUBOARD-1CG QuickStart
-[Purchase Tria ZUBOARD-1CG](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/)
+[Purchase Tria ZUBOARD-1CG](https://www.newark.com/avnet/aes-zub-1cg-dk-g/development-board-arm-cortex-a53/dp/41AK2454)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Linux Image Flashing](#3-linux-image-flashing)
@@ -139,6 +139,6 @@ python3 app.py
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
 # 9. Resources
-* [Purchase the Tria ZUBOARD-1CG](https://www.avnet.com/americas/product/avnet-engineering-services/aes-zub-1cg-dk-g/evolve-54822506/)
+* [Purchase the Tria ZUBOARD-1CG](https://www.newark.com/avnet/aes-zub-1cg-dk-g/development-board-arm-cortex-a53/dp/41AK2454)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
