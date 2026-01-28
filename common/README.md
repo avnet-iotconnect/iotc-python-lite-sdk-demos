@@ -9,6 +9,11 @@ This directory contains files that can be used across many (if not all) supporte
 This guide walks through the process of utilizing the /IOTCONNECT REST API to automate the device onboarding process for 
 supported boards.
 
+### REST-API-OTA.md
+
+This guide walks through additional OTA methods which utilize the /IOTCONNECT REST API to automate the deployment of software 
+packages.
+
 ### UI-ONBOARD.md
 
 This guide walks through the process of utilizing the /IOTCONNECT online user interface for the device onboarding process.
@@ -32,6 +37,10 @@ This script is executed on a host PC to send a software package through an OTA u
 ### quickstart.sh
 
 This script is run to onboard devices for most devices in this repository and downloads the basic starter application afterwards.
+
+## Starter Demo
+
+This is the standard software package that all base quickstarts in this repository use. 
 
 ## Templates
 

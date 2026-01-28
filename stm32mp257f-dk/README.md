@@ -32,8 +32,7 @@ replicated in other environments.
 
 ## Hardware
 
-*
-STM32MP257F-DK [Purchase](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-kit-arm-cortex-a35-m33f/dp/21AM3759) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html)
+* STM32MP257F-DK [Purchase](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-kit-arm-cortex-a35-m33f/dp/21AM3759) | [User Manual & Kit Contents](https://www.st.com/resource/en/user_manual/um3385-discovery-kit-with-stm32mp257f-mpu-stmicroelectronics.pdf) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp257f-dk.html)
 * 1 USB Type-C Cable
 * Ethernet Cable **or** WiFi Network SSID and Password
 

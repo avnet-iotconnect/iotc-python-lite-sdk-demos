@@ -22,7 +22,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [Renesas RZ/G3E Evaluation Board Kit](renesas-rzg3e-evk) - ([Purchase Link](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397))
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp135f-dk/discovery-kit-32bit-arm-cortex/dp/68AK9977))
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-board-32bit-arm-cortex/dp/14AJ2731))
-* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk) - ([Purchase Link]([Purchase the STM32MP257F-DK](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-board-arm-cortex-a35/dp/21AM3759)))
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp257f-dk/discovery-board-arm-cortex-a35/dp/21AM3759))
 * [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp257f-ev1/eval-brd-arm-cortex-a35-m33-m0/dp/13AM6530))
 * [Tria MaaXBoard 8M](tria-maaxboard-8m) - ([Purchase Link](https://www.newark.com/avnet/aes-mc-sbc-imx8m-g/sbc-i-mx-8m-arm-cortex-a53-m4f/dp/70AH4311))
 * [Tria MaaXBoard 8ULP](tria-maaxboard-8ulp) - ([Purchase Link](https://www.newark.com/avnet/aes-maaxb-8ulp-sk-g/maaxboard-8ulp-sbc-arm-cortex/dp/87AK5106))
@@ -46,8 +46,7 @@ components, check out the [/IOTCONNECT Python Greengrass Demos repo](https://git
 If you want to modify or add onto the basic /IOTCONNECT starter application, you can do so by sending a software package
 to your device.
 
-Within the directories for each device in this repository is a ```starter-demo``` directory with instructions on how to
-do this.
+Within the [common](./common) directory is a ```starter-demo``` directory with instructions on how to do this.
 
 Some devices also include directories for pre-built expansion demos such as
 the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo) for the NXP FRDM i.MX 93. Inside of

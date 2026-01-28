@@ -8,6 +8,6 @@ ARCHIVE_NAME="package.tar.gz"
 # The -C changes to the src directory, and . adds only the files from there
 tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
 
-cp ./package.tar.gz ../../common/
+cp ./package.tar.gz ../common/
 
 echo "Created archive $ARCHIVE_NAME and copied it into the common directory."
