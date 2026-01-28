@@ -158,9 +158,9 @@ if ${do_download}; then
   echo "Downloading the quickstart Python app..."
 
   if ${use_curl}; then
-    curl -o app.py https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py
+    curl -o app.py https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/starter-demo/src/app.py
   else
-    wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp157f-dk2/starter-demo/src/app.py -O app.py
+    wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/starter-demo/src/app.py -O app.py
   fi
   echo "Download complete."
 fi
