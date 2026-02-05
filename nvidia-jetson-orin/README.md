@@ -111,7 +111,7 @@ sudo apt-get install python3-pip -y
 ```
 
 ```
-python3 -m pip install iotconnect-sdk-lite
+sudo python3 -m pip install iotconnect-sdk-lite
 ```
 
 5. Run this command to create and move into a directory for your demo files:
