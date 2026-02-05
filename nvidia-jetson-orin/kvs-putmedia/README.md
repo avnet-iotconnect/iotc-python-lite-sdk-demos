@@ -31,6 +31,7 @@ Navigate back to the ```kvs-putmedia``` directory and then run this command to c
 the necessary demo files and installation script:
 
 ```
+cd ../
 bash ./create-package.sh
 ```
 
