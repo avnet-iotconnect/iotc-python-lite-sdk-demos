@@ -38,13 +38,20 @@ bash ./create-package.sh
 > At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common```
 > directory so it can be readily accessed by the scripts used in optional steps 6B and 6C.
 
-## 4. Physically Set Up Demo Equipment
+## 4. Prepare Device to Receive Package
 
-* Plug your USB camera into a USB port on the Jetson Orin
+1) Plug your USB camera into a USB port on the Jetson Orin
 
 > [!TIP]
 > You can verify the camera is detected by running ```ls /dev/video*``` on the device.
 > The app will auto-detect the first available video device.
+
+>[!IMPORTANT]
+> Upgrading from the basic quickstart demo to the KVS PutMedia demo requires a template change (to `plitekvs`, template file available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitekvs-template.json)) for the device 
+> in /IOTCONNECT. If you send the package via OTA or command **from a script on your host PC** (see tip at end of step 6B),
+> this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA
+> via the /IOTCONNECT online platform, you will have to manually change your device's template on your device's page in the
+> online /IOTCONNECT platform.
 
 ## 5. Deploy Package to Device
 
@@ -145,12 +152,9 @@ Once the application is running and connected to /IOTCONNECT, the demo operates 
 
 * **Telemetry**: Sends a random integer and the current streaming status (true/false) every 10 seconds
 * **Auto-start**: If KVS is configured with auto-start in /IOTCONNECT, the video stream will begin automatically 3 seconds after connecting
-* **Manual control**: Video streaming can be started/stopped via /IOTCONNECT commands:
-    * **Command Type 112**: Start video streaming
-    * **Command Type 113**: Stop video streaming
-
-The video stream uses a GStreamer pipeline that captures from the USB camera, encodes to H.264, and sends to
-AWS Kinesis Video Streams using the ```kvssink``` plugin. The stream name is set to the device's client ID.
+* **Manual control**: Video streaming can be started/stopped via /IOTCONNECT commands from the device's Video Streaming tab. If Video Streaming
+  is currently off, a "Start" button on the page can be pressed which sends the "Start Streaming" command to the device. If Video Streaming is
+  currently on, a "Stop" button on the page can be pressed which sends the "Stop Streaming" command to the device. 
 
 ### Camera Configuration
 
@@ -159,33 +163,3 @@ The default camera settings in ```app.py``` are:
 * Framerate: 30 fps
 
 These can be adjusted by modifying the ```camera_options``` dictionary in ```app.py```.
-
-## 9. Troubleshooting
-
-**kvssink plugin not found:**
-```
-export GST_PLUGIN_PATH=/opt/kvs-producer-sdk-cpp/build
-gst-inspect-1.0 kvssink
-```
-
-**No video device detected:**
-```
-ls -la /dev/video*
-```
-
-**Test camera capture:**
-```
-gst-launch-1.0 v4l2src device=/dev/video0 ! videoconvert ! autovideosink
-```
-
-**Camera permission issues:**
-```
-sudo usermod -a -G video $USER
-```
-Then log out and back in.
-
-## 10. Resources
-
-* [AWS KVS Producer SDK C++](https://github.com/awslabs/amazon-kinesis-video-streams-producer-sdk-cpp)
-* [/IOTCONNECT Overview](https://www.iotconnect.io/)
-* [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
