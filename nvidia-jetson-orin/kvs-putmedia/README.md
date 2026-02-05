@@ -7,32 +7,13 @@ This guide will help you upgrade the basic /IOTCONNECT Starter Demo to the KVS P
 > the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nvidia-jetson-orin/README.md),
 > complete that first and then return here to pick up on Step 1
 
-## 1. Requirements
-
-### Hardware
-* NVIDIA Jetson Orin (Seeed Studio reComputer J4011) with the starter demo already running
-* USB Camera (e.g., Logitech USB webcam)
-
-### Software
-* Python 3.9+ (configured during starter demo setup)
-* Internet connection (required for building the KVS Producer SDK during installation)
-
-### /IOTCONNECT
-* Video streaming (KVS) capability must be enabled for the device in the /IOTCONNECT platform
-* Video stream configuration must be set up in the device template
-
-> [!NOTE]
-> The installation script will build the AWS KVS Producer SDK C++ from source, which requires
-> GStreamer, cmake, and other build tools. These are installed automatically by the script.
-> The build process may take 10-15 minutes on the first installation.
-
-## 2. Clone This Git Repository to Your Host Machine
+## 1. Clone This Git Repository to Your Host Machine
 
 Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
 > [!NOTE]
 > On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
 
-## 3. Customize Package
+## 2. Customize Package
 
 Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```nvidia-jetson-orin/kvs-putmedia/src/```
 directory:
@@ -44,7 +25,7 @@ cd ./nvidia-jetson-orin/kvs-putmedia/src
 By default, this directory contains the necessary files to upgrade from the basic quickstart application to the KVS
 PutMedia demo.
 
-## 4. Create Package
+## 3. Create Package
 
 Navigate back to the ```kvs-putmedia``` directory and then run this command to create ```package.tar.gz``` which includes
 the necessary demo files and installation script:
@@ -57,7 +38,7 @@ bash ./create-package.sh
 > At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common```
 > directory so it can be readily accessed by the scripts used in optional steps 6B and 6C.
 
-## 5. Physically Set Up Demo Equipment
+## 4. Physically Set Up Demo Equipment
 
 * Plug your USB camera into a USB port on the Jetson Orin
 
@@ -65,7 +46,7 @@ bash ./create-package.sh
 > You can verify the camera is detected by running ```ls /dev/video*``` on the device.
 > The app will auto-detect the first available video device.
 
-## 6. Deploy Package to Device
+## 5. Deploy Package to Device
 
 For your board to receive the package through /IOTCONNECT, it must be actively connected. Do this by running the main
 /IOTCONNECT program on your board called ```app.py```:
@@ -99,6 +80,9 @@ sudo bash ./install.sh
 > The install script requires root privileges because it installs system packages (via apt-get),
 > builds the KVS Producer SDK into ```/opt/kvs-producer-sdk-cpp/```, and configures system-wide
 > environment variables. Use ```sudo``` when running manually.
+
+> [!NOTE]
+> Warning messages in the console during the installation script are anticipated and can be ignored.
 
 After install.sh completes, log out and back in (or run ```source /etc/profile.d/kvs-gstreamer.sh```)
 to ensure the ```GST_PLUGIN_PATH``` environment variable is active, then run the demo:
@@ -136,6 +120,9 @@ python3 app.py
 > so that the install script can install system packages and build the KVS SDK.
 
 > [!NOTE]
+> Warning messages in the console during the installation script are anticipated and can be ignored.
+
+> [!TIP]
 > If you have obtained a solution key for your /IOTCONNECT account from Softweb Solutions, you can utilize the
 > /IOTCONNECT REST API to automate the OTA deployment via 2 other methods outlined in [this guide](../../common/general-guides/REST-API-OTA.md)
 
