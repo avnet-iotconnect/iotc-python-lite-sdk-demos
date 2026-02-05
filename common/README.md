@@ -60,6 +60,10 @@ This /IOTCONNECT template is used for devices that run the MKBOXPRO Demo, such a
 
 This is the basic /IOTCONNECT template for all devices running the starter demo.
 
+### plitekvs-template.json
+
+This /IOTCONNECT template is used for devices running the KVS PutMedia demo, such as the NVIDIA Jetson Orin.
+
 ### proteus-template.json
 
 This /IOTCONNECT template is used for devices that run the standard PROTEUS Demo, such as the STM32MP157F-DK2.
