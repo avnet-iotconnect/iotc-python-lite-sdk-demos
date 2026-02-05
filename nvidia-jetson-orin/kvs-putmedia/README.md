@@ -27,8 +27,7 @@ PutMedia demo.
 
 ## 3. Create Package
 
-Navigate back to the ```kvs-putmedia``` directory and then run this command to create ```package.tar.gz``` which includes
-the necessary demo files and installation script:
+Next, run this command to create ```package.tar.gz``` which includes the necessary demo files and installation script:
 
 ```
 cd ../
