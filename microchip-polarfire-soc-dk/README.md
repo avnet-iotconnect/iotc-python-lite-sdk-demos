@@ -10,6 +10,13 @@
 8. [Using the Demo](#8-using-the-demo)
 9. [Resources](#9-resources)
 
+## Additional Workshop
+
+For the cloud-driven Tiny-ML workshop (FlashPro-only student flow), use:
+
+- `iotconnect-ml-classifier-workshop/WORKSHOP.md`
+- `iotconnect-ml-classifier-workshop/README.md`
+
 # 1. Introduction
 
 This guide provides step-by-step instructions to set up the **Microchip PolarFire SoC Discovery Kit hardware** and integrate

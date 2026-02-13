@@ -1,1 +1,14 @@
 .idea/vcs.xml
+
+# Local/generated artifacts
+**/__pycache__/
+**/*.pyc
+**/package.tar.gz
+
+# Local PolarFire scratch folders (not for public repo)
+microchip-polarfire-soc-dk/New folder/
+microchip-polarfire-soc-dk/fabric-accel-demo/
+microchip-polarfire-soc-dk/fpga-assets/
+microchip-polarfire-soc-dk/fpga-project/
+microchip-polarfire-soc-dk/fpga-project2/
+microchip-polarfire-soc-dk/fpga-project3/
