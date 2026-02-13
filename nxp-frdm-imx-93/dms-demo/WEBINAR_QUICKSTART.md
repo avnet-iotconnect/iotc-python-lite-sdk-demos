@@ -89,7 +89,7 @@ A Device Template defines the type of telemetry the platform should expect to re
    * Start the interactive /IOTCONNECT onboarding script
 
    ```
-   mkdir -p /home/weston/demo && cd /home/weston/demo
+   mkdir -p /opt/demo && cd /opt/demo
    curl -sOJ 'https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/direct-install.sh' && bash ./direct-install.sh
    ```
 
@@ -116,9 +116,9 @@ The script started in the previous step will guide you through the following ste
 >This process will take about <b><u>8 minutes</u></b>.
 
 # 8. Start the Application and Verify Data
-From the `/home/weston/demo` directory, use the following command to the demo application:
+From the `/opt/demo` directory, use the following command to the demo application:
 ```
-python3 /home/weston/demo/app.py
+python3 /opt/demo/app.py
 ```
 
 The telemetry data can be viewed and verified under the "Live Data" tab for your device on /IOTCONNECT.
@@ -137,7 +137,7 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 It should have looked like this:
 <pre><code>
 Installation complete! You can now run the /IOTCONNECT script:
-python3 /home/weston/demo/app.py
+python3 /opt/demo/app.py
 Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
 </code></pre>
 

@@ -53,7 +53,7 @@ if [ ! -f "$KVS_SDK_DIR/build/libgstkvssink.so" ]; then
   # Build the SDK (this may take 10-15 minutes)
   make -j"$(nproc)"
 
-  cd /home/weston/demo
+  cd /opt/demo
 else
   echo "KVS Producer SDK already built, skipping build step..."
 fi

@@ -135,11 +135,11 @@ python3 -m pip install iotconnect-sdk-lite requests --break-system-packages
 Then run these commands to create and move into a directory for your demo files:
 
 ```
-sudo mkdir -p /home/weston/demo && cd /home/weston/demo
+sudo mkdir -p /opt/demo && cd /opt/demo
 ```
 
 ```
-sudo chown -R $USER:$USER /home/weston/demo
+sudo chown -R $USER:$USER /opt/demo
 ```
 
 > [!TIP]
@@ -163,8 +163,8 @@ python3 app.py
 ```
 
 > [!NOTE]
-> Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this
-> directory with the command: ```cd /home/weston/demo```
+> Always make sure you are in the ```/opt/demo``` directory before running the demo. You can move to this
+> directory with the command: ```cd /opt/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 

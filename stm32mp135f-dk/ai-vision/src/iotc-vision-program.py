@@ -808,14 +808,14 @@ class OverlayWindow(Gtk.Window):
 
             # Outputs are not in same order for ssd_mobilenet v1 and v2, outputs are already filtered by score in
             # ssd_mobilenet_v2 which is not the case for v1
-            with open('/home/weston/demo/ack.txt', 'r') as ack_file:
+            with open('/opt/demo/ack.txt', 'r') as ack_file:
                 ack = ack_file.read()
                 if ack == last_message_sent:
                     message_received = True
                 else:
                     message_received = False
             if message_received:
-                open('/home/weston/demo/objects-detected.txt', 'w').close()
+                open('/opt/demo/objects-detected.txt', 'w').close()
                 objects_detected_string = str(time.time())
             number_of_objects = 0
             for i in range(np.array(self.app.nn_result_scores).size):
@@ -866,7 +866,7 @@ class OverlayWindow(Gtk.Window):
             if message_received and number_of_objects > 0:
                 objects_detected_string += "\n"
                 last_message_sent = objects_detected_string
-                with open('/home/weston/demo/objects-detected.txt', 'w') as objects_file:
+                with open('/opt/demo/objects-detected.txt', 'w') as objects_file:
                     objects_file.write(objects_detected_string)
                 message_received = False
         return True

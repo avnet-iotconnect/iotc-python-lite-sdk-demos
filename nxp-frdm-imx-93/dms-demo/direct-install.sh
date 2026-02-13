@@ -121,6 +121,6 @@ cp /usr/bin/eiq-examples-git/dms/utils.py .
 # ---- Completion ----
 echo ""
 echo "Installation complete! You can now run the /IOTCONNECT script:"
-echo "python3 /home/weston/demo/app.py"
+echo "python3 /opt/demo/app.py"
 board_ip=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++){if($i=="src"){print $(i+1); exit}}}')
 echo "Camera Live Stream url: https://$board_ip:8080/live"

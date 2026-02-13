@@ -90,7 +90,7 @@ To deliver your package to a device through a local file transfer, the recommend
 copy) command.
 
 First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main
-application directory of the device (```/home/weston/demo```).
+application directory of the device (```/opt/demo```).
 
 After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and
 verify that there is a ```package.tar.gz``` present.

@@ -137,7 +137,7 @@ wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-dem
 7. Then run this command to create and move into a directory for your demo files:
 
 ```
-mkdir -p /home/weston/demo && cd /home/weston/demo
+mkdir -p /opt/demo && cd /opt/demo
 ```
 
 > [!TIP]
@@ -161,8 +161,8 @@ python3 app.py
 ```
 
 > [!NOTE]
-> Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this
-> directory with the command: ```cd /home/weston/demo```
+> Always make sure you are in the ```/opt/demo``` directory before running the demo. You can move to this
+> directory with the command: ```cd /opt/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 

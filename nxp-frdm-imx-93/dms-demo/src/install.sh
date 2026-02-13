@@ -21,7 +21,7 @@ cd /usr/bin/eiq-examples-git
 
 python3 download_models.py
 
-cd /home/weston/demo
+cd /opt/demo
 
 # Create empty dms-data.json with read/write perms
 touch dms-data.json

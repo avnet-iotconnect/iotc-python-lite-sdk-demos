@@ -149,8 +149,8 @@ def get_object_data():
         index += 1
     return (objects_string, object_data)
 
-open('/home/weston/demo/objects-detected.txt', 'w').close()
-with open('/home/weston/demo/ack.txt', 'w') as ack_file:
+open('/opt/demo/objects-detected.txt', 'w').close()
+with open('/opt/demo/ack.txt', 'w') as ack_file:
     ack_file.write("init\n")
 
 

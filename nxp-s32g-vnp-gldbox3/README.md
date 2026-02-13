@@ -117,11 +117,11 @@ python3 -m pip install requests
 6. Run these commands to create and move into a directory for your demo files:
 
 ```
-mkdir /home/weston/demo
+mkdir /opt/demo
 ```
 
 ```
-cd /home/weston/demo
+cd /opt/demo
 ```
 
 > [!TIP]
@@ -149,8 +149,8 @@ python3 app.py
 ```
 
 > [!NOTE]
-> Always make sure you are in the ```/home/weston/demo``` directory before running the demo. You can move to this
-> directory with the command: ```cd /home/weston/demo```
+> Always make sure you are in the ```/opt/demo``` directory before running the demo. You can move to this
+> directory with the command: ```cd /opt/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 

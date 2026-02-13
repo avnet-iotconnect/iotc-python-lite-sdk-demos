@@ -31,7 +31,7 @@ Follow these steps to onboard your device into /IOTCONNECT via the online user i
 
 13. In the resulting "Device Certificate" field, select "Use my certificate." Leave this page as-is for now, you will finish it later.
 
-14. Swapping over to the terminal of your device, navigate to the directory `/home/weston/demo` (should have been created previously)
+14. Swapping over to the terminal of your device, navigate to the directory `/opt/demo` (should have been created previously)
     and download the Python Lite SDK QuickStart script using this command:
 
 ```
