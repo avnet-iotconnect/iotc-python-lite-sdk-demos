@@ -1,0 +1,16 @@
+{
+    "INTERFACES": [
+        {
+            "MODULE": "tinyml_accel_top",
+            "NAME": "axi4target",
+            "OPTIONS": {
+                "address base": "0x0",
+                "address span": "0x86040",
+                "address width": 20,
+                "data width": 64,
+                "needs soft dma": true
+            },
+            "TYPE": "AXI4T"
+        }
+    ]
+}

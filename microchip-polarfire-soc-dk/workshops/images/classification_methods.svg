@@ -1,0 +1,106 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <defs>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .track { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #0b3a5b; }
+      .label { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 14px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .box { stroke: #1f2937; stroke-width: 2; rx: 12; ry: 12; }
+      .arrow { stroke: #0f172a; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#0f172a" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="860" fill="#f8fafc"/>
+  <text x="44" y="58" class="title">Three Classification Methods Used Across the Workshops</text>
+  <text x="44" y="92" class="subtitle">Same control plane (/IOTCONNECT), different model structures and compute intensity.</text>
+
+  <!-- Column backgrounds -->
+  <rect x="30" y="120" width="430" height="700" fill="#eef6ff" stroke="#c7ddf7" stroke-width="2" rx="14"/>
+  <rect x="485" y="120" width="430" height="700" fill="#eefcf4" stroke="#bde7cf" stroke-width="2" rx="14"/>
+  <rect x="940" y="120" width="430" height="700" fill="#fff6ee" stroke="#f5d2b5" stroke-width="2" rx="14"/>
+
+  <!-- Track 1 -->
+  <text x="50" y="160" class="track">Track 1 - Template Correlation</text>
+  <rect class="box" x="60" y="190" width="150" height="64" fill="#dbeafe"/>
+  <text x="83" y="228" class="label">Input 256</text>
+  <rect class="box" x="240" y="190" width="180" height="64" fill="#bfdbfe"/>
+  <text x="263" y="228" class="label">Template Bank</text>
+
+  <rect class="box" x="60" y="290" width="150" height="64" fill="#dbeafe"/>
+  <text x="93" y="328" class="label">Dot Prod 0</text>
+  <rect class="box" x="240" y="290" width="180" height="64" fill="#dbeafe"/>
+  <text x="270" y="328" class="label">Dot Prod 1..N</text>
+
+  <rect class="box" x="150" y="390" width="180" height="64" fill="#93c5fd"/>
+  <text x="210" y="428" class="label">Argmax</text>
+
+  <line class="arrow" x1="210" y1="222" x2="240" y2="222"/>
+  <line class="arrow" x1="135" y1="254" x2="135" y2="290"/>
+  <line class="arrow" x1="330" y1="254" x2="330" y2="290"/>
+  <line class="arrow" x1="135" y1="354" x2="210" y2="390"/>
+  <line class="arrow" x1="330" y1="354" x2="270" y2="390"/>
+
+  <text x="60" y="500" class="small">- No offline training step required</text>
+  <text x="60" y="528" class="small">- Deterministic hand-built templates</text>
+  <text x="60" y="556" class="small">- Lowest algorithmic complexity</text>
+
+  <!-- Track 2 -->
+  <text x="505" y="160" class="track">Track 2 - Tiny Fixed-Point NN</text>
+  <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
+  <text x="540" y="228" class="label">Input 256</text>
+  <rect class="box" x="670" y="190" width="130" height="64" fill="#bbf7d0"/>
+  <text x="681" y="228" class="label">Features</text>
+  <rect class="box" x="825" y="190" width="130" height="64" fill="#86efac"/>
+  <text x="853" y="228" class="label">Hidden</text>
+
+  <rect class="box" x="590" y="300" width="140" height="64" fill="#bbf7d0"/>
+  <text x="611" y="338" class="label">Dense Out</text>
+  <rect class="box" x="760" y="300" width="140" height="64" fill="#86efac"/>
+  <text x="798" y="338" class="label">Argmax</text>
+
+  <line class="arrow" x1="645" y1="222" x2="670" y2="222"/>
+  <line class="arrow" x1="800" y1="222" x2="825" y2="222"/>
+  <line class="arrow" x1="890" y1="254" x2="820" y2="300"/>
+  <line class="arrow" x1="760" y1="254" x2="660" y2="300"/>
+  <line class="arrow" x1="730" y1="332" x2="760" y2="332"/>
+
+  <text x="515" y="500" class="small">- Real NN topology in fixed-point arithmetic</text>
+  <text x="515" y="528" class="small">- Compact model, moderate compute</text>
+  <text x="515" y="556" class="small">- Modest HW gain depending on overhead</text>
+
+  <!-- Track 3 -->
+  <text x="960" y="160" class="track">Track 3 - Complex Batched NN</text>
+  <rect class="box" x="970" y="190" width="180" height="64" fill="#ffedd5"/>
+  <text x="987" y="228" class="label">Batch Input N x 256</text>
+  <rect class="box" x="1175" y="190" width="170" height="64" fill="#fed7aa"/>
+  <text x="1201" y="228" class="label">Batch Control</text>
+
+  <rect class="box" x="970" y="300" width="180" height="64" fill="#fdba74"/>
+  <text x="995" y="338" class="label">Feature Extractor</text>
+  <rect class="box" x="1175" y="300" width="170" height="64" fill="#fb923c"/>
+  <text x="1210" y="338" class="label">NN Core</text>
+
+  <rect class="box" x="1030" y="410" width="250" height="64" fill="#f97316"/>
+  <text x="1060" y="448" class="label">Trained Head + Argmax</text>
+
+  <line class="arrow" x1="1150" y1="222" x2="1175" y2="222"/>
+  <line class="arrow" x1="1060" y1="254" x2="1060" y2="300"/>
+  <line class="arrow" x1="1260" y1="254" x2="1260" y2="300"/>
+  <line class="arrow" x1="1060" y1="364" x2="1130" y2="410"/>
+  <line class="arrow" x1="1260" y1="364" x2="1200" y2="410"/>
+
+  <text x="970" y="500" class="small">- Trained classifier-head weights (W3/B3)</text>
+  <text x="970" y="528" class="small">- Batch processed in one accelerator launch</text>
+  <text x="970" y="556" class="small">- Higher compute density and better HW amortization</text>
+
+  <rect x="44" y="602" width="1312" height="190" fill="#ffffff" stroke="#d1d5db" stroke-width="2" rx="10"/>
+  <text x="66" y="638" class="subtitle">Practical takeaway</text>
+  <text x="66" y="668" class="small">Track 1 is ideal for proving complete workflow quickly.</text>
+  <text x="66" y="696" class="small">Track 2 introduces NN structure with small hardware kernels.</text>
+  <text x="66" y="724" class="small">Track 3 adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
+  <text x="66" y="752" class="small">All three tracks remain command-compatible from the /IOTCONNECT application layer.</text>
+</svg>

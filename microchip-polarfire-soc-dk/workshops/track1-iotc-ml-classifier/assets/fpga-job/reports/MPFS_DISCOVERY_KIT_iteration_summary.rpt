@@ -1,0 +1,18 @@
+#------------------------------------------------------------------------------------------------------------------------------------------
+# RUN NUMBER: 1   DATE: 17:03:11 12-Feb-2026
+# INVOKED AS: C:/Microchip/Libero_SoC_2025.2/Libero_SoC/Designer/bin/libero.exe extended_run_lib.tcl -skip_open_project -root {C:\dev\MCHP\Libero25-2\polarfire-soc-discovery-kit-reference-design-2025.07\MPFS_DISCOVERY\designer\MPFS_DISCOVERY_KIT} -n 25 -starting_seed_index 1 -compare_criteria violations -analysis max -slack_criteria worst -stop_on_success
+#------------------------------------------------------------------------------------------------------------------------------------------
+# Seed Index  Seed      Maximum Delay        Worst Slack  Report Analyzed                                Saved Design
+# ==========  ========  ===============  ===============  =============================================  ===================================
+           1         0    N/A                        2.755  MPFS_DISCOVERY_KIT_timing_violations_max_r1_s1.rpt  MPFS_DISCOVERY_KIT_r1_s1
+  The best result MPFS_DISCOVERY_KIT_r1_s1 has been saved into the project.
+
+#------------------------------------------------------------------------------------------------------------------------------------------
+# RUN NUMBER: 2   DATE: 20:40:57 12-Feb-2026
+# INVOKED AS: C:/Microchip/Libero_SoC_2025.2/Libero_SoC/Designer/bin/libero.exe extended_run_lib.tcl -skip_open_project -root {C:\dev\MCHP\Libero25-2\polarfire-soc-discovery-kit-reference-design-2025.07\MPFS_DISCOVERY\designer\MPFS_DISCOVERY_KIT} -n 25 -starting_seed_index 2 -compare_criteria violations -analysis max -slack_criteria worst -stop_on_success
+#------------------------------------------------------------------------------------------------------------------------------------------
+# Seed Index  Seed      Maximum Delay        Worst Slack  Report Analyzed                                Saved Design
+# ==========  ========  ===============  ===============  =============================================  ===================================
+           2         1    N/A                        2.746  MPFS_DISCOVERY_KIT_timing_violations_max_r2_s2.rpt  MPFS_DISCOVERY_KIT_r2_s2
+  The best result MPFS_DISCOVERY_KIT_r2_s2 has been saved into the project.
+

@@ -1,0 +1,339 @@
+# /IOTCONNECT Tiny-NN Accelerator Workshop (Track 2)
+
+## Introduction
+
+This is a complete participant runbook for Track 2, including setup, onboarding, deployment, command execution, and result interpretation.
+
+## What This Track Demonstrates
+
+Track 2 is designed as the Tiny-NN bridge track by combining:
+
+- compact fixed-point NN-style inference
+- SW/HW parity validation for NN behavior
+- the same cloud control contract used in Track 1/3
+
+<img src="../images/neural_network.png" alt="Neural network concept" width="900" />
+
+<img src="../images/design-nn-top.jpg" alt="Track 2 integration snapshot" width="760" />
+
+<img src="../images/mchp-polarfire-track2-dasboard.jpg" alt="Track 2 dashboard end state" width="760" />
+
+## Waveform Gallery (Base Signals)
+
+<p>
+  <img src="../images/track2-waveforms/track2_class0.svg" alt="Track 2 class 0 waveform" width="300" />
+  <img src="../images/track2-waveforms/track2_class1.svg" alt="Track 2 class 1 waveform" width="300" />
+</p>
+<p>
+  <img src="../images/track2-waveforms/track2_class2.svg" alt="Track 2 class 2 waveform" width="300" />
+  <img src="../images/track2-waveforms/track2_class3.svg" alt="Track 2 class 3 waveform" width="300" />
+</p>
+<p>
+  <img src="../images/track2-waveforms/track2_class4.svg" alt="Track 2 class 4 waveform" width="300" />
+  <img src="../images/track2-waveforms/track2_class5.svg" alt="Track 2 class 5 waveform" width="300" />
+</p>
+
+Note: these images show base waveforms with noise omitted.
+
+### Class Map
+
+| Class | Base waveform |
+|---|---|
+| `0` | triangle |
+| `1` | triangle mix (64 + 32 periods) |
+| `2` | burst + triangle |
+| `3` | square |
+| `4` | chirp-like sweep |
+| `5` | impulse train |
+
+## Estimated Time
+
+- First-time setup: 45-75 minutes
+- Track execution: 20-30 minutes
+
+## Prerequisites
+
+### Hardware
+
+- PolarFire SoC Discovery Kit
+- USB-C cable
+- Ethernet connection
+- SanDisk microSD card
+
+### Host software
+
+- Serial terminal
+- Balena Etcher (if needed)
+- FlashPro Express:
+  - https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab
+
+### Cloud resources
+
+- `/IOTCONNECT` console: https://console.iotconnect.io
+- Account options:
+  - https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md
+  - https://subscription.iotconnect.io/subscribe?cloud=aws
+- Template docs:
+  - https://docs.iotconnect.io/iotconnect/user-manuals/devices/device/template-management/
+
+### Optional board baseline resources
+
+- Reference design releases: https://github.com/polarfire-soc/polarfire-soc-discovery-kit-reference-design/releases
+- Linux image releases: https://github.com/linux4microchip/meta-mchp/releases
+
+## Files You Will Use in This Folder
+
+- FPGA job: `assets/fpga-job/MPFS_DISCOVERY_KIT.job`
+- Package build script: `create-package.sh`
+- Package: `package.tar.gz`
+- Runtime app: `src/app.py`
+- Runtime ELFs:
+  - `src/runtimes/tinyml_nn.no_accel.elf`
+  - `src/runtimes/tinyml_nn.accel.elf`
+- Shared template/dashboard assets:
+  - `../templates-iotconnect/microchip-polarfire-tinyml-template.json`
+  - `../templates-iotconnect/mchp-track2-dashboard-template.json`
+
+## End-to-End Procedure
+
+### 1. Hardware and Serial Bring-Up
+
+1. Connect USB-C and Ethernet.
+2. Insert microSD card.
+3. Open serial terminal at `115200 8N1` on middle COM port.
+4. Login as `root`.
+
+### 2. Program FPGA
+
+1. Install FlashPro Express.
+2. Import and run:
+   - `assets/fpga-job/MPFS_DISCOVERY_KIT.job`
+3. Power-cycle board.
+
+### 3. Linux Image (if not preloaded)
+
+1. Download latest Discovery Kit image from `meta-mchp` releases.
+2. Extract `.wic` and flash SD card.
+3. Reboot board.
+
+### 4. Board Runtime Setup
+
+```bash
+sudo opkg update
+python3 -m pip install iotconnect-sdk-lite requests
+mkdir -p /home/weston/demo
+cd /home/weston/demo
+```
+
+### 5. Cloud Sign-In
+
+1. Create account if needed.
+2. Sign in to `/IOTCONNECT`.
+
+### 6. Import Template First
+
+1. In portal, go to `Device` -> `Templates`.
+2. Import:
+   - `microchip-polarfire-tinyml-template.json`
+3. Save and verify template name `Microchip Polarfire ML`.
+4. Optional: import dashboard JSON:
+   - `mchp-track2-dashboard-template.json`
+
+### 7. Create Device and Apply Certificate/Config
+
+1. `Device` -> `Devices` -> `Create Device`.
+2. Fill `Unique ID`, `Device Name`, `Entity`.
+3. Select template `Microchip Polarfire ML`.
+4. Select `Use my certificate`.
+5. Leave page open.
+
+On board:
+
+```bash
+cd /home/weston/demo
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/quickstart.sh
+bash ./quickstart.sh
+```
+
+6. Copy terminal certificate text and paste into portal.
+7. Click `Save and View`.
+8. Download connection/config JSON.
+9. Paste full JSON into terminal prompt.
+10. Wait for onboarding completion.
+
+### 8. Build and Transfer Package
+
+Build if needed:
+
+```bash
+bash ./create-package.sh
+```
+
+Transfer `package.tar.gz`.
+
+PowerShell `scp`:
+
+```powershell
+scp .\package.tar.gz root@<BOARD_IP>:/home/weston/demo/
+```
+
+HTTP fallback:
+
+Host:
+
+```powershell
+python -m http.server 8000
+```
+
+Board:
+
+```bash
+wget http://<HOST_IP>:8000/package.tar.gz -O /home/weston/demo/package.tar.gz
+```
+
+### 9. Install and Run App
+
+```bash
+cd /home/weston/demo
+tar -xzf package.tar.gz --overwrite
+bash ./install.sh
+python3 app.py
+```
+
+### 10. Command Cookbook
+
+Run from dashboard:
+
+```text
+status basic
+classify sw 2 11
+classify hw 2 11
+classify sw random
+classify hw random
+bench random
+bench both 2 11 1000
+```
+
+Then run optional control commands:
+
+```text
+status full
+load start 2 80
+bench both 2 11 1000
+load stop
+```
+
+Supported command families:
+
+- `classify <mode> <class|random> <seed|random> [batch]`
+- `bench <mode> <class|random> <seed|random> <batch>` or `bench random`
+- `status <basic|full|include_leds=true|include_leds=false>`
+- `led ...` / `leds ...`
+- `load ...`
+- `file-download <url>`
+
+#### Command Argument Reference
+
+`leds` is an alias of `led` and supports the same arguments.
+
+##### `classify <mode> <class|random> <seed|random> [batch]`
+
+| Argument | Required | Possible values | Description |
+|---|---|---|---|
+| `mode` | Yes | `sw`, `hw` | Select software or hardware inference path. |
+| `class` | Yes | `0..5`, `random` | Waveform class selector: `0`=triangle, `1`=triangle mix, `2`=triangle+burst, `3`=square, `4`=chirp-like triangle sweep, `5`=impulse train. `random` picks from the first three waves only (`0..2`). |
+| `seed` | Yes | Integer (recommended `0..4294967295`), `random` | Initial state of a 32-bit LCG used for deterministic noise generation. Seed changes noise pattern only, not noise strength. `1` is not lower noise than `1000`. `random` chooses seed in `1..1000`. |
+| `batch` | No | `1..10000` | Number of inferences. If omitted, default is `1`. Shortcut: `classify hw random 1000` means random class (`0..2`), random seed (`1..1000`), batch `1000`. |
+
+##### `bench <mode> <class|random> <seed|random> <batch>` or `bench random`
+
+| Argument | Required | Possible values | Description |
+|---|---|---|---|
+| `mode` | Yes | `both`, `sw`, `hw` | `both` runs SW and HW and reports comparative timing; `sw`/`hw` runs a single path. |
+| `class` | Yes | `0..5`, `random` | Same class mapping as `classify` (`0` triangle, `1` mix, `2` burst, `3` square, `4` chirp, `5` impulse train). `random` picks class from `0..2`. |
+| `seed` | Yes | Integer (recommended `0..4294967295`), `random` | Base LCG seed. For batched runs, the app increments seed each iteration (`seed+i`) so each sample differs but remains reproducible. `random` chooses seed in `1..1000`. |
+| `batch` | Yes | `1..10000` | Number of inference iterations per benchmark path. Shortcut: `bench random 1000` means mode `both`, random class (`0..2`), random seed (`1..1000`), batch `1000`. |
+
+##### `status <selector>`
+
+| Argument | Required | Possible values | Description |
+|---|---|---|---|
+| `selector` | Yes | `basic`, `full`, `include_leds=true`, `include_leds=false`, `1`, `0`, `true`, `false`, `on`, `off`, `yes`, `no` | Select basic status payload or include LED fields in telemetry. |
+
+##### `led ...` / `leds ...`
+
+| Syntax | Required arguments | Possible values | Description |
+|---|---|---|---|
+| `led list` | none | literal `list` | Returns visible LED count/state summary. |
+| `led get [target]` | optional `target` | `target` = LED index or LED name | Read one LED state. If omitted, returns summary. |
+| `led set <target> <value>` | `target`, `value` | `value` = `on`, `off`, `toggle`, or integer brightness | Set one LED state/brightness. |
+| `led <bitstring>` | `bitstring` | 8 chars of `0`/`1` (example `10101010`) | Set all 8 visible LEDs at once. |
+| `led pattern <pattern> [cycles] [interval_ms] [level]` | `pattern` | `pattern` = `blink`, `chase`, `alternate`; `cycles` integer; `interval_ms` integer ms; `level` integer brightness | Run LED animation pattern. |
+| `led stop` | none | literal `stop` | Stop active LED animation. |
+
+##### `load <action> [workers] [duty_pct]`
+
+| Argument | Required | Possible values | Description |
+|---|---|---|---|
+| `action` | Yes | `start`, `stop`, `status` | Start/stop CPU load generator, or report current load state. |
+| `workers` | No | Integer, clamped to `1..8` | Number of load worker threads used when `action=start`. |
+| `duty_pct` | No | Integer, clamped to `1..100` | Busy duty cycle percent per worker when `action=start`. |
+
+##### `file-download <url>`
+
+| Argument | Required | Possible values | Description |
+|---|---|---|---|
+| `url` | Yes | HTTP/HTTPS URL | Download package tarball, extract/install it, then restart app. |
+
+### 11. Telemetry Interpretation
+
+Expected events:
+
+- `device_status`
+- `ml_classify`
+- `ml_bench`
+
+Key fields:
+
+- `mode`: path indicator used consistently across classify and benchmark telemetry.
+- `pred`, `scores_csv`, `score0..score5`
+- classify telemetry: `sw_avg_time_s`/`sw_total_time_s` or `hw_avg_time_s`/`hw_total_time_s` (based on executed mode)
+- benchmark telemetry: `sw_avg_time_s`, `sw_total_time_s`, `hw_avg_time_s`, `hw_total_time_s`, `speedup_sw_over_hw`
+
+Warm-up note:
+
+- The first `classify hw ...` after app start can be slower due to one-time setup overhead.
+- For fair SW/HW comparison, ignore the first HW single-shot timing and use repeated runs or `bench`.
+
+Track 2 insight:
+
+- HW gains are typically modest unless workload size/batch is sufficient.
+- Use this track as NN integration bridge between baseline (Track 1) and performance-focused Track 3.
+
+## Completion Checklist
+
+- Device online and controllable from dashboard.
+- `classify sw` and `classify hw` both return valid predictions.
+- `bench both` returns benchmark payload.
+- NN telemetry fields are visible and interpretable.
+
+## Troubleshooting
+
+- ELF permission fix:
+
+```bash
+chmod +x /home/weston/demo/runtimes/*.elf
+```
+
+- Restart app:
+
+```bash
+pkill -f app.py || true
+cd /home/weston/demo
+python3 app.py
+```
+
+- No response to commands:
+  - verify template assignment
+  - verify correct device selected in dashboard
+  - verify app is running and connected

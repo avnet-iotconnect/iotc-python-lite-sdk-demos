@@ -1,0 +1,228 @@
+%feat.i = alloca [64 x i16], align 16, !MSB !4116, !LSB !4117, !ExtendFrom !411664 x i16] feat_i
+%h1.i = alloca [96 x i32], align 16, !MSB !4116, !LSB !4117, !ExtendFrom !411696 x i32] h1_i
+%h2.i = alloca [48 x i32], align 16, !MSB !4116, !LSB !4117, !ExtendFrom !411648 x i32] h2_i
+%icmp = icmp slt i32 %batch_n, 1, !dbg !4119, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp : i1 = batch_n < 1 (signed)
+%select = select i1 %icmp, i32 1, i32 %batch_n, !dbg !4121, !MSB !4122, !LSB !4117, !ExtendFrom !4122select : i32 = (icmp) ? 1 : batch_n
+%icmp1 = icmp ugt i32 %select, 1024, !dbg !4123, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp1 : i1 = select > 1024 (unsigned)
+%select2 = select i1 %icmp1, i32 1024, i32 %select, !dbg !4125, !MSB !4126, !LSB !4117, !ExtendFrom !4126select2 : i32 = (icmp1) ? 1024 : select
+%bit_concat3 = call i64 @hls_bit_concat_32_32(i32 0, i64 32, i32 %select2, i64 32), !dbg !4127, !MSB !4126, !LSB !4117, !ExtendFrom !4126bit_concat3 : i64 = {32'd0, select2}
+br label %BB_2, !dbg !4129, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_2
+ret void, !dbg !4131, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130return void
+%phi = phi i64 [ 0, %BB_0 ], [ %add188, %BB_21 ], !MSB !4132, !LSB !4117, !ExtendFrom !4132phi : i64 = (BB_0: 0, BB_21: add188)
+%bit_select5 = call i56 @hls_bit_select_56_64(i64 %phi, i64 55, i64 0), !MSB !4133, !LSB !4117, !ExtendFrom !4133bit_select5 : i56 = phi[55 : 0]
+%bit_select6 = call i11 @hls_bit_select_11_64(i64 %phi, i64 10, i64 0), !MSB !4126, !LSB !4117, !ExtendFrom !4126bit_select6 : i11 = phi[10 : 0]
+%bit_concat7 = call i64 @hls_bit_concat_56_8(i56 %bit_select5, i64 56, i8 0, i64 8), !dbg !4134, !MSB !4136, !LSB !4137, !ExtendFrom !4136bit_concat7 : i64 = {bit_select5, 8'd0}
+%bit_concat9 = call i64 @hls_bit_concat_56_8(i56 %bit_select5, i64 56, i8 1, i64 8), !MSB !4136, !LSB !4117, !ExtendFrom !4136bit_concat9 : i64 = {bit_select5, 8'd1}
+%bit_concat10 = call i64 @hls_bit_concat_56_8(i56 %bit_select5, i64 56, i8 2, i64 8), !MSB !4136, !LSB !4130, !ExtendFrom !4136bit_concat10 : i64 = {bit_select5, 8'd2}
+%bit_concat11 = call i64 @hls_bit_concat_56_8(i56 %bit_select5, i64 56, i8 3, i64 8), !MSB !4136, !LSB !4117, !ExtendFrom !4136bit_concat11 : i64 = {bit_select5, 8'd3}
+br label %BB_3, !dbg !4138, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_3
+%phi12 = phi i64 [ 0, %BB_2 ], [ %add64, %BB_8 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200phi12 : i64 = (BB_2: 0, BB_8: add64)
+%phi13 = phi i64 [ %bit_concat9, %BB_2 ], [ %add69, %BB_8 ], !MSB !4136, !LSB !4117, !ExtendFrom !4136phi13 : i64 = (BB_2: bit_concat9, BB_8: add69)
+%phi14 = phi i64 [ %bit_concat10, %BB_2 ], [ %add71, %BB_8 ], !MSB !4136, !LSB !4130, !ExtendFrom !4136phi14 : i64 = (BB_2: bit_concat10, BB_8: add71)
+%phi15 = phi i64 [ %bit_concat11, %BB_2 ], [ %add73, %BB_8 ], !MSB !4136, !LSB !4117, !ExtendFrom !4136phi15 : i64 = (BB_2: bit_concat11, BB_8: add73)
+%phi16 = phi i64 [ %bit_concat7, %BB_2 ], [ %add74, %BB_8 ], !MSB !4136, !LSB !4201, !ExtendFrom !4136phi16 : i64 = (BB_2: bit_concat7, BB_8: add74)
+%bit_select17 = call i2 @hls_bit_select_2_64(i64 %phi12, i64 1, i64 0), !MSB !4130, !LSB !4117, !ExtendFrom !4130bit_select17 : i2 = phi12[1 : 0]
+%addr = getelementptr i16, i16* %in, i64 %phi16, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr : i16* = &in[phi16]
+%load = load i16, i16* %addr, align 2, !dbg !4202, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load : i16 = addr[0]
+%bit_select19 = call i1 @hls_bit_select_1_16(i16 %load, i64 15, i64 15), !dbg !4202, !MSB !4117, !LSB !4117, !ExtendFrom !4117bit_select19 : i1 = load[15]
+%sext = sext i16 %load to i32, !dbg !4202, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext : i32 =  (i32) load : i16
+%addr20 = getelementptr i16, i16* %in, i64 %phi13, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr20 : i16* = &in[phi13]
+%load21 = load i16, i16* %addr20, align 2, !dbg !4209, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load21 : i16 = addr20[0]
+%bit_select22 = call i1 @hls_bit_select_1_16(i16 %load21, i64 15, i64 15), !dbg !4209, !MSB !4117, !LSB !4117, !ExtendFrom !4117bit_select22 : i1 = load21[15]
+%sext23 = sext i16 %load21 to i32, !dbg !4209, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext23 : i32 =  (i32) load21 : i16
+%addr24 = getelementptr i16, i16* %in, i64 %phi14, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr24 : i16* = &in[phi14]
+%load25 = load i16, i16* %addr24, align 2, !dbg !4210, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load25 : i16 = addr24[0]
+%bit_select27 = call i1 @hls_bit_select_1_16(i16 %load25, i64 15, i64 15), !dbg !4210, !MSB !4117, !LSB !4117, !ExtendFrom !4117bit_select27 : i1 = load25[15]
+%sext28 = sext i16 %load25 to i32, !dbg !4210, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext28 : i32 =  (i32) load25 : i16
+%addr29 = getelementptr i16, i16* %in, i64 %phi15, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr29 : i16* = &in[phi15]
+%load30 = load i16, i16* %addr29, align 2, !dbg !4211, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load30 : i16 = addr29[0]
+%bit_select31 = call i1 @hls_bit_select_1_16(i16 %load30, i64 15, i64 15), !dbg !4211, !MSB !4117, !LSB !4117, !ExtendFrom !4117bit_select31 : i1 = load30[15]
+%sext32 = sext i16 %load30 to i32, !dbg !4211, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext32 : i32 =  (i32) load30 : i16
+%add = add nsw i32 %sext23, %sext, !dbg !4212, !MSB !4208, !LSB !4117, !ExtendFrom !4213add : i32 = sext23 + sext
+%bit_concat33 = call i32 @hls_bit_concat_30_2(i30 0, i64 30, i2 %bit_select17, i64 2), !dbg !4214, !MSB !4130, !LSB !4117, !ExtendFrom !4130bit_concat33 : i32 = {30'd0, bit_select17}
+switch i32 %bit_concat33, label %BB_7 [
+    i32 0, label %BB_4
+    i32 1, label %BB_5
+    i32 2, label %BB_6
+  ], !dbg !4215, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4216switch (bit_concat33) { 0: BB_4, 1: BB_5, 2: BB_6,  default: BB_7 }
+%add34 = add nsw i32 %sext32, %sext28, !dbg !4217, !MSB !4208, !LSB !4117, !ExtendFrom !4213add34 : i32 = sext32 + sext28
+%add35 = add nsw i32 %add34, %add, !dbg !4218, !MSB !4208, !LSB !4201, !ExtendFrom !4219add35 : i32 = add34 + add
+%ashr = ashr i32 %add35, 2, !dbg !4220, !MSB !4208, !LSB !4117, !ExtendFrom !4207ashr : i32 = add35 >>> 2
+br label %BB_8, !dbg !4221, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_8
+%add36 = add nsw i32 %sext32, %sext28, !dbg !4223, !MSB !4208, !LSB !4117, !ExtendFrom !4213add36 : i32 = sext32 + sext28
+%sub = sub nsw i32 %add36, %add, !dbg !4224, !MSB !4208, !LSB !4130, !ExtendFrom !4219sub : i32 = add36 - add
+%ashr37 = ashr i32 %sub, 1, !dbg !4225, !MSB !4208, !LSB !4117, !ExtendFrom !4213ashr37 : i32 = sub >>> 1
+br label %BB_8, !dbg !4226, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_8
+%add38 = add nsw i32 %sext32, %sext28, !dbg !4227, !MSB !4208, !LSB !4117, !ExtendFrom !4213add38 : i32 = sext32 + sext28
+%sub39 = sub nsw i32 %add38, %add, !dbg !4228, !MSB !4208, !LSB !4117, !ExtendFrom !4219sub39 : i32 = add38 - add
+br label %BB_8, !dbg !4229, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_8
+%sub40 = sub nsw i32 0, %sext, !dbg !4230, !MSB !4208, !LSB !4117, !ExtendFrom !4213sub40 : i32 = -sext
+%select41 = select i1 %bit_select19, i32 %sub40, i32 %sext, !dbg !4230, !MSB !4208, !LSB !4117, !ExtendFrom !4213select41 : i32 = (bit_select19) ? sub40 : sext
+%sub42 = sub nsw i32 %select41, %sext23, !MSB !4208, !LSB !4117, !ExtendFrom !4219sub42 : i32 = select41 - sext23
+%sub43 = sub nsw i32 %sext23, %sext, !MSB !4208, !LSB !4117, !ExtendFrom !4213sub43 : i32 = sext23 - sext
+%select44 = select i1 %bit_select19, i32 %sub43, i32 %add, !MSB !4208, !LSB !4117, !ExtendFrom !4213select44 : i32 = (bit_select19) ? sub43 : add
+%select45 = select i1 %bit_select22, i32 %sub42, i32 %select44, !MSB !4208, !LSB !4117, !ExtendFrom !4219select45 : i32 = (bit_select22) ? sub42 : select44
+%sub46 = sub i32 %select45, %sext28, !MSB !4208, !LSB !4117, !ExtendFrom !4237sub46 : i32 = select45 - sext28
+%add47 = add i32 %select45, %sext28, !MSB !4208, !LSB !4117, !ExtendFrom !4237add47 : i32 = select45 + sext28
+%select48 = select i1 %bit_select27, i32 %sub46, i32 %add47, !MSB !4208, !LSB !4117, !ExtendFrom !4237select48 : i32 = (bit_select27) ? sub46 : add47
+%sub49 = sub i32 %select48, %sext32, !MSB !4208, !LSB !4117, !ExtendFrom !4238sub49 : i32 = select48 - sext32
+%add50 = add i32 %select48, %sext32, !MSB !4208, !LSB !4117, !ExtendFrom !4238add50 : i32 = select48 + sext32
+%select51 = select i1 %bit_select31, i32 %sub49, i32 %add50, !MSB !4208, !LSB !4117, !ExtendFrom !4238select51 : i32 = (bit_select31) ? sub49 : add50
+%bit_select52 = call i30 @hls_bit_select_30_32(i32 %select51, i64 31, i64 2), !MSB !4239, !LSB !4117, !ExtendFrom !4219bit_select52 : i30 = select51[31 : 2]
+%bit_concat55 = call i32 @hls_bit_concat_2_30(i2 0, i64 2, i30 %bit_select52, i64 30), !dbg !4240, !MSB !4239, !LSB !4117, !ExtendFrom !4239bit_concat55 : i32 = {2'd0, bit_select52}
+%add56 = add nsw i32 %bit_concat55, -192, !dbg !4241, !MSB !4208, !LSB !4117, !ExtendFrom !4122add56 : i32 = bit_concat55 + -192
+br label %BB_8, !dbg !4242, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4216goto: BB_8
+%phi57 = phi i32 [ %add56, %BB_7 ], [ %sub39, %BB_6 ], [ %ashr37, %BB_5 ], [ %ashr, %BB_4 ], !dbg !4243, !MSB !4208, !LSB !4117, !ExtendFrom !4122phi57 : i32 = (BB_7: add56, BB_6: sub39, BB_5: ashr37, BB_4: ashr)
+%icmp58 = icmp sgt i32 %phi57, -32768, !dbg !4244, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp58 : i1 = phi57 > -32768 (signed)
+%select59 = select i1 %icmp58, i32 %phi57, i32 -32768, !dbg !4244, !MSB !4208, !LSB !4117, !ExtendFrom !4122select59 : i32 = (icmp58) ? phi57 : -32768
+%icmp60 = icmp sgt i32 %select59, 32767, !dbg !4244, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp60 : i1 = select59 > 32767 (signed)
+%select61 = select i1 %icmp60, i32 32767, i32 %select59, !dbg !4244, !MSB !4208, !LSB !4117, !ExtendFrom !4122select61 : i32 = (icmp60) ? 32767 : select59
+%bit_select62 = call i16 @hls_bit_select_16_32(i32 %select61, i64 15, i64 0), !dbg !4244, !MSB !4207, !LSB !4117, !ExtendFrom !4207bit_select62 : i16 = select61[15 : 0]
+%addr63 = getelementptr [64 x i16], [64 x i16]* %feat.i, i64 0, i64 %phi12, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr63 : i16* = &feat_i[phi12]
+store i16 %bit_select62, i16* %addr63, align 2, !dbg !4251, !tbaa !4203, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr63 : i16* = bit_select62
+%add64 = add nuw nsw i64 %phi12, 1, !dbg !4252, !MSB !4200, !LSB !4117, !ExtendFrom !4200add64 : i64 = phi12 + 1
+%bit_select65 = call i62 @hls_bit_select_62_64(i64 %add64, i64 61, i64 0), !dbg !4252, !MSB !4200, !LSB !4117, !ExtendFrom !4200bit_select65 : i62 = add64[61 : 0]
+%icmp66 = icmp eq i64 %add64, 64, !dbg !4253, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp66 : i1 = add64 == 64
+%bit_concat67 = call i64 @hls_bit_concat_62_2(i62 %bit_select65, i64 62, i2 0, i64 2), !dbg !4254, !MSB !4137, !LSB !4201, !ExtendFrom !4137bit_concat67 : i64 = {bit_select65, 2'd0}
+%bit_concat68 = call i64 @hls_bit_concat_62_2(i62 %bit_select65, i64 62, i2 1, i64 2), !dbg !4255, !MSB !4137, !LSB !4117, !ExtendFrom !4137bit_concat68 : i64 = {bit_select65, 2'd1}
+%add69 = add nuw nsw i64 %bit_concat7, %bit_concat68, !MSB !4136, !LSB !4117, !ExtendFrom !4136add69 : i64 = bit_concat7 + bit_concat68
+%bit_concat70 = call i64 @hls_bit_concat_62_2(i62 %bit_select65, i64 62, i2 -2, i64 2), !dbg !4256, !MSB !4137, !LSB !4130, !ExtendFrom !4137bit_concat70 : i64 = {bit_select65, 2'd-2}
+%add71 = add nuw nsw i64 %bit_concat7, %bit_concat70, !MSB !4136, !LSB !4130, !ExtendFrom !4136add71 : i64 = bit_concat7 + bit_concat70
+%bit_concat72 = call i64 @hls_bit_concat_62_2(i62 %bit_select65, i64 62, i2 -1, i64 2), !dbg !4257, !MSB !4137, !LSB !4117, !ExtendFrom !4137bit_concat72 : i64 = {bit_select65, 2'd-1}
+%add73 = add nuw nsw i64 %bit_concat7, %bit_concat72, !MSB !4136, !LSB !4117, !ExtendFrom !4136add73 : i64 = bit_concat7 + bit_concat72
+%add74 = add nuw nsw i64 %bit_concat7, %bit_concat67, !MSB !4136, !LSB !4201, !ExtendFrom !4136add74 : i64 = bit_concat7 + bit_concat67
+br i1 %icmp66, label %BB_9, label %BB_3, !dbg !4138, !llvm.loop !4258, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4262, !legup.tripCount !4262, !legup.totalTime !4201branch: if (icmp66): BB_9 default: BB_3
+br label %BB_10, !dbg !4263, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_10
+%phi75 = phi i64 [ %add86, %BB_11 ], [ 0, %BB_9 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200phi75 : i64 = (BB_11: add86, BB_9: 0)
+%phi76 = phi i64 [ %bit_concat89, %BB_11 ], [ 0, %BB_9 ], !MSB !4264, !LSB !4200, !ExtendFrom !4264phi76 : i64 = (BB_11: bit_concat89, BB_9: 0)
+%addr77 = getelementptr [96 x i16], [96 x i16]* @_ZL2B1, i64 0, i64 %phi75, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr77 : i16* = &_ZL2B1[phi75]
+%load78 = load i16, i16* %addr77, align 2, !dbg !4265, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load78 : i16 = addr77[0]
+%sext79 = sext i16 %load78 to i32, !dbg !4265, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext79 : i32 =  (i32) load78 : i16
+%bit_select80 = call i24 @hls_bit_select_24_32(i32 %sext79, i64 23, i64 0), !dbg !4265, !MSB !4266, !LSB !4117, !ExtendFrom !4207bit_select80 : i24 = sext79[23 : 0]
+%bit_concat81 = call i32 @hls_bit_concat_24_8(i24 %bit_select80, i64 24, i8 0, i64 8), !dbg !4267, !MSB !4208, !LSB !4137, !ExtendFrom !4266bit_concat81 : i32 = {bit_select80, 8'd0}
+br label %BB_13, !dbg !4268, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4201goto: BB_13
+%ashr82 = ashr i32 %add100, 3, !dbg !4269, !MSB !4208, !LSB !4117, !ExtendFrom !4270ashr82 : i32 = add100 >>> 3
+%icmp83 = icmp sgt i32 %ashr82, 0, !dbg !4271, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp83 : i1 = ashr82 > 0 (signed)
+%select84 = select i1 %icmp83, i32 %ashr82, i32 0, !dbg !4272, !MSB !4273, !LSB !4117, !ExtendFrom !4273select84 : i32 = (icmp83) ? ashr82 : 0
+%addr85 = getelementptr [96 x i32], [96 x i32]* %h1.i, i64 0, i64 %phi75, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr85 : i32* = &h1_i[phi75]
+store i32 %select84, i32* %addr85, align 4, !dbg !4274, !tbaa !4275, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr85 : i32* = select84
+%add86 = add nuw nsw i64 %phi75, 1, !dbg !4277, !MSB !4200, !LSB !4117, !ExtendFrom !4200add86 : i64 = phi75 + 1
+%bit_select87 = call i58 @hls_bit_select_58_64(i64 %add86, i64 57, i64 0), !dbg !4277, !MSB !4200, !LSB !4117, !ExtendFrom !4200bit_select87 : i58 = add86[57 : 0]
+%icmp88 = icmp eq i64 %add86, 96, !dbg !4278, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp88 : i1 = add86 == 96
+%bit_concat89 = call i64 @hls_bit_concat_58_6(i58 %bit_select87, i64 58, i6 0, i64 6), !MSB !4264, !LSB !4200, !ExtendFrom !4264bit_concat89 : i64 = {bit_select87, 6'd0}
+br i1 %icmp88, label %BB_12, label %BB_10, !dbg !4263, !llvm.loop !4279, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4282, !legup.tripCount !4282, !legup.totalTime !4201branch: if (icmp88): BB_12 default: BB_10
+br label %BB_14, !dbg !4283, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_14
+%phi90 = phi i64 [ 0, %BB_10 ], [ %add101, %BB_13 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.pipeline.avail_time !4117, !legup.induction_variable !4130, !legup.induction_start !4117, !legup.induction_step !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117phi90 : i64 = (BB_10: 0, BB_13: add101)
+%phi91 = phi i32 [ %bit_concat81, %BB_10 ], [ %add100, %BB_13 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130phi91 : i32 = (BB_10: bit_concat81, BB_13: add100)
+%addr92 = getelementptr [64 x i16], [64 x i16]* %feat.i, i64 0, i64 %phi90, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr92 : i16* = &feat_i[phi90]
+%load93 = load i16, i16* %addr92, align 2, !dbg !4284, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load93 : i16 = addr92[0]
+%add94 = add nuw nsw i64 %phi76, %phi90, !MSB !4287, !LSB !4117, !ExtendFrom !4287, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add94 : i64 = phi76 + phi90
+%addr95 = getelementptr [6144 x i8], [6144 x i8]* @_ZL2W1, i64 0, i64 %add94, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr95 : i8* = &_ZL2W1[add94]
+%load96 = load i8, i8* %addr95, align 1, !dbg !4288, !tbaa !4289, !MSB !4290, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load96 : i8 = addr95[0]
+%sext97 = sext i8 %load96 to i24, !dbg !4291, !MSB !4266, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext97 : i24 =  (i24) load96 : i8
+%sext98 = sext i16 %load93 to i24, !dbg !4291, !MSB !4266, !LSB !4117, !ExtendFrom !4207, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext98 : i24 =  (i24) load93 : i16
+%mul = mul nsw i24 %sext97, %sext98, !dbg !4291, !MSB !4266, !LSB !4117, !ExtendFrom !4266, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130mul : i24 = sext97 * sext98
+%sext99 = sext i24 %mul to i32, !dbg !4291, !MSB !4208, !LSB !4117, !ExtendFrom !4266, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201sext99 : i32 =  (i32) mul : i24
+%add100 = add nsw i32 %phi91, %sext99, !dbg !4292, !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201add100 : i32 = phi91 + sext99
+%add101 = add nuw nsw i64 %phi90, 1, !dbg !4293, !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add101 : i64 = phi90 + 1
+%icmp102 = icmp eq i64 %add101, 64, !dbg !4294, !MSB !4117, !LSB !4117, !ExtendFrom !4117, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117icmp102 : i1 = add101 == 64
+br i1 %icmp102, label %BB_11, label %BB_13, !dbg !4268, !llvm.loop !4295, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.maxTripCount !4262, !legup.tripCount !4262, !legup.II !4130, !legup.totalTime !4216, !legup.maxStage !4201, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117, !legup.loop_pipelined !4130, !legup.label !4300branch: if (icmp102): BB_11 default: BB_13
+%phi103 = phi i64 [ %add114, %BB_15 ], [ 0, %BB_12 ], !MSB !4301, !LSB !4117, !ExtendFrom !4301phi103 : i64 = (BB_15: add114, BB_12: 0)
+%phi104 = phi i64 [ %bit_concat121, %BB_15 ], [ 0, %BB_12 ], !MSB !4264, !LSB !4301, !ExtendFrom !4264phi104 : i64 = (BB_15: bit_concat121, BB_12: 0)
+%addr105 = getelementptr [48 x i16], [48 x i16]* @_ZL2B2, i64 0, i64 %phi103, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr105 : i16* = &_ZL2B2[phi103]
+%load106 = load i16, i16* %addr105, align 2, !dbg !4302, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load106 : i16 = addr105[0]
+%sext107 = sext i16 %load106 to i32, !dbg !4302, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext107 : i32 =  (i32) load106 : i16
+%bit_select108 = call i24 @hls_bit_select_24_32(i32 %sext107, i64 23, i64 0), !dbg !4302, !MSB !4266, !LSB !4117, !ExtendFrom !4207bit_select108 : i24 = sext107[23 : 0]
+%bit_concat109 = call i32 @hls_bit_concat_24_8(i24 %bit_select108, i64 24, i8 0, i64 8), !dbg !4303, !MSB !4208, !LSB !4137, !ExtendFrom !4266bit_concat109 : i32 = {bit_select108, 8'd0}
+br label %BB_17, !dbg !4304, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4201goto: BB_17
+%ashr110 = ashr i32 %add147, 1, !dbg !4305, !MSB !4208, !LSB !4117, !ExtendFrom !4122ashr110 : i32 = add147 >>> 1
+%icmp111 = icmp sgt i32 %ashr110, 0, !dbg !4306, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp111 : i1 = ashr110 > 0 (signed)
+%select112 = select i1 %icmp111, i32 %ashr110, i32 0, !dbg !4307, !MSB !4239, !LSB !4117, !ExtendFrom !4239select112 : i32 = (icmp111) ? ashr110 : 0
+%addr113 = getelementptr [48 x i32], [48 x i32]* %h2.i, i64 0, i64 %phi103, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr113 : i32* = &h2_i[phi103]
+store i32 %select112, i32* %addr113, align 4, !dbg !4308, !tbaa !4275, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr113 : i32* = select112
+%add114 = add nuw nsw i64 %phi103, 1, !dbg !4309, !MSB !4301, !LSB !4117, !ExtendFrom !4301add114 : i64 = phi103 + 1
+%bit_select115 = call i6 @hls_bit_select_6_64(i64 %add114, i64 5, i64 0), !dbg !4309, !MSB !4301, !LSB !4117, !ExtendFrom !4301bit_select115 : i6 = add114[5 : 0]
+%icmp116 = icmp eq i64 %add114, 48, !dbg !4310, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp116 : i1 = add114 == 48
+%bit_concat117 = call i66 @hls_bit_concat_59_6_1(i59 0, i64 59, i6 %bit_select115, i64 6, i1 false, i64 1), !MSB !4200, !LSB !4130, !ExtendFrom !4200bit_concat117 : i66 = {59'd0, bit_select115, 1'd0}
+%bit_concat118 = call i66 @hls_bit_concat_60_6(i60 0, i64 60, i6 %bit_select115, i64 6), !MSB !4301, !LSB !4117, !ExtendFrom !4301bit_concat118 : i66 = {60'd0, bit_select115}
+%add119 = add i66 %bit_concat117, %bit_concat118, !MSB !4290, !LSB !4117, !ExtendFrom !4290add119 : i66 = bit_concat117 + bit_concat118
+%bit_select120 = call i59 @hls_bit_select_59_66(i66 %add119, i64 58, i64 0), !MSB !4290, !LSB !4117, !ExtendFrom !4290bit_select120 : i59 = add119[58 : 0]
+%bit_concat121 = call i64 @hls_bit_concat_59_5(i59 %bit_select120, i64 59, i5 0, i64 5), !MSB !4264, !LSB !4301, !ExtendFrom !4264bit_concat121 : i64 = {bit_select120, 5'd0}
+br i1 %icmp116, label %BB_16, label %BB_14, !dbg !4283, !llvm.loop !4311, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4314, !legup.tripCount !4314, !legup.totalTime !4201branch: if (icmp116): BB_16 default: BB_14
+%bit_concat122 = call i66 @hls_bit_concat_54_11_1(i54 0, i64 54, i11 %bit_select6, i64 11, i1 false, i64 1), !dbg !4315, !MSB !4316, !LSB !4130, !ExtendFrom !4316bit_concat122 : i66 = {54'd0, bit_select6, 1'd0}
+%bit_concat123 = call i66 @hls_bit_concat_55_11(i55 0, i64 55, i11 %bit_select6, i64 11), !dbg !4315, !MSB !4126, !LSB !4117, !ExtendFrom !4126bit_concat123 : i66 = {55'd0, bit_select6}
+%add124 = add i66 %bit_concat122, %bit_concat123, !dbg !4315, !MSB !4264, !LSB !4117, !ExtendFrom !4264add124 : i66 = bit_concat122 + bit_concat123
+%bit_select125 = call i63 @hls_bit_select_63_66(i66 %add124, i64 62, i64 0), !dbg !4315, !MSB !4264, !LSB !4117, !ExtendFrom !4264bit_select125 : i63 = add124[62 : 0]
+%bit_concat126 = call i64 @hls_bit_concat_63_1(i63 %bit_select125, i64 63, i1 false, i64 1), !dbg !4315, !MSB !4287, !LSB !4130, !ExtendFrom !4287bit_concat126 : i64 = {bit_select125, 1'd0}
+br label %BB_18, !dbg !4317, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130goto: BB_18
+%phi127 = phi i64 [ 0, %BB_14 ], [ %add148, %BB_17 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.pipeline.avail_time !4117, !legup.induction_variable !4130, !legup.induction_start !4117, !legup.induction_step !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117phi127 : i64 = (BB_14: 0, BB_17: add148)
+%phi128 = phi i32 [ %bit_concat109, %BB_14 ], [ %add147, %BB_17 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130phi128 : i32 = (BB_14: bit_concat109, BB_17: add147)
+%addr129 = getelementptr [96 x i32], [96 x i32]* %h1.i, i64 0, i64 %phi127, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr129 : i32* = &h1_i[phi127]
+%load130 = load i32, i32* %addr129, align 4, !dbg !4318, !tbaa !4275, !MSB !4208, !LSB !4200, !ExtendFrom !4208, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load130 : i32 = addr129[0]
+%ashr131 = ashr i32 %load130, 6, !dbg !4319, !MSB !4208, !LSB !4117, !ExtendFrom !4320, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130ashr131 : i32 = load130 >>> 6
+%bit_select132 = call i9 @hls_bit_select_9_32(i32 %ashr131, i64 25, i64 17), !dbg !4319, !MSB !4137, !LSB !4117, !ExtendFrom !4137, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_select132 : i9 = ashr131[25 : 17]
+%bit_select133 = call i17 @hls_bit_select_17_32(i32 %ashr131, i64 16, i64 0), !dbg !4319, !MSB !4213, !LSB !4117, !ExtendFrom !4213, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_select133 : i17 = ashr131[16 : 0]
+%add134 = add nuw nsw i64 %phi104, %phi127, !MSB !4287, !LSB !4117, !ExtendFrom !4287, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add134 : i64 = phi104 + phi127
+%addr135 = getelementptr [4608 x i8], [4608 x i8]* @_ZL2W2, i64 0, i64 %add134, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr135 : i8* = &_ZL2W2[add134]
+%load136 = load i8, i8* %addr135, align 1, !dbg !4321, !tbaa !4289, !MSB !4290, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load136 : i8 = addr135[0]
+%bit_concat137 = call i26 @hls_bit_concat_9_17(i9 0, i64 9, i17 %bit_select133, i64 17), !dbg !4322, !MSB !4213, !LSB !4117, !ExtendFrom !4213, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_concat137 : i26 = {9'd0, bit_select133}
+%sext138 = sext i8 %load136 to i26, !dbg !4322, !MSB !4320, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext138 : i26 =  (i26) load136 : i8
+%mul139 = mul nsw i26 %bit_concat137, %sext138, !dbg !4322, !MSB !4320, !LSB !4117, !ExtendFrom !4323, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130mul139 : i26 = bit_concat137 * sext138
+%sext140 = sext i9 %bit_select132 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4137, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext140 : i32 =  (i32) bit_select132 : i9
+%sext141 = sext i8 %load136 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext141 : i32 =  (i32) load136 : i8
+%mul142 = mul nsw i32 %sext140, %sext141, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4213, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130mul142 : i32 = sext140 * sext141
+%bit_select143 = call i15 @hls_bit_select_15_32(i32 %mul142, i64 14, i64 0), !dbg !4322, !MSB !4324, !LSB !4117, !ExtendFrom !4324, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201bit_select143 : i15 = mul142[14 : 0]
+%sext144 = sext i26 %mul139 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4323, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201sext144 : i32 =  (i32) mul139 : i26
+%bit_concat145 = call i32 @hls_bit_concat_15_17(i15 %bit_select143, i64 15, i17 0, i64 17), !dbg !4322, !MSB !4208, !LSB !4219, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201bit_concat145 : i32 = {bit_select143, 17'd0}
+%add146 = add i32 %bit_concat145, %sext144, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201add146 : i32 = bit_concat145 + sext144
+%add147 = add nsw i32 %add146, %phi128, !dbg !4325, !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201add147 : i32 = add146 + phi128
+%add148 = add nuw nsw i64 %phi127, 1, !dbg !4326, !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add148 : i64 = phi127 + 1
+%icmp149 = icmp eq i64 %add148, 96, !dbg !4327, !MSB !4117, !LSB !4117, !ExtendFrom !4117, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117icmp149 : i1 = add148 == 96
+br i1 %icmp149, label %BB_15, label %BB_17, !dbg !4304, !llvm.loop !4328, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.maxTripCount !4282, !legup.tripCount !4282, !legup.II !4130, !legup.totalTime !4216, !legup.maxStage !4201, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117, !legup.loop_pipelined !4130, !legup.label !4331branch: if (icmp149): BB_15 default: BB_17
+%phi150 = phi i64 [ %add159, %BB_19 ], [ 0, %BB_16 ], !MSB !4201, !LSB !4117, !ExtendFrom !4201phi150 : i64 = (BB_19: add159, BB_16: 0)
+%phi151 = phi i64 [ %bit_concat166, %BB_19 ], [ 0, %BB_16 ], !MSB !4137, !LSB !4332, !ExtendFrom !4137phi151 : i64 = (BB_19: bit_concat166, BB_16: 0)
+%addr152 = getelementptr [6 x i16], [6 x i16]* @_ZL2B3, i64 0, i64 %phi150, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr152 : i16* = &_ZL2B3[phi150]
+%load153 = load i16, i16* %addr152, align 2, !dbg !4333, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207load153 : i16 = addr152[0]
+%sext154 = sext i16 %load153 to i32, !dbg !4333, !MSB !4208, !LSB !4117, !ExtendFrom !4207sext154 : i32 =  (i32) load153 : i16
+%bit_select155 = call i24 @hls_bit_select_24_32(i32 %sext154, i64 23, i64 0), !dbg !4333, !MSB !4266, !LSB !4117, !ExtendFrom !4207bit_select155 : i24 = sext154[23 : 0]
+%bit_concat156 = call i32 @hls_bit_concat_24_8(i24 %bit_select155, i64 24, i8 0, i64 8), !dbg !4334, !MSB !4208, !LSB !4137, !ExtendFrom !4266bit_concat156 : i32 = {bit_select155, 8'd0}
+br label %BB_20, !dbg !4335, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4201goto: BB_20
+%add157 = add nuw nsw i64 %bit_concat126, %phi150, !MSB !4324, !LSB !4117, !ExtendFrom !4324add157 : i64 = bit_concat126 + phi150
+%addr158 = getelementptr i32, i32* %out, i64 %add157, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr158 : i32* = &out[add157]
+store i32 %add185, i32* %addr158, align 4, !dbg !4336, !tbaa !4275, !MSB !4116, !LSB !4117, !ExtendFrom !4116addr158 : i32* = add185
+%add159 = add nuw nsw i64 %phi150, 1, !dbg !4337, !MSB !4201, !LSB !4117, !ExtendFrom !4201add159 : i64 = phi150 + 1
+%bit_select160 = call i3 @hls_bit_select_3_64(i64 %add159, i64 2, i64 0), !dbg !4337, !MSB !4201, !LSB !4117, !ExtendFrom !4201bit_select160 : i3 = add159[2 : 0]
+%icmp161 = icmp eq i64 %add159, 6, !dbg !4338, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp161 : i1 = add159 == 6
+%bit_concat162 = call i66 @hls_bit_concat_62_3_1(i62 0, i64 62, i3 %bit_select160, i64 3, i1 false, i64 1), !MSB !4216, !LSB !4130, !ExtendFrom !4216bit_concat162 : i66 = {62'd0, bit_select160, 1'd0}
+%bit_concat163 = call i66 @hls_bit_concat_63_3(i63 0, i64 63, i3 %bit_select160, i64 3), !MSB !4201, !LSB !4117, !ExtendFrom !4201bit_concat163 : i66 = {63'd0, bit_select160}
+%add164 = add i66 %bit_concat162, %bit_concat163, !MSB !4332, !LSB !4117, !ExtendFrom !4332add164 : i66 = bit_concat162 + bit_concat163
+%bit_select165 = call i60 @hls_bit_select_60_66(i66 %add164, i64 59, i64 0), !MSB !4332, !LSB !4117, !ExtendFrom !4332bit_select165 : i60 = add164[59 : 0]
+%bit_concat166 = call i64 @hls_bit_concat_60_4(i60 %bit_select165, i64 60, i4 0, i64 4), !MSB !4137, !LSB !4332, !ExtendFrom !4137bit_concat166 : i64 = {bit_select165, 4'd0}
+br i1 %icmp161, label %BB_21, label %BB_18, !dbg !4317, !llvm.loop !4339, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4200, !legup.tripCount !4200, !legup.totalTime !4201branch: if (icmp161): BB_21 default: BB_18
+%phi167 = phi i64 [ 0, %BB_18 ], [ %add186, %BB_20 ], !MSB !4301, !LSB !4117, !ExtendFrom !4301, !legup.pipeline.avail_time !4117, !legup.induction_variable !4130, !legup.induction_start !4117, !legup.induction_step !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117phi167 : i64 = (BB_18: 0, BB_20: add186)
+%phi168 = phi i32 [ %bit_concat156, %BB_18 ], [ %add185, %BB_20 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130phi168 : i32 = (BB_18: bit_concat156, BB_20: add185)
+%addr169 = getelementptr [48 x i32], [48 x i32]* %h2.i, i64 0, i64 %phi167, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr169 : i32* = &h2_i[phi167]
+%load170 = load i32, i32* %addr169, align 4, !dbg !4342, !tbaa !4275, !MSB !4208, !LSB !4290, !ExtendFrom !4208, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load170 : i32 = addr169[0]
+%ashr171 = ashr i32 %load170, 7, !dbg !4343, !MSB !4208, !LSB !4117, !ExtendFrom !4323, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130ashr171 : i32 = load170 >>> 7
+%bit_select172 = call i8 @hls_bit_select_8_32(i32 %ashr171, i64 24, i64 17), !dbg !4343, !MSB !4290, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_select172 : i8 = ashr171[24 : 17]
+%bit_select173 = call i17 @hls_bit_select_17_32(i32 %ashr171, i64 16, i64 0), !dbg !4343, !MSB !4213, !LSB !4117, !ExtendFrom !4213, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_select173 : i17 = ashr171[16 : 0]
+%add174 = add nuw nsw i64 %phi151, %phi167, !MSB !4344, !LSB !4117, !ExtendFrom !4344, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add174 : i64 = phi151 + phi167
+%addr175 = getelementptr [288 x i8], [288 x i8]* @_ZL2W3, i64 0, i64 %add174, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117addr175 : i8* = &_ZL2W3[add174]
+%load176 = load i8, i8* %addr175, align 1, !dbg !4345, !tbaa !4289, !MSB !4290, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117load176 : i8 = addr175[0]
+%bit_concat177 = call i26 @hls_bit_concat_9_17(i9 0, i64 9, i17 %bit_select173, i64 17), !dbg !4346, !MSB !4213, !LSB !4117, !ExtendFrom !4213, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130bit_concat177 : i26 = {9'd0, bit_select173}
+%sext178 = sext i8 %load176 to i26, !dbg !4346, !MSB !4320, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext178 : i26 =  (i26) load176 : i8
+%mul179 = mul nsw i26 %bit_concat177, %sext178, !dbg !4346, !MSB !4320, !LSB !4117, !ExtendFrom !4323, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130mul179 : i26 = bit_concat177 * sext178
+%sext180 = sext i8 %bit_select172 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext180 : i32 =  (i32) bit_select172 : i8
+%sext181 = sext i8 %load176 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4290, !legup.pipeline.avail_time !4130, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130sext181 : i32 =  (i32) load176 : i8
+%mul182 = mul nsw i32 %sext180, %sext181, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4207, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4130, !legup.pipeline.stage !4130mul182 : i32 = sext180 * sext181
+%bit_select = call i15 @hls_bit_select_15_32(i32 %mul182, i64 14, i64 0), !dbg !4346, !MSB !4324, !LSB !4117, !ExtendFrom !4324, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201bit_select : i15 = mul182[14 : 0]
+%sext183 = sext i26 %mul179 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4323, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201sext183 : i32 =  (i32) mul179 : i26
+%bit_concat = call i32 @hls_bit_concat_15_17(i15 %bit_select, i64 15, i17 0, i64 17), !dbg !4346, !MSB !4208, !LSB !4219, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201bit_concat : i32 = {bit_select, 17'd0}
+%add184 = add i32 %bit_concat, %sext183, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201add184 : i32 = bit_concat + sext183
+%add185 = add nsw i32 %add184, %phi168, !dbg !4347, !MSB !4208, !LSB !4117, !ExtendFrom !4208, !legup.pipeline.avail_time !4201, !legup.pipeline.start_time !4201, !legup.pipeline.stage !4201add185 : i32 = add184 + phi168
+%add186 = add nuw nsw i64 %phi167, 1, !dbg !4348, !MSB !4301, !LSB !4117, !ExtendFrom !4301, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117add186 : i64 = phi167 + 1
+%icmp187 = icmp eq i64 %add186, 48, !dbg !4349, !MSB !4117, !LSB !4117, !ExtendFrom !4117, !legup.pipeline.avail_time !4117, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117icmp187 : i1 = add186 == 48
+br i1 %icmp187, label %BB_19, label %BB_20, !dbg !4335, !llvm.loop !4350, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.pipeline.avail_time !4117, !legup.maxTripCount !4314, !legup.tripCount !4314, !legup.II !4130, !legup.totalTime !4216, !legup.maxStage !4201, !legup.pipeline.start_time !4117, !legup.pipeline.stage !4117, !legup.loop_pipelined !4130, !legup.label !4353branch: if (icmp187): BB_19 default: BB_20
+%add188 = add nuw nsw i64 %phi, 1, !dbg !4354, !MSB !4132, !LSB !4117, !ExtendFrom !4132add188 : i64 = phi + 1
+%icmp189 = icmp eq i64 %add188, %bit_concat3, !dbg !4127, !MSB !4117, !LSB !4117, !ExtendFrom !4117icmp189 : i1 = add188 == bit_concat3
+br i1 %icmp189, label %BB_1, label %BB_2, !dbg !4129, !llvm.loop !4355, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.totalTime !4130branch: if (icmp189): BB_1 default: BB_2

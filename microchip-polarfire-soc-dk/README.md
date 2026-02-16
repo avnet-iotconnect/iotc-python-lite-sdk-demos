@@ -10,13 +10,6 @@
 8. [Using the Demo](#8-using-the-demo)
 9. [Resources](#9-resources)
 
-## Additional Workshop
-
-For the cloud-driven Tiny-ML workshop (FlashPro-only student flow), use:
-
-- `iotconnect-ml-classifier-workshop/WORKSHOP.md`
-- `iotconnect-ml-classifier-workshop/README.md`
-
 # 1. Introduction
 
 This guide provides step-by-step instructions to set up the **Microchip PolarFire SoC Discovery Kit hardware** and integrate
@@ -183,6 +176,44 @@ python3 app.py
 > directory with the command: ```cd /home/weston/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+
+## Additional Workshop
+
+The workshop set contains three progressive project tracks that reuse the same board + `/IOTCONNECT` setup:
+
+- Track 1: baseline ML classifier flow
+- Track 2: Tiny-NN accelerator flow
+- Track 3: complex accelerator flow (best end-to-end HW acceleration visibility)
+
+All three tracks use the same deployment pattern (program FPGA, install runtime, run cloud commands), so teams can move from a simple baseline to more advanced accelerator behavior without changing the workshop operating model.
+
+
+<img src="./workshops/images/classification_methods.svg" alt="Workshop track comparison diagram" width="900" />
+
+Expected end state in `/IOTCONNECT` (Track 3 dashboard example):
+
+<img src="./workshops/images/mchp-polarfire-track3-dasboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
+
+For all workshop tracks, start with:
+
+- `workshops/README.md`
+
+Recommended workshop setup order:
+
+1. Create `/IOTCONNECT` account (this README section `#5`).
+2. Install FlashPro Express (this README sections `#2` and `#4`).
+3. Import workshop template first from `workshops/templates-iotconnect/`.
+4. Onboard device via `../common/general-guides/UI-ONBOARD.md` using template `Microchip Polarfire ML`.
+5. Run Track 1, 2, or 3 quickstart.
+
+Nomenclature used in workshops:
+
+- `Quickstart`: use prebuilt FPGA/ELF artifacts and execute the labs quickly.
+- `Developer`: rebuild/modify artifacts using SmartHLS + Libero.
+
+Shared workshop resources:
+
+- `workshops/templates-iotconnect/README.md`
 
 # 9. Resources
 

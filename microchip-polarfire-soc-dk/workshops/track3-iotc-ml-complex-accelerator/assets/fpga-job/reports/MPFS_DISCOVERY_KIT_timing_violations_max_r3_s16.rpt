@@ -1,0 +1,919 @@
+Timing Violation Report Max Delay Analysis
+
+SmartTime Version 2025.2
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Sat Feb 14 12:00:11 2026
+
+
+Design: MPFS_DISCOVERY_KIT
+Family: PolarFireSoC
+Die: MPFS095T
+Package: FCSG325
+Temperature Range: 0 - 100 C
+Voltage Range: 0.97 - 1.03 V
+Speed Grade: -1
+Design State: Post-Layout
+Data source: Production
+Multi Corner Report Operating Conditions: slow_lv_lt,fast_hv_lt,slow_lv_ht
+
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.511
+  Slack (ns):              1.086
+  Arrival (ns):           12.744
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.517
+  Slack (ns):              1.089
+  Arrival (ns):           12.741
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.507
+  Slack (ns):              1.090
+  Arrival (ns):           12.740
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.513
+  Slack (ns):              1.093
+  Arrival (ns):           12.737
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.496
+  Slack (ns):              1.103
+  Arrival (ns):           12.727
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 6
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.492
+  Slack (ns):              1.107
+  Arrival (ns):           12.723
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 7
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.482
+  Slack (ns):              1.115
+  Arrival (ns):           12.715
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 8
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_7_6/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.465
+  Slack (ns):              1.116
+  Arrival (ns):           12.732
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 9
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.480
+  Slack (ns):              1.117
+  Arrival (ns):           12.713
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 10
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.488
+  Slack (ns):              1.118
+  Arrival (ns):           12.712
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 11
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.486
+  Slack (ns):              1.120
+  Arrival (ns):           12.710
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 12
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.467
+  Slack (ns):              1.132
+  Arrival (ns):           12.698
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 13
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.465
+  Slack (ns):              1.134
+  Arrival (ns):           12.696
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 14
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.458
+  Slack (ns):              1.139
+  Arrival (ns):           12.691
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 15
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.456
+  Slack (ns):              1.142
+  Arrival (ns):           12.689
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 16
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.464
+  Slack (ns):              1.142
+  Arrival (ns):           12.688
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 17
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.462
+  Slack (ns):              1.145
+  Arrival (ns):           12.686
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 18
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.450
+  Slack (ns):              1.148
+  Arrival (ns):           12.683
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 19
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.456
+  Slack (ns):              1.151
+  Arrival (ns):           12.680
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 20
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.442
+  Slack (ns):              1.155
+  Arrival (ns):           12.675
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 21
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.443
+  Slack (ns):              1.156
+  Arrival (ns):           12.674
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 22
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.438
+  Slack (ns):              1.159
+  Arrival (ns):           12.671
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 23
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.441
+  Slack (ns):              1.159
+  Arrival (ns):           12.672
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 24
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_7_6/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.417
+  Slack (ns):              1.164
+  Arrival (ns):           12.684
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 25
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.435
+  Slack (ns):              1.165
+  Arrival (ns):           12.666
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 26
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[12]:D
+  Delay (ns):              6.430
+  Slack (ns):              1.167
+  Arrival (ns):           12.663
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 27
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[5]:D
+  Delay (ns):              6.429
+  Slack (ns):              1.169
+  Arrival (ns):           12.662
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 28
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[12]:D
+  Delay (ns):              6.436
+  Slack (ns):              1.170
+  Arrival (ns):           12.660
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 29
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[5]:D
+  Delay (ns):              6.435
+  Slack (ns):              1.172
+  Arrival (ns):           12.659
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 30
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.425
+  Slack (ns):              1.173
+  Arrival (ns):           12.657
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 31
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[7]:D
+  Delay (ns):              6.425
+  Slack (ns):              1.173
+  Arrival (ns):           12.658
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 32
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[7]:D
+  Delay (ns):              6.431
+  Slack (ns):              1.176
+  Arrival (ns):           12.655
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 33
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.421
+  Slack (ns):              1.177
+  Arrival (ns):           12.653
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 34
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.413
+  Slack (ns):              1.184
+  Arrival (ns):           12.646
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 35
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[12]:D
+  Delay (ns):              6.415
+  Slack (ns):              1.184
+  Arrival (ns):           12.646
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 36
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.411
+  Slack (ns):              1.186
+  Arrival (ns):           12.644
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 37
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[5]:D
+  Delay (ns):              6.414
+  Slack (ns):              1.186
+  Arrival (ns):           12.645
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 38
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[7]:D
+  Delay (ns):              6.410
+  Slack (ns):              1.190
+  Arrival (ns):           12.641
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 39
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_7_6/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.392
+  Slack (ns):              1.190
+  Arrival (ns):           12.658
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 40
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[9]:D
+  Delay (ns):              6.401
+  Slack (ns):              1.197
+  Arrival (ns):           12.634
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 41
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.407
+  Slack (ns):              1.198
+  Arrival (ns):           12.632
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 42
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[9]:D
+  Delay (ns):              6.407
+  Slack (ns):              1.200
+  Arrival (ns):           12.631
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 43
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.396
+  Slack (ns):              1.202
+  Arrival (ns):           12.628
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 44
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[4]:D
+  Delay (ns):              6.396
+  Slack (ns):              1.202
+  Arrival (ns):           12.629
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 45
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.403
+  Slack (ns):              1.202
+  Arrival (ns):           12.628
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 46
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.394
+  Slack (ns):              1.204
+  Arrival (ns):           12.626
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 47
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[4]:D
+  Delay (ns):              6.402
+  Slack (ns):              1.205
+  Arrival (ns):           12.626
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 48
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.389
+  Slack (ns):              1.208
+  Arrival (ns):           12.622
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 49
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_6/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.373
+  Slack (ns):              1.209
+  Arrival (ns):           12.639
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 50
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.387
+  Slack (ns):              1.211
+  Arrival (ns):           12.620
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 51
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[9]:D
+  Delay (ns):              6.386
+  Slack (ns):              1.214
+  Arrival (ns):           12.617
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 52
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.381
+  Slack (ns):              1.217
+  Arrival (ns):           12.614
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 53
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_7/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.364
+  Slack (ns):              1.217
+  Arrival (ns):           12.631
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 54
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[4]:D
+  Delay (ns):              6.381
+  Slack (ns):              1.219
+  Arrival (ns):           12.612
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 55
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.383
+  Slack (ns):              1.220
+  Arrival (ns):           12.610
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 56
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_2_6/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.357
+  Slack (ns):              1.223
+  Arrival (ns):           12.625
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 57
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[6]:D
+  Delay (ns):              6.374
+  Slack (ns):              1.224
+  Arrival (ns):           12.607
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 58
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.379
+  Slack (ns):              1.224
+  Arrival (ns):           12.606
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 59
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.372
+  Slack (ns):              1.226
+  Arrival (ns):           12.604
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 60
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[6]:D
+  Delay (ns):              6.380
+  Slack (ns):              1.227
+  Arrival (ns):           12.604
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 61
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.378
+  Slack (ns):              1.227
+  Arrival (ns):           12.603
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 62
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.370
+  Slack (ns):              1.229
+  Arrival (ns):           12.602
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 63
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.376
+  Slack (ns):              1.229
+  Arrival (ns):           12.601
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 64
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.365
+  Slack (ns):              1.231
+  Arrival (ns):           12.599
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 65
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.364
+  Slack (ns):              1.235
+  Arrival (ns):           12.596
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 66
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.361
+  Slack (ns):              1.235
+  Arrival (ns):           12.595
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 67
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[12]:D
+  Delay (ns):              6.361
+  Slack (ns):              1.236
+  Arrival (ns):           12.594
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 68
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[5]:D
+  Delay (ns):              6.360
+  Slack (ns):              1.238
+  Arrival (ns):           12.593
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 69
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_7_6/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.344
+  Slack (ns):              1.238
+  Arrival (ns):           12.610
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 70
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_2_6/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.340
+  Slack (ns):              1.239
+  Arrival (ns):           12.609
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 71
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_2/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.344
+  Slack (ns):              1.240
+  Arrival (ns):           12.608
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 72
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[6]:D
+  Delay (ns):              6.359
+  Slack (ns):              1.241
+  Arrival (ns):           12.590
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 73
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[7]:D
+  Delay (ns):              6.356
+  Slack (ns):              1.242
+  Arrival (ns):           12.589
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 74
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.354
+  Slack (ns):              1.249
+  Arrival (ns):           12.581
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 75
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_2/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.334
+  Slack (ns):              1.249
+  Arrival (ns):           12.599
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 76
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.352
+  Slack (ns):              1.251
+  Arrival (ns):           12.579
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 77
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.354
+  Slack (ns):              1.251
+  Arrival (ns):           12.579
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 78
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[3]:D
+  Delay (ns):              6.346
+  Slack (ns):              1.252
+  Arrival (ns):           12.579
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 79
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_9_2/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.347
+  Slack (ns):              1.253
+  Arrival (ns):           12.595
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 80
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_2/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.331
+  Slack (ns):              1.253
+  Arrival (ns):           12.595
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 81
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[12]:D
+  Delay (ns):              6.344
+  Slack (ns):              1.254
+  Arrival (ns):           12.576
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 82
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.352
+  Slack (ns):              1.254
+  Arrival (ns):           12.577
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 83
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[3]:D
+  Delay (ns):              6.352
+  Slack (ns):              1.255
+  Arrival (ns):           12.576
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 84
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[5]:D
+  Delay (ns):              6.343
+  Slack (ns):              1.256
+  Arrival (ns):           12.575
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 85
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_6/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.325
+  Slack (ns):              1.257
+  Arrival (ns):           12.591
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 86
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[7]:D
+  Delay (ns):              6.339
+  Slack (ns):              1.260
+  Arrival (ns):           12.571
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 87
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[11]:D
+  Delay (ns):              6.336
+  Slack (ns):              1.260
+  Arrival (ns):           12.570
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 88
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[8]:D
+  Delay (ns):              6.344
+  Slack (ns):              1.260
+  Arrival (ns):           12.571
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 89
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[10]:D
+  Delay (ns):              6.346
+  Slack (ns):              1.260
+  Arrival (ns):           12.571
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 90
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_1_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.334
+  Slack (ns):              1.262
+  Arrival (ns):           12.568
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 91
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_2/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.321
+  Slack (ns):              1.262
+  Arrival (ns):           12.586
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 92
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[9]:D
+  Delay (ns):              6.332
+  Slack (ns):              1.266
+  Arrival (ns):           12.565
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 93
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_9_2/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.334
+  Slack (ns):              1.266
+  Arrival (ns):           12.582
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 94
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[3]:D
+  Delay (ns):              6.331
+  Slack (ns):              1.269
+  Arrival (ns):           12.562
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 95
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_15_2/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[13]:D
+  Delay (ns):              6.314
+  Slack (ns):              1.270
+  Arrival (ns):           12.578
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 96
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_9_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[4]:D
+  Delay (ns):              6.327
+  Slack (ns):              1.271
+  Arrival (ns):           12.560
+  Required (ns):          13.831
+  Operating Conditions: slow_lv_ht
+
+Path 97
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_2_6/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.309
+  Slack (ns):              1.271
+  Arrival (ns):           12.577
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 98
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_ram_1_15_3/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[15]:D
+  Delay (ns):              6.330
+  Slack (ns):              1.273
+  Arrival (ns):           12.557
+  Required (ns):          13.830
+  Operating Conditions: slow_lv_ht
+
+Path 99
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[16]:D
+  Delay (ns):              6.319
+  Slack (ns):              1.274
+  Arrival (ns):           12.574
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+
+Path 100
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_8_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_3_add_reg[14]:D
+  Delay (ns):              6.318
+  Slack (ns):              1.275
+  Arrival (ns):           12.573
+  Required (ns):          13.848
+  Operating Conditions: slow_lv_ht
+

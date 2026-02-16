@@ -1,0 +1,273 @@
+// ----------------------------------------------------------------------------
+// Smart High-Level Synthesis Tool Version 2025.2
+// Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+// For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+// Date: Sat Feb 14 12:37:08 2026
+// ----------------------------------------------------------------------------
+Target FPGA: MICROCHIP PolarFireSoC
+Project type: Icicle_SoCClock period constraint: 5ns
+Start Function: tinyml_accel
+state: SHLS_0, basic block: SHLS_0
+   Transition: if (start): SHLS_F_tinyml_accel_BB_0_1 default: SHLS_0
+state: SHLS_F_tinyml_accel_BB_0_1, basic block: BB_0
+  [64 x i16] feat_i (endState: SHLS_F_tinyml_accel_BB_0_1)
+  [96 x i32] h1_i (endState: SHLS_F_tinyml_accel_BB_0_1)
+  [48 x i32] h2_i (endState: SHLS_F_tinyml_accel_BB_0_1)
+   icmp : i1 = batch_n < 1 (signed) (endState: SHLS_F_tinyml_accel_BB_0_1)
+   select : i32 = (icmp) ? 1 : batch_n (endState: SHLS_F_tinyml_accel_BB_0_1)
+   icmp1 : i1 = select > 1024 (unsigned) (endState: SHLS_F_tinyml_accel_BB_0_1)
+   select2 : i32 = (icmp1) ? 1024 : select (endState: SHLS_F_tinyml_accel_BB_0_1)
+   bit_concat3 : i64 = {32'd0, select2} (endState: SHLS_F_tinyml_accel_BB_0_1)
+   goto: BB_2
+   Transition: default: SHLS_F_tinyml_accel_BB_2_3
+state: SHLS_F_tinyml_accel_BB_1_2, basic block: BB_1
+   return void
+   Transition: default: SHLS_0
+state: SHLS_F_tinyml_accel_BB_2_3, basic block: BB_2
+   phi : i64 = (BB_0: 0, BB_21: add188) (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_select5 : i56 = phi[55 : 0] (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_select6 : i11 = phi[10 : 0] (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_concat7 : i64 = {bit_select5, 8'd0} (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_concat9 : i64 = {bit_select5, 8'd1} (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_concat10 : i64 = {bit_select5, 8'd2} (endState: SHLS_F_tinyml_accel_BB_2_3)
+   bit_concat11 : i64 = {bit_select5, 8'd3} (endState: SHLS_F_tinyml_accel_BB_2_3)
+   goto: BB_3
+   Transition: default: SHLS_F_tinyml_accel_BB_3_4
+state: SHLS_F_tinyml_accel_BB_3_4, basic block: BB_3
+   phi12 : i64 = (BB_2: 0, BB_8: add64) (endState: SHLS_F_tinyml_accel_BB_3_4)
+   phi13 : i64 = (BB_2: bit_concat9, BB_8: add69) (endState: SHLS_F_tinyml_accel_BB_3_4)
+   phi14 : i64 = (BB_2: bit_concat10, BB_8: add71) (endState: SHLS_F_tinyml_accel_BB_3_4)
+   phi15 : i64 = (BB_2: bit_concat11, BB_8: add73) (endState: SHLS_F_tinyml_accel_BB_3_4)
+   phi16 : i64 = (BB_2: bit_concat7, BB_8: add74) (endState: SHLS_F_tinyml_accel_BB_3_4)
+   bit_select17 : i2 = phi12[1 : 0] (endState: SHLS_F_tinyml_accel_BB_3_4)
+   addr : i16* = &in[phi16] (endState: SHLS_F_tinyml_accel_BB_3_4)
+   load : i16 = addr[0] (endState: SHLS_F_tinyml_accel_BB_3_5)
+   addr20 : i16* = &in[phi13] (endState: SHLS_F_tinyml_accel_BB_3_4)
+   load21 : i16 = addr20[0] (endState: SHLS_F_tinyml_accel_BB_3_5)
+   addr24 : i16* = &in[phi14] (endState: SHLS_F_tinyml_accel_BB_3_4)
+   addr29 : i16* = &in[phi15] (endState: SHLS_F_tinyml_accel_BB_3_4)
+   bit_concat33 : i32 = {30'd0, bit_select17} (endState: SHLS_F_tinyml_accel_BB_3_4)
+   Transition: default: SHLS_F_tinyml_accel_BB_3_5
+state: SHLS_F_tinyml_accel_BB_3_5, basic block: BB_3
+   bit_select19 : i1 = load[15] (endState: SHLS_F_tinyml_accel_BB_3_5)
+   sext : i32 =  (i32) load : i16 (endState: SHLS_F_tinyml_accel_BB_3_5)
+   bit_select22 : i1 = load21[15] (endState: SHLS_F_tinyml_accel_BB_3_5)
+   sext23 : i32 =  (i32) load21 : i16 (endState: SHLS_F_tinyml_accel_BB_3_5)
+   load25 : i16 = addr24[0] (endState: SHLS_F_tinyml_accel_BB_3_6)
+   load30 : i16 = addr29[0] (endState: SHLS_F_tinyml_accel_BB_3_6)
+   add : i32 = sext23 + sext (endState: SHLS_F_tinyml_accel_BB_3_5)
+   Transition: default: SHLS_F_tinyml_accel_BB_3_6
+state: SHLS_F_tinyml_accel_BB_3_6, basic block: BB_3
+   bit_select27 : i1 = load25[15] (endState: SHLS_F_tinyml_accel_BB_3_6)
+   sext28 : i32 =  (i32) load25 : i16 (endState: SHLS_F_tinyml_accel_BB_3_6)
+   bit_select31 : i1 = load30[15] (endState: SHLS_F_tinyml_accel_BB_3_6)
+   sext32 : i32 =  (i32) load30 : i16 (endState: SHLS_F_tinyml_accel_BB_3_6)
+   switch (bit_concat33) { 0: BB_4, 1: BB_5, 2: BB_6,  default: BB_7 }
+   Transition: switch (%bit_concat33) 0: SHLS_F_tinyml_accel_BB_4_7 1: SHLS_F_tinyml_accel_BB_5_8 2: SHLS_F_tinyml_accel_BB_6_9 default: SHLS_F_tinyml_accel_BB_7_10
+state: SHLS_F_tinyml_accel_BB_4_7, basic block: BB_4
+   add34 : i32 = sext32 + sext28 (endState: SHLS_F_tinyml_accel_BB_4_7)
+   add35 : i32 = add34 + add (endState: SHLS_F_tinyml_accel_BB_4_7)
+   ashr : i32 = add35 >>> 2 (endState: SHLS_F_tinyml_accel_BB_4_7)
+   goto: BB_8
+   Transition: default: SHLS_F_tinyml_accel_BB_8_13
+state: SHLS_F_tinyml_accel_BB_5_8, basic block: BB_5
+   add36 : i32 = sext32 + sext28 (endState: SHLS_F_tinyml_accel_BB_5_8)
+   sub : i32 = add36 - add (endState: SHLS_F_tinyml_accel_BB_5_8)
+   ashr37 : i32 = sub >>> 1 (endState: SHLS_F_tinyml_accel_BB_5_8)
+   goto: BB_8
+   Transition: default: SHLS_F_tinyml_accel_BB_8_13
+state: SHLS_F_tinyml_accel_BB_6_9, basic block: BB_6
+   add38 : i32 = sext32 + sext28 (endState: SHLS_F_tinyml_accel_BB_6_9)
+   sub39 : i32 = add38 - add (endState: SHLS_F_tinyml_accel_BB_6_9)
+   goto: BB_8
+   Transition: default: SHLS_F_tinyml_accel_BB_8_13
+state: SHLS_F_tinyml_accel_BB_7_10, basic block: BB_7
+   sub40 : i32 = -sext (endState: SHLS_F_tinyml_accel_BB_7_10)
+   select41 : i32 = (bit_select19) ? sub40 : sext (endState: SHLS_F_tinyml_accel_BB_7_10)
+   sub42 : i32 = select41 - sext23 (endState: SHLS_F_tinyml_accel_BB_7_10)
+   sub43 : i32 = sext23 - sext (endState: SHLS_F_tinyml_accel_BB_7_10)
+   select44 : i32 = (bit_select19) ? sub43 : add (endState: SHLS_F_tinyml_accel_BB_7_10)
+   select45 : i32 = (bit_select22) ? sub42 : select44 (endState: SHLS_F_tinyml_accel_BB_7_10)
+   Transition: default: SHLS_F_tinyml_accel_BB_7_11
+state: SHLS_F_tinyml_accel_BB_7_11, basic block: BB_7
+   sub46 : i32 = select45 - sext28 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   add47 : i32 = select45 + sext28 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   select48 : i32 = (bit_select27) ? sub46 : add47 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   sub49 : i32 = select48 - sext32 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   add50 : i32 = select48 + sext32 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   select51 : i32 = (bit_select31) ? sub49 : add50 (endState: SHLS_F_tinyml_accel_BB_7_11)
+   bit_select52 : i30 = select51[31 : 2] (endState: SHLS_F_tinyml_accel_BB_7_11)
+   bit_concat55 : i32 = {2'd0, bit_select52} (endState: SHLS_F_tinyml_accel_BB_7_11)
+   Transition: default: SHLS_F_tinyml_accel_BB_7_12
+state: SHLS_F_tinyml_accel_BB_7_12, basic block: BB_7
+   add56 : i32 = bit_concat55 + -192 (endState: SHLS_F_tinyml_accel_BB_7_12)
+   goto: BB_8
+   Transition: default: SHLS_F_tinyml_accel_BB_8_13
+state: SHLS_F_tinyml_accel_BB_8_13, basic block: BB_8
+   phi57 : i32 = (BB_7: add56, BB_6: sub39, BB_5: ashr37, BB_4: ashr) (endState: SHLS_F_tinyml_accel_BB_8_13)
+   icmp58 : i1 = phi57 > -32768 (signed) (endState: SHLS_F_tinyml_accel_BB_8_13)
+   select59 : i32 = (icmp58) ? phi57 : -32768 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   icmp60 : i1 = select59 > 32767 (signed) (endState: SHLS_F_tinyml_accel_BB_8_13)
+   select61 : i32 = (icmp60) ? 32767 : select59 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_select62 : i16 = select61[15 : 0] (endState: SHLS_F_tinyml_accel_BB_8_13)
+   addr63 : i16* = &feat_i[phi12] (endState: SHLS_F_tinyml_accel_BB_8_13)
+   addr63 : i16* = bit_select62 (endState: SHLS_F_tinyml_accel_BB_8_14)
+   add64 : i64 = phi12 + 1 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_select65 : i62 = add64[61 : 0] (endState: SHLS_F_tinyml_accel_BB_8_13)
+   icmp66 : i1 = add64 == 64 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_concat67 : i64 = {bit_select65, 2'd0} (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_concat68 : i64 = {bit_select65, 2'd1} (endState: SHLS_F_tinyml_accel_BB_8_13)
+   add69 : i64 = bit_concat7 + bit_concat68 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_concat70 : i64 = {bit_select65, 2'd-2} (endState: SHLS_F_tinyml_accel_BB_8_13)
+   add71 : i64 = bit_concat7 + bit_concat70 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   bit_concat72 : i64 = {bit_select65, 2'd-1} (endState: SHLS_F_tinyml_accel_BB_8_13)
+   add73 : i64 = bit_concat7 + bit_concat72 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   add74 : i64 = bit_concat7 + bit_concat67 (endState: SHLS_F_tinyml_accel_BB_8_13)
+   Transition: default: SHLS_F_tinyml_accel_BB_8_14
+state: SHLS_F_tinyml_accel_BB_8_14, basic block: BB_8
+   branch: if (icmp66): BB_9 default: BB_3
+   Transition: if (%icmp66): SHLS_F_tinyml_accel_BB_9_15 default: SHLS_F_tinyml_accel_BB_3_4
+state: SHLS_F_tinyml_accel_BB_9_15, basic block: BB_9
+   goto: BB_10
+   Transition: default: SHLS_F_tinyml_accel_BB_10_16
+state: SHLS_F_tinyml_accel_BB_10_16, basic block: BB_10
+   phi75 : i64 = (BB_11: add86, BB_9: 0) (endState: SHLS_F_tinyml_accel_BB_10_16)
+   phi76 : i64 = (BB_11: bit_concat89, BB_9: 0) (endState: SHLS_F_tinyml_accel_BB_10_16)
+   addr77 : i16* = &_ZL2B1[phi75] (endState: SHLS_F_tinyml_accel_BB_10_16)
+   load78 : i16 = addr77[0] (endState: SHLS_F_tinyml_accel_BB_10_17)
+   Transition: default: SHLS_F_tinyml_accel_BB_10_17
+state: SHLS_F_tinyml_accel_BB_10_17, basic block: BB_10
+   sext79 : i32 =  (i32) load78 : i16 (endState: SHLS_F_tinyml_accel_BB_10_17)
+   bit_select80 : i24 = sext79[23 : 0] (endState: SHLS_F_tinyml_accel_BB_10_17)
+   bit_concat81 : i32 = {bit_select80, 8'd0} (endState: SHLS_F_tinyml_accel_BB_10_17)
+   goto: BB_13
+   Transition: default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_139_9_21
+state: SHLS_F_tinyml_accel_BB_11_18, basic block: BB_11
+   ashr82 : i32 = add100 >>> 3 (endState: SHLS_F_tinyml_accel_BB_11_18)
+   icmp83 : i1 = ashr82 > 0 (signed) (endState: SHLS_F_tinyml_accel_BB_11_18)
+   select84 : i32 = (icmp83) ? ashr82 : 0 (endState: SHLS_F_tinyml_accel_BB_11_18)
+   addr85 : i32* = &h1_i[phi75] (endState: SHLS_F_tinyml_accel_BB_11_18)
+   addr85 : i32* = select84 (endState: SHLS_F_tinyml_accel_BB_11_19)
+   add86 : i64 = phi75 + 1 (endState: SHLS_F_tinyml_accel_BB_11_18)
+   bit_select87 : i58 = add86[57 : 0] (endState: SHLS_F_tinyml_accel_BB_11_18)
+   icmp88 : i1 = add86 == 96 (endState: SHLS_F_tinyml_accel_BB_11_18)
+   bit_concat89 : i64 = {bit_select87, 6'd0} (endState: SHLS_F_tinyml_accel_BB_11_18)
+   Transition: default: SHLS_F_tinyml_accel_BB_11_19
+state: SHLS_F_tinyml_accel_BB_11_19, basic block: BB_11
+   branch: if (icmp88): BB_12 default: BB_10
+   Transition: if (%icmp88): SHLS_F_tinyml_accel_BB_12_20 default: SHLS_F_tinyml_accel_BB_10_16
+state: SHLS_F_tinyml_accel_BB_12_20, basic block: BB_12
+   goto: BB_14
+   Transition: default: SHLS_F_tinyml_accel_BB_14_22
+state: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_139_9_21, basic block: BB_13, pipeline type: loop, pipeline ID: _Z12tinyml_accelPKsPii_BB_13, II: 1, length: 3, trip count: 64
+   phi90 : i64 = (BB_10: 0, BB_13: add101) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_139_9_21)
+   phi91 : i32 = (BB_10: bit_concat81, BB_13: add100) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_139_9_21)
+   branch: if (icmp102): BB_11 default: BB_13
+   Transition: if (for_loop_main_variations_main_fifo_cpp_139_9_pipeline_finish): SHLS_F_tinyml_accel_BB_11_18 default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_139_9_21
+state: SHLS_F_tinyml_accel_BB_14_22, basic block: BB_14
+   phi103 : i64 = (BB_15: add114, BB_12: 0) (endState: SHLS_F_tinyml_accel_BB_14_22)
+   phi104 : i64 = (BB_15: bit_concat121, BB_12: 0) (endState: SHLS_F_tinyml_accel_BB_14_22)
+   addr105 : i16* = &_ZL2B2[phi103] (endState: SHLS_F_tinyml_accel_BB_14_22)
+   load106 : i16 = addr105[0] (endState: SHLS_F_tinyml_accel_BB_14_23)
+   Transition: default: SHLS_F_tinyml_accel_BB_14_23
+state: SHLS_F_tinyml_accel_BB_14_23, basic block: BB_14
+   sext107 : i32 =  (i32) load106 : i16 (endState: SHLS_F_tinyml_accel_BB_14_23)
+   bit_select108 : i24 = sext107[23 : 0] (endState: SHLS_F_tinyml_accel_BB_14_23)
+   bit_concat109 : i32 = {bit_select108, 8'd0} (endState: SHLS_F_tinyml_accel_BB_14_23)
+   goto: BB_17
+   Transition: default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_149_9_27
+state: SHLS_F_tinyml_accel_BB_15_24, basic block: BB_15
+   ashr110 : i32 = add147 >>> 1 (endState: SHLS_F_tinyml_accel_BB_15_24)
+   icmp111 : i1 = ashr110 > 0 (signed) (endState: SHLS_F_tinyml_accel_BB_15_24)
+   select112 : i32 = (icmp111) ? ashr110 : 0 (endState: SHLS_F_tinyml_accel_BB_15_24)
+   addr113 : i32* = &h2_i[phi103] (endState: SHLS_F_tinyml_accel_BB_15_24)
+   addr113 : i32* = select112 (endState: SHLS_F_tinyml_accel_BB_15_25)
+   add114 : i64 = phi103 + 1 (endState: SHLS_F_tinyml_accel_BB_15_24)
+   bit_select115 : i6 = add114[5 : 0] (endState: SHLS_F_tinyml_accel_BB_15_24)
+   icmp116 : i1 = add114 == 48 (endState: SHLS_F_tinyml_accel_BB_15_24)
+   bit_concat117 : i66 = {59'd0, bit_select115, 1'd0} (endState: SHLS_F_tinyml_accel_BB_15_24)
+   bit_concat118 : i66 = {60'd0, bit_select115} (endState: SHLS_F_tinyml_accel_BB_15_24)
+   add119 : i66 = bit_concat117 + bit_concat118 (endState: SHLS_F_tinyml_accel_BB_15_24)
+   bit_select120 : i59 = add119[58 : 0] (endState: SHLS_F_tinyml_accel_BB_15_24)
+   bit_concat121 : i64 = {bit_select120, 5'd0} (endState: SHLS_F_tinyml_accel_BB_15_24)
+   Transition: default: SHLS_F_tinyml_accel_BB_15_25
+state: SHLS_F_tinyml_accel_BB_15_25, basic block: BB_15
+   branch: if (icmp116): BB_16 default: BB_14
+   Transition: if (%icmp116): SHLS_F_tinyml_accel_BB_16_26 default: SHLS_F_tinyml_accel_BB_14_22
+state: SHLS_F_tinyml_accel_BB_16_26, basic block: BB_16
+   bit_concat122 : i66 = {54'd0, bit_select6, 1'd0} (endState: SHLS_F_tinyml_accel_BB_16_26)
+   bit_concat123 : i66 = {55'd0, bit_select6} (endState: SHLS_F_tinyml_accel_BB_16_26)
+   add124 : i66 = bit_concat122 + bit_concat123 (endState: SHLS_F_tinyml_accel_BB_16_26)
+   bit_select125 : i63 = add124[62 : 0] (endState: SHLS_F_tinyml_accel_BB_16_26)
+   bit_concat126 : i64 = {bit_select125, 1'd0} (endState: SHLS_F_tinyml_accel_BB_16_26)
+   goto: BB_18
+   Transition: default: SHLS_F_tinyml_accel_BB_18_28
+state: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_149_9_27, basic block: BB_17, pipeline type: loop, pipeline ID: _Z12tinyml_accelPKsPii_BB_17, II: 1, length: 3, trip count: 96
+   phi127 : i64 = (BB_14: 0, BB_17: add148) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_149_9_27)
+   phi128 : i32 = (BB_14: bit_concat109, BB_17: add147) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_149_9_27)
+   branch: if (icmp149): BB_15 default: BB_17
+   Transition: if (for_loop_main_variations_main_fifo_cpp_149_9_pipeline_finish): SHLS_F_tinyml_accel_BB_15_24 default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_149_9_27
+state: SHLS_F_tinyml_accel_BB_18_28, basic block: BB_18
+   phi150 : i64 = (BB_19: add159, BB_16: 0) (endState: SHLS_F_tinyml_accel_BB_18_28)
+   phi151 : i64 = (BB_19: bit_concat166, BB_16: 0) (endState: SHLS_F_tinyml_accel_BB_18_28)
+   addr152 : i16* = &_ZL2B3[phi150] (endState: SHLS_F_tinyml_accel_BB_18_28)
+   load153 : i16 = addr152[0] (endState: SHLS_F_tinyml_accel_BB_18_29)
+   Transition: default: SHLS_F_tinyml_accel_BB_18_29
+state: SHLS_F_tinyml_accel_BB_18_29, basic block: BB_18
+   sext154 : i32 =  (i32) load153 : i16 (endState: SHLS_F_tinyml_accel_BB_18_29)
+   bit_select155 : i24 = sext154[23 : 0] (endState: SHLS_F_tinyml_accel_BB_18_29)
+   bit_concat156 : i32 = {bit_select155, 8'd0} (endState: SHLS_F_tinyml_accel_BB_18_29)
+   goto: BB_20
+   Transition: default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_160_9_32
+state: SHLS_F_tinyml_accel_BB_19_30, basic block: BB_19
+   add157 : i64 = bit_concat126 + phi150 (endState: SHLS_F_tinyml_accel_BB_19_30)
+   addr158 : i32* = &out[add157] (endState: SHLS_F_tinyml_accel_BB_19_30)
+   addr158 : i32* = add185 (endState: SHLS_F_tinyml_accel_BB_19_31)
+   add159 : i64 = phi150 + 1 (endState: SHLS_F_tinyml_accel_BB_19_30)
+   bit_select160 : i3 = add159[2 : 0] (endState: SHLS_F_tinyml_accel_BB_19_30)
+   icmp161 : i1 = add159 == 6 (endState: SHLS_F_tinyml_accel_BB_19_30)
+   bit_concat162 : i66 = {62'd0, bit_select160, 1'd0} (endState: SHLS_F_tinyml_accel_BB_19_30)
+   bit_concat163 : i66 = {63'd0, bit_select160} (endState: SHLS_F_tinyml_accel_BB_19_30)
+   add164 : i66 = bit_concat162 + bit_concat163 (endState: SHLS_F_tinyml_accel_BB_19_30)
+   bit_select165 : i60 = add164[59 : 0] (endState: SHLS_F_tinyml_accel_BB_19_30)
+   bit_concat166 : i64 = {bit_select165, 4'd0} (endState: SHLS_F_tinyml_accel_BB_19_30)
+   Transition: default: SHLS_F_tinyml_accel_BB_19_31
+state: SHLS_F_tinyml_accel_BB_19_31, basic block: BB_19
+   branch: if (icmp161): BB_21 default: BB_18
+   Transition: if (%icmp161): SHLS_F_tinyml_accel_BB_21_33 default: SHLS_F_tinyml_accel_BB_18_28
+state: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_160_9_32, basic block: BB_20, pipeline type: loop, pipeline ID: _Z12tinyml_accelPKsPii_BB_20, II: 1, length: 3, trip count: 48
+   phi167 : i64 = (BB_18: 0, BB_20: add186) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_160_9_32)
+   phi168 : i32 = (BB_18: bit_concat156, BB_20: add185) (endState: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_160_9_32)
+   branch: if (icmp187): BB_19 default: BB_20
+   Transition: if (for_loop_main_variations_main_fifo_cpp_160_9_pipeline_finish): SHLS_F_tinyml_accel_BB_19_30 default: SHLS_pipeline_wait_for_loop_main_variations_main_fifo_cpp_160_9_32
+state: SHLS_F_tinyml_accel_BB_21_33, basic block: BB_21
+   add188 : i64 = phi + 1 (endState: SHLS_F_tinyml_accel_BB_21_33)
+   icmp189 : i1 = add188 == bit_concat3 (endState: SHLS_F_tinyml_accel_BB_21_33)
+   branch: if (icmp189): BB_1 default: BB_2
+   Transition: if (%icmp189): SHLS_F_tinyml_accel_BB_1_2 default: SHLS_F_tinyml_accel_BB_2_3
+
+Basic Block: BB_0, Num States: 1, Location: <main_variations/main.fifo.cpp:175-176,178>
+Basic Block: BB_1, Num States: 1, Location: <main_variations/main.fifo.cpp:181>
+Basic Block: BB_2, Num States: 1, Iteration Latency: <12329 - 12457>, Location: <main_variations/main.fifo.cpp:97,179>
+Basic Block: BB_3, Num States: 3, Trip Count: 64, Iteration Latency: <6 - 8>, Total Latency: <384 - 512>, Location: <main_variations/main.fifo.cpp:99-102,104,110>
+Basic Block: BB_4, Num States: 1, Location: <main_variations/main.fifo.cpp:104,113>
+Basic Block: BB_5, Num States: 1, Location: <main_variations/main.fifo.cpp:105,116>
+Basic Block: BB_6, Num States: 1, Location: <main_variations/main.fifo.cpp:106,119>
+Basic Block: BB_7, Num States: 3, Location: <main_variations/main.fifo.cpp:27,107,121-122>
+Basic Block: BB_8, Num States: 2, Location: <main_variations/main.fifo.cpp:21,97-98,100-102,124>
+Basic Block: BB_9, Num States: 1, Location: <main_variations/main.fifo.cpp:136>
+Basic Block: BB_10, Num States: 2, Trip Count: 96, Iteration Latency: <70>, Total Latency: <6720>, Location: <main_variations/main.fifo.cpp:137,139>
+Basic Block: BB_11, Num States: 2, Location: <main_variations/main.fifo.cpp:136,142-143>
+Basic Block: BB_12, Num States: 1, Location: <main_variations/main.fifo.cpp:146>
+Basic Block: BB_13, Num States: 3, Trip Count: 64, Iteration Latency: <3>, Total Latency: <66>, Location: <main_variations/main.fifo.cpp:139-140>
+Basic Block: BB_14, Num States: 2, Trip Count: 48, Iteration Latency: <102>, Total Latency: <4896>, Location: <main_variations/main.fifo.cpp:147,149>
+Basic Block: BB_15, Num States: 2, Location: <main_variations/main.fifo.cpp:146,153-154>
+Basic Block: BB_16, Num States: 1, Location: <main_variations/main.fifo.cpp:157,179>
+Basic Block: BB_17, Num States: 3, Trip Count: 96, Iteration Latency: <3>, Total Latency: <98>, Location: <main_variations/main.fifo.cpp:149-151>
+Basic Block: BB_18, Num States: 2, Trip Count: 6, Iteration Latency: <54>, Total Latency: <324>, Location: <main_variations/main.fifo.cpp:158,160>
+Basic Block: BB_19, Num States: 2, Location: <main_variations/main.fifo.cpp:157,164>
+Basic Block: BB_20, Num States: 3, Trip Count: 48, Iteration Latency: <3>, Total Latency: <50>, Location: <main_variations/main.fifo.cpp:160-162>
+Basic Block: BB_21, Num States: 1, Location: <main_variations/main.fifo.cpp:178>
+End Function: tinyml_accel
+--------------------------------------------------------------------------------
+

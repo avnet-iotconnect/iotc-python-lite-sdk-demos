@@ -1,0 +1,9 @@
+#------------------------------------------------------------------------------------------------------------------------------------------
+# RUN NUMBER: 1   DATE: 18:17:43 13-Feb-2026
+# INVOKED AS: C:/Microchip/Libero_SoC_2025.2/Libero_SoC/Designer/bin/libero.exe extended_run_lib.tcl -skip_open_project -root {C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07\MPFS_DISCOVERY\designer\MPFS_DISCOVERY_KIT} -n 25 -starting_seed_index 1 -compare_criteria violations -analysis max -slack_criteria worst -stop_on_success
+#------------------------------------------------------------------------------------------------------------------------------------------
+# Seed Index  Seed      Maximum Delay        Worst Slack  Report Analyzed                                Saved Design
+# ==========  ========  ===============  ===============  =============================================  ===================================
+           1         0    N/A                        2.238  MPFS_DISCOVERY_KIT_timing_violations_max_r1_s1.rpt  MPFS_DISCOVERY_KIT_r1_s1
+  The best result MPFS_DISCOVERY_KIT_r1_s1 has been saved into the project.
+

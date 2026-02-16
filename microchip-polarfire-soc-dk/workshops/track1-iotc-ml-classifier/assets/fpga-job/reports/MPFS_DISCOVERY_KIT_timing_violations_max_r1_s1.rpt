@@ -1,0 +1,919 @@
+Timing Violation Report Max Delay Analysis
+
+SmartTime Version 2025.2
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Thu Feb 12 17:09:32 2026
+
+
+Design: MPFS_DISCOVERY_KIT
+Family: PolarFireSoC
+Die: MPFS095T
+Package: FCSG325
+Temperature Range: 0 - 100 C
+Voltage Range: 0.97 - 1.03 V
+Speed Grade: -1
+Design State: Post-Layout
+Data source: Production
+Multi Corner Report Operating Conditions: slow_lv_lt,fast_hv_lt,slow_lv_ht
+
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              2.912
+  Slack (ns):              2.755
+  Arrival (ns):            8.901
+  Required (ns):          11.656
+  Operating Conditions: slow_lv_lt
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              2.917
+  Slack (ns):              2.798
+  Arrival (ns):            8.906
+  Required (ns):          11.704
+  Operating Conditions: slow_lv_lt
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.819
+  Slack (ns):              2.913
+  Arrival (ns):            9.075
+  Required (ns):          11.988
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[12]
+  Delay (ns):              2.911
+  Slack (ns):              2.944
+  Arrival (ns):            8.900
+  Required (ns):          11.844
+  Operating Conditions: slow_lv_lt
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.752
+  Slack (ns):              2.967
+  Arrival (ns):            8.741
+  Required (ns):          11.708
+  Operating Conditions: slow_lv_lt
+
+Path 6
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.646
+  Slack (ns):              2.973
+  Arrival (ns):            8.635
+  Required (ns):          11.608
+  Operating Conditions: slow_lv_lt
+
+Path 7
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              2.831
+  Slack (ns):              2.981
+  Arrival (ns):            8.820
+  Required (ns):          11.801
+  Operating Conditions: slow_lv_lt
+
+Path 8
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              2.736
+  Slack (ns):              2.989
+  Arrival (ns):            8.725
+  Required (ns):          11.714
+  Operating Conditions: slow_lv_lt
+
+Path 9
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.654
+  Slack (ns):              2.996
+  Arrival (ns):            8.643
+  Required (ns):          11.639
+  Operating Conditions: slow_lv_lt
+
+Path 10
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              2.604
+  Slack (ns):              2.997
+  Arrival (ns):            8.593
+  Required (ns):          11.590
+  Operating Conditions: slow_lv_lt
+
+Path 11
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              2.812
+  Slack (ns):              3.016
+  Arrival (ns):            8.801
+  Required (ns):          11.817
+  Operating Conditions: slow_lv_lt
+
+Path 12
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              2.647
+  Slack (ns):              3.033
+  Arrival (ns):            8.636
+  Required (ns):          11.669
+  Operating Conditions: slow_lv_lt
+
+Path 13
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              2.656
+  Slack (ns):              3.044
+  Arrival (ns):            8.645
+  Required (ns):          11.689
+  Operating Conditions: slow_lv_lt
+
+Path 14
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              2.676
+  Slack (ns):              3.050
+  Arrival (ns):            8.665
+  Required (ns):          11.715
+  Operating Conditions: slow_lv_lt
+
+Path 15
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              2.740
+  Slack (ns):              3.050
+  Arrival (ns):            8.729
+  Required (ns):          11.779
+  Operating Conditions: slow_lv_lt
+
+Path 16
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[14]
+  Delay (ns):              2.753
+  Slack (ns):              3.103
+  Arrival (ns):            8.742
+  Required (ns):          11.845
+  Operating Conditions: slow_lv_lt
+
+Path 17
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              2.738
+  Slack (ns):              3.137
+  Arrival (ns):            8.727
+  Required (ns):          11.864
+  Operating Conditions: slow_lv_lt
+
+Path 18
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[13]
+  Delay (ns):              2.730
+  Slack (ns):              3.142
+  Arrival (ns):            8.719
+  Required (ns):          11.861
+  Operating Conditions: slow_lv_lt
+
+Path 19
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[68]:EN
+  Delay (ns):              4.045
+  Slack (ns):              3.586
+  Arrival (ns):           10.119
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 20
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[5]:EN
+  Delay (ns):              4.045
+  Slack (ns):              3.586
+  Arrival (ns):           10.119
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 21
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[4]:EN
+  Delay (ns):              4.045
+  Slack (ns):              3.586
+  Arrival (ns):           10.119
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 22
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[9]:EN
+  Delay (ns):              4.044
+  Slack (ns):              3.587
+  Arrival (ns):           10.118
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 23
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[6]:EN
+  Delay (ns):              4.044
+  Slack (ns):              3.587
+  Arrival (ns):           10.118
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 24
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[62]:EN
+  Delay (ns):              4.044
+  Slack (ns):              3.587
+  Arrival (ns):           10.118
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 25
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[44]:EN
+  Delay (ns):              4.044
+  Slack (ns):              3.587
+  Arrival (ns):           10.118
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 26
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[2]:EN
+  Delay (ns):              4.044
+  Slack (ns):              3.587
+  Arrival (ns):           10.118
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 27
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[18]:EN
+  Delay (ns):              4.066
+  Slack (ns):              3.592
+  Arrival (ns):           10.140
+  Required (ns):          13.732
+  Operating Conditions: slow_lv_ht
+
+Path 28
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[68]:EN
+  Delay (ns):              4.036
+  Slack (ns):              3.593
+  Arrival (ns):           10.112
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 29
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[5]:EN
+  Delay (ns):              4.036
+  Slack (ns):              3.593
+  Arrival (ns):           10.112
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 30
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[4]:EN
+  Delay (ns):              4.036
+  Slack (ns):              3.593
+  Arrival (ns):           10.112
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 31
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[9]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.594
+  Arrival (ns):           10.111
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 32
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[6]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.594
+  Arrival (ns):           10.111
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 33
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[62]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.594
+  Arrival (ns):           10.111
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 34
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[44]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.594
+  Arrival (ns):           10.111
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 35
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[2]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.594
+  Arrival (ns):           10.111
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 36
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[18]:EN
+  Delay (ns):              4.057
+  Slack (ns):              3.599
+  Arrival (ns):           10.133
+  Required (ns):          13.732
+  Operating Conditions: slow_lv_ht
+
+Path 37
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[68]:EN
+  Delay (ns):              4.007
+  Slack (ns):              3.615
+  Arrival (ns):           10.090
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 38
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[5]:EN
+  Delay (ns):              4.007
+  Slack (ns):              3.615
+  Arrival (ns):           10.090
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 39
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[4]:EN
+  Delay (ns):              4.007
+  Slack (ns):              3.615
+  Arrival (ns):           10.090
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 40
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[71]:EN
+  Delay (ns):              4.024
+  Slack (ns):              3.616
+  Arrival (ns):           10.098
+  Required (ns):          13.714
+  Operating Conditions: slow_lv_ht
+
+Path 41
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[9]:EN
+  Delay (ns):              4.006
+  Slack (ns):              3.616
+  Arrival (ns):           10.089
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 42
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[6]:EN
+  Delay (ns):              4.006
+  Slack (ns):              3.616
+  Arrival (ns):           10.089
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 43
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[62]:EN
+  Delay (ns):              4.006
+  Slack (ns):              3.616
+  Arrival (ns):           10.089
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 44
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[44]:EN
+  Delay (ns):              4.006
+  Slack (ns):              3.616
+  Arrival (ns):           10.089
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 45
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[2]:EN
+  Delay (ns):              4.006
+  Slack (ns):              3.616
+  Arrival (ns):           10.089
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 46
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[65]:EN
+  Delay (ns):              4.036
+  Slack (ns):              3.620
+  Arrival (ns):           10.110
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 47
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[3]:EN
+  Delay (ns):              4.036
+  Slack (ns):              3.620
+  Arrival (ns):           10.110
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 48
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[20]:EN
+  Delay (ns):              4.035
+  Slack (ns):              3.621
+  Arrival (ns):           10.109
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 49
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[18]:EN
+  Delay (ns):              4.028
+  Slack (ns):              3.621
+  Arrival (ns):           10.111
+  Required (ns):          13.732
+  Operating Conditions: slow_lv_ht
+
+Path 50
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[66]:EN
+  Delay (ns):              4.034
+  Slack (ns):              3.622
+  Arrival (ns):           10.108
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 51
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[71]:EN
+  Delay (ns):              4.015
+  Slack (ns):              3.623
+  Arrival (ns):           10.091
+  Required (ns):          13.714
+  Operating Conditions: slow_lv_ht
+
+Path 52
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[65]:EN
+  Delay (ns):              4.027
+  Slack (ns):              3.627
+  Arrival (ns):           10.103
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 53
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[3]:EN
+  Delay (ns):              4.027
+  Slack (ns):              3.627
+  Arrival (ns):           10.103
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 54
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[68]:EN
+  Delay (ns):              4.003
+  Slack (ns):              3.627
+  Arrival (ns):           10.078
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 55
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[5]:EN
+  Delay (ns):              4.003
+  Slack (ns):              3.627
+  Arrival (ns):           10.078
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 56
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[4]:EN
+  Delay (ns):              4.003
+  Slack (ns):              3.627
+  Arrival (ns):           10.078
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 57
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[20]:EN
+  Delay (ns):              4.026
+  Slack (ns):              3.628
+  Arrival (ns):           10.102
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 58
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[9]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.628
+  Arrival (ns):           10.077
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 59
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[6]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.628
+  Arrival (ns):           10.077
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 60
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[62]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.628
+  Arrival (ns):           10.077
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 61
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[44]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.628
+  Arrival (ns):           10.077
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 62
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[2]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.628
+  Arrival (ns):           10.077
+  Required (ns):          13.705
+  Operating Conditions: slow_lv_ht
+
+Path 63
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[66]:EN
+  Delay (ns):              4.025
+  Slack (ns):              3.629
+  Arrival (ns):           10.101
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 64
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[18]:EN
+  Delay (ns):              4.024
+  Slack (ns):              3.633
+  Arrival (ns):           10.099
+  Required (ns):          13.732
+  Operating Conditions: slow_lv_ht
+
+Path 65
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[32]:EN
+  Delay (ns):              4.011
+  Slack (ns):              3.635
+  Arrival (ns):           10.085
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 66
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[13]:EN
+  Delay (ns):              4.011
+  Slack (ns):              3.635
+  Arrival (ns):           10.085
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 67
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[32]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.642
+  Arrival (ns):           10.078
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 68
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[13]:EN
+  Delay (ns):              4.002
+  Slack (ns):              3.642
+  Arrival (ns):           10.078
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 69
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[71]:EN
+  Delay (ns):              3.986
+  Slack (ns):              3.645
+  Arrival (ns):           10.069
+  Required (ns):          13.714
+  Operating Conditions: slow_lv_ht
+
+Path 70
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[28]:EN
+  Delay (ns):              3.987
+  Slack (ns):              3.646
+  Arrival (ns):           10.061
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 71
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[65]:EN
+  Delay (ns):              3.998
+  Slack (ns):              3.649
+  Arrival (ns):           10.081
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 72
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[3]:EN
+  Delay (ns):              3.998
+  Slack (ns):              3.649
+  Arrival (ns):           10.081
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 73
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[20]:EN
+  Delay (ns):              3.997
+  Slack (ns):              3.650
+  Arrival (ns):           10.080
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 74
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[66]:EN
+  Delay (ns):              3.996
+  Slack (ns):              3.651
+  Arrival (ns):           10.079
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 75
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[28]:EN
+  Delay (ns):              3.978
+  Slack (ns):              3.653
+  Arrival (ns):           10.054
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 76
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[71]:EN
+  Delay (ns):              3.982
+  Slack (ns):              3.657
+  Arrival (ns):           10.057
+  Required (ns):          13.714
+  Operating Conditions: slow_lv_ht
+
+Path 77
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[65]:EN
+  Delay (ns):              3.994
+  Slack (ns):              3.661
+  Arrival (ns):           10.069
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 78
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[3]:EN
+  Delay (ns):              3.994
+  Slack (ns):              3.661
+  Arrival (ns):           10.069
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 79
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[20]:EN
+  Delay (ns):              3.993
+  Slack (ns):              3.662
+  Arrival (ns):           10.068
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 80
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[66]:EN
+  Delay (ns):              3.992
+  Slack (ns):              3.663
+  Arrival (ns):           10.067
+  Required (ns):          13.730
+  Operating Conditions: slow_lv_ht
+
+Path 81
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[32]:EN
+  Delay (ns):              3.973
+  Slack (ns):              3.664
+  Arrival (ns):           10.056
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 82
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[13]:EN
+  Delay (ns):              3.973
+  Slack (ns):              3.664
+  Arrival (ns):           10.056
+  Required (ns):          13.720
+  Operating Conditions: slow_lv_ht
+
+Path 83
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[46]:EN
+  Delay (ns):              3.968
+  Slack (ns):              3.665
+  Arrival (ns):           10.042
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 84
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[38]:EN
+  Delay (ns):              3.968
+  Slack (ns):              3.665
+  Arrival (ns):           10.042
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 85
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[30]:EN
+  Delay (ns):              3.968
+  Slack (ns):              3.665
+  Arrival (ns):           10.042
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 86
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[18]:EN
+  Delay (ns):              3.968
+  Slack (ns):              3.665
+  Arrival (ns):           10.042
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 87
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[62]:EN
+  Delay (ns):              3.967
+  Slack (ns):              3.666
+  Arrival (ns):           10.041
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 88
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[58]:EN
+  Delay (ns):              3.967
+  Slack (ns):              3.666
+  Arrival (ns):           10.041
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 89
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[57]:EN
+  Delay (ns):              3.967
+  Slack (ns):              3.666
+  Arrival (ns):           10.041
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 90
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[54]:EN
+  Delay (ns):              3.967
+  Slack (ns):              3.666
+  Arrival (ns):           10.041
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 91
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_8[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[47]:EN
+  Delay (ns):              3.966
+  Slack (ns):              3.667
+  Arrival (ns):           10.040
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 92
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[46]:EN
+  Delay (ns):              3.959
+  Slack (ns):              3.672
+  Arrival (ns):           10.035
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 93
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[38]:EN
+  Delay (ns):              3.959
+  Slack (ns):              3.672
+  Arrival (ns):           10.035
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 94
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[30]:EN
+  Delay (ns):              3.959
+  Slack (ns):              3.672
+  Arrival (ns):           10.035
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 95
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[18]:EN
+  Delay (ns):              3.959
+  Slack (ns):              3.672
+  Arrival (ns):           10.035
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 96
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[62]:EN
+  Delay (ns):              3.958
+  Slack (ns):              3.673
+  Arrival (ns):           10.034
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 97
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[58]:EN
+  Delay (ns):              3.958
+  Slack (ns):              3.673
+  Arrival (ns):           10.034
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 98
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[57]:EN
+  Delay (ns):              3.958
+  Slack (ns):              3.673
+  Arrival (ns):           10.034
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 99
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[54]:EN
+  Delay (ns):              3.958
+  Slack (ns):              3.673
+  Arrival (ns):           10.034
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+
+Path 100
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/wr_req_cnt_ret_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[47]:EN
+  Delay (ns):              3.957
+  Slack (ns):              3.674
+  Arrival (ns):           10.033
+  Required (ns):          13.707
+  Operating Conditions: slow_lv_ht
+

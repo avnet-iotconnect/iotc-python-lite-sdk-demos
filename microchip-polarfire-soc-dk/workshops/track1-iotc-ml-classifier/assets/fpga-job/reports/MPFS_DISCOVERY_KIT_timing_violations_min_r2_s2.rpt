@@ -1,0 +1,919 @@
+Timing Violation Report Min Delay Analysis
+
+SmartTime Version 2025.2
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Thu Feb 12 20:47:58 2026
+
+
+Design: MPFS_DISCOVERY_KIT
+Family: PolarFireSoC
+Die: MPFS095T
+Package: FCSG325
+Temperature Range: 0 - 100 C
+Voltage Range: 0.97 - 1.03 V
+Speed Grade: -1
+Design State: Post-Layout
+Data source: Production
+Multi Corner Report Operating Conditions: slow_lv_lt,fast_hv_lt,slow_lv_ht
+
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/len_offset_pre[0]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/len_offset_reg[0]:D
+  Delay (ns):              0.300
+  Slack (ns):              0.048
+  Arrival (ns):            5.545
+  Required (ns):           5.497
+  Operating Conditions: slow_lv_lt
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[14][35]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[15][35]:D
+  Delay (ns):              0.308
+  Slack (ns):              0.051
+  Arrival (ns):            5.548
+  Required (ns):           5.497
+  Operating Conditions: slow_lv_lt
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/len_offset_pre[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/len_offset_reg[1]:D
+  Delay (ns):              0.309
+  Slack (ns):              0.057
+  Arrival (ns):            5.554
+  Required (ns):           5.497
+  Operating Conditions: slow_lv_lt
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/len_offset_pre[2]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/len_offset_reg[2]:D
+  Delay (ns):              0.310
+  Slack (ns):              0.058
+  Arrival (ns):            5.555
+  Required (ns):           5.497
+  Operating Conditions: slow_lv_lt
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[1]_1[13]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[2]_ret[12]:D
+  Delay (ns):              0.143
+  Slack (ns):              0.066
+  Arrival (ns):            3.799
+  Required (ns):           3.733
+  Operating Conditions: fast_hv_lt
+
+Path 6
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[21]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[22]:D
+  Delay (ns):              0.143
+  Slack (ns):              0.066
+  Arrival (ns):            3.801
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 7
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[22][4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[23][5]:D
+  Delay (ns):              0.143
+  Slack (ns):              0.066
+  Arrival (ns):            3.810
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 8
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[8]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[9]:D
+  Delay (ns):              0.144
+  Slack (ns):              0.067
+  Arrival (ns):            3.805
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 9
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[14]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[15]:D
+  Delay (ns):              0.144
+  Slack (ns):              0.067
+  Arrival (ns):            3.802
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 10
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[29][11]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[30][12]:D
+  Delay (ns):              0.144
+  Slack (ns):              0.067
+  Arrival (ns):            3.811
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 11
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[24][6]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[25][7]:D
+  Delay (ns):              0.144
+  Slack (ns):              0.067
+  Arrival (ns):            3.811
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 12
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage51:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage52:D
+  Delay (ns):              0.143
+  Slack (ns):              0.067
+  Arrival (ns):            3.814
+  Required (ns):           3.747
+  Operating Conditions: fast_hv_lt
+
+Path 13
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage19:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage20:D
+  Delay (ns):              0.143
+  Slack (ns):              0.067
+  Arrival (ns):            3.798
+  Required (ns):           3.731
+  Operating Conditions: fast_hv_lt
+
+Path 14
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_3[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_4[0]:D
+  Delay (ns):              0.144
+  Slack (ns):              0.067
+  Arrival (ns):            3.796
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 15
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[27][7]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[28][8]:D
+  Delay (ns):              0.145
+  Slack (ns):              0.068
+  Arrival (ns):            3.793
+  Required (ns):           3.725
+  Operating Conditions: fast_hv_lt
+
+Path 16
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[21][3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[22][4]:D
+  Delay (ns):              0.217
+  Slack (ns):              0.068
+  Arrival (ns):            5.480
+  Required (ns):           5.412
+  Operating Conditions: slow_lv_lt
+
+Path 17
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage65:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage66:D
+  Delay (ns):              0.144
+  Slack (ns):              0.068
+  Arrival (ns):            3.812
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 18
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage63:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage64:D
+  Delay (ns):              0.144
+  Slack (ns):              0.068
+  Arrival (ns):            3.812
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 19
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[28][10]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[29][11]:D
+  Delay (ns):              0.218
+  Slack (ns):              0.069
+  Arrival (ns):            5.481
+  Required (ns):           5.412
+  Operating Conditions: slow_lv_lt
+
+Path 20
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage23:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage24:D
+  Delay (ns):              0.145
+  Slack (ns):              0.069
+  Arrival (ns):            3.799
+  Required (ns):           3.730
+  Operating Conditions: fast_hv_lt
+
+Path 21
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_2[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_3[0]:D
+  Delay (ns):              0.146
+  Slack (ns):              0.069
+  Arrival (ns):            3.798
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 22
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_23:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_24:D
+  Delay (ns):              0.147
+  Slack (ns):              0.070
+  Arrival (ns):            3.808
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 23
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_10[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_11[0]:D
+  Delay (ns):              0.219
+  Slack (ns):              0.070
+  Arrival (ns):            5.462
+  Required (ns):           5.392
+  Operating Conditions: slow_lv_lt
+
+Path 24
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[2][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[3][37]:D
+  Delay (ns):              0.147
+  Slack (ns):              0.071
+  Arrival (ns):            3.818
+  Required (ns):           3.747
+  Operating Conditions: fast_hv_lt
+
+Path 25
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[22][38]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[23][38]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.799
+  Required (ns):           3.728
+  Operating Conditions: fast_hv_lt
+
+Path 26
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[22][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[23][36]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.800
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 27
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[20][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[21][37]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.799
+  Required (ns):           3.728
+  Operating Conditions: fast_hv_lt
+
+Path 28
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[15][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[16][37]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.831
+  Required (ns):           3.760
+  Operating Conditions: fast_hv_lt
+
+Path 29
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[6]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.809
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 30
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[27]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[28]:D
+  Delay (ns):              0.220
+  Slack (ns):              0.071
+  Arrival (ns):            5.466
+  Required (ns):           5.395
+  Operating Conditions: slow_lv_lt
+
+Path 31
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[17]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[18]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.806
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 32
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[25][7]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[26][8]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.815
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 33
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[8][34]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[9][34]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.803
+  Required (ns):           3.732
+  Operating Conditions: fast_hv_lt
+
+Path 34
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[12][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[13][36]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.795
+  Required (ns):           3.724
+  Operating Conditions: fast_hv_lt
+
+Path 35
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_15:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_16:D
+  Delay (ns):              0.148
+  Slack (ns):              0.071
+  Arrival (ns):            3.809
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 36
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage64:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage65:D
+  Delay (ns):              0.147
+  Slack (ns):              0.071
+  Arrival (ns):            3.815
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 37
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/rgsl/genblk1.awrs/sDat[32]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/axicb/cb.awcon/trgmx/slaveAADDR_ret[1]:D
+  Delay (ns):              0.145
+  Slack (ns):              0.071
+  Arrival (ns):            3.808
+  Required (ns):           3.737
+  Operating Conditions: fast_hv_lt
+
+Path 38
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/SYNC2_msrxp_strobe:CLK
+  To:   FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/SYNC3_msrxp_strobe:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            4.203
+  Required (ns):           4.131
+  Operating Conditions: fast_hv_lt
+
+Path 39
+  From: FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/rx_shift[3]:CLK
+  To:   FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/rx_shift[2]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            4.225
+  Required (ns):           4.153
+  Operating Conditions: fast_hv_lt
+
+Path 40
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[5][35]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[6][35]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            3.818
+  Required (ns):           3.746
+  Operating Conditions: fast_hv_lt
+
+Path 41
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[28][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[29][36]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            3.801
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 42
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[6]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[7]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.072
+  Arrival (ns):            3.810
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 43
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[4]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.072
+  Arrival (ns):            3.810
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 44
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_22:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_23:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            3.810
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 45
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage10:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage11:D
+  Delay (ns):              0.145
+  Slack (ns):              0.072
+  Arrival (ns):            3.812
+  Required (ns):           3.740
+  Operating Conditions: fast_hv_lt
+
+Path 46
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/MASTER_AADDR_out[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/SLAVE_AADDR[4]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            3.798
+  Required (ns):           3.726
+  Operating Conditions: fast_hv_lt
+
+Path 47
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_1[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_2[0]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.072
+  Arrival (ns):            3.801
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 48
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[1]_0_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[2]_ret_3:D
+  Delay (ns):              0.150
+  Slack (ns):              0.073
+  Arrival (ns):            3.802
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 49
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[19]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[20]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.073
+  Arrival (ns):            3.808
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 50
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[15]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[16]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.073
+  Arrival (ns):            3.808
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 51
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[26][8]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[27][9]:D
+  Delay (ns):              0.222
+  Slack (ns):              0.073
+  Arrival (ns):            5.485
+  Required (ns):           5.412
+  Operating Conditions: slow_lv_lt
+
+Path 52
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[23][5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[24][6]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.073
+  Arrival (ns):            3.817
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 53
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_4[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_5[0]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.073
+  Arrival (ns):            3.802
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 54
+  From: FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/psh_prescale_reg[26]:CLK
+  To:   FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/prescale_reg_Z[26]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.074
+  Arrival (ns):            4.219
+  Required (ns):           4.145
+  Operating Conditions: fast_hv_lt
+
+Path 55
+  From: FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/psh_prescale_reg[17]:CLK
+  To:   FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/prescale_reg_Z[17]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.074
+  Arrival (ns):            4.217
+  Required (ns):           4.143
+  Operating Conditions: fast_hv_lt
+
+Path 56
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[4]_ret_139[2]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[5]_ret_137[5]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.074
+  Arrival (ns):            3.788
+  Required (ns):           3.714
+  Operating Conditions: fast_hv_lt
+
+Path 57
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[4][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[5][37]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.820
+  Required (ns):           3.746
+  Operating Conditions: fast_hv_lt
+
+Path 58
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[1][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[2][36]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.803
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 59
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[15][38]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/d_pipe[16][38]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.834
+  Required (ns):           3.760
+  Operating Conditions: fast_hv_lt
+
+Path 60
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/spipe1[5]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.812
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 61
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[23][3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[24][4]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.799
+  Required (ns):           3.725
+  Operating Conditions: fast_hv_lt
+
+Path 62
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[22][0]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[23][1]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.804
+  Required (ns):           3.730
+  Operating Conditions: fast_hv_lt
+
+Path 63
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_21:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_22:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.812
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 64
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage22:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage23:D
+  Delay (ns):              0.150
+  Slack (ns):              0.074
+  Arrival (ns):            3.804
+  Required (ns):           3.730
+  Operating Conditions: fast_hv_lt
+
+Path 65
+  From: FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/MstConvertor_loop[0].mstrconv/rgsl/genblk2.arrs/sDat[24]:CLK
+  To:   FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/axicb/cb.arcon/trgmx/slaveALEN[1]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.074
+  Arrival (ns):            3.816
+  Required (ns):           3.742
+  Operating Conditions: fast_hv_lt
+
+Path 66
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/MASTER_AADDR_out[7]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/SLAVE_AADDR[7]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.074
+  Arrival (ns):            3.822
+  Required (ns):           3.748
+  Operating Conditions: fast_hv_lt
+
+Path 67
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_12[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_13[0]:D
+  Delay (ns):              0.148
+  Slack (ns):              0.074
+  Arrival (ns):            4.199
+  Required (ns):           4.125
+  Operating Conditions: fast_hv_lt
+
+Path 68
+  From: FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/psh_prescale_reg[29]:CLK
+  To:   FIC_3_PERIPHERALS_0/PWM/corepwm_C0_0/genblk3.corepwm_reg_if/prescale_reg_Z[29]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.075
+  Arrival (ns):            4.220
+  Required (ns):           4.145
+  Operating Conditions: fast_hv_lt
+
+Path 69
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[2]_ret[12]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[3]_ret[12]:D
+  Delay (ns):              0.152
+  Slack (ns):              0.075
+  Arrival (ns):            3.808
+  Required (ns):           3.733
+  Operating Conditions: fast_hv_lt
+
+Path 70
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[24][4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[25][5]:D
+  Delay (ns):              0.152
+  Slack (ns):              0.075
+  Arrival (ns):            3.800
+  Required (ns):           3.725
+  Operating Conditions: fast_hv_lt
+
+Path 71
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[18][35]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[19][35]:D
+  Delay (ns):              0.152
+  Slack (ns):              0.075
+  Arrival (ns):            3.806
+  Required (ns):           3.731
+  Operating Conditions: fast_hv_lt
+
+Path 72
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_59:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_60:D
+  Delay (ns):              0.149
+  Slack (ns):              0.075
+  Arrival (ns):            3.820
+  Required (ns):           3.745
+  Operating Conditions: fast_hv_lt
+
+Path 73
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[4]_ret_139[12]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_unsigned_modulus_32_0_inst/genblk1.divider/s_pipe[5]_ret_137[15]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.790
+  Required (ns):           3.714
+  Operating Conditions: fast_hv_lt
+
+Path 74
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[30][9]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[31][9]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.818
+  Required (ns):           3.742
+  Operating Conditions: fast_hv_lt
+
+Path 75
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[27][9]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[28][10]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.820
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 76
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[20][2]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[21][3]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.820
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 77
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[20][34]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[21][34]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.810
+  Required (ns):           3.734
+  Operating Conditions: fast_hv_lt
+
+Path 78
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[10][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[11][36]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.800
+  Required (ns):           3.724
+  Operating Conditions: fast_hv_lt
+
+Path 79
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_1:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_2_rep:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.814
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 80
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_19:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_20:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.814
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 81
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_18:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_19:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.814
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 82
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage60:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage61:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.820
+  Required (ns):           3.744
+  Operating Conditions: fast_hv_lt
+
+Path 83
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage32:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage33:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.819
+  Required (ns):           3.743
+  Operating Conditions: fast_hv_lt
+
+Path 84
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage27:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage28:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.811
+  Required (ns):           3.735
+  Operating Conditions: fast_hv_lt
+
+Path 85
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/MASTER_AADDR_out[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_AWChan/SLAVE_AADDR[5]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.824
+  Required (ns):           3.748
+  Operating Conditions: fast_hv_lt
+
+Path 86
+  From: FIC_0_PERIPHERALS_0/DMA_CONTROLLER_inst_0/DMA_CONTROLLER_0/U_AXI4INITIATORDMACtrl/AWADDRReg[8]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/mstrDWC/genblk1.MstUpConv/DWC_UpConv_preCalcAChannel_aw_inst/MASTER_AADDR_out[8]:D
+  Delay (ns):              0.150
+  Slack (ns):              0.076
+  Arrival (ns):            3.801
+  Required (ns):           3.725
+  Operating Conditions: fast_hv_lt
+
+Path 87
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_5[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_6[0]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.076
+  Arrival (ns):            3.805
+  Required (ns):           3.729
+  Operating Conditions: fast_hv_lt
+
+Path 88
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_12[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_13[0]:D
+  Delay (ns):              0.149
+  Slack (ns):              0.076
+  Arrival (ns):            3.795
+  Required (ns):           3.719
+  Operating Conditions: fast_hv_lt
+
+Path 89
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[26][7]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[27][8]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.077
+  Arrival (ns):            3.824
+  Required (ns):           3.747
+  Operating Conditions: fast_hv_lt
+
+Path 90
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[26][6]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[27][7]:D
+  Delay (ns):              0.154
+  Slack (ns):              0.077
+  Arrival (ns):            3.802
+  Required (ns):           3.725
+  Operating Conditions: fast_hv_lt
+
+Path 91
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[25][3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/q_pipe[26][4]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.077
+  Arrival (ns):            3.815
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 92
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[9][34]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[10][34]:D
+  Delay (ns):              0.154
+  Slack (ns):              0.077
+  Arrival (ns):            3.809
+  Required (ns):           3.732
+  Operating Conditions: fast_hv_lt
+
+Path 93
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[19][36]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[20][36]:D
+  Delay (ns):              0.153
+  Slack (ns):              0.077
+  Arrival (ns):            3.803
+  Required (ns):           3.726
+  Operating Conditions: fast_hv_lt
+
+Path 94
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[18][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[19][37]:D
+  Delay (ns):              0.154
+  Slack (ns):              0.077
+  Arrival (ns):            3.808
+  Required (ns):           3.731
+  Operating Conditions: fast_hv_lt
+
+Path 95
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[16][37]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_signed_divide_32_0_inst/genblk1.divider/d_pipe[17][37]:D
+  Delay (ns):              0.154
+  Slack (ns):              0.077
+  Arrival (ns):            3.808
+  Required (ns):           3.731
+  Operating Conditions: fast_hv_lt
+
+Path 96
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_17:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_18:D
+  Delay (ns):              0.154
+  Slack (ns):              0.077
+  Arrival (ns):            3.815
+  Required (ns):           3.738
+  Operating Conditions: fast_hv_lt
+
+Path 97
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage43:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_in_first_iteration_stage44:D
+  Delay (ns):              0.151
+  Slack (ns):              0.077
+  Arrival (ns):            3.824
+  Required (ns):           3.747
+  Operating Conditions: fast_hv_lt
+
+Path 98
+  From: FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/SlvConvertor_loop[1].slvcnv/rgsl/genblk4.wrs/sDat[52]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/wr_controller/axi_wdata[42]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.077
+  Arrival (ns):            3.798
+  Required (ns):           3.721
+  Operating Conditions: fast_hv_lt
+
+Path 99
+  From: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/MstConvertor_loop[0].mstrconv/rgsl/genblk1.awrs/sDat[31]:CLK
+  To:   FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/axicb/cb.awcon/trgmx/slaveAADDR_ret[0]:D
+  Delay (ns):              0.151
+  Slack (ns):              0.077
+  Arrival (ns):            3.814
+  Required (ns):           3.737
+  Operating Conditions: fast_hv_lt
+
+Path 100
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_5[0]:CLK
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_6[0]:D
+  Delay (ns):              0.152
+  Slack (ns):              0.077
+  Arrival (ns):            4.208
+  Required (ns):           4.131
+  Operating Conditions: fast_hv_lt
+

@@ -1,0 +1,919 @@
+Timing Violation Report Max Delay Analysis
+
+SmartTime Version 2025.2
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Thu Feb 12 20:47:56 2026
+
+
+Design: MPFS_DISCOVERY_KIT
+Family: PolarFireSoC
+Die: MPFS095T
+Package: FCSG325
+Temperature Range: 0 - 100 C
+Voltage Range: 0.97 - 1.03 V
+Speed Grade: -1
+Design State: Post-Layout
+Data source: Production
+Multi Corner Report Operating Conditions: slow_lv_lt,fast_hv_lt,slow_lv_ht
+
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              3.120
+  Slack (ns):              2.746
+  Arrival (ns):            9.210
+  Required (ns):          11.956
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              2.967
+  Slack (ns):              2.750
+  Arrival (ns):            8.974
+  Required (ns):          11.724
+  Operating Conditions: slow_lv_lt
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.199
+  Slack (ns):              2.769
+  Arrival (ns):            9.289
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.140
+  Slack (ns):              2.772
+  Arrival (ns):            9.230
+  Required (ns):          12.002
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.159
+  Slack (ns):              2.782
+  Arrival (ns):            9.249
+  Required (ns):          12.031
+  Operating Conditions: slow_lv_ht
+
+Path 6
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.172
+  Slack (ns):              2.790
+  Arrival (ns):            9.262
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 7
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              3.124
+  Slack (ns):              2.811
+  Arrival (ns):            9.214
+  Required (ns):          12.025
+  Operating Conditions: slow_lv_ht
+
+Path 8
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              3.050
+  Slack (ns):              2.816
+  Arrival (ns):            9.140
+  Required (ns):          11.956
+  Operating Conditions: slow_lv_ht
+
+Path 9
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              2.984
+  Slack (ns):              2.829
+  Arrival (ns):            8.824
+  Required (ns):          11.653
+  Operating Conditions: slow_lv_lt
+
+Path 10
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.203
+  Slack (ns):              2.832
+  Arrival (ns):            9.293
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 11
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              3.023
+  Slack (ns):              2.837
+  Arrival (ns):            9.113
+  Required (ns):          11.950
+  Operating Conditions: slow_lv_ht
+
+Path 12
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.129
+  Slack (ns):              2.839
+  Arrival (ns):            9.219
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 13
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.070
+  Slack (ns):              2.842
+  Arrival (ns):            9.160
+  Required (ns):          12.002
+  Operating Conditions: slow_lv_ht
+
+Path 14
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.089
+  Slack (ns):              2.852
+  Arrival (ns):            9.179
+  Required (ns):          12.031
+  Operating Conditions: slow_lv_ht
+
+Path 15
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              3.013
+  Slack (ns):              2.853
+  Arrival (ns):            9.103
+  Required (ns):          11.956
+  Operating Conditions: slow_lv_ht
+
+Path 16
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              3.010
+  Slack (ns):              2.856
+  Arrival (ns):            9.100
+  Required (ns):          11.956
+  Operating Conditions: slow_lv_ht
+
+Path 17
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.111
+  Slack (ns):              2.857
+  Arrival (ns):            9.201
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 18
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.102
+  Slack (ns):              2.860
+  Arrival (ns):            9.192
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 19
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.001
+  Slack (ns):              2.862
+  Arrival (ns):            8.841
+  Required (ns):          11.703
+  Operating Conditions: slow_lv_lt
+
+Path 20
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              3.004
+  Slack (ns):              2.863
+  Arrival (ns):            9.093
+  Required (ns):          11.956
+  Operating Conditions: slow_lv_ht
+
+Path 21
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              3.026
+  Slack (ns):              2.867
+  Arrival (ns):            9.116
+  Required (ns):          11.983
+  Operating Conditions: slow_lv_ht
+
+Path 22
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.026
+  Slack (ns):              2.871
+  Arrival (ns):            8.866
+  Required (ns):          11.737
+  Operating Conditions: slow_lv_lt
+
+Path 23
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.096
+  Slack (ns):              2.872
+  Arrival (ns):            9.186
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 24
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.035
+  Slack (ns):              2.877
+  Arrival (ns):            9.125
+  Required (ns):          12.002
+  Operating Conditions: slow_lv_ht
+
+Path 25
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.089
+  Slack (ns):              2.879
+  Arrival (ns):            9.179
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 26
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.082
+  Slack (ns):              2.880
+  Arrival (ns):            9.172
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 27
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              3.054
+  Slack (ns):              2.881
+  Arrival (ns):            9.144
+  Required (ns):          12.025
+  Operating Conditions: slow_lv_ht
+
+Path 28
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.030
+  Slack (ns):              2.882
+  Arrival (ns):            9.120
+  Required (ns):          12.002
+  Operating Conditions: slow_lv_ht
+
+Path 29
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              3.083
+  Slack (ns):              2.886
+  Arrival (ns):            9.172
+  Required (ns):          12.058
+  Operating Conditions: slow_lv_ht
+
+Path 30
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.054
+  Slack (ns):              2.887
+  Arrival (ns):            9.144
+  Required (ns):          12.031
+  Operating Conditions: slow_lv_ht
+
+Path 31
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.164
+  Slack (ns):              2.888
+  Arrival (ns):            9.254
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 32
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              2.877
+  Slack (ns):              2.888
+  Arrival (ns):            8.884
+  Required (ns):          11.772
+  Operating Conditions: slow_lv_lt
+
+Path 33
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              3.024
+  Slack (ns):              2.889
+  Arrival (ns):            9.113
+  Required (ns):          12.002
+  Operating Conditions: slow_lv_ht
+
+Path 34
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.150
+  Slack (ns):              2.889
+  Arrival (ns):            9.240
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 35
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.049
+  Slack (ns):              2.892
+  Arrival (ns):            9.139
+  Required (ns):          12.031
+  Operating Conditions: slow_lv_ht
+
+Path 36
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.067
+  Slack (ns):              2.895
+  Arrival (ns):            9.157
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 37
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              2.985
+  Slack (ns):              2.896
+  Arrival (ns):            8.825
+  Required (ns):          11.721
+  Operating Conditions: slow_lv_lt
+
+Path 38
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              3.043
+  Slack (ns):              2.899
+  Arrival (ns):            9.132
+  Required (ns):          12.031
+  Operating Conditions: slow_lv_ht
+
+Path 39
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.062
+  Slack (ns):              2.900
+  Arrival (ns):            9.152
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 40
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.133
+  Slack (ns):              2.902
+  Arrival (ns):            9.223
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 41
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              3.054
+  Slack (ns):              2.902
+  Arrival (ns):            9.144
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 42
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[6]
+  Delay (ns):              3.056
+  Slack (ns):              2.907
+  Arrival (ns):            9.145
+  Required (ns):          12.052
+  Operating Conditions: slow_lv_ht
+
+Path 43
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.953
+  Slack (ns):              2.907
+  Arrival (ns):            9.043
+  Required (ns):          11.950
+  Operating Conditions: slow_lv_ht
+
+Path 44
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.202
+  Slack (ns):              2.911
+  Arrival (ns):            9.292
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 45
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              3.019
+  Slack (ns):              2.916
+  Arrival (ns):            9.109
+  Required (ns):          12.025
+  Operating Conditions: slow_lv_ht
+
+Path 46
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              3.030
+  Slack (ns):              2.917
+  Arrival (ns):            9.120
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+
+Path 47
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              3.021
+  Slack (ns):              2.918
+  Arrival (ns):            9.111
+  Required (ns):          12.029
+  Operating Conditions: slow_lv_ht
+
+Path 48
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.115
+  Slack (ns):              2.920
+  Arrival (ns):            9.205
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 49
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              3.014
+  Slack (ns):              2.921
+  Arrival (ns):            9.104
+  Required (ns):          12.025
+  Operating Conditions: slow_lv_ht
+
+Path 50
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.889
+  Slack (ns):              2.922
+  Arrival (ns):            8.729
+  Required (ns):          11.651
+  Operating Conditions: slow_lv_lt
+
+Path 51
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[7]
+  Delay (ns):              3.008
+  Slack (ns):              2.928
+  Arrival (ns):            9.097
+  Required (ns):          12.025
+  Operating Conditions: slow_lv_ht
+
+Path 52
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.100
+  Slack (ns):              2.935
+  Arrival (ns):            9.190
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 53
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.956
+  Slack (ns):              2.937
+  Arrival (ns):            9.046
+  Required (ns):          11.983
+  Operating Conditions: slow_lv_ht
+
+Path 54
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.918
+  Slack (ns):              2.942
+  Arrival (ns):            9.008
+  Required (ns):          11.950
+  Operating Conditions: slow_lv_ht
+
+Path 55
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.093
+  Slack (ns):              2.942
+  Arrival (ns):            9.183
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 56
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.913
+  Slack (ns):              2.947
+  Arrival (ns):            9.003
+  Required (ns):          11.950
+  Operating Conditions: slow_lv_ht
+
+Path 57
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[16]
+  Delay (ns):              3.087
+  Slack (ns):              2.949
+  Arrival (ns):            9.176
+  Required (ns):          12.125
+  Operating Conditions: slow_lv_ht
+
+Path 58
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.891
+  Slack (ns):              2.954
+  Arrival (ns):            8.731
+  Required (ns):          11.685
+  Operating Conditions: slow_lv_lt
+
+Path 59
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.907
+  Slack (ns):              2.954
+  Arrival (ns):            8.996
+  Required (ns):          11.950
+  Operating Conditions: slow_lv_ht
+
+Path 60
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.094
+  Slack (ns):              2.958
+  Arrival (ns):            9.184
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 61
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[12]
+  Delay (ns):              3.130
+  Slack (ns):              2.958
+  Arrival (ns):            9.220
+  Required (ns):          12.178
+  Operating Conditions: slow_lv_ht
+
+Path 62
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.080
+  Slack (ns):              2.959
+  Arrival (ns):            9.170
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 63
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[13]
+  Delay (ns):              3.118
+  Slack (ns):              2.971
+  Arrival (ns):            9.208
+  Required (ns):          12.179
+  Operating Conditions: slow_lv_ht
+
+Path 64
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.921
+  Slack (ns):              2.972
+  Arrival (ns):            9.011
+  Required (ns):          11.983
+  Operating Conditions: slow_lv_ht
+
+Path 65
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.984
+  Slack (ns):              2.972
+  Arrival (ns):            9.074
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 66
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.916
+  Slack (ns):              2.977
+  Arrival (ns):            9.006
+  Required (ns):          11.983
+  Operating Conditions: slow_lv_ht
+
+Path 67
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.061
+  Slack (ns):              2.978
+  Arrival (ns):            9.151
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 68
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.074
+  Slack (ns):              2.978
+  Arrival (ns):            9.164
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 69
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[1]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[14]
+  Delay (ns):              3.117
+  Slack (ns):              2.978
+  Arrival (ns):            9.207
+  Required (ns):          12.185
+  Operating Conditions: slow_lv_ht
+
+Path 70
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.132
+  Slack (ns):              2.981
+  Arrival (ns):            9.222
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 71
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[2]
+  Delay (ns):              2.910
+  Slack (ns):              2.984
+  Arrival (ns):            8.999
+  Required (ns):          11.983
+  Operating Conditions: slow_lv_ht
+
+Path 72
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_68_rep:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[0]
+  Delay (ns):              2.829
+  Slack (ns):              2.984
+  Arrival (ns):            8.669
+  Required (ns):          11.653
+  Operating Conditions: slow_lv_lt
+
+Path 73
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.960
+  Slack (ns):              2.987
+  Arrival (ns):            9.050
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+
+Path 74
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              2.951
+  Slack (ns):              2.988
+  Arrival (ns):            9.041
+  Required (ns):          12.029
+  Operating Conditions: slow_lv_ht
+
+Path 75
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.965
+  Slack (ns):              2.991
+  Arrival (ns):            9.055
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 76
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.046
+  Slack (ns):              2.993
+  Arrival (ns):            9.136
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 77
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.059
+  Slack (ns):              2.993
+  Arrival (ns):            9.149
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 78
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.054
+  Slack (ns):              2.998
+  Arrival (ns):            9.144
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 79
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.114
+  Slack (ns):              2.999
+  Arrival (ns):            9.204
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 80
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.040
+  Slack (ns):              2.999
+  Arrival (ns):            9.130
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 81
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_10_16_1_2/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_mulonly_0[23:0]/MACC_PHYS_INST/INST_MACC_IP:B[3]
+  Delay (ns):              2.667
+  Slack (ns):              3.002
+  Arrival (ns):            8.674
+  Required (ns):          11.676
+  Operating Conditions: slow_lv_lt
+
+Path 82
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              2.893
+  Slack (ns):              3.005
+  Arrival (ns):            8.733
+  Required (ns):          11.738
+  Operating Conditions: slow_lv_lt
+
+Path 83
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[10]
+  Delay (ns):              3.048
+  Slack (ns):              3.005
+  Arrival (ns):            9.137
+  Required (ns):          12.142
+  Operating Conditions: slow_lv_ht
+
+Path 84
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.950
+  Slack (ns):              3.006
+  Arrival (ns):            9.040
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 85
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_3:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.941
+  Slack (ns):              3.006
+  Arrival (ns):            9.031
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+
+Path 86
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[11]
+  Delay (ns):              3.034
+  Slack (ns):              3.006
+  Arrival (ns):            9.123
+  Required (ns):          12.129
+  Operating Conditions: slow_lv_ht
+
+Path 87
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.944
+  Slack (ns):              3.012
+  Arrival (ns):            9.034
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 88
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.099
+  Slack (ns):              3.014
+  Arrival (ns):            9.189
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 89
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_68_rep:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[8]
+  Delay (ns):              2.846
+  Slack (ns):              3.017
+  Arrival (ns):            8.686
+  Required (ns):          11.703
+  Operating Conditions: slow_lv_lt
+
+Path 90
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_68_rep:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[17]
+  Delay (ns):              2.902
+  Slack (ns):              3.018
+  Arrival (ns):            8.742
+  Required (ns):          11.760
+  Operating Conditions: slow_lv_lt
+
+Path 91
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[4]
+  Delay (ns):              2.938
+  Slack (ns):              3.019
+  Arrival (ns):            9.027
+  Required (ns):          12.046
+  Operating Conditions: slow_lv_ht
+
+Path 92
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.926
+  Slack (ns):              3.021
+  Arrival (ns):            9.016
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+
+Path 93
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.092
+  Slack (ns):              3.021
+  Arrival (ns):            9.182
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 94
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_9:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              2.916
+  Slack (ns):              3.023
+  Arrival (ns):            9.006
+  Required (ns):          12.029
+  Operating Conditions: slow_lv_ht
+
+Path 95
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/for_loop_main_variations_main_fifo_cpp_132_5_valid_bit_68_rep:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[9]
+  Delay (ns):              2.871
+  Slack (ns):              3.026
+  Arrival (ns):            8.711
+  Required (ns):          11.737
+  Operating Conditions: slow_lv_lt
+
+Path 96
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.920
+  Slack (ns):              3.027
+  Arrival (ns):            9.010
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+
+Path 97
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[15]
+  Delay (ns):              3.086
+  Slack (ns):              3.028
+  Arrival (ns):            9.175
+  Required (ns):          12.203
+  Operating Conditions: slow_lv_ht
+
+Path 98
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[4]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[1]
+  Delay (ns):              2.911
+  Slack (ns):              3.028
+  Arrival (ns):            9.001
+  Required (ns):          12.029
+  Operating Conditions: slow_lv_ht
+
+Path 99
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[3]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[12]
+  Delay (ns):              3.060
+  Slack (ns):              3.028
+  Arrival (ns):            9.150
+  Required (ns):          12.178
+  Operating Conditions: slow_lv_ht
+
+Path 100
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_2_sext69_pipeline_fifo_3_67/genblk1.fwft_fifo_lutram_inst/read_address_ret_1[5]:CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/legup_mult_signed_16_16_1_5/genblk1.legup_mult_pipelined_inst/genblk1.result_reg[0]_muladd_0[31:0]/MACC_PHYS_INST/INST_MACC_IP:B[5]
+  Delay (ns):              2.914
+  Slack (ns):              3.034
+  Arrival (ns):            9.003
+  Required (ns):          12.037
+  Operating Conditions: slow_lv_ht
+

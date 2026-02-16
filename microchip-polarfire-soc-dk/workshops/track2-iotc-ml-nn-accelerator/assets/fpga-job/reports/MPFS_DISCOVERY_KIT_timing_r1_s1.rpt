@@ -1,0 +1,1618 @@
+Timing Report Max Delay Analysis
+
+SmartTime Version 2025.2
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Fri Feb 13 18:22:55 2026
+
+
+Design: MPFS_DISCOVERY_KIT
+Family: PolarFireSoC
+Die: MPFS095T
+Package: FCSG325
+Temperature Range: 0 - 100 C
+Voltage Range: 0.97 - 1.03 V
+Speed Grade: -1
+Design State: Post-Layout
+Data source: Production
+Multi Corner Report Operating Conditions: slow_lv_lt,fast_hv_lt,slow_lv_ht
+
+
+-----------------------------------------------------
+SUMMARY
+
+Clock Domain:               CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+Required Period (ns):       8.000
+Required Frequency (MHz):   125.000
+Worst Slack (ns):           2.238
+Operating Conditions:       slow_lv_ht
+
+Clock Domain:               CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+Required Period (ns):       20.000
+Required Frequency (MHz):   50.000
+Worst Slack (ns):           3.636
+Operating Conditions:       slow_lv_ht
+
+Clock Domain:               MBUS_SPI_CLK
+Required Period (ns):       N/A
+Required Frequency (MHz):   N/A
+Worst Slack (ns):           
+Operating Conditions:       
+
+Clock Domain:               MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_M2F
+Required Period (ns):       N/A
+Required Frequency (MHz):   N/A
+Worst Slack (ns):           
+Operating Conditions:       
+
+Clock Domain:               MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_M2F
+Required Period (ns):       N/A
+Required Frequency (MHz):   N/A
+Worst Slack (ns):           
+Operating Conditions:       
+
+Clock Domain:               REF_CLK_50MHz
+Required Period (ns):       20.000
+Required Frequency (MHz):   50.000
+Worst Slack (ns):           
+Operating Conditions:       
+
+Clock Domain:               CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT1
+Required Period (ns):       8.000
+Required Frequency (MHz):   125.000
+Worst Slack (ns):           
+Operating Conditions:       
+
+Clock Domain:               CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT2
+Required Period (ns):       8.000
+Required Frequency (MHz):   125.000
+Worst Slack (ns):           
+Operating Conditions:       
+
+                            Input to Output
+Max Delay (ns):             N/A
+
+END SUMMARY
+-----------------------------------------------------
+
+Clock Domain CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+
+SET Register to Register
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[1]
+  Delay (ns):              5.526
+  Slack (ns):              2.238
+  Arrival (ns):           11.783
+  Required (ns):          14.021
+  Setup (ns):              0.072
+  Minimum Period (ns):     5.627
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:A_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[3]
+  Delay (ns):              5.500
+  Slack (ns):              2.262
+  Arrival (ns):           11.759
+  Required (ns):          14.021
+  Setup (ns):              0.072
+  Minimum Period (ns):     5.603
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[3]
+  Delay (ns):              5.494
+  Slack (ns):              2.270
+  Arrival (ns):           11.751
+  Required (ns):          14.021
+  Setup (ns):              0.072
+  Minimum Period (ns):     5.595
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_0/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[9]
+  Delay (ns):              5.473
+  Slack (ns):              2.289
+  Arrival (ns):           11.730
+  Required (ns):          14.019
+  Setup (ns):              0.076
+  Minimum Period (ns):     5.576
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK
+  To:   FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_0/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[11]
+  Delay (ns):              5.446
+  Slack (ns):              2.311
+  Arrival (ns):           11.703
+  Required (ns):          14.014
+  Setup (ns):              0.081
+  Minimum Period (ns):     5.554
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK
+  To: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[1]
+  data required time                                 14.021
+  data arrival time                          -       11.783
+  slack                                               2.238
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+               +     0.000          Clock source
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT0 (r)
+               +     4.309          Clock generation
+  4.309                        
+               +     0.272          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_0
+  4.581                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:A (r)
+               +     0.227          cell: ADLIB:ICB_CLKINT
+  4.808                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:Y (r)
+               +     0.148          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_NET
+  4.956                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_GB0:A (r)
+               +     0.165          cell: ADLIB:GB
+  5.121                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_GB0:Y (r)
+               +     0.413          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_gbs_1
+  5.534                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2:A (r)
+               +     0.058          cell: ADLIB:RGB
+  5.592                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2:Y (f)
+               +     0.665          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2_rgb_net_1
+  6.257                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_CLK (r)
+               +     2.090          cell: ADLIB:RAM1K20_IP
+  8.347                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/ram_dual_port_inst/byte_enabled.ram_dual_port_byte_enabled_inst/ram_1_0_ram_1_0_0_bwwe_0_0/INST_RAM1K20_IP:B_DOUT[15] (f)
+               +     0.567          net: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst_genRamLoop_1__genRam_ram_ram_dual_port_inst_byte_enabled_ram_dual_port_byte_enabled_inst_ram_1_0_ram_1_0_0_bwwe_0_0_NEWB[15]
+  8.914                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_5:D (f)
+               +     0.085          cell: ADLIB:ARI1_CC
+  8.999                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_5:P (f)
+               +     0.015          net: NET_CC_CONFIG2999
+  9.014                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_0_CC_0:P[8] (f)
+               +     0.322          cell: ADLIB:CC_CONFIG
+  9.336                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_0_CC_0:CC[10] (r)
+               +     0.000          net: NET_CC_CONFIG3010
+  9.336                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_7:CC (r)
+               +     0.063          cell: ADLIB:ARI1_CC
+  9.399                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_cry_7:S (r)
+               +     0.398          net: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add34_Z[7]
+  9.797                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_7:B (r)
+               +     0.094          cell: ADLIB:ARI1_CC
+  9.891                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_7:P (f)
+               +     0.016          net: NET_CC_CONFIG2400
+  9.907                        FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_0_CC_0:P[10] (f)
+               +     0.223          cell: ADLIB:CC_CONFIG
+  10.130                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_0_CC_0:CO (r)
+               +     0.008          net: CI_TO_CO2371
+  10.138                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_0_CC_1:CI (r)
+               +     0.101          cell: ADLIB:CC_CONFIG
+  10.239                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_0_CC_1:CC[1] (r)
+               +     0.000          net: NET_CC_CONFIG2415
+  10.239                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_10:CC (r)
+               +     0.063          cell: ADLIB:ARI1_CC
+  10.302                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35_0_cry_10:S (r)
+               +     0.442          net: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add35[10]
+  10.744                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_10:B (r)
+               +     0.094          cell: ADLIB:ARI1_CC
+  10.838                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_10:P (f)
+               +     0.015          net: NET_CC_CONFIG8966
+  10.853                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_0_CC_1:P[7] (f)
+               +     0.289          cell: ADLIB:CC_CONFIG
+  11.142                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_0_CC_1:CO (f)
+               +     0.008          net: CI_TO_CO8925
+  11.150                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_0_CC_2:CI (f)
+               +     0.114          cell: ADLIB:CC_CONFIG
+  11.264                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_0_CC_2:CC[1] (f)
+               +     0.000          net: NET_CC_CONFIG8993
+  11.264                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_16:CC (f)
+               +     0.050          cell: ADLIB:ARI1_CC
+  11.314                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36_0_cry_16:S (f)
+               +     0.329          net: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_1_add36[16]
+  11.643                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/CFG_3:B (f)
+               +     0.027          cell: ADLIB:CFG4_IP_ABCD
+  11.670                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/CFG_3:IPB (r)
+               +     0.113          net: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/W_DATA_net[1]
+  11.783                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[1] (f)
+                                    
+  11.783                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  8.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+               +     0.000          Clock source
+  8.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT0 (r)
+               +     3.890          Clock generation
+  11.890                       
+               +     0.248          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_0
+  12.138                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:A (r)
+               +     0.197          cell: ADLIB:ICB_CLKINT
+  12.335                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:Y (r)
+               +     0.135          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_NET
+  12.470                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_GB0:A (r)
+               +     0.150          cell: ADLIB:GB
+  12.620                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_GB0:Y (r)
+               +     0.374          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_gbs_1
+  12.994                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2:A (r)
+               +     0.052          cell: ADLIB:RGB
+  13.046                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2:Y (f)
+               +     0.612          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB2_rgb_net_1
+  13.658                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_CLK (r)
+               +     0.570          
+  14.228                       clock reconvergence pessimism
+               -     0.135          
+  14.093                       clock jitter
+               -     0.072          Library setup time: ADLIB:RAM64x12_IP
+  14.021                       FIC_0_PERIPHERALS_0/tinyml_accel_top_0/tinyml_accel_inst/tinyml_accel_inst/tinyml_accel_BB_0_feat/ram_ram_0_1/RAM64x12_PHYS_0/INST_RAM64x12_IP:W_DATA[1]
+                                    
+  14.021                       data required time
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+Path 1
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To:   FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/sDat[32]:ALn
+  Delay (ns):              2.139
+  Slack (ns):              5.442
+  Arrival (ns):            8.195
+  Required (ns):          13.637
+  Recovery (ns):           0.209
+  Minimum Period (ns):     2.423
+  Skew (ns):               0.075
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To:   FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/holdDat[24]:ALn
+  Delay (ns):              2.139
+  Slack (ns):              5.442
+  Arrival (ns):            8.195
+  Required (ns):          13.637
+  Recovery (ns):           0.209
+  Minimum Period (ns):     2.423
+  Skew (ns):               0.075
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To:   FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/MstConvertor_loop[0].mstrconv/rgsl/genblk2.arrs/sDat[27]:ALn
+  Delay (ns):              2.134
+  Slack (ns):              5.442
+  Arrival (ns):            8.190
+  Required (ns):          13.632
+  Recovery (ns):           0.209
+  Minimum Period (ns):     2.423
+  Skew (ns):               0.080
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To:   FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/MstConvertor_loop[0].mstrconv/rgsl/genblk2.arrs/holdDat[27]:ALn
+  Delay (ns):              2.133
+  Slack (ns):              5.443
+  Arrival (ns):            8.189
+  Required (ns):          13.632
+  Recovery (ns):           0.209
+  Minimum Period (ns):     2.422
+  Skew (ns):               0.080
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To:   FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/MstConvertor_loop[0].mstrconv/rgsl/genblk2.arrs/holdDat[20]:ALn
+  Delay (ns):              2.134
+  Slack (ns):              5.443
+  Arrival (ns):            8.190
+  Required (ns):          13.633
+  Recovery (ns):           0.209
+  Minimum Period (ns):     2.422
+  Skew (ns):               0.079
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK
+  To: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/sDat[32]:ALn
+  data required time                                 13.637
+  data arrival time                          -        8.195
+  slack                                               5.442
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+               +     0.000          Clock source
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT0 (r)
+               +     4.309          Clock generation
+  4.309                        
+               +     0.272          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_0
+  4.581                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:A (r)
+               +     0.227          cell: ADLIB:ICB_CLKINT
+  4.808                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:Y (r)
+               +     0.148          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_NET
+  4.956                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:A (r)
+               +     0.164          cell: ADLIB:GB
+  5.120                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:Y (r)
+               +     0.401          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_Y
+  5.521                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB6:A (r)
+               +     0.058          cell: ADLIB:RGB
+  5.579                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB6:Y (f)
+               +     0.477          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB6_rgb_net_1
+  6.056                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:CLK (r)
+               +     0.209          cell: ADLIB:SLE
+  6.265                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset:Q (r)
+               +     0.797          net: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_Z
+  7.062                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR:A (r)
+               +     0.141          cell: ADLIB:GB
+  7.203                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR:Y (r)
+               +     0.423          net: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_Y
+  7.626                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1_RGB0:A (r)
+               +     0.058          cell: ADLIB:RGB
+  7.684                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1_RGB0:Y (f)
+               +     0.511          net: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1_RGB0_rgb_net_1
+  8.195                        FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/sDat[32]:ALn (r)
+                                    
+  8.195                        data arrival time
+  ________________________________________________________
+  Data required time calculation
+  8.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+               +     0.000          Clock source
+  8.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT0 (r)
+               +     3.890          Clock generation
+  11.890                       
+               +     0.248          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_0
+  12.138                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:A (r)
+               +     0.197          cell: ADLIB:ICB_CLKINT
+  12.335                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:Y (r)
+               +     0.135          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_NET
+  12.470                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:A (r)
+               +     0.149          cell: ADLIB:GB
+  12.619                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:Y (r)
+               +     0.376          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_Y
+  12.995                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB1:A (r)
+               +     0.052          cell: ADLIB:RGB
+  13.047                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB1:Y (f)
+               +     0.430          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB1_rgb_net_1
+  13.477                       FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/sDat[32]:CLK (r)
+               +     0.504          
+  13.981                       clock reconvergence pessimism
+               -     0.135          
+  13.846                       clock jitter
+               -     0.209          Library recovery time: ADLIB:SLE
+  13.637                       FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/SlvConvertor_loop[0].slvcnv/rgsl/genblk3.rrs/sDat[32]:ALn
+                                    
+  13.637                       data required time
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+Path 1
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep[0]:ALn
+  Delay (ns):             11.130
+  Arrival (ns):           11.130
+  Recovery (ns):           0.209
+  External Recovery (ns):   6.015
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_14[0]:ALn
+  Delay (ns):             11.033
+  Arrival (ns):           11.033
+  Recovery (ns):           0.196
+  External Recovery (ns):   5.902
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_12[0]:ALn
+  Delay (ns):             11.032
+  Arrival (ns):           11.032
+  Recovery (ns):           0.196
+  External Recovery (ns):   5.901
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_11[0]:ALn
+  Delay (ns):             11.032
+  Arrival (ns):           11.032
+  Recovery (ns):           0.196
+  External Recovery (ns):   5.901
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_10[0]:ALn
+  Delay (ns):             11.032
+  Arrival (ns):           11.032
+  Recovery (ns):           0.196
+  External Recovery (ns):   5.901
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: SWITCH2
+  To: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep[0]:ALn
+  data required time                                    N/C
+  data arrival time                          -       11.130
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        SWITCH2 (r)
+               +     0.000          net: SWITCH2
+  0.000                        SWITCH2_ibuf/U_IOPAD:PAD (r)
+               +     0.610          cell: ADLIB:IOPAD_IN
+  0.610                        SWITCH2_ibuf/U_IOPAD:Y (r)
+               +     0.000          net: SWITCH2_ibuf/YIN
+  0.610                        SWITCH2_ibuf/U_IOIN:YIN (r)
+               +     0.336          cell: ADLIB:IOIN_IB_E
+  0.946                        SWITCH2_ibuf/U_IOIN:Y (r)
+               +     4.337          net: SWITCH2_c
+  5.283                        CLOCKS_AND_RESETS_0/AND3_0:A (r)
+               +     0.078          cell: ADLIB:CFG3
+  5.361                        CLOCKS_AND_RESETS_0/AND3_0:Y (r)
+               +     1.691          net: CLOCKS_AND_RESETS_0/AND3_0_Y
+  7.052                        CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/un1_EXT_RST_N_2:C (r)
+               +     0.053          cell: ADLIB:CFG3
+  7.105                        CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/un1_EXT_RST_N_2:Y (r)
+               +     4.025          net: CLOCKS_AND_RESETS_0/un1_EXT_RST_N_2
+  11.130                       CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep[0]:ALn (r)
+                                    
+  11.130                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT0
+               +     0.000          Clock source
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT0 (r)
+               +     3.890          Clock generation
+  N/C                          
+               +     0.248          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_0
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:A (r)
+               +     0.197          cell: ADLIB:ICB_CLKINT
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_1:Y (r)
+               +     0.135          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0_NET
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:A (r)
+               +     0.149          cell: ADLIB:GB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0:Y (r)
+               +     0.375          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_Y
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB3:A (r)
+               +     0.052          cell: ADLIB:RGB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB3:Y (f)
+               +     0.413          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1_RGB3_rgb_net_1
+  N/C                          CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep[0]:CLK (r)
+               -     0.135          
+  N/C                          clock jitter
+               -     0.209          Library recovery time: ADLIB:SLE
+  N/C                          CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep[0]:ALn
+
+
+Operating Conditions : slow_lv_ht
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+
+SET Register to Register
+
+Path 1
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[2]
+  Delay (ns):              6.282
+  Slack (ns):              3.636
+  Arrival (ns):           13.296
+  Required (ns):          16.932
+  Setup (ns):             -0.105
+  Minimum Period (ns):    12.458
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[5]
+  Delay (ns):              6.317
+  Slack (ns):              3.713
+  Arrival (ns):           13.331
+  Required (ns):          17.044
+  Setup (ns):             -0.217
+  Minimum Period (ns):    12.304
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[7]
+  Delay (ns):              6.314
+  Slack (ns):              3.767
+  Arrival (ns):           13.328
+  Required (ns):          17.095
+  Setup (ns):             -0.268
+  Minimum Period (ns):    12.196
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[1]
+  Delay (ns):              6.186
+  Slack (ns):              3.777
+  Arrival (ns):           13.200
+  Required (ns):          16.977
+  Setup (ns):             -0.150
+  Minimum Period (ns):    12.176
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[0]
+  Delay (ns):              6.091
+  Slack (ns):              3.895
+  Arrival (ns):           13.105
+  Required (ns):          17.000
+  Setup (ns):             -0.173
+  Minimum Period (ns):    11.940
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK
+  To: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[2]
+  data required time                                 16.932
+  data arrival time                          -       13.296
+  slack                                               3.636
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     4.319          Clock generation
+  4.319                        
+               +     0.959          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  5.278                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.243          cell: ADLIB:ICB_CLKINT
+  5.521                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.145          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  5.666                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.163          cell: ADLIB:GB
+  5.829                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.410          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  6.239                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:A (r)
+               +     0.058          cell: ADLIB:RGB
+  6.297                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:Y (f)
+               +     0.717          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2_rgb_net_1
+  7.014                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK (r)
+               +     1.855          cell: ADLIB:MSS
+  8.869                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PADDR[6] (f)
+               +     1.656          net: MSS_WRAPPER_0_FIC_3_APB_INITIATOR_PADDR[6]
+  10.525                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_sn_m6:D (f)
+               +     0.091          cell: ADLIB:CFG4
+  10.616                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_sn_m6:Y (r)
+               +     0.487          net: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_sn_N_20_mux
+  11.103                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_5_1[2]:A (r)
+               +     0.053          cell: ADLIB:CFG2
+  11.156                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_5_1[2]:Y (r)
+               +     0.056          net: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/N_124_1
+  11.212                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_cZ[2]:C (r)
+               +     0.053          cell: ADLIB:CFG4
+  11.265                       FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/rdata_cZ[2]:Y (r)
+               +     0.352          net: FIC_3_PERIPHERALS_0/rdata[2]
+  11.617                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4000_0xxx_0/FIC_3_0x4000_0xxx_0/u_mux_p_to_b3/PRDATA_0_iv_2_RNO[2]:A (r)
+               +     0.156          cell: ADLIB:CFG4
+  11.773                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4000_0xxx_0/FIC_3_0x4000_0xxx_0/u_mux_p_to_b3/PRDATA_0_iv_2_RNO[2]:Y (r)
+               +     0.482          net: FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4000_0xxx_0/FIC_3_0x4000_0xxx_0/u_mux_p_to_b3/FIC_3_0x4000_04xx_PRDATAS4_m[2]
+  12.255                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4000_0xxx_0/FIC_3_0x4000_0xxx_0/u_mux_p_to_b3/PRDATA_0_iv_2_cZ[2]:C (r)
+               +     0.090          cell: ADLIB:CFG4
+  12.345                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4000_0xxx_0/FIC_3_0x4000_0xxx_0/u_mux_p_to_b3/PRDATA_0_iv_2_cZ[2]:Y (r)
+               +     0.207          net: FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/PRDATA_0_iv_2[2]
+  12.552                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4xxx_xxxx_0/FIC_3_0x4xxx_xxxx_0/u_mux_p_to_b3/PRDATA_0[2]:D (r)
+               +     0.053          cell: ADLIB:CFG4
+  12.605                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/FIC_3_0x4xxx_xxxx_0/FIC_3_0x4xxx_xxxx_0/u_mux_p_to_b3/PRDATA_0[2]:Y (r)
+               +     0.065          net: FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/N_226
+  12.670                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/APB_ARBITER_0/in_prdata[2]:B (r)
+               +     0.053          cell: ADLIB:CFG3
+  12.723                       FIC_3_PERIPHERALS_0/FIC_3_ADDRESS_GENERATION_1/APB_ARBITER_0/in_prdata[2]:Y (r)
+               +     0.573          net: MSS_WRAPPER_0_FIC_3_APB_INITIATOR_PRDATA[2]
+  13.296                       MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[2] (r)
+                                    
+  13.296                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  10.000                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  10.000                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (f)
+               +     3.891          Clock generation
+  13.891                       
+               +     0.849          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  14.740                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (f)
+               +     0.224          cell: ADLIB:ICB_CLKINT
+  14.964                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (f)
+               +     0.125          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  15.089                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (f)
+               +     0.141          cell: ADLIB:GB
+  15.230                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (f)
+               +     0.372          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  15.602                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:A (f)
+               +     0.054          cell: ADLIB:RGB
+  15.656                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:Y (r)
+               +     0.517          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2_rgb_net_1
+  16.173                       MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_PCLK (f)
+               +     0.789          
+  16.962                       clock reconvergence pessimism
+               -     0.135          
+  16.827                       clock jitter
+               -    -0.105          Library setup time: ADLIB:MSS
+  16.932                       MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_3_APB_M_PRDATA[2]
+                                    
+  16.932                       data required time
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+Path 1
+  From: MBUS_UART_TXD
+  To:   FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/samples_2[0]:D
+  Delay (ns):              3.523
+  Arrival (ns):            3.523
+  Setup (ns):              0.000
+  External Setup (ns):    -0.398
+  Operating Conditions: fast_hv_lt
+
+Path 2
+  From: RPI_I2C_SCL
+  To:   FIC_3_PERIPHERALS_0/CORE_I2C_C0_0_WRAPPER_1/COREI2C_C0_0/COREI2C_C0_0/I2C_NUM_GENERATION[0].ui2c/SCLI_ff_reg_0[6]:D
+  Delay (ns):              3.256
+  Arrival (ns):            3.256
+  Setup (ns):              0.000
+  External Setup (ns):    -0.677
+  Operating Conditions: fast_hv_lt
+
+Path 3
+  From: RPI_I2C_SCL
+  To:   FIC_3_PERIPHERALS_0/CORE_I2C_C0_0_WRAPPER_1/COREI2C_C0_0/COREI2C_C0_0/I2C_NUM_GENERATION[0].ui2c/SCLI_ff_reg_0[7]:D
+  Delay (ns):              3.230
+  Arrival (ns):            3.230
+  Setup (ns):              0.000
+  External Setup (ns):    -0.702
+  Operating Conditions: fast_hv_lt
+
+Path 4
+  From: RPI_I2C_SCL
+  To:   FIC_3_PERIPHERALS_0/CORE_I2C_C0_0_WRAPPER_1/COREI2C_C0_0/COREI2C_C0_0/I2C_NUM_GENERATION[0].ui2c/SCLI_ff_reg_0[3]:D
+  Delay (ns):              3.221
+  Arrival (ns):            3.221
+  Setup (ns):              0.000
+  External Setup (ns):    -0.731
+  Operating Conditions: fast_hv_lt
+
+Path 5
+  From: RPI_I2C_SCL
+  To:   FIC_3_PERIPHERALS_0/CORE_I2C_C0_0_WRAPPER_1/COREI2C_C0_0/COREI2C_C0_0/I2C_NUM_GENERATION[0].ui2c/SCLI_ff_reg_0[11]:D
+  Delay (ns):              3.221
+  Arrival (ns):            3.221
+  Setup (ns):              0.000
+  External Setup (ns):    -0.731
+  Operating Conditions: fast_hv_lt
+
+
+Expanded Path 1
+  From: MBUS_UART_TXD
+  To: FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/samples_2[0]:D
+  data required time                                    N/C
+  data arrival time                          -        3.523
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        MBUS_UART_TXD (f)
+               +     0.000          net: MBUS_UART_TXD
+  0.000                        MBUS_UART_TXD_ibuf/U_IOPAD:PAD (f)
+               +     1.078          cell: ADLIB:IOPAD_IN
+  1.078                        MBUS_UART_TXD_ibuf/U_IOPAD:Y (f)
+               +     0.000          net: MBUS_UART_TXD_ibuf/YIN
+  1.078                        MBUS_UART_TXD_ibuf/U_IOIN:YIN (f)
+               +     0.131          cell: ADLIB:IOIN_IB_E
+  1.209                        MBUS_UART_TXD_ibuf/U_IOIN:Y (f)
+               +     2.314          net: MBUS_UART_TXD_c
+  3.523                        FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/samples_2[0]:D (f)
+                                    
+  3.523                        data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     2.581          Clock generation
+  N/C                          
+               +     0.586          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.141          cell: ADLIB:ICB_CLKINT
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.093          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.108          cell: ADLIB:GB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.256          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:A (r)
+               +     0.038          cell: ADLIB:RGB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:Y (f)
+               +     0.253          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2_rgb_net_1
+  N/C                          FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/samples_2[0]:CLK (r)
+               -     0.135          
+  N/C                          clock jitter
+               -     0.000          Library setup time: ADLIB:SLE
+  N/C                          FIC_3_PERIPHERALS_0/CoreUARTapb_C0_0/CoreUARTapb_C0_0/uUART/make_RX/samples_2[0]:D
+
+
+Operating Conditions : fast_hv_lt
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+Path 1
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/control1[1]:CLK
+  To:   SPISDO
+  Delay (ns):              9.513
+  Arrival (ns):           16.255
+  Clock to Out (ns):      16.255
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/stxs_txzeros:CLK
+  To:   SPISDO
+  Delay (ns):              9.252
+  Arrival (ns):           15.993
+  Clock to Out (ns):      15.993
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/stxs_direct:CLK
+  To:   SPISDO
+  Delay (ns):              8.890
+  Arrival (ns):           15.629
+  Clock to Out (ns):      15.629
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/stxs_datareg[15]:CLK
+  To:   SPISDO
+  Delay (ns):              8.820
+  Arrival (ns):           15.588
+  Clock to Out (ns):      15.588
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/txfifo_datadelay[15]:CLK
+  To:   SPISDO
+  Delay (ns):              8.660
+  Arrival (ns):           15.409
+  Clock to Out (ns):      15.409
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/control1[1]:CLK
+  To: SPISDO
+  data required time                                    N/C
+  data arrival time                          -       16.255
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     4.319          Clock generation
+  4.319                        
+               +     0.959          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  5.278                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.243          cell: ADLIB:ICB_CLKINT
+  5.521                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.145          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  5.666                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.163          cell: ADLIB:GB
+  5.829                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.414          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  6.243                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1:A (r)
+               +     0.058          cell: ADLIB:RGB
+  6.301                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1:Y (f)
+               +     0.441          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1_rgb_net_1
+  6.742                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/control1[1]:CLK (r)
+               +     0.201          cell: ADLIB:SLE
+  6.943                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/URF/control1[1]:Q (r)
+               +     0.783          net: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/SPIMODE
+  7.726                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u_2_0_RNO:A (r)
+               +     0.073          cell: ADLIB:CFG2
+  7.799                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u_2_0_RNO:Y (f)
+               +     0.131          net: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_sn_N_3
+  7.930                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u_2_0:D (f)
+               +     0.134          cell: ADLIB:CFG4
+  8.064                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u_2_0:Y (f)
+               +     0.155          net: FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/SPISDO_c_2
+  8.219                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u:A (f)
+               +     0.178          cell: ADLIB:CFG3
+  8.397                        FIC_3_PERIPHERALS_0/SPI_FOR_7_SEG_0/SPI_FOR_7_SEG_0/USPI/UCC/spi_data_out_u:Y (f)
+               +     4.872          net: SPISDO_c
+  13.269                       SPISDO_obuf/U_IOTRI:D (f)
+               +     0.918          cell: ADLIB:IOTRI_OB_EB
+  14.187                       SPISDO_obuf/U_IOTRI:DOUT (f)
+               +     0.000          net: SPISDO_obuf/DOUT
+  14.187                       SPISDO_obuf/U_IOPAD:D (f)
+               +     2.068          cell: ADLIB:IOPAD_TRI
+  16.255                       SPISDO_obuf/U_IOPAD:PAD (f)
+               +     0.000          net: SPISDO
+  16.255                       SPISDO (f)
+                                    
+  16.255                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+                                    
+  N/C                          SPISDO (f)
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+Path 1
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To:   FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/irq_status_Z[8]:ALn
+  Delay (ns):              3.722
+  Slack (ns):             15.890
+  Arrival (ns):           10.457
+  Required (ns):          26.347
+  Recovery (ns):           0.209
+  Minimum Period (ns):     3.975
+  Skew (ns):               0.044
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To:   FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/RDATA_1[7]:ALn
+  Delay (ns):              3.722
+  Slack (ns):             15.890
+  Arrival (ns):           10.457
+  Required (ns):          26.347
+  Recovery (ns):           0.209
+  Minimum Period (ns):     3.975
+  Skew (ns):               0.044
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To:   FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_h1_h2.CH_H1_H2/b_ack_ie:ALn
+  Delay (ns):              3.720
+  Slack (ns):             15.891
+  Arrival (ns):           10.455
+  Required (ns):          26.346
+  Recovery (ns):           0.209
+  Minimum Period (ns):     3.974
+  Skew (ns):               0.045
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To:   FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_h0_h3.CH_H0_H3/b_ack_ie:ALn
+  Delay (ns):              3.713
+  Slack (ns):             15.891
+  Arrival (ns):           10.448
+  Required (ns):          26.339
+  Recovery (ns):           0.209
+  Minimum Period (ns):     3.974
+  Skew (ns):               0.052
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To:   FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_h0_h3.CH_H0_H3/a_mp_ie:ALn
+  Delay (ns):              3.713
+  Slack (ns):             15.891
+  Arrival (ns):           10.448
+  Required (ns):          26.339
+  Recovery (ns):           0.209
+  Minimum Period (ns):     3.974
+  Skew (ns):               0.052
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK
+  To: FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/irq_status_Z[8]:ALn
+  data required time                                 26.347
+  data arrival time                          -       10.457
+  slack                                              15.890
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  0.000                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     4.319          Clock generation
+  4.319                        
+               +     0.959          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  5.278                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.243          cell: ADLIB:ICB_CLKINT
+  5.521                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.145          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  5.666                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.163          cell: ADLIB:GB
+  5.829                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.414          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  6.243                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1:A (r)
+               +     0.058          cell: ADLIB:RGB
+  6.301                        CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1:Y (f)
+               +     0.434          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB1_rgb_net_1
+  6.735                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:CLK (r)
+               +     0.201          cell: ADLIB:SLE
+  6.936                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep[0]:Q (r)
+               +     2.398          net: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_Z[0]
+  9.334                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]:A (r)
+               +     0.142          cell: ADLIB:GB
+  9.476                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]:Y (r)
+               +     0.408          net: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]/U0_Y
+  9.884                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]/U0_RGB1_RGB0:A (r)
+               +     0.058          cell: ADLIB:RGB
+  9.942                        CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]/U0_RGB1_RGB0:Y (f)
+               +     0.515          net: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]/U0_RGB1_RGB0_rgb_net_1
+  10.457                       FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/irq_status_Z[8]:ALn (r)
+                                    
+  10.457                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  20.000                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  20.000                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     3.899          Clock generation
+  23.899                       
+               +     0.872          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  24.771                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.211          cell: ADLIB:ICB_CLKINT
+  24.982                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.132          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  25.114                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.148          cell: ADLIB:GB
+  25.262                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.372          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  25.634                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:A (r)
+               +     0.052          cell: ADLIB:RGB
+  25.686                       CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2:Y (f)
+               +     0.434          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1_RGB2_rgb_net_1
+  26.120                       FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/irq_status_Z[8]:CLK (r)
+               +     0.571          
+  26.691                       clock reconvergence pessimism
+               -     0.135          
+  26.556                       clock jitter
+               -     0.209          Library recovery time: ADLIB:SLE
+  26.347                       FIC_3_PERIPHERALS_0/MIV_IHC_C0_0/MIV_IHC_C0_0/miv_ihc_core_0/gen_intr_module_h1.h1_irq_module/irq_status_Z[8]:ALn
+                                    
+  26.347                       data required time
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+Path 1
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_14[0]:ALn
+  Delay (ns):             10.221
+  Arrival (ns):           10.221
+  Recovery (ns):           0.196
+  External Recovery (ns):   4.476
+  Operating Conditions: slow_lv_ht
+
+Path 2
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_13[0]:ALn
+  Delay (ns):             10.221
+  Arrival (ns):           10.221
+  Recovery (ns):           0.196
+  External Recovery (ns):   4.476
+  Operating Conditions: slow_lv_ht
+
+Path 3
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_12[0]:ALn
+  Delay (ns):             10.221
+  Arrival (ns):           10.221
+  Recovery (ns):           0.196
+  External Recovery (ns):   4.476
+  Operating Conditions: slow_lv_ht
+
+Path 4
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_11[0]:ALn
+  Delay (ns):              9.913
+  Arrival (ns):            9.913
+  Recovery (ns):           0.196
+  External Recovery (ns):   4.171
+  Operating Conditions: slow_lv_ht
+
+Path 5
+  From: SWITCH2
+  To:   CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_10[0]:ALn
+  Delay (ns):              9.913
+  Arrival (ns):            9.913
+  Recovery (ns):           0.196
+  External Recovery (ns):   4.171
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: SWITCH2
+  To: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_14[0]:ALn
+  data required time                                    N/C
+  data arrival time                          -       10.221
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        SWITCH2 (r)
+               +     0.000          net: SWITCH2
+  0.000                        SWITCH2_ibuf/U_IOPAD:PAD (r)
+               +     0.610          cell: ADLIB:IOPAD_IN
+  0.610                        SWITCH2_ibuf/U_IOPAD:Y (r)
+               +     0.000          net: SWITCH2_ibuf/YIN
+  0.610                        SWITCH2_ibuf/U_IOIN:YIN (r)
+               +     0.336          cell: ADLIB:IOIN_IB_E
+  0.946                        SWITCH2_ibuf/U_IOIN:Y (r)
+               +     4.337          net: SWITCH2_c
+  5.283                        CLOCKS_AND_RESETS_0/AND3_0:A (r)
+               +     0.078          cell: ADLIB:CFG3
+  5.361                        CLOCKS_AND_RESETS_0/AND3_0:Y (r)
+               +     1.691          net: CLOCKS_AND_RESETS_0/AND3_0_Y
+  7.052                        CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/un1_EXT_RST_N_2:C (r)
+               +     0.053          cell: ADLIB:CFG3
+  7.105                        CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/un1_EXT_RST_N_2:Y (r)
+               +     3.116          net: CLOCKS_AND_RESETS_0/un1_EXT_RST_N_2
+  10.221                       CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_14[0]:ALn (r)
+                                    
+  10.221                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT3
+               +     0.000          Clock source
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0:OUT3 (r)
+               +     3.899          Clock generation
+  N/C                          
+               +     0.872          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0_clkint_12
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:A (r)
+               +     0.211          cell: ADLIB:ICB_CLKINT
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_1:Y (r)
+               +     0.132          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12_NET
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:A (r)
+               +     0.148          cell: ADLIB:GB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12:Y (r)
+               +     0.379          net: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_Y
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1:A (r)
+               +     0.052          cell: ADLIB:RGB
+  N/C                          CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1:Y (f)
+               +     0.383          net: CLOCKS_AND_RESETS_0_FIC_3_CLK
+  N/C                          CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_14[0]:CLK (r)
+               -     0.135          
+  N/C                          clock jitter
+               -     0.196          Library recovery time: ADLIB:SLE
+  N/C                          CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_14[0]:ALn
+
+
+Operating Conditions : slow_lv_ht
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain MBUS_SPI_CLK
+
+Info: The maximum frequency of this clock domain is limited by the period of pin MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+Path 1
+  From: MBUS_SPI_MISO
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_DI_F2M
+  Delay (ns):              3.426
+  Arrival (ns):            3.426
+  Setup (ns):              0.803
+  External Setup (ns):     1.494
+  Operating Conditions: slow_lv_lt
+
+
+Expanded Path 1
+  From: MBUS_SPI_MISO
+  To: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_DI_F2M
+  data required time                                    N/C
+  data arrival time                          -        3.426
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        MBUS_SPI_MISO (f)
+               +     0.000          net: MBUS_SPI_MISO
+  0.000                        MBUS_SPI_MISO_ibuf/U_IOPAD:PAD (f)
+               +     1.082          cell: ADLIB:IOPAD_IN
+  1.082                        MBUS_SPI_MISO_ibuf/U_IOPAD:Y (f)
+               +     0.000          net: MBUS_SPI_MISO_ibuf/YIN
+  1.082                        MBUS_SPI_MISO_ibuf/U_IOIN:YIN (f)
+               +     0.267          cell: ADLIB:IOIN_IB_E
+  1.349                        MBUS_SPI_MISO_ibuf/U_IOIN:Y (f)
+               +     2.077          net: MBUS_SPI_MISO_c
+  3.426                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_DI_F2M (f)
+                                    
+  3.426                        data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          MBUS_SPI_CLK
+               +     0.000          Clock source
+  N/C                          MBUS_SPI_CLK (r)
+               +     0.652          cell: ADLIB:IOPAD_BI
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOPAD:Y (r)
+               +     0.000          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF/YIN
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:YIN (r)
+               +     0.262          cell: ADLIB:IOBI_IB_OB_EB
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:Y (r)
+               +     1.821          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF_Y
+  N/C                          MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M (r)
+               -     0.803          Library setup time: ADLIB:MSS
+  N/C                          MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_DI_F2M
+
+
+Operating Conditions : slow_lv_lt
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+Path 1
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M
+  To:   MBUS_SPI_MOSI
+  Delay (ns):             10.574
+  Arrival (ns):           14.752
+  Clock to Out (ns):      14.752
+  Operating Conditions: slow_lv_ht
+
+
+Expanded Path 1
+  From: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M
+  To: MBUS_SPI_MOSI
+  data required time                                    N/C
+  data arrival time                          -       14.752
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        MBUS_SPI_CLK
+               +     0.000          Clock source
+  0.000                        MBUS_SPI_CLK (f)
+               +     1.199          cell: ADLIB:IOPAD_BI
+  1.199                        MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOPAD:Y (f)
+               +     0.000          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF/YIN
+  1.199                        MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:YIN (f)
+               +     0.338          cell: ADLIB:IOBI_IB_OB_EB
+  1.537                        MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:Y (f)
+               +     2.641          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF_Y
+  4.178                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M (f)
+               +     3.145          cell: ADLIB:MSS
+  7.323                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_DO_M2F (f)
+               +     3.884          net: MBUS_SPI_MOSI_c
+  11.207                       MBUS_SPI_MOSI_obuf/U_IOTRI:D (f)
+               +     0.918          cell: ADLIB:IOTRI_OB_EB
+  12.125                       MBUS_SPI_MOSI_obuf/U_IOTRI:DOUT (f)
+               +     0.000          net: MBUS_SPI_MOSI_obuf/DOUT
+  12.125                       MBUS_SPI_MOSI_obuf/U_IOPAD:D (f)
+               +     2.627          cell: ADLIB:IOPAD_TRI
+  14.752                       MBUS_SPI_MOSI_obuf/U_IOPAD:PAD (f)
+               +     0.000          net: MBUS_SPI_MOSI
+  14.752                       MBUS_SPI_MOSI (f)
+                                    
+  14.752                       data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          MBUS_SPI_CLK
+                                    
+  N/C                          MBUS_SPI_MOSI (f)
+
+
+Operating Conditions : slow_lv_ht
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+Path 1
+  From: MBUS_SPI_CS
+  To:   MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_SS_F2M
+  Delay (ns):              3.937
+  Arrival (ns):            3.937
+  Recovery (ns):           1.686
+  External Recovery (ns):   2.605
+  Operating Conditions: slow_lv_lt
+
+
+Expanded Path 1
+  From: MBUS_SPI_CS
+  To: MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_SS_F2M
+  data required time                                    N/C
+  data arrival time                          -        3.937
+  slack                                                 N/C
+  ________________________________________________________
+  Data arrival time calculation
+  0.000                        MBUS_SPI_CS (f)
+               +     1.082          cell: ADLIB:IOPAD_BI
+  1.082                        MSS_WRAPPER_0/SPI_0_SS_BIBUF/U_IOPAD:Y (f)
+               +     0.000          net: MSS_WRAPPER_0/SPI_0_SS_BIBUF/YIN
+  1.082                        MSS_WRAPPER_0/SPI_0_SS_BIBUF/U_IOBI:YIN (f)
+               +     0.267          cell: ADLIB:IOBI_IB_OB_EB
+  1.349                        MSS_WRAPPER_0/SPI_0_SS_BIBUF/U_IOBI:Y (f)
+               +     2.588          net: MSS_WRAPPER_0/SPI_0_SS_BIBUF_Y
+  3.937                        MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_SS_F2M (f)
+                                    
+  3.937                        data arrival time
+  ________________________________________________________
+  Data required time calculation
+  N/C                          MBUS_SPI_CLK
+               +     0.000          Clock source
+  N/C                          MBUS_SPI_CLK (f)
+               +     0.943          cell: ADLIB:IOPAD_BI
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOPAD:Y (f)
+               +     0.000          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF/YIN
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:YIN (f)
+               +     0.255          cell: ADLIB:IOBI_IB_OB_EB
+  N/C                          MSS_WRAPPER_0/SPI_0_CLK_BIBUF/U_IOBI:Y (f)
+               +     1.820          net: MSS_WRAPPER_0/SPI_0_CLK_BIBUF_Y
+  N/C                          MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_F2M (f)
+               -     1.686          Library recovery time: ADLIB:MSS
+  N/C                          MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_SS_F2M
+
+
+Operating Conditions : slow_lv_lt
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_M2F
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+No Path 
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:SPI_0_CLK_M2F
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+No Path 
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain REF_CLK_50MHz
+
+Info: The maximum frequency of this clock domain is limited by the minimum pulse widths of pin REF_CLK_50MHz_ibuf/U_IOPAD:PAD
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+No Path 
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT1
+
+Info: The maximum frequency of this clock domain is limited by the period of pin MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_1_ACLK
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+No Path 
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Clock Domain CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/pll_inst_0/OUT2
+
+Info: The maximum frequency of this clock domain is limited by the period of pin MSS_WRAPPER_0/MPFS_DISCOVERY_KIT_MSS_0/I_MSS:FIC_2_ACLK
+
+SET Register to Register
+
+No Path 
+
+END SET Register to Register
+
+----------------------------------------------------
+
+SET External Setup
+
+No Path 
+
+END SET External Setup
+
+----------------------------------------------------
+
+SET Clock to Output
+
+No Path 
+
+END SET Clock to Output
+
+----------------------------------------------------
+
+SET Register to Asynchronous
+
+No Path 
+
+END SET Register to Asynchronous
+
+----------------------------------------------------
+
+SET External Recovery
+
+No Path 
+
+END SET External Recovery
+
+----------------------------------------------------
+
+SET Asynchronous to Register
+
+No Path 
+
+END SET Asynchronous to Register
+
+----------------------------------------------------
+
+Path set Pin to Pin
+
+SET Input to Output
+
+No Path 
+
+END SET Input to Output
+
+----------------------------------------------------
+

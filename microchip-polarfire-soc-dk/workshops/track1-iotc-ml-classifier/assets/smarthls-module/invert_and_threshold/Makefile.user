@@ -1,0 +1,34 @@
+#-------------------------------------------------
+# Select the souce
+#-------------------------------------------------
+SRCS = main_variations/main.fifo.cpp
+
+
+#-------------------------------------------------
+# Select the SoC design:
+#-------------------------------------------------
+LOCAL_CONFIG = -legup-config=config.tcl
+
+#-------------------------------------------------
+# Additional compilation settings
+#-------------------------------------------------
+USER_CXX_FLAG += -I./
+USER_LINK_FLAG_RISCV += -static
+
+#-------------------------------------------------
+# Runtime settings
+#-------------------------------------------------
+# Specify the working directory on the board
+# All input, output, binaries will be based off this folder.
+BOARD_PATH = ./
+
+# No external files are needed for this demo
+INPUT_FILES_RISCV =
+OUTPUT_FILES_RISCV =
+
+# Arguments: <class_id 0..2> <seed>
+PROGRAM_ARGUMENTS = 0 1
+
+# Use this when SoC profiler is used
+USER_CXX_FLAG += -DHLS_PROFILER_ENABLE
+USER_CXX_FLAG += -DHLS_PROFILER_SAMPLES=1000
