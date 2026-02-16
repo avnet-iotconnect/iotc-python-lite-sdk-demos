@@ -1,4 +1,4 @@
-# Developer Build Guide (From Fresh v2025.07 Source)
+# Developer Guide: /IOTCONNECT ML Classifier Workshop (Track 1)
 
 This guide is the full developer procedure to regenerate the ML-classifier FPGA `.job` and runtime ELFs from a clean reference design checkout.
 

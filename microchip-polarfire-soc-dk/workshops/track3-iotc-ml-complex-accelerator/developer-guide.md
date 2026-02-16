@@ -1,4 +1,4 @@
-# Developer Build from Source - Complex-NN Workshop (Track 3)
+# Developer Guide: /IOTCONNECT Complex-NN Accelerator Workshop (Track 3)
 
 This guide is the source-build path for generating:
 

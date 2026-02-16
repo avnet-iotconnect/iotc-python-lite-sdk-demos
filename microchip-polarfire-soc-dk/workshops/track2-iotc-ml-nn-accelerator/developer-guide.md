@@ -1,4 +1,4 @@
-# Developer Build Guide (NN Workshop)
+# Developer Guide: /IOTCONNECT Tiny-NN Accelerator Workshop (Track 2)
 
 This is the full source-build flow for the **Tiny-NN accelerator workshop**.
 

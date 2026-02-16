@@ -1,4 +1,4 @@
-# Getting Started: Microchip PolarFire SoC Discovery Kit with /IOTCONNECT (Track 1)
+# Getting Started: /IOTCONNECT ML Classifier Workshop (Track 1)
 [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
 
 <img src="../images/pf-discovery-board.jpg" alt="Microchip PolarFire SoC Discovery Kit" width="760" />
