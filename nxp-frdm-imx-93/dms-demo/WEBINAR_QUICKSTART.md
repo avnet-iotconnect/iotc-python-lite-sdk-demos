@@ -123,7 +123,7 @@ Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
 </code></pre>
 
 # 8. Start the Application and Verify Data
-From the `/opt/demo` directory, use the following command to the demo application:
+Use the following command to the demo application:
 ```
 python3 /opt/demo/app.py
 ```
