@@ -115,6 +115,13 @@ The script started in the previous step will guide you through the following ste
 >[!NOTE]
 >This process will take about <b><u>8 minutes</u></b>.
 
+Once complete, take note of the IP address listed as it will be used for the Dashboard in a future step.  Example output:
+<pre><code>
+Installation complete! You can now run the /IOTCONNECT script:
+python3 /opt/demo/app.py
+Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
+</code></pre>
+
 # 8. Start the Application and Verify Data
 From the `/opt/demo` directory, use the following command to the demo application:
 ```
@@ -134,13 +141,6 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 4. **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
 5. **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
 6. To get the "Live View" to display your webcam, edit the widget and update the IP address which was displayed in the terminal after installation.
-It should have looked like this:
-<pre><code>
-Installation complete! You can now run the /IOTCONNECT script:
-python3 /opt/demo/app.py
-Camera Live Stream url: <b>https://192.168.1.100:8080/live</b>
-</code></pre>
-
 7. **Click** `Save` in the upper-right corner to commit the dashboard.
 
 # 10. /IOTCONNECT: Using the Dashboard
