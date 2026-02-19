@@ -25,7 +25,11 @@ Track 1 demonstrates:
     ```bash
     git clone https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos.git
     ```
-- A2-class microSD card (64GB or less), preloaded with Linux image:
+- **SanDisk**-brand Micro-SD card (8GB, UHS-1 Class 10 recommended), preloaded with Linux image:
+
+  > [!IMPORTANT]
+  > The PolarFire SoC Discovery Kit **requires a SanDisk-brand Micro-SD card**. Other brands of SD cards **will fail to boot** due to specific memory-mapping requirements in the bootloader.
+
   - `linux4microchip+fpga-2025.07`
   - `https://github.com/linux4microchip/meta-mchp/releases/tag/linux4microchip%2Bfpga-2025.07`
 
@@ -200,7 +204,7 @@ python3 app.py
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-track1-dasboard.jpg" alt="Track dashboard result" width="600" />
+<img src="../images/mchp-polarfire-track1-dashboard.jpg" alt="Track dashboard result" width="600" />
 
 Run these c2d commands from the `/IOTCONNECT` Dynamic Dashboard or from the Commands tab on the device view:
 

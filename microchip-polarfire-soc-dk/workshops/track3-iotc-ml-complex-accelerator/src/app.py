@@ -607,8 +607,8 @@ def parse_led_args(args):
     if action == "state":
         action = "get"
     if action in ("on", "off"):
-        action = "setbits"
         value = "11111111" if action == "on" else "00000000"
+        action = "setbits"
     if action == "toggle":
         action = "set"
         value = "toggle"

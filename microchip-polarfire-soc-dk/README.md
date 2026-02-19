@@ -25,7 +25,7 @@ FPGA logic elements. The kit is ready for rapid testing of applications in an ea
 offers a mikroBUS™ expansion header for Click boards™, a 40-pin Raspberry Pi™ connector, and a MIPI® video connector. 
 The expansion boards can be controlled using protocols like I2C and SPI. One GB of DDR4 memory is available as well as 
 a microSD® card slot for booting Linux. Communication interfaces include one Gigabit Ethernet connector and three UART 
-connections via the USB type C connector. An on-board FlashPro5 programmer is available to program and debug the PolarFIre 
+connections via the USB type C connector. An on-board FlashPro5 programmer is available to program and debug the PolarFire 
 FPGA through USB-to-JTAG channel.</td>
   </tr>
 </table>
@@ -52,7 +52,7 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 * An SD-Card flashing utility such as [Balena Etcher](https://etcher.balena.io/)
 * Microchip FlashPro Express
-  * Download the lastest "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab)
+  * Download the latest "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab)
 and then run extract/execute the installer (may require admin/sudo privileges).
 
 
@@ -84,7 +84,7 @@ same downloaded/extracted folder that contains the .job file. Select "Ok" to ope
 
 ## Flash Linux Image
 
-1. Download the lastest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
+1. Download the latest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
 SoC Releases page](https://github.com/linux4microchip/meta-mchp/releases), scrolling down to the "Pre-built images for 
 the Discovery Kit Reference Design" section and clicking on the "pre-built image" link. The downloaded filename should
 be similar to "mchp-base-image-mpfs-disco-kit.rootfs-20250725104508.wic.gz" with only the timestamp potentially being different 
@@ -192,7 +192,7 @@ All three tracks use the same deployment pattern (program FPGA, install runtime,
 
 Expected end state in `/IOTCONNECT` (Track 3 dashboard example):
 
-<img src="./workshops/images/mchp-polarfire-track3-dasboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
+<img src="./workshops/images/mchp-polarfire-track3-dashboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
 
 For all workshop tracks, start with:
 
