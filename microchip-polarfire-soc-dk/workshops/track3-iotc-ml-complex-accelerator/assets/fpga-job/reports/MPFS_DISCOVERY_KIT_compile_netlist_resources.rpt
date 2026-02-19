@@ -1,0 +1,221 @@
+Compile Report
+Microchip Technology Inc. - Microchip Libero Software Release 2025.2 (Version 2025.2.0.14)
+Date: Sat Feb 14 11:07:07 2026
+
+Device Selection
++------------------------+--------------+
+| Family                 | PolarFireSoC |
+| Device                 | MPFS095T     |
+| Package                | FCSG325      |
+| Speed Grade            | -1           |
+| Core Voltage           | 1.0V         |
+| Part Range             | EXT          |
+| Default I/O technology | LVCMOS 1.8V  |
++------------------------+--------------+
+
+Source Files
++---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Topcell | MPFS_DISCOVERY_KIT                                                                                                                      |
+| Format  | Verilog                                                                                                                                 |
+| Source  | C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\MPFS_DISCOVERY\synthesis\MPFS_DISCOVERY_KIT.vm |
++---------+-----------------------------------------------------------------------------------------------------------------------------------------+
+
+Options
++----------------------------------------------------+----+
+| Limit the number of high fanout nets to display to | 10 |
++----------------------------------------------------+----+
+
+Resource Usage
++-----------------------------+-------+-------+------------+
+| Type                        | Used  | Total | Percentage |
++-----------------------------+-------+-------+------------+
+| 4LUT                        | 30428 | 93516 | 32.54      |
+| DFF                         | 24186 | 93516 | 25.86      |
+| User I/O                    | 58    | 80    | 72.50      |
+| -- Single-ended I/O         | 58    | 80    | 72.50      |
+| -- Differential I/O Pairs   | 0     | 40    | 0.00       |
+| -- I/Os using I/O Registers | 0     | 80    | 0.00       |
+| I/O Register Flip-Flops     | 0     | 240   | 0.00       |
+| -- Input  I/O Flip-Flops    | 0     | 80    | 0.00       |
+| -- Output I/O Flip-Flops    | 0     | 80    | 0.00       |
+| -- Enable I/O Flip-Flops    | 0     | 80    | 0.00       |
+| uSRAM                       | 263   | 876   | 30.02      |
+| LSRAM                       | 293   | 308   | 95.13      |
+| Math                        | 5     | 292   | 1.71       |
+| H-Chip Global               | 10    | 48    | 20.83      |
+| PLL                         | 1     | 8     | 12.50      |
+| DLL                         | 0     | 8     | 0.00       |
+| CRN_INT                     | 1     | 24    | 4.17       |
+| INIT                        | 1     | 1     | 100.00     |
+| DRI                         | 1     | 1     | 100.00     |
+| Transceiver Lanes           | 0     | 2     | 0.00       |
+| Transceiver PCIe            | 0     | 2     | 0.00       |
+| ICB_CLKINT                  | 4     | 68    | 5.88       |
+| MSS                         | 1     | 1     | 100.00     |
+| MSS I/O                     | 77    | 102   | 75.49      |
++-----------------------------+-------+-------+------------+
+
+Detailed Logic Resource Usage
++-----------------------+-------+-------+
+| Type                  | 4LUT  | DFF   |
++-----------------------+-------+-------+
+| Fabric Logic          | 16544 | 10302 |
+| uSRAM Interface Logic | 3156  | 3156  |
+| LSRAM Interface Logic | 10548 | 10548 |
+| Math Interface Logic  | 180   | 180   |
+| Total Used            | 30428 | 24186 |
++-----------------------+-------+-------+
+
+Detailed Carry Chains Resource Usage
++--------+------+
+| Length | Used |
+| 2      | 2    |
+| 3      | 3    |
+| 5      | 1    |
+| 6      | 7    |
+| 7      | 4    |
+| 8      | 33   |
+| 9      | 34   |
+| 10     | 5    |
+| 11     | 6    |
+| 12     | 6    |
+| 13     | 9    |
+| 14     | 3    |
+| 15     | 2    |
+| 17     | 7    |
+| 18     | 3    |
+| 19     | 3    |
+| 20     | 1    |
+| 21     | 1    |
+| 23     | 2    |
+| 24     | 1    |
+| 25     | 6    |
+| 32     | 4    |
+| 33     | 7    |
+| 49     | 1    |
+| 63     | 3    |
+| Total  | 154  |
++--------+------+
+
+Detailed 4LUT Groups Resource Usage
++--------+------+
+| Length | Used |
+| 2      | 181  |
+| 5      | 8    |
+| 10     | 32   |
+| 22     | 2    |
+| Total  | 223  |
++--------+------+
+
+Detailed Math Chains Resource Usage
++--------+------+
+| Length | Used |
+| 1      | 5    |
+| Total  | 5    |
++--------+------+
+
+I/O Function
++-------------------------------+--------------+-------------+-----------------+
+| Type                          | w/o register | w/ register | w/ DDR register |
++-------------------------------+--------------+-------------+-----------------+
+| Input I/O                     | 15           | 0           | 0               |
+| Output I/O                    | 19           | 0           | 0               |
+| Bidirectional I/O             | 24           | 0           | 0               |
+| Differential Input I/O Pairs  | 0            | 0           | 0               |
+| Differential Output I/O Pairs | 0            | 0           | 0               |
++-------------------------------+--------------+-------------+-----------------+
+
+Nets assigned to chip global resources
++--------+---------+-------------------------------------------------------------------------------------------------------------------+
+| Fanout | Type    | Name                                                                                                              |
++--------+---------+-------------------------------------------------------------------------------------------------------------------+
+| 10253  | INT_NET | Net   : CLOCKS_AND_RESETS_0_FIC_0_CLK                                                                             |
+|        |         | Driver: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_0/U0_RGB1                                            |
+|        |         | Source: NETLIST                                                                                                   |
+| 2492   | INT_NET | Net   : dff_arst_0                                                                                                |
+|        |         | Driver: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15_rep_RNIPF347[0]/U0_RGB1                            |
+|        |         | Source: NETLIST                                                                                                   |
+| 2305   | INT_NET | Net   : FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/sysReset_arst                                  |
+|        |         | Driver: FIC_0_PERIPHERALS_0/FIC0_INITIATOR_inst_0/FIC0_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1        |
+|        |         | Source: NETLIST                                                                                                   |
+| 1684   | INT_NET | Net   : FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/sysReset_arst                                    |
+|        |         | Driver: FIC_0_PERIPHERALS_0/DMA_INITIATOR_inst_0/DMA_INITIATOR_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1          |
+|        |         | Source: NETLIST                                                                                                   |
+| 1488   | INT_NET | Net   : FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/sysReset_arst                           |
+|        |         | Driver: FIC_0_PERIPHERALS_0/HLS_AXI4Interconnect_0/HLS_AXI4Interconnect_0/arst_aclk_sync/sysReset_RNI0DTR/U0_RGB1 |
+|        |         | Source: NETLIST                                                                                                   |
+| 1136   | INT_NET | Net   : CLOCKS_AND_RESETS_0_FIC_3_CLK                                                                             |
+|        |         | Driver: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_12/U0_RGB1                                           |
+|        |         | Source: NETLIST                                                                                                   |
+| 1055   | INT_NET | Net   : dff_arst                                                                                                  |
+|        |         | Driver: CLOCKS_AND_RESETS_0/RESET_FIC_3_CLK/CORERESET_0/dff_15_rep_RNIS9V04[0]/U0_RGB1                            |
+|        |         | Source: NETLIST                                                                                                   |
+| 1      | INT_NET | Net   : CLOCKS_AND_RESETS_0_FIC_2_CLK                                                                             |
+|        |         | Driver: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_8/U0_RGB1                                            |
+|        |         | Source: NETLIST                                                                                                   |
+| 1      | INT_NET | Net   : CLOCKS_AND_RESETS_0_FIC_1_CLK                                                                             |
+|        |         | Driver: CLOCKS_AND_RESETS_0/CCC_FIC_x_CLK/PF_CCC_C0_0/clkint_4/U0_RGB1                                            |
+|        |         | Source: NETLIST                                                                                                   |
+| 1      | INT_NET | Net   : CLOCKS_AND_RESETS_0/CLKINT_REF_CLK_50MHz_Y                                                                |
+|        |         | Driver: CLOCKS_AND_RESETS_0/CLKINT_REF_CLK_50MHz/U0_RGB1                                                          |
+|        |         | Source: NETLIST                                                                                                   |
++--------+---------+-------------------------------------------------------------------------------------------------------------------+
+
+Nets assigned to row global resources
++--------+------+------+
+| Fanout | Type | Name |
++--------+------+------+
++--------+------+------+
+
+High fanout nets
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+| Fanout | Type    | Name                                                                                                      |
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+| 400    | INT_NET | Net   : CLOCKS_AND_RESETS_0_RESET_FIC_0_CLK_CORERESET_0_dff                                               |
+|        |         | Driver: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15[0]                                         |
+| 275    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/un1_accel_clken                               |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_accel_clken      |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[3] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[3]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[2] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[2]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[1] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[1]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[0] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[0]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_Z[4] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[4]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_Z[4] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[4]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_0[3] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[3]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_0[2] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[2]   |
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+
+High fanout nets (through buffer trees)
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+| Fanout | Type    | Name                                                                                                      |
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+| 400    | INT_NET | Net   : CLOCKS_AND_RESETS_0_RESET_FIC_0_CLK_CORERESET_0_dff                                               |
+|        |         | Driver: CLOCKS_AND_RESETS_0/RESET_FIC_0_CLK/CORERESET_0/dff_15[0]                                         |
+| 275    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/un1_accel_clken                               |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_accel_clken      |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[3] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[3]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[2] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[2]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[1] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[1]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_0[0] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[0]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr_Z[4] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_rd_addr[4]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_Z[4] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[4]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_0[3] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[3]   |
+| 256    | INT_NET | Net   : FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr_0[2] |
+|        |         | Driver: FIC_0_PERIPHERALS_0/tinyml_accel_top_0/axi4slv_inst/genRamLoop[1].genRam.ram/un1_ram_wr_addr[2]   |
++--------+---------+-----------------------------------------------------------------------------------------------------------+
+

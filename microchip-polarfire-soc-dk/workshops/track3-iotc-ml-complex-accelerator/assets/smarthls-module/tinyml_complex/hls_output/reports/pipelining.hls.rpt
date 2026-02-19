@@ -1,0 +1,264 @@
+// ----------------------------------------------------------------------------
+// Smart High-Level Synthesis Tool Version 2025.2
+// Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+// For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+// Date: Sat Feb 14 12:37:07 2026
+// ----------------------------------------------------------------------------
+Found Loop: Loop at depth 3 containing: %BB_13<header><latch><exiting>
+
+Label: for_loop_main_variations_main_fifo_cpp_139_9
+ID: _Z12tinyml_accelPKsPii_BB_13
+Trip count: 64
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Scheduled.
+MII = 1
+II = 1
+Final Pipeline Schedule:
+Total pipeline stages: 3
+Stage: 0
+Time: 0 Stage: 0 instr:   %phi90 = phi i64 [ 0, %BB_10 ], [ %add101, %BB_13 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.induction_variable !4137, !legup.induction_start !4117, !legup.induction_step !4137
+Time: 0 Stage: 0 instr:   %addr92 = getelementptr [64 x i16], [64 x i16]* %feat.i, i64 0, i64 %phi90, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load93 = load i16, i16* %addr92, align 2, !dbg !4283, !tbaa !4203, !MSB !4207, !LSB !4117, !ExtendFrom !4207
+Time: 0 Stage: 0 instr:   %add94 = add nuw nsw i64 %phi76, %phi90, !MSB !4286, !LSB !4117, !ExtendFrom !4286
+Time: 0 Stage: 0 instr:   %addr95 = getelementptr [6144 x i8], [6144 x i8]* @_ZL2W1, i64 0, i64 %add94, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load96 = load i8, i8* %addr95, align 1, !dbg !4287, !tbaa !4288, !MSB !4289, !LSB !4117, !ExtendFrom !4289
+Time: 0 Stage: 0 instr:   %add101 = add nuw nsw i64 %phi90, 1, !dbg !4292, !MSB !4200, !LSB !4117, !ExtendFrom !4200
+Time: 0 Stage: 0 instr:   %icmp102 = icmp eq i64 %add101, 64, !dbg !4293, !MSB !4117, !LSB !4117, !ExtendFrom !4117
+Time: 0 Stage: 0 instr:   br i1 %icmp102, label %BB_11, label %BB_13, !dbg !4267, !llvm.loop !4294, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4261, !legup.tripCount !4261
+Stage: 1
+Time: 1 Stage: 1 instr:   %phi91 = phi i32 [ %bit_concat81, %BB_10 ], [ %add100, %BB_13 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208
+Time: 1 Stage: 1 instr:   %sext97 = sext i8 %load96 to i24, !dbg !4290, !MSB !4265, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %sext98 = sext i16 %load93 to i24, !dbg !4290, !MSB !4265, !LSB !4117, !ExtendFrom !4207
+Time: 1 Stage: 1 instr:   %mul = mul nsw i24 %sext97, %sext98, !dbg !4290, !MSB !4265, !LSB !4117, !ExtendFrom !4265
+Stage: 2
+Time: 2 Stage: 2 instr:   %sext99 = sext i24 %mul to i32, !dbg !4290, !MSB !4208, !LSB !4117, !ExtendFrom !4265
+Time: 2 Stage: 2 instr:   %add100 = add nsw i32 %phi91, %sext99, !dbg !4291, !MSB !4208, !LSB !4117, !ExtendFrom !4208
+
+
+Pipeline Table:
+Total pipeline stages: 3
+Stage:        0              1              2
+   II:        0     |        0     |        0
+ Time:        0     |        1     |        2
+         %phi90         %phi90         %phi90
+              -         %phi91         %phi91
+        %addr92        %addr92        %addr92
+        %load93        %load93        %load93
+         %add94         %add94         %add94
+        %addr95        %addr95        %addr95
+        %load96        %load96        %load96
+              -        %sext97        %sext97
+              -        %sext98        %sext98
+              -           %mul           %mul
+              -              -        %sext99
+              -              -        %add100
+        %add101        %add101        %add101
+       %icmp102       %icmp102       %icmp102
+       <badref>       <badref>       <badref>
+
+Found Loop: Loop at depth 3 containing: %BB_17<header><latch><exiting>
+
+Label: for_loop_main_variations_main_fifo_cpp_149_9
+ID: _Z12tinyml_accelPKsPii_BB_17
+Trip count: 96
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Scheduled.
+MII = 1
+II = 1
+Final Pipeline Schedule:
+Total pipeline stages: 3
+Stage: 0
+Time: 0 Stage: 0 instr:   %phi127 = phi i64 [ 0, %BB_14 ], [ %add148, %BB_17 ], !MSB !4200, !LSB !4117, !ExtendFrom !4200, !legup.induction_variable !4137, !legup.induction_start !4117, !legup.induction_step !4137
+Time: 0 Stage: 0 instr:   %addr129 = getelementptr [96 x i32], [96 x i32]* %h1.i, i64 0, i64 %phi127, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load130 = load i32, i32* %addr129, align 4, !dbg !4318, !tbaa !4274, !MSB !4208, !LSB !4200, !ExtendFrom !4208
+Time: 0 Stage: 0 instr:   %add134 = add nuw nsw i64 %phi104, %phi127, !MSB !4286, !LSB !4117, !ExtendFrom !4286
+Time: 0 Stage: 0 instr:   %addr135 = getelementptr [4608 x i8], [4608 x i8]* @_ZL2W2, i64 0, i64 %add134, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load136 = load i8, i8* %addr135, align 1, !dbg !4321, !tbaa !4288, !MSB !4289, !LSB !4117, !ExtendFrom !4289
+Time: 0 Stage: 0 instr:   %add148 = add nuw nsw i64 %phi127, 1, !dbg !4326, !MSB !4200, !LSB !4117, !ExtendFrom !4200
+Time: 0 Stage: 0 instr:   %icmp149 = icmp eq i64 %add148, 96, !dbg !4327, !MSB !4117, !LSB !4117, !ExtendFrom !4117
+Time: 0 Stage: 0 instr:   br i1 %icmp149, label %BB_15, label %BB_17, !dbg !4304, !llvm.loop !4328, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4281, !legup.tripCount !4281
+Stage: 1
+Time: 1 Stage: 1 instr:   %phi128 = phi i32 [ %bit_concat109, %BB_14 ], [ %add147, %BB_17 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208
+Time: 1 Stage: 1 instr:   %ashr131 = ashr i32 %load130, 6, !dbg !4319, !MSB !4208, !LSB !4117, !ExtendFrom !4320
+Time: 1 Stage: 1 instr:   %bit_select132 = call i9 @hls_bit_select_9_32(i32 %ashr131, i64 25, i64 17), !dbg !4319, !MSB !4136, !LSB !4117, !ExtendFrom !4136
+Time: 1 Stage: 1 instr:   %bit_select133 = call i17 @hls_bit_select_17_32(i32 %ashr131, i64 16, i64 0), !dbg !4319, !MSB !4213, !LSB !4117, !ExtendFrom !4213
+Time: 1 Stage: 1 instr:   %bit_concat137 = call i26 @hls_bit_concat_9_17(i9 0, i64 9, i17 %bit_select133, i64 17), !dbg !4322, !MSB !4213, !LSB !4117, !ExtendFrom !4213
+Time: 1 Stage: 1 instr:   %sext138 = sext i8 %load136 to i26, !dbg !4322, !MSB !4320, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %mul139 = mul nsw i26 %bit_concat137, %sext138, !dbg !4322, !MSB !4320, !LSB !4117, !ExtendFrom !4323
+Time: 1 Stage: 1 instr:   %sext140 = sext i9 %bit_select132 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4136
+Time: 1 Stage: 1 instr:   %sext141 = sext i8 %load136 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %mul142 = mul nsw i32 %sext140, %sext141, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4213
+Stage: 2
+Time: 2 Stage: 2 instr:   %bit_select143 = call i15 @hls_bit_select_15_32(i32 %mul142, i64 14, i64 0), !dbg !4322, !MSB !4324, !LSB !4117, !ExtendFrom !4324
+Time: 2 Stage: 2 instr:   %sext144 = sext i26 %mul139 to i32, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4323
+Time: 2 Stage: 2 instr:   %bit_concat145 = call i32 @hls_bit_concat_15_17(i15 %bit_select143, i64 15, i17 0, i64 17), !dbg !4322, !MSB !4208, !LSB !4218, !ExtendFrom !4208
+Time: 2 Stage: 2 instr:   %add146 = add i32 %bit_concat145, %sext144, !dbg !4322, !MSB !4208, !LSB !4117, !ExtendFrom !4208
+Time: 2 Stage: 2 instr:   %add147 = add nsw i32 %add146, %phi128, !dbg !4325, !MSB !4208, !LSB !4117, !ExtendFrom !4208
+
+
+Pipeline Table:
+Total pipeline stages: 3
+Stage:        0              1              2
+   II:        0     |        0     |        0
+ Time:        0     |        1     |        2
+        %phi127        %phi127        %phi127
+              -        %phi128        %phi128
+       %addr129       %addr129       %addr129
+       %load130       %load130       %load130
+              -       %ashr131       %ashr131
+              -%bit_select1...%bit_select1...
+              -%bit_select1...%bit_select1...
+        %add134        %add134        %add134
+       %addr135       %addr135       %addr135
+       %load136       %load136       %load136
+              -%bit_concat1...%bit_concat1...
+              -       %sext138       %sext138
+              -        %mul139        %mul139
+              -       %sext140       %sext140
+              -       %sext141       %sext141
+              -        %mul142        %mul142
+              -              -%bit_select1...
+              -              -       %sext144
+              -              -%bit_concat1...
+              -              -        %add146
+              -              -        %add147
+        %add148        %add148        %add148
+       %icmp149       %icmp149       %icmp149
+       <badref>       <badref>       <badref>
+
+Found Loop: Loop at depth 3 containing: %BB_20<header><latch><exiting>
+
+Label: for_loop_main_variations_main_fifo_cpp_160_9
+ID: _Z12tinyml_accelPKsPii_BB_20
+Trip count: 48
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Scheduled.
+MII = 1
+II = 1
+Final Pipeline Schedule:
+Total pipeline stages: 3
+Stage: 0
+Time: 0 Stage: 0 instr:   %phi167 = phi i64 [ 0, %BB_18 ], [ %add186, %BB_20 ], !MSB !4301, !LSB !4117, !ExtendFrom !4301, !legup.induction_variable !4137, !legup.induction_start !4117, !legup.induction_step !4137
+Time: 0 Stage: 0 instr:   %addr169 = getelementptr [48 x i32], [48 x i32]* %h2.i, i64 0, i64 %phi167, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load170 = load i32, i32* %addr169, align 4, !dbg !4342, !tbaa !4274, !MSB !4208, !LSB !4289, !ExtendFrom !4208
+Time: 0 Stage: 0 instr:   %add174 = add nuw nsw i64 %phi151, %phi167, !MSB !4344, !LSB !4117, !ExtendFrom !4344
+Time: 0 Stage: 0 instr:   %addr175 = getelementptr [288 x i8], [288 x i8]* @_ZL2W3, i64 0, i64 %add174, !MSB !4116, !LSB !4117, !ExtendFrom !4116
+Time: 0 Stage: 0 instr:   %load176 = load i8, i8* %addr175, align 1, !dbg !4345, !tbaa !4288, !MSB !4289, !LSB !4117, !ExtendFrom !4289
+Time: 0 Stage: 0 instr:   %add186 = add nuw nsw i64 %phi167, 1, !dbg !4348, !MSB !4301, !LSB !4117, !ExtendFrom !4301
+Time: 0 Stage: 0 instr:   %icmp187 = icmp eq i64 %add186, 48, !dbg !4349, !MSB !4117, !LSB !4117, !ExtendFrom !4117
+Time: 0 Stage: 0 instr:   br i1 %icmp187, label %BB_19, label %BB_20, !dbg !4335, !llvm.loop !4350, !MSB !4116, !LSB !4117, !ExtendFrom !4116, !legup.maxTripCount !4314, !legup.tripCount !4314
+Stage: 1
+Time: 1 Stage: 1 instr:   %phi168 = phi i32 [ %bit_concat156, %BB_18 ], [ %add185, %BB_20 ], !MSB !4208, !LSB !4117, !ExtendFrom !4208
+Time: 1 Stage: 1 instr:   %ashr171 = ashr i32 %load170, 7, !dbg !4343, !MSB !4208, !LSB !4117, !ExtendFrom !4323
+Time: 1 Stage: 1 instr:   %bit_select172 = call i8 @hls_bit_select_8_32(i32 %ashr171, i64 24, i64 17), !dbg !4343, !MSB !4289, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %bit_select173 = call i17 @hls_bit_select_17_32(i32 %ashr171, i64 16, i64 0), !dbg !4343, !MSB !4213, !LSB !4117, !ExtendFrom !4213
+Time: 1 Stage: 1 instr:   %bit_concat177 = call i26 @hls_bit_concat_9_17(i9 0, i64 9, i17 %bit_select173, i64 17), !dbg !4346, !MSB !4213, !LSB !4117, !ExtendFrom !4213
+Time: 1 Stage: 1 instr:   %sext178 = sext i8 %load176 to i26, !dbg !4346, !MSB !4320, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %mul179 = mul nsw i26 %bit_concat177, %sext178, !dbg !4346, !MSB !4320, !LSB !4117, !ExtendFrom !4323
+Time: 1 Stage: 1 instr:   %sext180 = sext i8 %bit_select172 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %sext181 = sext i8 %load176 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4289
+Time: 1 Stage: 1 instr:   %mul182 = mul nsw i32 %sext180, %sext181, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4207
+Stage: 2
+Time: 2 Stage: 2 instr:   %bit_select = call i15 @hls_bit_select_15_32(i32 %mul182, i64 14, i64 0), !dbg !4346, !MSB !4324, !LSB !4117, !ExtendFrom !4324
+Time: 2 Stage: 2 instr:   %sext183 = sext i26 %mul179 to i32, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4323
+Time: 2 Stage: 2 instr:   %bit_concat = call i32 @hls_bit_concat_15_17(i15 %bit_select, i64 15, i17 0, i64 17), !dbg !4346, !MSB !4208, !LSB !4218, !ExtendFrom !4208
+Time: 2 Stage: 2 instr:   %add184 = add i32 %bit_concat, %sext183, !dbg !4346, !MSB !4208, !LSB !4117, !ExtendFrom !4208
+Time: 2 Stage: 2 instr:   %add185 = add nsw i32 %add184, %phi168, !dbg !4347, !MSB !4208, !LSB !4117, !ExtendFrom !4208
+
+
+Pipeline Table:
+Total pipeline stages: 3
+Stage:        0              1              2
+   II:        0     |        0     |        0
+ Time:        0     |        1     |        2
+        %phi167        %phi167        %phi167
+              -        %phi168        %phi168
+       %addr169       %addr169       %addr169
+       %load170       %load170       %load170
+              -       %ashr171       %ashr171
+              -%bit_select1...%bit_select1...
+              -%bit_select1...%bit_select1...
+        %add174        %add174        %add174
+       %addr175       %addr175       %addr175
+       %load176       %load176       %load176
+              -%bit_concat1...%bit_concat1...
+              -       %sext178       %sext178
+              -        %mul179        %mul179
+              -       %sext180       %sext180
+              -       %sext181       %sext181
+              -        %mul182        %mul182
+              -              -    %bit_select
+              -              -       %sext183
+              -              -    %bit_concat
+              -              -        %add184
+              -              -        %add185
+        %add186        %add186        %add186
+       %icmp187       %icmp187       %icmp187
+       <badref>       <badref>       <badref>
+

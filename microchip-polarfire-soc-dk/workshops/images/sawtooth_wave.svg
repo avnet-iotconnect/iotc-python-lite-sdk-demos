@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="750" stroke="#777" stroke-width="5">
+<path d="m41,373H959"/>
+<path stroke-dasharray="5,10" d="m41,142H959m0,462H41M347,26V720m306,0V26"/>
+<path fill="none" stroke="#00F" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"
+d="M41,373 347,142V604l612-462v231"/>
+</svg>

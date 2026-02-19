@@ -1,0 +1,291 @@
+Info: Running the following targets: hw
+----------------------------------------------------------------------------
+Smart High-Level Synthesis Tool Version 2025.2
+Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+Date: Sat Feb 14 09:58:20 2026
+----------------------------------------------------------------------------
+Info: Checking for Libero license.
+Info: Libero license found.
+Info:    (SHLS-87) Add 'NoInline' attribute to the user-specified function 'tinyml_accel'.
+Info: Inlining the function 'iabs32' into its caller function 'extract_features' at its call site on line 106 of main_variations/main.fifo.cpp
+Info: Inlining the function 'clamp_int16' into its caller function 'extract_features' at its call site on line 123 of main_variations/main.fifo.cpp
+Info: Inlining the function 'extract_features' into its caller function 'tinyml_accel' at its call site on line 137 of main_variations/main.fifo.cpp
+Info: StrengthReduction: Replaced 2 multipliers by constant with 2 adders in function tinyml_accel.
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:163:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:152:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:142:9 in function tinyml_accel
+Info: StrengthReduction: Replaced 2 multipliers by constant with 2 adders in function tinyml_accel.
+Info: StrengthReduction: Replaced 2 multipliers by constant with 2 adders in function tinyml_accel.
+Info: Pipelining the loop on line 163 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:163:9".
+Info: Assigning new label to the loop on line 163 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_163_9"
+Info: Done pipelining the loop on line 163 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_163_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 152 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:152:9".
+Info: Assigning new label to the loop on line 152 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_152_9"
+Info: Done pipelining the loop on line 152 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_152_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 142 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:142:9".
+Info: Assigning new label to the loop on line 142 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_142_9"
+Info: Done pipelining the loop on line 142 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_142_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Running Allocation.
+Info: Target FPGA: MICROCHIP PolarFireSoC.
+Info: Project type: Icicle_SoC
+Info: Clock period constraint: 5.00 ns (200.00 MHz).
+Info: Allocating memories.
+Info: Running Scheduling for function: tinyml_accel(short const*, int*).
+Info: Done Scheduling.
+Info: Generating RTL for function: tinyml_accel(short const*, int*).
+Info: Generating module declaration.
+Info: Generating module signals.
+Info: Generating pipeline for loop on line 142 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_142_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 152 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_152_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 163 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_163_9".
+      Pipeline initiation interval = 1.
+Info: Running Binding for function: tinyml_accel(short const*, int*).
+Info: Generating module datapath.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_142_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_152_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_163_9' never stalls, removing its stall logic.
+Info: Generating interconnect for top-level module.
+Info: Outputting VHDL wrapper for top-level module: tinyml_accel_top
+Info: Printing RTL to file.
+Info: Outputting top-level module: tinyml_accel_top.
+Info: Exporting IP modules.
+Info: Exporting SoC Profiler.
+Info: Generating HDL+ Tcl script to be imported in SmartDesign: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\scripts\\libero\create_hdl_plus.tcl.
+Info: Generated accelerator driver files are in hls_output/accelerator_drivers/
+Info: Running the following targets: soc_sw_compile_no_accel
+Info: Running the following targets: soc_source_transform soc_sw_compile_accel
+----------------------------------------------------------------------------
+Smart High-Level Synthesis Tool Version 2025.2
+Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+Date: Sat Feb 14 09:58:44 2026
+----------------------------------------------------------------------------
+Info: Checking for Libero license.
+Info: Libero license found.
+Info: Compiling transformed C/C++ source code and accelerator drivers into RISC-V binary: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\tinyml_complex.accel.elf
+C:/dev/MCHP/Libero25-4/polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh/script_support/additional_configurations/smarthls/tinyml_complex/hls_output/.hls/sw/main.fifo.cpp:381:13: warning: 'void extract_features(const int16_t*, int16_t*)' defined but not used [-Wunused-function]
+  381 | static void extract_features(const int16_t *in, int16_t *feat) {
+      |             ^~~~~~~~~~~~~~~~
+Info: Running the following targets: soc_sw_compile_no_accel
+In file included from main_variations/main.fifo.cpp:8:
+main_variations/main.fifo.cpp: In function 'int main(int, char**)':
+main_variations/main.fifo.cpp:226:83: warning: invalid conversion from 'int' to 'hls_alloc_memory_type_t' [-fpermissive]
+  226 |     int16_t *input = (int16_t *)hls_malloc(sizeof(int16_t) * N_SAMPLES * batch_n, alloc_policy);
+      |                                                                                   ^~~~~~~~~~~~
+      |                                                                                   |
+      |                                                                                   int
+/cygdrive/C/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:76:36: note: in definition of macro 'DEF_OR_ARG'
+   76 | #define DEF_OR_ARG(z, a, arg, ...) arg
+      |                                    ^~~
+main_variations/main.fifo.cpp:226:33: note: in expansion of macro 'hls_malloc'
+  226 |     int16_t *input = (int16_t *)hls_malloc(sizeof(int16_t) * N_SAMPLES * batch_n, alloc_policy);
+      |                                 ^~~~~~~~~~
+/cygdrive/C/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:73:58: note:   initializing argument 2 of 'void* hls_alloc_with_memory_area(size_t, hls_alloc_memory_type_t)'
+   73 |                                  hls_alloc_memory_type_t memory_area);
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+main_variations/main.fifo.cpp:227:84: warning: invalid conversion from 'int' to 'hls_alloc_memory_type_t' [-fpermissive]
+  227 |     int32_t *output = (int32_t *)hls_malloc(sizeof(int32_t) * N_CLASSES * batch_n, alloc_policy);
+      |                                                                                    ^~~~~~~~~~~~
+      |                                                                                    |
+      |                                                                                    int
+/cygdrive/C/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:76:36: note: in definition of macro 'DEF_OR_ARG'
+   76 | #define DEF_OR_ARG(z, a, arg, ...) arg
+      |                                    ^~~
+main_variations/main.fifo.cpp:227:34: note: in expansion of macro 'hls_malloc'
+  227 |     int32_t *output = (int32_t *)hls_malloc(sizeof(int32_t) * N_CLASSES * batch_n, alloc_policy);
+      |                                  ^~~~~~~~~~
+/cygdrive/C/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:73:58: note:   initializing argument 2 of 'void* hls_alloc_with_memory_area(size_t, hls_alloc_memory_type_t)'
+   73 |                                  hls_alloc_memory_type_t memory_area);
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+Info: Running the following targets: hw soc_source_transform soc_sw_compile_accel
+----------------------------------------------------------------------------
+Smart High-Level Synthesis Tool Version 2025.2
+Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+Date: Sat Feb 14 10:36:06 2026
+----------------------------------------------------------------------------
+Info: Checking for Libero license.
+Info: Libero license found.
+main_variations/main.fifo.cpp:226:33: error: no matching function for call to 'hls_alloc_with_memory_area'
+    int16_t *input = (int16_t *)hls_malloc(sizeof(int16_t) * N_SAMPLES * batch_n, alloc_policy);
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:78:5: note: expanded from macro 'hls_malloc'
+    hls_alloc_with_memory_area(                                                \
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:72:7: note: candidate function not viable: no known conversion from 'int' to 'hls_alloc_memory_type_t' for 2nd argument
+void *hls_alloc_with_memory_area(size_t num_bytes,
+      ^
+main_variations/main.fifo.cpp:227:34: error: no matching function for call to 'hls_alloc_with_memory_area'
+    int32_t *output = (int32_t *)hls_malloc(sizeof(int32_t) * N_CLASSES * batch_n, alloc_policy);
+                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:78:5: note: expanded from macro 'hls_malloc'
+    hls_alloc_with_memory_area(                                                \
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:72:7: note: candidate function not viable: no known conversion from 'int' to 'hls_alloc_memory_type_t' for 2nd argument
+void *hls_alloc_with_memory_area(size_t num_bytes,
+      ^
+2 errors generated.
+Error: Command failed!
+Command: 'C:\Microchip\Libero_SoC_2025.2\SmartHLS\SmartHLS\llvm-project\llvm\Release+Asserts\bin\clang'
+Args: '['-fno-exceptions', '-O3', 'main_variations/main.fifo.cpp', '-emit-llvm', '-c', '-Wall', '-std=c++0x', '-Wno-strict-aliasing', '-Wno-unused-label', '-Wno-unknown-pragmas', '-Wno-attributes', '-O1', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library', '-I./', '-DHLS_PROFILER_ENABLE', '-DHLS_PROFILER_SAMPLES=1000', '-D__SYNTHESIS__', '-D', 'LEGUP_DEFAULT_FIFO_DEPTH=2', '-O3', '-fno-builtin', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/swtools/microsemi/ProjectTemplate', '-std=c++14', '-std=gnu++14', '-target', 'x86_64-unknown-linux-gnu', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/gcc/include/c++/8.5.0', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/gcc/include/c++/8.5.0/x86_64-pc-linux-gnu', '-IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/usr/include', '-mno-sse', '-hls', '-fno-vectorize', '-fno-slp-vectorize', '-fno-use-cxa-atexit', '-fstandalone-debug', '-Werror=implicit-function-declaration', '-Wno-ignored-attributes', '-D_GLIBCXX_USE_CXX11_ABI=1', '-g', '-Xclang', '-no-opaque-pointers', '-mllvm', '-disable-llvm-optzns', '-o', 'C:/dev/MCHP/Libero25-4/polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh/script_support/additional_configurations/smarthls/tinyml_complex/hls_output/.hls/main.fifo.bc']'
+Shell Command: C:\Microchip\Libero_SoC_2025.2\SmartHLS\SmartHLS\llvm-project\llvm\Release+Asserts\bin\clang -fno-exceptions -O3 main_variations/main.fifo.cpp -emit-llvm -c -Wall -std=c++0x -Wno-strict-aliasing -Wno-unused-label -Wno-unknown-pragmas -Wno-attributes -O1 -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library -I./ -DHLS_PROFILER_ENABLE -DHLS_PROFILER_SAMPLES=1000 -D__SYNTHESIS__ -D LEGUP_DEFAULT_FIFO_DEPTH=2 -O3 -fno-builtin -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/swtools/microsemi/ProjectTemplate -std=c++14 -std=gnu++14 -target x86_64-unknown-linux-gnu -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/gcc/include/c++/8.5.0 -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/gcc/include/c++/8.5.0/x86_64-pc-linux-gnu -IC:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/dependencies/usr/include -mno-sse -hls -fno-vectorize -fno-slp-vectorize -fno-use-cxa-atexit -fstandalone-debug -Werror=implicit-function-declaration -Wno-ignored-attributes -D_GLIBCXX_USE_CXX11_ABI=1 -g -Xclang -no-opaque-pointers -mllvm -disable-llvm-optzns -o C:/dev/MCHP/Libero25-4/polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh/script_support/additional_configurations/smarthls/tinyml_complex/hls_output/.hls/main.fifo.bc
+Return Code: 1
+Output: 'main_variations/main.fifo.cpp:226:33: error: no matching function for call to 'hls_alloc_with_memory_area'
+    int16_t *input = (int16_t *)hls_malloc(sizeof(int16_t) * N_SAMPLES * batch_n, alloc_policy);
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:78:5: note: expanded from macro 'hls_malloc'
+    hls_alloc_with_memory_area(                                                \
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:72:7: note: candidate function not viable: no known conversion from 'int' to 'hls_alloc_memory_type_t' for 2nd argument
+void *hls_alloc_with_memory_area(size_t num_bytes,
+      ^
+main_variations/main.fifo.cpp:227:34: error: no matching function for call to 'hls_alloc_with_memory_area'
+    int32_t *output = (int32_t *)hls_malloc(sizeof(int32_t) * N_CLASSES * batch_n, alloc_policy);
+                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:78:5: note: expanded from macro 'hls_malloc'
+    hls_alloc_with_memory_area(                                                \
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Microchip/Libero_SoC_2025.2/SmartHLS/SmartHLS/smarthls-library/hls/hls_alloc.h:72:7: note: candidate function not viable: no known conversion from 'int' to 'hls_alloc_memory_type_t' for 2nd argument
+void *hls_alloc_with_memory_area(size_t num_bytes,
+      ^
+2 errors generated.
+'
+
+Info: Running the following targets: soc_sw_compile_no_accel
+Info: Running the following targets: hw soc_source_transform soc_sw_compile_accel
+----------------------------------------------------------------------------
+Smart High-Level Synthesis Tool Version 2025.2
+Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+Date: Sat Feb 14 10:36:31 2026
+----------------------------------------------------------------------------
+Info: Checking for Libero license.
+Info: Libero license found.
+Info:    (SHLS-87) Add 'NoInline' attribute to the user-specified function 'tinyml_accel'.
+Info: Inlining the function 'iabs32' into its caller function 'extract_features' at its call site on line 107 of main_variations/main.fifo.cpp
+Info: Inlining the function 'clamp_int16' into its caller function 'extract_features' at its call site on line 124 of main_variations/main.fifo.cpp
+Info: Inlining the function 'extract_features' into its caller function 'tinyml_accel_single' at its call site on line 134 of main_variations/main.fifo.cpp
+Info: Inlining the function 'tinyml_accel_single' into its caller function 'tinyml_accel' at its call site on line 179 of main_variations/main.fifo.cpp
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:139:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:149:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:160:9 in function tinyml_accel
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: Pipelining the loop on line 139 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:139:9".
+Info: Assigning new label to the loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9"
+Info: Done pipelining the loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 149 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:149:9".
+Info: Assigning new label to the loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9"
+Info: Done pipelining the loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 160 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:160:9".
+Info: Assigning new label to the loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9"
+Info: Done pipelining the loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Running Allocation.
+Info: Target FPGA: MICROCHIP PolarFireSoC.
+Info: Project type: Icicle_SoC
+Info: Clock period constraint: 5.00 ns (200.00 MHz).
+Info: Allocating memories.
+Info: Running Scheduling for function: tinyml_accel(short const*, int*, int).
+Info: Done Scheduling.
+Info: Generating RTL for function: tinyml_accel(short const*, int*, int).
+Info: Generating module declaration.
+Info: Generating module signals.
+Info: Generating pipeline for loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9".
+      Pipeline initiation interval = 1.
+Info: Running Binding for function: tinyml_accel(short const*, int*, int).
+Info: Generating module datapath.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_139_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_149_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_160_9' never stalls, removing its stall logic.
+Info: Generating interconnect for top-level module.
+Info: Outputting VHDL wrapper for top-level module: tinyml_accel_top
+Info: Printing RTL to file.
+Info: Outputting top-level module: tinyml_accel_top.
+Info: Exporting IP modules.
+Info: Exporting SoC Profiler.
+Info: Generating HDL+ Tcl script to be imported in SmartDesign: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\scripts\\libero\create_hdl_plus.tcl.
+Info: Generated accelerator driver files are in hls_output/accelerator_drivers/
+Info: Compiling transformed C/C++ source code and accelerator drivers into RISC-V binary: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\tinyml_complex.accel.elf
+C:/dev/MCHP/Libero25-4/polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh/script_support/additional_configurations/smarthls/tinyml_complex/hls_output/.hls/sw/main.fifo.cpp:412:13: warning: 'void tinyml_accel_single(const int16_t*, int32_t*)' defined but not used [-Wunused-function]
+  412 | static void tinyml_accel_single(const int16_t *in, int32_t *out) {
+      |             ^~~~~~~~~~~~~~~~~~~
+Info: Running the following targets: soc_sw_compile_no_accel
+Info: Running the following targets: hw soc_source_transform soc_sw_compile_accel
+----------------------------------------------------------------------------
+Smart High-Level Synthesis Tool Version 2025.2
+Copyright (c) 2015-2025 Microchip Technology Inc. All Rights Reserved.
+For support, please visit https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=techsupport&redirect=true&version=latest.
+Date: Sat Feb 14 12:37:02 2026
+----------------------------------------------------------------------------
+Info: Checking for Libero license.
+Info: Libero license found.
+Info:    (SHLS-87) Add 'NoInline' attribute to the user-specified function 'tinyml_accel'.
+Info: Inlining the function 'iabs32' into its caller function 'extract_features' at its call site on line 107 of main_variations/main.fifo.cpp
+Info: Inlining the function 'clamp_int16' into its caller function 'extract_features' at its call site on line 124 of main_variations/main.fifo.cpp
+Info: Inlining the function 'extract_features' into its caller function 'tinyml_accel_single' at its call site on line 134 of main_variations/main.fifo.cpp
+Info: Inlining the function 'tinyml_accel_single' into its caller function 'tinyml_accel' at its call site on line 179 of main_variations/main.fifo.cpp
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:139:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:149:9 in function tinyml_accel
+Info: Removing control-flow from loop: for.loop:main_variations/main.fifo.cpp:160:9 in function tinyml_accel
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: StrengthReduction: Replaced 3 multipliers by constant with 3 adders in function tinyml_accel.
+Info: Pipelining the loop on line 139 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:139:9".
+Info: Assigning new label to the loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9"
+Info: Done pipelining the loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 149 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:149:9".
+Info: Assigning new label to the loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9"
+Info: Done pipelining the loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Pipelining the loop on line 160 of main_variations/main.fifo.cpp with label "for.loop:main_variations/main.fifo.cpp:160:9".
+Info: Assigning new label to the loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9"
+Info: Done pipelining the loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9".
+      Pipeline Initiation Interval (II) = 1; Meeting user specified II. Pipeline length = 3.
+Info: Running Allocation.
+Info: Target FPGA: MICROCHIP PolarFireSoC.
+Info: Project type: Icicle_SoC
+Info: Clock period constraint: 5.00 ns (200.00 MHz).
+Info: Allocating memories.
+Info: Running Scheduling for function: tinyml_accel(short const*, int*, int).
+Info: Done Scheduling.
+Info: Generating RTL for function: tinyml_accel(short const*, int*, int).
+Info: Generating module declaration.
+Info: Generating module signals.
+Info: Generating pipeline for loop on line 139 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_139_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 149 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_149_9".
+      Pipeline initiation interval = 1.
+Info: Generating pipeline for loop on line 160 of main_variations/main.fifo.cpp with label "for_loop_main_variations_main_fifo_cpp_160_9".
+      Pipeline initiation interval = 1.
+Info: Running Binding for function: tinyml_accel(short const*, int*, int).
+Info: Generating module datapath.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_139_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_149_9' never stalls, removing its stall logic.
+Info: The pipeline 'for_loop_main_variations_main_fifo_cpp_160_9' never stalls, removing its stall logic.
+Info: Generating interconnect for top-level module.
+Info: Outputting VHDL wrapper for top-level module: tinyml_accel_top
+Info: Printing RTL to file.
+Info: Outputting top-level module: tinyml_accel_top.
+Info: Exporting IP modules.
+Info: Exporting SoC Profiler.
+Info: Generating HDL+ Tcl script to be imported in SmartDesign: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\scripts\\libero\create_hdl_plus.tcl.
+Info: Generated accelerator driver files are in hls_output/accelerator_drivers/
+Info: Compiling transformed C/C++ source code and accelerator drivers into RISC-V binary: C:\dev\MCHP\Libero25-4\polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\tinyml_complex.accel.elf
+C:/dev/MCHP/Libero25-4/polarfire-soc-discovery-kit-reference-design-2025.07-track3-fresh/script_support/additional_configurations/smarthls/tinyml_complex/hls_output/.hls/sw/main.fifo.cpp:412:13: warning: 'void tinyml_accel_single(const int16_t*, int32_t*)' defined but not used [-Wunused-function]
+  412 | static void tinyml_accel_single(const int16_t *in, int32_t *out) {
+      |             ^~~~~~~~~~~~~~~~~~~

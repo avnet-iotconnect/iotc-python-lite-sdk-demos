@@ -25,7 +25,7 @@ FPGA logic elements. The kit is ready for rapid testing of applications in an ea
 offers a mikroBUS™ expansion header for Click boards™, a 40-pin Raspberry Pi™ connector, and a MIPI® video connector. 
 The expansion boards can be controlled using protocols like I2C and SPI. One GB of DDR4 memory is available as well as 
 a microSD® card slot for booting Linux. Communication interfaces include one Gigabit Ethernet connector and three UART 
-connections via the USB type C connector. An on-board FlashPro5 programmer is available to program and debug the PolarFIre 
+connections via the USB type C connector. An on-board FlashPro5 programmer is available to program and debug the PolarFire 
 FPGA through USB-to-JTAG channel.</td>
   </tr>
 </table>
@@ -52,7 +52,7 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 * An SD-Card flashing utility such as [Balena Etcher](https://etcher.balena.io/)
 * Microchip FlashPro Express
-  * Download the lastest "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab)
+  * Download the latest "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab)
 and then run extract/execute the installer (may require admin/sudo privileges).
 
 
@@ -84,7 +84,7 @@ same downloaded/extracted folder that contains the .job file. Select "Ok" to ope
 
 ## Flash Linux Image
 
-1. Download the lastest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
+1. Download the latest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
 SoC Releases page](https://github.com/linux4microchip/meta-mchp/releases), scrolling down to the "Pre-built images for 
 the Discovery Kit Reference Design" section and clicking on the "pre-built image" link. The downloaded filename should
 be similar to "mchp-base-image-mpfs-disco-kit.rootfs-20250725104508.wic.gz" with only the timestamp potentially being different 
@@ -176,6 +176,44 @@ python3 app.py
 > directory with the command: ```cd /opt/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
+
+## Additional Workshop
+
+The workshop set contains three progressive project tracks that reuse the same board + `/IOTCONNECT` setup:
+
+- Track 1: baseline ML classifier flow
+- Track 2: Tiny-NN accelerator flow
+- Track 3: complex accelerator flow (best end-to-end HW acceleration visibility)
+
+All three tracks use the same deployment pattern (program FPGA, install runtime, run cloud commands), so teams can move from a simple baseline to more advanced accelerator behavior without changing the workshop operating model.
+
+
+<img src="./workshops/images/classification_methods.svg" alt="Workshop track comparison diagram" width="900" />
+
+Expected end state in `/IOTCONNECT` (Track 3 dashboard example):
+
+<img src="./workshops/images/mchp-polarfire-track3-dashboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
+
+For all workshop tracks, start with:
+
+- `workshops/README.md`
+
+Recommended workshop setup order:
+
+1. Create `/IOTCONNECT` account (this README section `#5`).
+2. Install FlashPro Express (this README sections `#2` and `#4`).
+3. Import workshop template first from `workshops/templates-iotconnect/`.
+4. Onboard device via `../common/general-guides/UI-ONBOARD.md` using template `Microchip Polarfire ML`.
+5. Run Track 1, 2, or 3 quickstart.
+
+Nomenclature used in workshops:
+
+- `Quickstart`: use prebuilt FPGA/ELF artifacts and execute the labs quickly.
+- `Developer`: rebuild/modify artifacts using SmartHLS + Libero.
+
+Shared workshop resources:
+
+- `workshops/templates-iotconnect/README.md`
 
 # 9. Resources
 

@@ -1,0 +1,6 @@
+SYNTHESIS_TOP_MODULES :=tinyml_accel_top
+SYNTHESIS_TOP_MODULE :=tinyml_accel_top
+CUSTOM_TOP_LEVEL :=tinyml_accel
+ACCELERATOR_NAME :=tinyml_accel
+TEST_BENCH :=
+CUSTOM_TEST_BENCH :=

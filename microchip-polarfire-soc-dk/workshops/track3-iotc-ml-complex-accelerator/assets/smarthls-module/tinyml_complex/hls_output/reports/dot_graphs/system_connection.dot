@@ -1,0 +1,9 @@
+digraph {
+Node0x8005f6910[label="tinyml_accel_inst", shape="box"];
+Node0x8005e9100[label="tinyml_accel_hw_top_inst_inst", shape="box"];
+Node0x8005e9100 -> Node0x8005f6910;
+Node0x8005e95d0[label="in_var_inst", style=filled, color="lightblue"];
+Node0x8005f6910 -> Node0x8005e95d0;
+Node0x8005ea440[label="out_var_inst", style=filled, color="lightblue"];
+Node0x8005f6910 -> Node0x8005ea440;
+}
