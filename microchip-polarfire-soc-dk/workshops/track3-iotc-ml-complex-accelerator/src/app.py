@@ -4,6 +4,7 @@
 # Command: "classify" (e.g. args: ["hw", "4", "42"] or ["mode=hw","class=4","seed=42"])
 
 import json
+import multiprocessing
 import os
 import pathlib
 import random
@@ -33,10 +34,11 @@ LAST_STATUS_TS = 0.0
 STATUS_PERIOD_S = 15.0
 LED_PATTERN_THREAD = None
 LED_PATTERN_STOP = None
-LOAD_THREADS = []
-LOAD_STOP = None
+LOAD_PROCESSES = []
+LOAD_STOP_EVENT = None
 LOAD_WORKERS = 0
 LOAD_DUTY = 0
+LOAD_BACKEND = "python-multiprocessing"
 JOB_LOCK = threading.Lock()
 ACTIVE_JOB = None
 MAX_ML_BATCH = 1024
@@ -377,7 +379,7 @@ def _start_led_pattern(pattern_name: str, cycles: int = 16, interval_ms: int = 1
     LED_PATTERN_THREAD.start()
 
 
-def _cpu_load_worker(stop_event: threading.Event, duty_pct: int):
+def _cpu_load_worker(stop_event, duty_pct: int):
     duty = max(1, min(int(duty_pct), 100))
     period_s = 0.1
     busy_s = period_s * (float(duty) / 100.0)
@@ -391,38 +393,77 @@ def _cpu_load_worker(stop_event: threading.Event, duty_pct: int):
             break
 
 
+def _load_active():
+    global LOAD_PROCESSES, LOAD_STOP_EVENT, LOAD_WORKERS, LOAD_DUTY
+    if not LOAD_PROCESSES:
+        return False
+    alive = [p for p in LOAD_PROCESSES if p.is_alive()]
+    if alive:
+        LOAD_PROCESSES = alive
+        return True
+    for p in LOAD_PROCESSES:
+        try:
+            p.join(timeout=0.05)
+        except Exception:
+            pass
+    LOAD_PROCESSES = []
+    LOAD_STOP_EVENT = None
+    LOAD_WORKERS = 0
+    LOAD_DUTY = 0
+    return False
+
+
 def _stop_load():
-    global LOAD_THREADS, LOAD_STOP, LOAD_WORKERS, LOAD_DUTY
-    if LOAD_STOP is not None:
-        LOAD_STOP.set()
-    for t in LOAD_THREADS:
-        if t.is_alive():
-            t.join(timeout=1.0)
-    LOAD_THREADS = []
-    LOAD_STOP = None
+    global LOAD_PROCESSES, LOAD_STOP_EVENT, LOAD_WORKERS, LOAD_DUTY
+    if LOAD_STOP_EVENT is not None:
+        try:
+            LOAD_STOP_EVENT.set()
+        except Exception:
+            pass
+    for p in LOAD_PROCESSES:
+        try:
+            if p.is_alive():
+                p.join(timeout=1.5)
+            if p.is_alive():
+                p.terminate()
+                p.join(timeout=1.0)
+        except Exception:
+            pass
+    LOAD_PROCESSES = []
+    LOAD_STOP_EVENT = None
     LOAD_WORKERS = 0
     LOAD_DUTY = 0
 
 
 def _start_load(workers: int, duty_pct: int):
-    global LOAD_THREADS, LOAD_STOP, LOAD_WORKERS, LOAD_DUTY
+    global LOAD_PROCESSES, LOAD_STOP_EVENT, LOAD_WORKERS, LOAD_DUTY
     w = max(1, min(int(workers), 8))
     d = max(1, min(int(duty_pct), 100))
     _stop_load()
-    stop_event = threading.Event()
-    threads = []
+    # Use spawn context to avoid forking a multithreaded process.
+    mp_ctx = multiprocessing.get_context("spawn")
+    stop_event = mp_ctx.Event()
+    procs = []
     for i in range(w):
-        t = threading.Thread(target=_cpu_load_worker, args=(stop_event, d), name=f"cpu-load-{i}", daemon=True)
-        t.start()
-        threads.append(t)
-    LOAD_STOP = stop_event
-    LOAD_THREADS = threads
+        p = mp_ctx.Process(
+            target=_cpu_load_worker,
+            args=(stop_event, d),
+            name=f"cpu-load-{i}",
+            daemon=True,
+        )
+        p.start()
+        procs.append(p)
+    time.sleep(0.1)
+    if not any(p.is_alive() for p in procs):
+        raise RuntimeError("Python multiprocessing load workers failed to start.")
+    LOAD_STOP_EVENT = stop_event
+    LOAD_PROCESSES = procs
     LOAD_WORKERS = w
     LOAD_DUTY = d
 
 
 def parse_load_args(args):
-    args = _require_args("load", args, "load <start|stop|status> [workers] [duty_pct]")
+    args = _require_args("load", args, "load <start|stop|status|off> [workers] [duty_pct]")
     action = "status"
     workers = 1
     duty = 95
@@ -455,8 +496,12 @@ def parse_load_args(args):
         if len(positional) > 2:
             duty = int(positional[2])
 
+    if action in ("off", "disable"):
+        action = "stop"
+    if action in ("on", "enable"):
+        action = "start"
     if action not in ("start", "stop", "status"):
-        raise ValueError("load action must be start|stop|status")
+        raise ValueError("load action must be start|stop|status|off")
     return action, workers, duty
 
 
@@ -492,9 +537,11 @@ def _status_payload(include_leds: bool = False):
         payload["led_count"] = len(_visible_leds())
         payload["leds"] = _leds_state_string()
 
-    payload["load_active"] = LOAD_WORKERS > 0
-    payload["load_workers"] = LOAD_WORKERS
-    payload["load_duty_pct"] = LOAD_DUTY
+    active = _load_active()
+    payload["load_active"] = active
+    payload["load_workers"] = LOAD_WORKERS if active else 0
+    payload["load_duty_pct"] = LOAD_DUTY if active else 0
+    payload["load_backend"] = LOAD_BACKEND
 
     return payload
 
@@ -1150,13 +1197,15 @@ def on_command(msg: C2dCommand):
                 _start_load(workers=workers, duty_pct=duty)
             elif action == "stop":
                 _stop_load()
+            active = _load_active()
             telemetry = {
                 "event": "load_state",
                 "status": "ok",
                 "action": action,
-                "load_active": LOAD_WORKERS > 0,
-                "load_workers": LOAD_WORKERS,
-                "load_duty_pct": LOAD_DUTY,
+                "load_active": active,
+                "load_workers": LOAD_WORKERS if active else 0,
+                "load_duty_pct": LOAD_DUTY if active else 0,
+                "load_backend": LOAD_BACKEND,
             }
             c.send_telemetry(telemetry)
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Load command completed")
@@ -1276,4 +1325,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Exiting.")
         sys.exit(0)
+    finally:
+        _stop_led_pattern()
+        _stop_load()
 

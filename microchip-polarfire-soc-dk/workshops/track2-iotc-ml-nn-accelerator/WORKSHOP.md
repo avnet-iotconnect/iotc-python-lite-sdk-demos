@@ -6,11 +6,31 @@
 
 ## 1. Introduction
 
-Track 2 demonstrates:
+This workshop uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
 
-- `/IOTCONNECT` command and telemetry control
-- compact fixed-point Tiny-NN style inference in software and hardware modes
-- step-up model complexity while keeping the same cloud command contract
+The purpose of this demo is twofold: validate classification behavior and validate performance. You run the same model/application in software and hardware, then compare both output quality and execution speed under controlled inputs.
+
+Track 2 is the step-up from Track 1. It introduces a compact Tiny-NN style model while preserving the same command-and-telemetry workflow, so you can focus on how increased model complexity changes behavior and timing.
+
+<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload workshop architecture flow" width="980" />
+
+### 1.1 Model Size and Compute Shape
+
+Track 2 uses a fixed-point Tiny-NN style classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `32` features, builds a `12`-element hidden representation (`6` positive + `6` negative channels), then produces scores across `6` classes.
+
+The learned parameter table is `W1_POS[6x32]` (`192` int8 weights, ~`192` bytes), followed by a lightweight deterministic scoring stage. This keeps the model compact while still being richer than the baseline Track 1 classifier.
+
+Inputs are generated with deterministic, seed-controlled noise injection across six waveform families (`0..5`). At the command level, `random` currently selects from classes `0..2`. Batch experiments are supported at the application layer up to `10000` inferences per request.
+
+### 1.2 Built-In Application Flows and Their Purpose
+
+Track 2 includes two complementary runtime flows: `classify` and `bench`.
+
+The `classify` flow is the functional demonstration of the classifier engine. You select `sw` or `hw`, choose an input class (or `random`), and run inference on waveform data with noise injection. Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, and batch stats), so you can validate software/hardware consistency at the model-output level.
+
+The `bench` flow is the performance demonstration. It runs SW, HW, or both on equivalent inputs and publishes `ml_bench` telemetry including `sw_avg_time_s`, `hw_avg_time_s`, `sw_total_time_s`, `hw_total_time_s`, `sw_match_rate`, and `hw_match_rate`, plus `speedup_sw_over_hw` when both modes are run.
+
+In practical workshop use, start with `classify` to confirm model behavior and prediction validity, then run `bench` to quantify execution differences. In the end, you are validating both model accuracy parity and performance trends between software and hardware implementations.
 
 ## 2. Prerequisites
 
@@ -20,17 +40,7 @@ Track 2 demonstrates:
 - Ethernet connection
 - Serial terminal (PuTTY or TeraTerm)
 - FlashPro Express v11.6 or newer [Download](https://ww1.microchip.com/downloads/aemdocuments/documents/fpga/media-content/FPGA/v2021.1/prod/Program_Debug_v2021.1_win.exe)
-- Workshop repository on host:
-  - [github.com/avnet-iotconnect/iotc-python-lite-sdk-demos](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos)
-  - clone command:
-    ```bash
-    git clone https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos.git
-    ```
-- **SanDisk**-brand Micro-SD card (8GB, UHS-1 Class 10 recommended), preloaded with Linux image:
-
-  > [!IMPORTANT]
-  > The PolarFire SoC Discovery Kit **requires a SanDisk-brand Micro-SD card**. Other brands of SD cards **will fail to boot** due to specific memory-mapping requirements in the bootloader.
-
+- Reputable-brand Micro-SD card (`<64GB`, UHS-I Class 10, A1 minimum, A2 preferred), preloaded with Linux image:
   - `linux4microchip+fpga-2025.07`
   - `https://github.com/linux4microchip/meta-mchp/releases/tag/linux4microchip%2Bfpga-2025.07`
 
@@ -65,10 +75,11 @@ Using the above image as reference, make the following connections:
 ### 4.1 Update FPGA
 
 1. Open FlashPro Express.
-2. Create/open project from Track 2 job file:
-   - `assets/fpga-job/MPFS_DISCOVERY_KIT.job`
-3. Click `RUN` to program board.
-4. Power-cycle board after programming.
+2. Download FPGA project [link](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-polarfire-soc-dk/workshops/track2-iotc-ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job)(right-click, "save as")
+3. Create/open project.
+   - `MPFS_DISCOVERY_KIT.job`
+4. Click `RUN` to program board.
+5. Power-cycle board after programming.
 
 ### 4.2 Software Setup
 
@@ -77,11 +88,9 @@ Using the above image as reference, make the following connections:
 
 #### 4.2.1 Board Runtime Setup
 
+- Using the serial terminal, install /IOTCONNECT Device SDK onto the target device.
 ```bash
-sudo opkg update
 python3 -m pip install iotconnect-sdk-lite requests
-mkdir -p /home/weston/demo
-cd /home/weston/demo
 ```
 
 
@@ -89,7 +98,7 @@ cd /home/weston/demo
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device`.
 
-<img src="../images/iotconnect-ui/menu-devices-device.png" alt="Devices menu" width="520" />
+<img src="../images/iotconnect-ui/menu-devices-device.png" alt="Devices menu" width="360" />
 
 2. Open `Templates`.
 
@@ -97,18 +106,18 @@ cd /home/weston/demo
 
 3. Select `Create Template`.
 
-<img src="../images/iotconnect-ui/button-create-template.png" alt="Create Template button" width="300" />
+<img src="../images/iotconnect-ui/button-create-template.png" alt="Create Template button" width="180" />
 
 4. Select `Import`.
 
-<img src="../images/iotconnect-ui/button-import.png" alt="Import button" width="280" />
+<img src="../images/iotconnect-ui/button-import.png" alt="Import button" width="180" />
 
-5. Import file:
-   - `../templates-iotconnect/microchip-polarfire-tinyml-template.json`
+5. Import /IOTCONNECT device template for this project [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/microchip-polarfire-tinyml-template.json).  (right-click and "save link as")
+
 6. Save.
 
 
-## 6. Create a Device
+## 6. Create an /IOTCONNECT Device
 
 1. Go to `Devices` -> `Create Device`.
 
@@ -125,23 +134,16 @@ cd /home/weston/demo
 5. Save and keep the device page open.
 6. After saving, open device details and download the configuration JSON.
 
-<img src="../images/iotconnect-ui/icon-device-configuration-information.png" alt="Device configuration information icon" width="420" />
+<img src="../images/iotconnect-ui/icon-device-configuration-information.png" alt="Device configuration information icon" width="360" />
 
 
-## 7. Obtain Device Certificates
+## 7. Onboard /IOTCONNECT Device
 
 This workshop uses the board-side `quickstart.sh` flow to generate and register certificate/config data.
-
-Certificate/config download locations in `/IOTCONNECT` device page:
-
-<img src="../images/iotconnect-ui/connection-info.png" alt="Connection info link" width="420" />
-
-<img src="../images/iotconnect-ui/icon-certificates.png" alt="Certificates icon" width="280" />
 
 On the board:
 
 ```bash
-cd /home/weston/demo
 wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/quickstart.sh
 bash ./quickstart.sh
 ```
@@ -158,33 +160,15 @@ Then:
 
 This workshop uses packaged Python + prebuilt ELF runtimes.
 
-### 8.1 Start local package server on host (PowerShell)
-
-1. In Windows File Explorer, browse to the folder that contains `package.tar.gz`.
-2. Right-click in that folder and select **Open in Terminal** (PowerShell).
-3. Find your host IPv4 address:
-
-```powershell
-ipconfig
-```
-
-4. Start a local HTTP server and keep this terminal open:
-
-```powershell
-python -m http.server 8000
-```
-
-### 8.2 Download package from board (TeraTerm shell)
+### 8.1 Download package from board (TeraTerm shell)
 
 ```bash
-cd /home/weston/demo
-wget http://<HOST_IP>:8000/package.tar.gz -O /home/weston/demo/package.tar.gz
+wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-polarfire-soc-dk/workshops/track2-iotc-ml-nn-accelerator/package.tar.gz
 ```
 
-### 8.3 Install and run on board
+### 8.2 Install and run on board
 
 ```bash
-cd /home/weston/demo
 rm -f package.tar.gz.*
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
@@ -195,11 +179,10 @@ python3 app.py
 
 ## 9. Import Dynamic Dashboard
 
-1. Go to `/IOTCONNECT` `Dashboards`.
-2. Import:
-   - `../templates-iotconnect/mchp-track2-dashboard-template.json`
-3. Bind dashboard to your device.
-4. Verify widgets populate with `ml_classify`, `ml_bench`, and `device_status` telemetry.
+1. Open /IOTCONNECT and go to **Dashboard**.
+2. Click **Import Dashboard** and upload the JSON file [../templates-iotconnect/mchp-track2-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/mchp-track2-dashboard-template.json).
+3. Save the imported dashboard and map it to the correct device/template.
+4. Open the dashboard in live mode and verify widgets populate from telemetry.
 
 ## 10. Verify Data
 
@@ -207,28 +190,222 @@ Expected dashboard end state:
 
 <img src="../images/mchp-polarfire-track2-dashboard.jpg" alt="Track dashboard result" width="600" />
 
-Run these c2d commands from the `/IOTCONNECT` Dynamic Dashboard or from the Commands tab on the device view:
+### 10.1 What You Are Seeing
+
+- Interactive controls:
+  - `H/W Classifier` button sends `classify hw random 1000`
+  - `S/W Classifier` button sends `classify sw random 1000`
+  - `Benchmark Test` button sends `bench random`
+  - `Load` switch sends `load` start/stop actions
+  - `Device Command` panel lets you run custom command + parameter pairs
+- Key live result widgets:
+  - `Input Waveform` shows the selected input class shape
+  - `Classification Prediction` shows latest classify prediction (`pred`)
+  - `Software Benchmark Prediction` and `Hardware Benchmark Prediction` show `sw_pred` and `hw_pred`
+  - `S/W vs H/W Avg Time (sec)` compares SW and HW average time (bar vs line)
+  - `Speedup (SW/HW)` shows `sw_avg_time_s / hw_avg_time_s`
+  - `HW Match Rate`, `SW Match Rate`, `Match Rate`, `Prediction Count`, `Seed`, `Batch (n)`, `Mode`, and `Job` reflect latest telemetry
+
+### 10.2 Guided Dashboard Demo
+
+1. Confirm device health and telemetry flow.
+   - In `Device Command`, select `status`, enter parameter `basic`, and click `Execute Command`.
+   - Expected result:
+     - Command table shows `Executed Ack`.
+     - `ML Events` includes `device_status`.
+     - `CPU (%)`, `Load Averages`, `Memory Free (kB)`, `Load Active`, and `Load Workers` refresh.
+
+2. Run classifier demos from dashboard buttons.
+   - Click the green power button in `H/W Classifier`.
+   - Click the green power button in `S/W Classifier`.
+   - Expected result:
+     - `Mode` flips between `hw` and `sw` as commands complete.
+     - `Seed`, `Batch (n)`, and `Input Waveform` update.
+     - `Classification Prediction`, `Classification Scores`, `Match Rate`, and `Prediction Count` refresh.
+     - Command table logs classify acknowledgements.
+
+3. Run benchmark demo and interpret acceleration.
+   - Click the green power button in `Benchmark Test`.
+   - For deterministic comparison, also run this from `Device Command`:
 
 ```text
-status basic
-classify sw 2 11
-classify hw 2 11
-classify sw random
-classify hw random
-bench random
 bench both 2 11 1000
 ```
 
-Then run additional checks:
+   - Expected result:
+     - `Software Benchmark Prediction` and `Hardware Benchmark Prediction` update.
+     - `S/W vs H/W Avg Time (sec)` adds new points (SW bars, HW line).
+     - `Speedup (SW/HW)` rises above `1.0` when HW is faster than SW.
+     - `SW Match Rate` and `HW Match Rate` update with the benchmark run.
+
+4. Scale the batch size to make trends easier to observe.
+   - Run:
 
 ```text
-status full
-load start 2 80
-bench both 2 11 1000
+bench both 2 11 2000
+bench both 2 11 4000
+```
+
+   - Expected result:
+     - SW/HW average-time separation is clearer over larger batches.
+     - `Speedup (SW/HW)` and benchmark prediction widgets continue to update each run.
+
+5. Optional stress test while benchmarking.
+   - Use the `Load` switch, or run explicit commands from `Device Command`:
+
+```text
+load start 2 60
 load stop
 ```
 
-Waveform classes used by Track 2:
+   - Expected result:
+     - While load is active: `Load Active=true`, `Load Workers=2`, and `Load Duty (%)=60`.
+     - `CPU (%)` and `Load Averages` increase under load, then settle after `load stop`.
+     - Benchmark timing widgets reflect system stress effects.
+
+### 10.3 Command Reference 
+
+Use the `Device Command` widget to run any command below.
+
+#### `classify`
+
+Description: run classification in `sw` or `hw` mode.
+
+Valid format:
+
+```text
+classify <mode> <class_id> <seed> [batch]
+classify <mode> random [batch]
+classify mode=<mode> class=<class_id|random> seed=<seed|random> [batch=<n>]
+```
+
+Valid values:
+
+- `<mode>`: `sw` or `hw`
+- `<class_id>`: integer `0..5`
+- `random` class: current runtime chooses from classes `0..2`
+- `<seed>`: integer or `random` (`random` generates `1..1000`)
+- `<n>` / `[batch]`: integer `1..10000` (default `1`)
+
+Examples:
+
+```text
+classify hw 2 11
+classify sw random 1000
+classify mode=hw class=4 seed=42 batch=256
+```
+
+#### `bench`
+
+Description: run benchmark in `sw`, `hw`, or `both` and publish timing/match metrics.
+
+Valid format:
+
+```text
+bench <mode> <class_id> <seed> <batch>
+bench random [batch]
+bench mode=<mode> class=<class_id|random> seed=<seed|random> batch=<n>
+```
+
+Valid values:
+
+- `<mode>`: `sw`, `hw`, or `both`
+- `<class_id>`: integer `0..5`
+- `random` class: current runtime chooses from classes `0..2`
+- `<seed>`: integer or `random` (`random` generates `1..1000`)
+- `<batch>` / `<n>`: integer `1..10000`
+- If you use `bench random`, default mode is `both` and default batch is `1000`
+
+Examples:
+
+```text
+bench random
+bench both 2 11 1000
+bench hw 1 77 512
+```
+
+#### `status`
+
+Description: publish device status telemetry (CPU, memory, load, uptime, optional LED summary).
+
+Valid format:
+
+```text
+status basic
+status full
+status include_leds=<true|false>
+```
+
+Valid values:
+
+- `basic`: status without LED bitstring
+- `full`: includes LED summary fields
+- `include_leds=<true|false>`: explicit LED summary toggle
+
+Examples:
+
+```text
+status basic
+status full
+status include_leds=true
+```
+
+#### `load`
+
+Description: start/stop/query synthetic CPU load workers.
+
+Valid format:
+
+```text
+load <start|stop|status> [workers] [duty_pct]
+load action=<start|stop|status> [workers=<n>] [duty=<pct>]
+```
+
+Valid values:
+
+- `action`: `start`, `stop`, or `status`
+- `workers` / `<n>`: requested worker count (effective range `1..8`)
+- `duty_pct` / `<pct>`: requested busy duty cycle (effective range `1..100`)
+- If omitted, defaults are `workers=1` and `duty_pct=95`
+
+Examples:
+
+```text
+load start 2 60
+load status
+load stop
+```
+
+#### `led` 
+
+Description: inspect or control board LEDs.
+
+Valid format:
+
+```text
+led list
+led get [<index_or_name>]
+led set <index_or_name> <on|off|toggle>
+led <8-bit-01-string>
+led pattern <blink|chase|alternate> [cycles] [interval_ms]
+led stop
+```
+
+Valid values:
+
+- `<index_or_name>`: LED index or sysfs LED name
+- `<8-bit-01-string>`: exactly 8 characters, each `0` or `1`
+- `pattern`: `blink`, `chase`, or `alternate`
+
+Examples:
+
+```text
+led list
+led 10101010
+led pattern chase 10 120
+```
+
+### 10.4 Waveform Class Reference
 
 | Class | Base waveform |
 |---|---|
