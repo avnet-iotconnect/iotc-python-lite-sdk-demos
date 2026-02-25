@@ -7,6 +7,7 @@ import re
 import os
 import urllib.request
 import requests
+import psutil
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks, DeviceConfigError
 from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
@@ -182,7 +183,9 @@ try:
         c.send_telemetry({
             'sdk_version': SDK_VERSION,
             'objects_detected': detected_objects,
-            'detection_data': data
+            'detection_data': data,
+            'cpu_usage_percent': int(psutil.cpu_percent()),
+            'memory_usage_percent': int(psutil.virtual_memory().percent)
         })
         time.sleep(1)
 
