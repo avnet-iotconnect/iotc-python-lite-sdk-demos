@@ -74,7 +74,7 @@ Using the above image as reference, make the following connections:
 ### 4.1 Update FPGA
 
 1. Open FlashPro Express.
-2. Download FPGA project [link](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-polarfire-soc-dk/workshops/track1-iotc-ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job)(right-click, "save as")
+2. Download FPGA project [link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/track1-iotc-ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as")
 3. Create/open project.
    - `MPFS_DISCOVERY_KIT.job`
 4. Click `RUN` to program board.
@@ -111,7 +111,7 @@ python3 -m pip install iotconnect-sdk-lite requests
 
 <img src="../images/iotconnect-ui/button-import.png" alt="Import button" width="180" />
 
-5. Import /IOTCONNECT device template for this project [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/microchip-polarfire-tinyml-template.json).  (right-click and "save link as")
+5. Import /IOTCONNECT device template for this project [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/microchip-polarfire-tinyml-template.json).  (right-click and "save link as")
 
 6. Save.
 
@@ -143,7 +143,7 @@ This workshop uses the board-side `quickstart.sh` flow to generate and register 
 On the board:
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/scripts/quickstart.sh
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/scripts/quickstart.sh
 bash ./quickstart.sh
 ```
 
@@ -161,7 +161,7 @@ This workshop uses packaged Python + prebuilt ELF runtimes.
 ### 8.1 Download package from board (TeraTerm shell)
 
 ```bash
-wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-polarfire-soc-dk/workshops/track1-iotc-ml-classifier/package.tar.gz
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/track1-iotc-ml-classifier/package.tar.gz
 ```
 
 ### 8.2 Install and run on board
@@ -178,7 +178,7 @@ python3 app.py
 ## 9. Import Dynamic Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Click **Import Dashboard** and upload the JSON file [../templates-iotconnect/mchp-track1-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/mchp-track1-dashboard-template.json).
+2. Click **Import Dashboard** and upload the JSON file [../templates-iotconnect/mchp-track1-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/mchp-track1-dashboard-template.json).
 3. Save the imported dashboard and map it to the correct device/template.
 4. Open the dashboard in live mode and verify widgets populate from telemetry.
 
@@ -436,6 +436,7 @@ Representative base waveforms:
 - Templates notes: `../templates-iotconnect/README.md`
 - Base platform guide: `../../README.md`
 - `/IOTCONNECT` onboarding UI guide: `../../../common/general-guides/UI-ONBOARD.md`
+
 
 
 
