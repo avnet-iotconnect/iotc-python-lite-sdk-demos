@@ -1,11 +1,12 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
   <defs>
     <style>
-      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .subtitle { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #334155; }
-      .track { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #0b3a5b; }
-      .label { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .small { font: 500 14px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .subtitle { font: 600 20px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .track { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .label { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .small { font: 500 14px 'Segoe UI', Arial, sans-serif; fill: #000000; }
+      .pathnote { font: 600 13px 'Segoe UI', Arial, sans-serif; fill: #000000; }
       .box { stroke: #1f2937; stroke-width: 2; rx: 12; ry: 12; }
       .arrow { stroke: #0f172a; stroke-width: 3; fill: none; marker-end: url(#arrow); }
     </style>
@@ -41,8 +42,8 @@
   <line class="arrow" x1="210" y1="222" x2="240" y2="222"/>
   <line class="arrow" x1="135" y1="254" x2="135" y2="290"/>
   <line class="arrow" x1="330" y1="254" x2="330" y2="290"/>
-  <line class="arrow" x1="135" y1="354" x2="210" y2="390"/>
-  <line class="arrow" x1="330" y1="354" x2="270" y2="390"/>
+  <polyline class="arrow" points="135,354 135,374 210,374 210,390"/>
+  <polyline class="arrow" points="330,354 330,374 270,374 270,390"/>
 
   <text x="60" y="500" class="small">- No offline training step required</text>
   <text x="60" y="528" class="small">- Deterministic hand-built templates</text>
@@ -52,21 +53,23 @@
   <text x="505" y="160" class="track">Track 2 - Tiny Fixed-Point NN</text>
   <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
   <text x="540" y="228" class="label">Input 256</text>
-  <rect class="box" x="670" y="190" width="130" height="64" fill="#bbf7d0"/>
-  <text x="681" y="228" class="label">Features</text>
-  <rect class="box" x="825" y="190" width="130" height="64" fill="#86efac"/>
-  <text x="853" y="228" class="label">Hidden</text>
+  <rect class="box" x="515" y="300" width="130" height="64" fill="#bbf7d0"/>
+  <text x="526" y="338" class="label">Features</text>
+  <rect class="box" x="655" y="300" width="130" height="64" fill="#86efac"/>
+  <text x="683" y="338" class="label">Hidden</text>
 
-  <rect class="box" x="590" y="300" width="140" height="64" fill="#bbf7d0"/>
-  <text x="611" y="338" class="label">Dense Out</text>
-  <rect class="box" x="760" y="300" width="140" height="64" fill="#86efac"/>
-  <text x="798" y="338" class="label">Argmax</text>
+  <rect class="box" x="795" y="300" width="110" height="64" fill="#bbf7d0"/>
+  <text x="808" y="338" class="label">Dense Out</text>
+  <rect class="box" x="655" y="410" width="130" height="64" fill="#86efac"/>
+  <text x="693" y="448" class="label">Argmax</text>
 
-  <line class="arrow" x1="645" y1="222" x2="670" y2="222"/>
-  <line class="arrow" x1="800" y1="222" x2="825" y2="222"/>
-  <line class="arrow" x1="890" y1="254" x2="820" y2="300"/>
-  <line class="arrow" x1="760" y1="254" x2="660" y2="300"/>
-  <line class="arrow" x1="730" y1="332" x2="760" y2="332"/>
+  <line class="arrow" x1="580" y1="254" x2="580" y2="300"/>
+  <line class="arrow" x1="645" y1="332" x2="655" y2="332"/>
+  <line class="arrow" x1="785" y1="332" x2="795" y2="332"/>
+  <polyline class="arrow" points="850,364 850,387 720,387 720,410"/>
+  <text x="590" y="286" class="pathnote">Input Path</text>
+  <text x="680" y="286" class="pathnote">NN Forward Path</text>
+  <text x="812" y="402" class="pathnote">Class Scores</text>
 
   <text x="515" y="500" class="small">- Real NN topology in fixed-point arithmetic</text>
   <text x="515" y="528" class="small">- Compact model, moderate compute</text>
@@ -87,11 +90,14 @@
   <rect class="box" x="1030" y="410" width="250" height="64" fill="#f97316"/>
   <text x="1060" y="448" class="label">Trained Head + Argmax</text>
 
-  <line class="arrow" x1="1150" y1="222" x2="1175" y2="222"/>
+  <!-- Track 3 flows -->
   <line class="arrow" x1="1060" y1="254" x2="1060" y2="300"/>
+  <line class="arrow" x1="1150" y1="332" x2="1175" y2="332"/>
+  <line class="arrow" x1="1260" y1="364" x2="1260" y2="410"/>
   <line class="arrow" x1="1260" y1="254" x2="1260" y2="300"/>
-  <line class="arrow" x1="1060" y1="364" x2="1130" y2="410"/>
-  <line class="arrow" x1="1260" y1="364" x2="1200" y2="410"/>
+
+  <text x="972" y="280" class="pathnote">Data Path</text>
+  <text x="1188" y="280" class="pathnote">Control Path</text>
 
   <text x="970" y="500" class="small">- Trained classifier-head weights (W3/B3)</text>
   <text x="970" y="528" class="small">- Batch processed in one accelerator launch</text>
