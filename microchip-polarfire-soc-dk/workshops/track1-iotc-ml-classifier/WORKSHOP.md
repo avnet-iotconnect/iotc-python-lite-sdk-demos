@@ -178,7 +178,7 @@ python3 app.py
 ## 9. Import Dynamic Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Click **Import Dashboard** and upload the JSON file [../templates-iotconnect/mchp-track1-dashboard-template.json](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/mchp-track1-dashboard-template.json).
+2. Download dashboard template for this project [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/workshops/templates-iotconnect/mchp-track1-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 4. Open the dashboard in live mode and verify widgets populate from telemetry.
 
