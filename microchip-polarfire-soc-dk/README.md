@@ -177,43 +177,21 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-## Additional Workshop
+## Expansion Demos
 
-The workshop set contains three progressive project tracks that reuse the same board + `/IOTCONNECT` setup:
+Three progressive ML workshop tracks that reuse the same board + `/IOTCONNECT` setup. Each track programs a track-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
 
-- Track 1: baseline ML classifier flow
-- Track 2: Tiny-NN accelerator flow
-- Track 3: complex accelerator flow (best end-to-end HW acceleration visibility)
+- [Track 1 - Baseline ML Classifier](track1-iotc-ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
+- [Track 2 - Tiny-NN Accelerator](track2-iotc-ml-nn-accelerator/): compact fixed-point NN — intro to true NN accelerator flow
+- [Track 3 - Complex Accelerator](track3-iotc-ml-complex-accelerator/): larger model + batching — clearest end-to-end HW acceleration
 
-All three tracks use the same deployment pattern (program FPGA, install runtime, run cloud commands), so teams can move from a simple baseline to more advanced accelerator behavior without changing the workshop operating model.
-
-
-<img src="./workshops/images/classification_methods.svg" alt="Workshop track comparison diagram" width="900" />
+<img src="./images/classification_methods.svg" alt="Workshop track comparison diagram" width="900" />
 
 Expected end state in `/IOTCONNECT` (Track 3 dashboard example):
 
-<img src="./workshops/images/mchp-polarfire-track3-dashboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
+<img src="./images/mchp-polarfire-track3-dashboard.jpg" alt="Track 3 /IOTCONNECT dashboard snapshot" width="520" />
 
-For all workshop tracks, start with:
-
-- `workshops/README.md`
-
-Recommended workshop setup order:
-
-1. Create `/IOTCONNECT` account (this README section `#5`).
-2. Install FlashPro Express (this README sections `#2` and `#4`).
-3. Import workshop template first from `workshops/templates-iotconnect/`.
-4. Onboard device via `../common/general-guides/UI-ONBOARD.md` using template `Microchip Polarfire ML`.
-5. Run Track 1, 2, or 3 quickstart.
-
-Nomenclature used in workshops:
-
-- `Quickstart`: use prebuilt FPGA/ELF artifacts and execute the labs quickly.
-- `Developer`: rebuild/modify artifacts using SmartHLS + Libero.
-
-Shared workshop resources:
-
-- `workshops/templates-iotconnect/README.md`
+Cross-track technical deep dive: [tech-reference.md](tech-reference.md)
 
 # 9. Resources
 

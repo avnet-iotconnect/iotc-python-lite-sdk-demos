@@ -78,7 +78,7 @@ powershell -ExecutionPolicy Bypass -File `
 Important:
 
 - The branch/tag in `RepoZipUrl` must already contain:
-  - `microchip-polarfire-soc-dk/workshops/track2-iotc-ml-nn-accelerator/assets/smarthls-module/tinyml_nn`
+  - `microchip-polarfire-soc-dk/track2-iotc-ml-nn-accelerator/assets/smarthls-module/tinyml_nn`
 
 Option C (use local module path, no GitHub dependency):
 
