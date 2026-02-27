@@ -41,20 +41,17 @@ replicated in other environments.
 * Microchip PolarFire SoC Discovery Kit [Purchase](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/FPGA/ProductDocuments/UserGuides/PolarFire_SoC_FPGA_Discovery_Kit_User_Guide.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/mpfs-disco-kit)
 * Ethernet Cable
 * USB-C Cable (included in kit)
-* SanDisk 8GB UHS-1 Class 10 Micro-SD card (available [here](https://www.amazon.com/SanDisk-Industrial-MicroSD-SDSDQAF3-008G-I-Adapter/dp/B07BZ5SY18/ref=sr_1_4?crid=360H9A81QLNK9&dib=eyJ2IjoiMSJ9.fJWARiyPCzdh0zksHaXihTpM4ELLohYxpV4AVAFi107f7TjrzADYC7tr8UjvghCwfCAk7BLTzbgn6_jTNMDv6lSkED8zjlCYBMLxpwgqLUOmEPb0XXTc0rMbt9MHx7kkFJdKpZ_iFFE7b9XGyvPxElLRvzl7s4GYW7ThzZP2kj1-bcvZg6vp6EDKNBm5NdvW-AlQmk1BfYPHz2-6xyUgP2VTI4HknDTHhY1kUqp9JB4.hOOSnRKZmLV0wJdTT4qFKMg413rz5AnPpEFy07uLurk&dib_tag=se&keywords=sandisk+8gb+micro+sd+card&qid=1759769517&sprefix=sandisk+8gb+micro+sd+card%2Caps%2C147&sr=8-4))
+* UHS-1 Class 10 Micro-SD card (Such as [SanDisk Industrial](https://www.amazon.com/SanDisk-Industrial-MicroSD-SDSDQAF3-008G-I-Adapter/dp/B07BZ5SY18/))
 
 > [!IMPORTANT]
-> The PolarFire SoC Discovery Kit **requires a SanDisk-brand Micro-SD card**. Other brands of SD cards **will fail to boot** 
-> due to specific memory-mapping requirements in the bootloader.
+> The PolarFire SoC Discovery Kit **requires a high quality U1 Micro-SD card**.
 
 ## Software
 
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
 * An SD-Card flashing utility such as [Balena Etcher](https://etcher.balena.io/)
-* Microchip FlashPro Express
-  * Download the latest "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab)
-and then run extract/execute the installer (may require admin/sudo privileges).
+* Latest Microchip "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab). Click the "Software Download Archive" to find the download link. Do NOT download the Libero SoC Design Suite.
 
 
 # 3. Hardware Setup
