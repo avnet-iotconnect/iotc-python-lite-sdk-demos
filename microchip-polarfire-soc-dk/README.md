@@ -8,7 +8,8 @@
 6. [Device Setup](#6-device-setup)
 7. [Onboard Device](#7-onboard-device)
 8. [Using the Demo](#8-using-the-demo)
-9. [Resources](#9-resources)
+9. [Going Further](#9-going-further)
+10. [Resources](#10-resources)
 
 # 1. Introduction
 
@@ -177,9 +178,9 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-## Expansion Demos
+# 9. Going Further
 
-Three progressive ML workshop tracks that reuse the same board + `/IOTCONNECT` setup. Each track programs a track-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
+Three expansion demo tracks build on this quickstart to demonstrate ML inference acceleration on the PolarFire SoC FPGA fabric. Each track programs a track-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
 
 - [Track 1 - Baseline ML Classifier](track1-iotc-ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
 - [Track 2 - Tiny-NN Accelerator](track2-iotc-ml-nn-accelerator/): compact fixed-point NN — intro to true NN accelerator flow
@@ -193,7 +194,7 @@ Expected end state in `/IOTCONNECT` (Track 3 dashboard example):
 
 Cross-track technical deep dive: [tech-reference.md](tech-reference.md)
 
-# 9. Resources
+# 10. Resources
 
 * [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)

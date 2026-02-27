@@ -3,7 +3,8 @@
 Track 1 is the baseline workshop: deterministic template-correlation classifier for validating end-to-end cloud command/control and telemetry on PolarFire SoC.
 
 > [!IMPORTANT]
-> Complete the [quickstart guide](../README.md) before starting this track.
+> If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
+> complete that first and then return here.
 
 <img src="../images/pf-discovery-board.jpg" alt="Microchip PolarFire SoC Discovery Kit" width="760" />
 
@@ -22,60 +23,38 @@ Track 1 uses a compact fixed-point template-matching classifier designed for cla
 
 For very small workloads, SW can be close to or faster than HW due to offload/setup overhead. This track intentionally demonstrates that baseline behavior.
 
-## 2. Update FPGA
+## 2. Program FPGA with Track 1 Accelerator Image
+
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 1-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download FPGA project [link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track1-iotc-ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as")
+2. Download the Track 1 FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track1-iotc-ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
 3. Create/open project with `MPFS_DISCOVERY_KIT.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
 
-## 3. Import Device Template and Dashboard
+## 3. Import Template and Dashboard
 
-### Device Template
+### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-
-<img src="../images/iotconnect-ui/menu-devices-device.png" alt="Devices menu" width="360" />
-<img src="../images/iotconnect-ui/menu-templates.png" alt="Templates menu" width="520" />
-<img src="../images/iotconnect-ui/button-create-template.png" alt="Create Template button" width="180" />
-<img src="../images/iotconnect-ui/button-import.png" alt="Import button" width="180" />
-
 2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/templates/microchip-polarfire-tinyml-template.json). (right-click and "save link as")
 3. Save.
 
-### Dashboard
+### Switch Device to New Template
+
+> [!IMPORTANT]
+> Upgrading from the basic quickstart demo to this expansion demo requires a template change (to `Microchip Polarfire ML`)
+> for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the
+> device's template from `plitedemo` to `Microchip Polarfire ML`.
+
+### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
 2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/templates/mchp-track1-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
-## 4. Create Device and Onboard
-
-1. Go to `Devices` -> `Create Device`.
-
-<img src="../images/iotconnect-ui/button-create-device.png" alt="Create Device button" width="320" />
-
-2. Set `Unique ID`, `Device Name`, `Entity`.
-3. Select template: `Microchip Polarfire ML`.
-4. Under device certificate, select `Use my certificate`.
-5. Save and keep the device page open.
-6. Download the configuration JSON.
-
-<img src="../images/iotconnect-ui/icon-device-configuration-information.png" alt="Device configuration information icon" width="360" />
-
-7. On the board, run:
-
-```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/scripts/quickstart.sh
-bash ./quickstart.sh
-```
-
-8. Copy certificate text from terminal and paste into `/IOTCONNECT` device certificate field.
-9. Click "Save and View".
-10. Paste full JSON Device Configuration into terminal when quickstart script prompts.
-
-## 5. Deploy and Run
+## 4. Deploy and Run
 
 ### Download package on board
 
@@ -93,7 +72,7 @@ pkill -f app.py || true
 python3 app.py
 ```
 
-## 6. Verify Data
+## 5. Verify Data
 
 Expected dashboard end state:
 
@@ -163,7 +142,7 @@ load start 2 60
 load stop
 ```
 
-## 7. Command Reference
+## 6. Command Reference
 
 Use the `Device Command` widget to run any command below.
 
@@ -265,7 +244,7 @@ led pattern <blink|chase|alternate> [cycles] [interval_ms]
 led stop
 ```
 
-## 8. Waveform Class Reference
+## 7. Waveform Class Reference
 
 | Class | Base waveform |
 |---|---|
@@ -288,7 +267,7 @@ Representative base waveforms:
   <img src="../images/track1-waveforms/track1_class5.svg" alt="Track 1 class 5 waveform" width="280" />
 </p>
 
-## 9. Project Organization
+## 8. Project Organization
 
 - `developer-guide.md`: full source regeneration flow (SmartHLS + Libero)
 - `assets/fpga-job/`: prebuilt FlashPro `.job` and implementation reports
@@ -298,7 +277,7 @@ Representative base waveforms:
   - `src/runtimes/invert_and_threshold.accel.elf`
 - Cross-track technical reference: `../tech-reference.md`
 
-## 10. Resources
+## 9. Resources
 
 - Base platform quickstart: `../README.md`
 - Cross-track technical white paper: `../tech-reference.md`
