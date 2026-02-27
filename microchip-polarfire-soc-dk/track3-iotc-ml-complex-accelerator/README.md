@@ -53,7 +53,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/templates/mchp-track3-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track3-iotc-ml-complex-accelerator/mchp-track3-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
