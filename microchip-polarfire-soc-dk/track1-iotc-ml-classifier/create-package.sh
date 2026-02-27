@@ -5,4 +5,5 @@ SRC_DIR="./src"
 ARCHIVE_NAME="package.tar.gz"
 
 tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
-echo "Created $ARCHIVE_NAME"
+cp "$ARCHIVE_NAME" ../../common/
+echo "Created $ARCHIVE_NAME (also copied to ../../common/)"

@@ -2,7 +2,7 @@
 
 ## 1. Purpose and Scope
 
-This document is the single technical reference for the three workshop tracks under `workshops/`:
+This document is the single technical reference for the three expansion demo tracks:
 
 - `track1-iotc-ml-classifier`
 - `track2-iotc-ml-nn-accelerator`

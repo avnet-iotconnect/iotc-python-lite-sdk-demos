@@ -15,4 +15,5 @@ if [[ ! -f "${SW_ELF}" || ! -f "${HW_ELF}" ]]; then
 fi
 
 tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
-echo "Created $ARCHIVE_NAME"
+cp "$ARCHIVE_NAME" ../../common/
+echo "Created $ARCHIVE_NAME (also copied to ../../common/)"
