@@ -47,7 +47,7 @@ bash ./create-package.sh
 > The app will auto-detect the first available video device.
 
 >[!IMPORTANT]
-> Upgrading from the basic quickstart demo to the KVS PutMedia demo requires a template change (to `plitekvs`, template file available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitekvs-template.json)) for the device 
+> Upgrading from the basic quickstart demo to the KVS PutMedia demo requires a template change (to `plitekvs`, template file available [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nvidia-jetson-orin/kvs-putmedia/plitekvs-template.json)) for the device 
 > in /IOTCONNECT. If you send the package via OTA or command **from a script on your host PC** (see tip at end of step 6B),
 > this is taken care of during that process. If you are sending the package through a local file transfer or through an OTA
 > via the /IOTCONNECT online platform, you will have to manually change your device's template on your device's page in the

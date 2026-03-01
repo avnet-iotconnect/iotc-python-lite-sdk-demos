@@ -129,7 +129,7 @@ mkdir -p /opt/demo && cd /opt/demo
 
 > [!IMPORTANT]
 > If users plan to deploy the KVS PutMedia demo, the device needs to be created in /IOTCONNECT with 
-> the `plitekvs` template (available [here](../common/templates/plitekvs-template.json)), and then the Stream Type should 
+> the `plitekvs` template (available [here](kvs-putmedia/plitekvs-template.json)), and then the Stream Type should 
 > be "USB Based". The AWS backend will not register the device for KVS if it is created with the `plitedemo` template and 
 > then later switched to `plitekvs`, it needs to be set at device creation.
 

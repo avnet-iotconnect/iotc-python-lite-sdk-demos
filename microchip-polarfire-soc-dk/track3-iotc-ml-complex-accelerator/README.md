@@ -40,7 +40,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/templates/microchip-polarfire-tinyml-template.json). (right-click and "save link as")
+2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track3-iotc-ml-complex-accelerator/microchip-polarfire-tinyml-template.json). (right-click and "save link as")
 3. Save.
 
 ### Switch Device to New Template

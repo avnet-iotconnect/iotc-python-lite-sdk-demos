@@ -13,7 +13,7 @@ Log into your /IOTCONNECT account at [awspoc.iotconnect.io](https://awspoc.iotco
 page, and then to the Templates page. Check to see if the **AIMP1** template is present in the list.
 
 If it is not present, download the template by
-right-clicking [this link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/AIMP1-template.json)
+right-clicking [this link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp135f-dk/ai-vision/AIMP1-template.json)
 and then clicking "save link as" to save it to your PC.
 
 Back in the online /IOTCONNECT Templates page, click the "Create Template" button in the top-right.

@@ -56,7 +56,7 @@ This bundles the demo source files and the pre-built libraries into a new `packa
 
 >[!IMPORTANT]
 > Ensure that when your device was onboarded into /IOTCONNECT that it was created with the `plitekvs` template 
-> (available [here](../common/templates/plitekvs-template.json)), and then the Stream Type should 
+> (available [here](plitekvs-template.json)), and then the Stream Type should 
 > be "USB Based". The AWS backend will not register the device for KVS if it is created with the `plitedemo` template and 
 > then later switched to `plitekvs`, it needs to be set at device creation.
 
