@@ -6,7 +6,7 @@ This document is the single technical reference for the three expansion demos:
 
 - `ml-classifier`
 - `ml-tiny-nn-accelerator`
-- `ml-complex-accelerator`
+- `ml-complex-nn-accelerator`
 
 It explains, from a coding and implementation perspective:
 
@@ -81,18 +81,18 @@ Single-inference latency includes fixed software/orchestration overhead (process
 |---|---|---|---|
 | Machine Learning Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
 | Tiny Neural Network Accelerator | `ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-tiny-nn-accelerator/src/app.py`, `src/ml_runner.py` |
-| Complex Neural Network Accelerator | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-accelerator/src/app.py`, `src/ml_runner.py` |
+| Complex Neural Network Accelerator | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 
 ### 3.2 FPGA integration and generated RTL locations
 
 | Artifact Type | Machine Learning Classifier | Tiny Neural Network Accelerator | Complex Neural Network Accelerator |
 |---|---|---|---|
-| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
-| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
-| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
-| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
-| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
-| Memory init files | n/a | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
+| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
+| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
+| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
+| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
+| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
+| Memory init files | n/a | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
 
 ### 3.3 Programming and implementation artifacts
 
@@ -230,9 +230,9 @@ Characteristics:
 
 Implementation files:
 
-- Inference: `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp`
-- Exported weights: `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/model_weights.h`
-- Training/export tool: `ml-complex-accelerator/tools/train_and_export_complex.py`
+- Inference: `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp`
+- Exported weights: `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/main_variations/model_weights.h`
+- Training/export tool: `ml-complex-nn-accelerator/tools/train_and_export_complex.py`
 
 Network shape:
 
@@ -256,7 +256,7 @@ The Complex Neural Network Accelerator includes an explicit training/export stag
 
 Script:
 
-- `ml-complex-accelerator/tools/train_and_export_complex.py`
+- `ml-complex-nn-accelerator/tools/train_and_export_complex.py`
 
 What it does:
 

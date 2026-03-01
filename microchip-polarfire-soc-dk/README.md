@@ -184,7 +184,7 @@ Three expansion demos build on this quickstart to demonstrate machine learning i
 
 - [Machine Learning Classifier](ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
 - [Tiny Neural Network Accelerator](ml-tiny-nn-accelerator/): compact fixed-point neural network — intro to true neural network accelerator flow
-- [Complex Neural Network Accelerator](ml-complex-accelerator/): larger model + batching — clearest end-to-end HW acceleration
+- [Complex Neural Network Accelerator](ml-complex-nn-accelerator/): larger model + batching — clearest end-to-end HW acceleration
 
 <img src="./images/classification_methods.svg" alt="Expansion demo comparison diagram" width="900" />
 

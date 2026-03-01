@@ -28,7 +28,7 @@ PowerShell example:
 
 ```powershell
 Copy-Item -Recurse -Force `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-accelerator\assets\smarthls-module\tinyml_complex `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-nn-accelerator\assets\smarthls-module\tinyml_complex `
   C:\dev\MCHP\polarfire-soc-discovery-kit-reference-design-2025.07\script_support\additional_configurations\smarthls\
 ```
 
@@ -48,9 +48,9 @@ Run from:
 Before compiling, generate/update trained model weights header:
 
 ```powershell
-python C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-accelerator\tools\train_and_export_complex.py
+python C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-nn-accelerator\tools\train_and_export_complex.py
 Copy-Item -Force `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-accelerator\assets\smarthls-module\tinyml_complex\main_variations\model_weights.h `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-nn-accelerator\assets\smarthls-module\tinyml_complex\main_variations\model_weights.h `
   <REFERENCE_DESIGN_ROOT>\script_support\additional_configurations\smarthls\tinyml_complex\main_variations\
 ```
 
@@ -83,11 +83,11 @@ Copy these into your reference-design tree after SmartHLS build:
 
 ```powershell
 Copy-Item -Force `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-accelerator\assets\fpga-source\pre_hls_integration.tcl `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-nn-accelerator\assets\fpga-source\pre_hls_integration.tcl `
   <REFERENCE_DESIGN_ROOT>\script_support\additional_configurations\smarthls\
 
 Copy-Item -Recurse -Force `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-accelerator\assets\fpga-source\tinyml_complex\hls_output\scripts `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-complex-nn-accelerator\assets\fpga-source\tinyml_complex\hls_output\scripts `
   <REFERENCE_DESIGN_ROOT>\script_support\additional_configurations\smarthls\tinyml_complex\hls_output\
 ```
 
