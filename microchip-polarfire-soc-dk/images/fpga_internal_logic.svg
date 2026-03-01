@@ -17,9 +17,9 @@
   <rect x="0" y="0" width="1400" height="980" fill="#f8fafc"/>
   <text x="40" y="56" class="title">Internal FPGA Logic Overview</text>
 
-  <!-- ML Classifier lane -->
+  <!-- Machine Learning Classifier lane -->
   <rect x="28" y="90" width="1344" height="255" fill="#eef6ff" stroke="#bfdbfe" stroke-width="2" rx="12"/>
-  <text x="48" y="124" class="track">ML Classifier - Template Correlation Accelerator</text>
+  <text x="48" y="124" class="track">Machine Learning Classifier - Template Correlation Accelerator</text>
   <line x1="60" y1="152" x2="1320" y2="152" class="bus"/>
   <text x="64" y="145" class="small">AXI fabric interconnect</text>
 

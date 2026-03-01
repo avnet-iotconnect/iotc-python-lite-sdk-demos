@@ -1,6 +1,6 @@
 # SmartHLS Module Source
 
-This folder contains the ML Classifier SmartHLS module source used to generate the accelerator:
+This folder contains the Machine Learning Classifier SmartHLS module source used to generate the accelerator:
 
 - `invert_and_threshold/`
 

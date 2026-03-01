@@ -1,6 +1,6 @@
 # /IOTCONNECT Tiny-NN Accelerator Expansion Demo
 
-This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [ML Classifier](../ml-classifier/) demo.
+This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [Machine Learning Classifier](../ml-classifier/) demo.
 
 > [!IMPORTANT]
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),

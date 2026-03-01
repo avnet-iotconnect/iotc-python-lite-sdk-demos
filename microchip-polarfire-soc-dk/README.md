@@ -180,9 +180,9 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 9. Going Further
 
-Three expansion demos build on this quickstart to demonstrate ML inference acceleration on the PolarFire SoC FPGA fabric. Each demo programs a demo-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
+Three expansion demos build on this quickstart to demonstrate machine learning inference acceleration on the PolarFire SoC FPGA fabric. Each demo programs a demo-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
 
-- [ML Classifier](ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
+- [Machine Learning Classifier](ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
 - [Tiny-NN Accelerator](ml-nn-accelerator/): compact fixed-point NN — intro to true NN accelerator flow
 - [Complex-NN Accelerator](ml-complex-accelerator/): larger model + batching — clearest end-to-end HW acceleration
 

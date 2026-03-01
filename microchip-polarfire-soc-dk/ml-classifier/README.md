@@ -1,4 +1,4 @@
-# /IOTCONNECT ML Classifier Expansion Demo
+# /IOTCONNECT Machine Learning Classifier Expansion Demo
 
 This is the baseline expansion demo: a deterministic template-correlation classifier for validating end-to-end cloud command/control and telemetry on PolarFire SoC.
 
@@ -12,7 +12,7 @@ This is the baseline expansion demo: a deterministic template-correlation classi
 
 This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
 
-The ML Classifier uses a compact fixed-point template-matching classifier designed for clarity and reproducibility. Each inference starts from `256` time-domain samples and computes three class scores (`N_CLASSES=3`) by correlating the input against three waveform templates.
+The Machine Learning Classifier uses a compact fixed-point template-matching classifier designed for clarity and reproducibility. Each inference starts from `256` time-domain samples and computes three class scores (`N_CLASSES=3`) by correlating the input against three waveform templates.
 
 <img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
@@ -23,12 +23,12 @@ The ML Classifier uses a compact fixed-point template-matching classifier design
 
 For very small workloads, SW can be close to or faster than HW due to offload/setup overhead. This demo intentionally demonstrates that baseline behavior.
 
-## 2. Program FPGA with ML Classifier Accelerator Image
+## 2. Program FPGA with Machine Learning Classifier Accelerator Image
 
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the ML Classifier FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
+2. Download the Machine Learning Classifier FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
 3. Create/open project with `MPFS_DISCOVERY_KIT.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -76,7 +76,7 @@ python3 app.py
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-classifier-dashboard.jpg" alt="ML Classifier dashboard result" width="600" />
+<img src="../images/mchp-polarfire-classifier-dashboard.jpg" alt="Machine Learning Classifier dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -162,7 +162,7 @@ Valid values:
 
 - `<mode>`: `sw` or `hw`
 - `<class_id>`: integer `0..5`
-- ML Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
+- Machine Learning Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
 - `random` class: current runtime chooses from classes `0..2`
 - `<seed>`: integer or `random` (`random` generates `1..1000`)
 - `<n>` / `[batch]`: integer `1..10000` (default `1`)
@@ -191,7 +191,7 @@ Valid values:
 
 - `<mode>`: `sw`, `hw`, or `both`
 - `<class_id>`: integer `0..5`
-- ML Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
+- Machine Learning Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
 - `random` class: current runtime chooses from classes `0..2`
 - `<seed>`: integer or `random` (`random` generates `1..1000`)
 - `<batch>` / `<n>`: integer `1..10000`
@@ -251,20 +251,20 @@ led stop
 | `0` | triangle |
 | `1` | triangle mix (64 + 32 periods) |
 | `2` | burst + triangle |
-| `3..5` | accepted by parser, mapped to class `2` behavior in ML Classifier runtime |
+| `3..5` | accepted by parser, mapped to class `2` behavior in Machine Learning Classifier runtime |
 
 Representative base waveforms:
 
 <p>
-  <img src="../images/classifier-waveforms/classifier_class0.svg" alt="ML Classifier class 0 waveform" width="280" />
-  <img src="../images/classifier-waveforms/classifier_class1.svg" alt="ML Classifier class 1 waveform" width="280" />
-  <img src="../images/classifier-waveforms/classifier_class2.svg" alt="ML Classifier class 2 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class0.svg" alt="Machine Learning Classifier class 0 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class1.svg" alt="Machine Learning Classifier class 1 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class2.svg" alt="Machine Learning Classifier class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/classifier-waveforms/classifier_class3.svg" alt="ML Classifier class 3 waveform" width="280" />
-  <img src="../images/classifier-waveforms/classifier_class4.svg" alt="ML Classifier class 4 waveform" width="280" />
-  <img src="../images/classifier-waveforms/classifier_class5.svg" alt="ML Classifier class 5 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class3.svg" alt="Machine Learning Classifier class 3 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class4.svg" alt="Machine Learning Classifier class 4 waveform" width="280" />
+  <img src="../images/classifier-waveforms/classifier_class5.svg" alt="Machine Learning Classifier class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization

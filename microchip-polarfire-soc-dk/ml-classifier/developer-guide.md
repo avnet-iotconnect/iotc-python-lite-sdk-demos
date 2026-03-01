@@ -1,6 +1,6 @@
-# Developer Guide: /IOTCONNECT ML Classifier
+# Developer Guide: /IOTCONNECT Machine Learning Classifier
 
-This guide is the full developer procedure to regenerate the ML-classifier FPGA `.job` and runtime ELFs from a clean reference design checkout.
+This guide is the full developer procedure to regenerate the Machine Learning classifier FPGA `.job` and runtime ELFs from a clean reference design checkout.
 
 If this is your first time in this repo, start with:
 

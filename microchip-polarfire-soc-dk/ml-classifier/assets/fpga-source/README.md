@@ -1,6 +1,6 @@
 # FPGA Logic Source (Generated + Patched)
 
-This folder contains the checked-in ML Classifier FPGA integration source:
+This folder contains the checked-in Machine Learning Classifier FPGA integration source:
 
 - `pre_hls_integration.tcl`
 - `invert_and_threshold/hls_output/scripts/...`

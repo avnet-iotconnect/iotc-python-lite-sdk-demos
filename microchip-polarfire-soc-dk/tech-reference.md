@@ -79,13 +79,13 @@ Single-inference latency includes fixed software/orchestration overhead (process
 
 | Demo | SmartHLS C/C++ model source | SmartHLS config/make | Runtime app and benchmark control |
 |---|---|---|---|
-| ML Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
+| Machine Learning Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
 | Tiny-NN Accelerator | `ml-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 | Complex-NN Accelerator | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-accelerator/src/app.py`, `src/ml_runner.py` |
 
 ### 3.2 FPGA integration and generated RTL locations
 
-| Artifact Type | ML Classifier | Tiny-NN Accelerator | Complex-NN Accelerator |
+| Artifact Type | Machine Learning Classifier | Tiny-NN Accelerator | Complex-NN Accelerator |
 |---|---|---|---|
 | Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
 | Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
@@ -132,7 +132,7 @@ This is why test runs are reproducible for a given `(class, seed)` pair.
 
 | Demo | Classes | Representative waveform composition |
 |---|---|---|
-| ML Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
+| Machine Learning Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
 | Tiny-NN Accelerator | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
 | Complex-NN Accelerator | 6 | richer combinations: triangle+saw, burst trains, damped ringing, impulse+saw |
 
@@ -140,19 +140,19 @@ Complex-NN training and inference use the same waveform family definition (`gen_
 
 ### 4.4 Waveform galleries
 
-#### ML Classifier
+#### Machine Learning Classifier
 
 <p>
-  <img src="images/classifier-waveforms/classifier_class0.svg" alt="ML Classifier class 0 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class1.svg" alt="ML Classifier class 1 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class0.svg" alt="Machine Learning Classifier class 0 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class1.svg" alt="Machine Learning Classifier class 1 waveform" width="280" />
 </p>
 <p>
-  <img src="images/classifier-waveforms/classifier_class2.svg" alt="ML Classifier class 2 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class3.svg" alt="ML Classifier class 3 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class2.svg" alt="Machine Learning Classifier class 2 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class3.svg" alt="Machine Learning Classifier class 3 waveform" width="280" />
 </p>
 <p>
-  <img src="images/classifier-waveforms/classifier_class4.svg" alt="ML Classifier class 4 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class5.svg" alt="ML Classifier class 5 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class4.svg" alt="Machine Learning Classifier class 4 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class5.svg" alt="Machine Learning Classifier class 5 waveform" width="280" />
 </p>
 
 #### Tiny-NN Accelerator
@@ -191,7 +191,7 @@ Complex-NN training and inference use the same waveform family definition (`gen_
 
 <img src="images/classification_methods.svg" alt="Classification methods comparison" width="900" />
 
-### 5.1 ML Classifier: Template-Correlation (Deterministic Baseline)
+### 5.1 Machine Learning Classifier: Template-Correlation (Deterministic Baseline)
 
 Implementation file:
 
@@ -283,7 +283,7 @@ Important outputs:
 
 Run from one of:
 
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (ML Classifier)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (Machine Learning Classifier)
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Tiny-NN Accelerator)
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_complex/` (Complex-NN Accelerator)
 
@@ -363,7 +363,7 @@ HW speedup depends on compute-to-overhead ratio:
 
 Demo behavior in this repo reflects that progression:
 
-- ML Classifier: often SW-competitive
+- Machine Learning Classifier: often SW-competitive
 - Tiny-NN Accelerator: moderate HW gain
 - Complex-NN Accelerator: stronger and more consistent HW advantage (especially with batch)
 
