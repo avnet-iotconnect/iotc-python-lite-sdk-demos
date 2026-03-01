@@ -1,4 +1,4 @@
-# /IOTCONNECT Complex-NN Accelerator Expansion Demo
+# /IOTCONNECT Complex Neural Network Accelerator Expansion Demo
 
 This demo targets stronger HW acceleration gains by combining a larger model with batched execution.
 
@@ -12,7 +12,7 @@ This demo targets stronger HW acceleration gains by combining a larger model wit
 
 This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
 
-The Complex-NN Accelerator uses a fixed-point multi-layer classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `64` features, then runs through two hidden layers (`96`, then `48`) before producing scores for `6` classes. The parameter set includes `W1[96x64]`, `W2[48x96]`, `W3[6x48]` (`11,040` weights) and biases, for an approximate model-parameter footprint of `11.1 KiB`.
+The Complex Neural Network Accelerator uses a fixed-point multi-layer classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `64` features, then runs through two hidden layers (`96`, then `48`) before producing scores for `6` classes. The parameter set includes `W1[96x64]`, `W2[48x96]`, `W3[6x48]` (`11,040` weights) and biases, for an approximate model-parameter footprint of `11.1 KiB`.
 
 The runtime supports up to `1024` inferences per request with DMA-safe buffer allocation.
 
@@ -23,14 +23,14 @@ The runtime supports up to `1024` inferences per request with DMA-safe buffer al
 - **`classify`**: functional demonstration — select `sw` or `hw`, classify one of six waveform classes (`0..5`, or `random`). Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-The Complex-NN Accelerator is where HW advantage is usually most visible. For moderate/large batch, `hw_avg_time_s` should improve relative to `sw_avg_time_s` more clearly than the other demos.
+The Complex Neural Network Accelerator is where HW advantage is usually most visible. For moderate/large batch, `hw_avg_time_s` should improve relative to `sw_avg_time_s` more clearly than the other demos.
 
-## 2. Program FPGA with Complex-NN Accelerator Image
+## 2. Program FPGA with Complex Neural Network Accelerator Image
 
-The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the complex-NN accelerator in the FPGA fabric, which is required for `hw` mode inference.
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the complex neural network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Complex-NN Accelerator FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-complex-accelerator/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
+2. Download the Complex Neural Network Accelerator FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-complex-accelerator/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
 3. Create/open project with `MPFS_DISCOVERY_KIT.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -78,7 +78,7 @@ python3 app.py
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-complex-dashboard.jpg" alt="Complex-NN Accelerator dashboard result" width="600" />
+<img src="../images/mchp-polarfire-complex-dashboard.jpg" alt="Complex Neural Network Accelerator dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -259,15 +259,15 @@ led stop
 Representative base waveforms:
 
 <p>
-  <img src="../images/complex-waveforms/complex_class0.svg" alt="Complex-NN class 0 waveform" width="280" />
-  <img src="../images/complex-waveforms/complex_class1.svg" alt="Complex-NN class 1 waveform" width="280" />
-  <img src="../images/complex-waveforms/complex_class2.svg" alt="Complex-NN class 2 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class0.svg" alt="Complex Neural Network class 0 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class1.svg" alt="Complex Neural Network class 1 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class2.svg" alt="Complex Neural Network class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/complex-waveforms/complex_class3.svg" alt="Complex-NN class 3 waveform" width="280" />
-  <img src="../images/complex-waveforms/complex_class4.svg" alt="Complex-NN class 4 waveform" width="280" />
-  <img src="../images/complex-waveforms/complex_class5.svg" alt="Complex-NN class 5 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class3.svg" alt="Complex Neural Network class 3 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class4.svg" alt="Complex Neural Network class 4 waveform" width="280" />
+  <img src="../images/complex-waveforms/complex_class5.svg" alt="Complex Neural Network class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization

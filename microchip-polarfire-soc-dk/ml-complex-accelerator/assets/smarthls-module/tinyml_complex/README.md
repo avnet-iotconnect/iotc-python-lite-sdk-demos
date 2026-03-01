@@ -1,6 +1,6 @@
-# tinyml_complex SmartHLS Module (Complex-NN Accelerator)
+# tinyml_complex SmartHLS Module (Complex Neural Network Accelerator)
 
-This is a starter SmartHLS module for the Complex-NN Accelerator demo.
+This is a starter SmartHLS module for the Complex Neural Network Accelerator demo.
 
 Contents:
 

@@ -1,6 +1,6 @@
 # SmartHLS Module Payloads
 
-This folder contains the Complex-NN Accelerator SmartHLS module payloads.
+This folder contains the Complex Neural Network Accelerator SmartHLS module payloads.
 
 Copy:
 

@@ -43,9 +43,9 @@
   <line class="arrow" x1="620" y1="224" x2="670" y2="224"/>
   <line class="arrow" x1="890" y1="224" x2="940" y2="224"/>
 
-  <!-- Tiny-NN Accelerator lane -->
+  <!-- Tiny Neural Network Accelerator lane -->
   <rect x="28" y="364" width="1344" height="255" fill="#eefcf4" stroke="#bbf7d0" stroke-width="2" rx="12"/>
-  <text x="48" y="398" class="track">Tiny-NN Accelerator - Fixed-Point NN</text>
+  <text x="48" y="398" class="track">Tiny Neural Network Accelerator - Fixed-Point NN</text>
   <line x1="60" y1="426" x2="1320" y2="426" class="bus"/>
   <text x="64" y="419" class="small">AXI fabric interconnect</text>
 
@@ -74,9 +74,9 @@
   <line class="arrow" x1="790" y1="498" x2="840" y2="498"/>
   <line class="arrow" x1="1020" y1="498" x2="1070" y2="498"/>
 
-  <!-- Complex-NN Accelerator lane -->
+  <!-- Complex Neural Network Accelerator lane -->
   <rect x="28" y="638" width="1344" height="315" fill="#fff7ed" stroke="#fed7aa" stroke-width="2" rx="12"/>
-  <text x="48" y="672" class="track">Complex-NN Accelerator - Batched NN</text>
+  <text x="48" y="672" class="track">Complex Neural Network Accelerator - Batched NN</text>
   <line x1="60" y1="700" x2="1320" y2="700" class="bus"/>
   <text x="64" y="693" class="small">AXI fabric interconnect</text>
 
@@ -93,7 +93,7 @@
   <text x="565" y="786" class="small">On-chip buffering</text>
 
   <rect class="box" x="770" y="730" width="210" height="86" fill="#fb923c"/>
-  <text x="810" y="762" class="label">NN Core</text>
+  <text x="810" y="762" class="label">Neural Network Core</text>
   <text x="790" y="786" class="small">L1/L2 fixed-point layers</text>
 
   <rect class="box" x="1020" y="730" width="250" height="86" fill="#f97316"/>
@@ -106,6 +106,6 @@
   <line class="arrow" x1="980" y1="773" x2="1020" y2="773"/>
 
   <rect x="80" y="842" width="1190" height="82" fill="#fff" stroke="#f59e0b" stroke-width="1.8" rx="8"/>
-  <text x="98" y="870" class="small">Complex-NN key hardware advantage mechanism:</text>
+  <text x="98" y="870" class="small">Complex Neural Network key hardware advantage mechanism:</text>
   <text x="98" y="896" class="small">One accelerator invocation processes full batch (N), reducing per-inference launch overhead and improving compute amortization.</text>
 </svg>

@@ -49,8 +49,8 @@
   <text x="60" y="528" class="small">- Deterministic hand-built templates</text>
   <text x="60" y="556" class="small">- Lowest algorithmic complexity</text>
 
-  <!-- Tiny-NN Accelerator -->
-  <text x="505" y="160" class="track">Tiny-NN - Fixed-Point NN</text>
+  <!-- Tiny Neural Network Accelerator -->
+  <text x="505" y="160" class="track">Tiny Neural Network - Fixed-Point NN</text>
   <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
   <text x="540" y="228" class="label">Input 256</text>
   <rect class="box" x="515" y="300" width="130" height="64" fill="#bbf7d0"/>
@@ -68,15 +68,15 @@
   <line class="arrow" x1="785" y1="332" x2="795" y2="332"/>
   <polyline class="arrow" points="850,364 850,387 720,387 720,410"/>
   <text x="590" y="286" class="pathnote">Input Path</text>
-  <text x="680" y="286" class="pathnote">NN Forward Path</text>
+  <text x="680" y="286" class="pathnote">Neural Network Forward Path</text>
   <text x="812" y="402" class="pathnote">Class Scores</text>
 
-  <text x="515" y="500" class="small">- Real NN topology in fixed-point arithmetic</text>
+  <text x="515" y="500" class="small">- Real neural network topology in fixed-point arithmetic</text>
   <text x="515" y="528" class="small">- Compact model, moderate compute</text>
   <text x="515" y="556" class="small">- Modest HW gain depending on overhead</text>
 
-  <!-- Complex-NN Accelerator -->
-  <text x="960" y="160" class="track">Complex-NN - Batched NN</text>
+  <!-- Complex Neural Network Accelerator -->
+  <text x="960" y="160" class="track">Complex Neural Network - Batched NN</text>
   <rect class="box" x="970" y="190" width="180" height="64" fill="#ffedd5"/>
   <text x="987" y="228" class="label">Batch Input N x 256</text>
   <rect class="box" x="1175" y="190" width="170" height="64" fill="#fed7aa"/>
@@ -85,12 +85,12 @@
   <rect class="box" x="970" y="300" width="180" height="64" fill="#fdba74"/>
   <text x="995" y="338" class="label">Feature Extractor</text>
   <rect class="box" x="1175" y="300" width="170" height="64" fill="#fb923c"/>
-  <text x="1210" y="338" class="label">NN Core</text>
+  <text x="1210" y="338" class="label">Neural Network Core</text>
 
   <rect class="box" x="1030" y="410" width="250" height="64" fill="#f97316"/>
   <text x="1060" y="448" class="label">Trained Head + Argmax</text>
 
-  <!-- Complex-NN flows -->
+  <!-- Complex Neural Network flows -->
   <line class="arrow" x1="1060" y1="254" x2="1060" y2="300"/>
   <line class="arrow" x1="1150" y1="332" x2="1175" y2="332"/>
   <line class="arrow" x1="1260" y1="364" x2="1260" y2="410"/>
@@ -106,7 +106,7 @@
   <rect x="44" y="602" width="1312" height="190" fill="#ffffff" stroke="#d1d5db" stroke-width="2" rx="10"/>
   <text x="66" y="638" class="subtitle">Practical takeaway</text>
   <text x="66" y="668" class="small">Machine Learning Classifier is ideal for proving complete workflow quickly.</text>
-  <text x="66" y="696" class="small">Tiny-NN Accelerator introduces NN structure with small hardware kernels.</text>
-  <text x="66" y="724" class="small">Complex-NN Accelerator adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
+  <text x="66" y="696" class="small">Tiny Neural Network Accelerator introduces NN structure with small hardware kernels.</text>
+  <text x="66" y="724" class="small">Complex Neural Network Accelerator adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
   <text x="66" y="752" class="small">All three demos remain command-compatible from the /IOTCONNECT application layer.</text>
 </svg>

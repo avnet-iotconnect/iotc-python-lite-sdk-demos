@@ -1,4 +1,4 @@
-# Developer Guide: /IOTCONNECT Complex-NN Accelerator
+# Developer Guide: /IOTCONNECT Complex Neural Network Accelerator
 
 This guide is the source-build path for generating:
 
@@ -20,7 +20,7 @@ If this is your first time in this repo, start with:
 
 ## 2. Add Complex SmartHLS Module
 
-Copy the Complex-NN SmartHLS module into:
+Copy the Complex Neural Network SmartHLS module into:
 
 - `script_support/additional_configurations/smarthls/tinyml_complex/`
 

@@ -1,6 +1,6 @@
 # FPGA Job Asset
 
-Complex-NN Accelerator FPGA programming artifact:
+Complex Neural Network Accelerator FPGA programming artifact:
 
 - `MPFS_DISCOVERY_KIT.job`
 

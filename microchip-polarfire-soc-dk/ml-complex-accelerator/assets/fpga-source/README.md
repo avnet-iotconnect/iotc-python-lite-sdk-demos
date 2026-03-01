@@ -1,6 +1,6 @@
 # FPGA Logic Source (Generated + Patched)
 
-This folder stores the generated FPGA logic source for the Complex-NN Accelerator, copied from a known-good build and checked in for reproducibility.
+This folder stores the generated FPGA logic source for the Complex Neural Network Accelerator, copied from a known-good build and checked in for reproducibility.
 
 ## Included
 
@@ -16,7 +16,7 @@ This folder stores the generated FPGA logic source for the Complex-NN Accelerato
 
 ## Intended Use
 
-Use these files as the authoritative Complex-NN Accelerator FPGA integration source for:
+Use these files as the authoritative Complex Neural Network Accelerator FPGA integration source for:
 
 - rebuilding from source with consistent behavior
 - avoiding script drift across Libero reruns

@@ -50,13 +50,13 @@ try {
       throw "Unable to find extracted repository root under $extractDir"
     }
 
-    $moduleSource = Join-Path $repoRoot.FullName "microchip-polarfire-soc-dk\ml-nn-accelerator\assets\smarthls-module\tinyml_nn"
+    $moduleSource = Join-Path $repoRoot.FullName "microchip-polarfire-soc-dk\ml-tiny-nn-accelerator\assets\smarthls-module\tinyml_nn"
     if (-not (Test-Path $moduleSource)) {
-      $legacyModuleSource = Join-Path $repoRoot.FullName "microchip-polarfire-soc-dk\ml-nn-accelerator\assets\smarthls-module\tinyml_nn"
+      $legacyModuleSource = Join-Path $repoRoot.FullName "microchip-polarfire-soc-dk\ml-tiny-nn-accelerator\assets\smarthls-module\tinyml_nn"
       if (Test-Path $legacyModuleSource) {
         $moduleSource = $legacyModuleSource
       } else {
-        throw "tinyml_nn module not found in downloaded repo. Checked: $moduleSource and $legacyModuleSource. Use a branch/tag that contains microchip-polarfire-soc-dk/ml-nn-accelerator/assets/smarthls-module/tinyml_nn, or pass -LocalModulePath."
+        throw "tinyml_nn module not found in downloaded repo. Checked: $moduleSource and $legacyModuleSource. Use a branch/tag that contains microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn, or pass -LocalModulePath."
       }
     }
   }
