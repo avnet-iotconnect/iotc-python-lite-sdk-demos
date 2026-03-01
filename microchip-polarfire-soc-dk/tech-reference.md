@@ -5,7 +5,7 @@
 This document is the single technical reference for the three expansion demos:
 
 - `ml-classifier`
-- `ml-tiny-nn-accelerator`
+- `ml-simple-nn-accelerator`
 - `ml-complex-nn-accelerator`
 
 It explains, from a coding and implementation perspective:
@@ -80,19 +80,19 @@ Single-inference latency includes fixed software/orchestration overhead (process
 | Demo | SmartHLS C/C++ model source | SmartHLS config/make | Runtime app and benchmark control |
 |---|---|---|---|
 | Machine Learning Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
-| Tiny Neural Network Accelerator | `ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-tiny-nn-accelerator/src/app.py`, `src/ml_runner.py` |
+| Simple Neural Network Accelerator | `ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-simple-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 | Complex Neural Network Accelerator | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 
 ### 3.2 FPGA integration and generated RTL locations
 
-| Artifact Type | Machine Learning Classifier | Tiny Neural Network Accelerator | Complex Neural Network Accelerator |
+| Artifact Type | Machine Learning Classifier | Simple Neural Network Accelerator | Complex Neural Network Accelerator |
 |---|---|---|---|
-| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
-| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
-| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
-| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
-| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
-| Memory init files | n/a | `ml-tiny-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
+| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
+| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
+| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
+| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
+| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
+| Memory init files | n/a | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
 
 ### 3.3 Programming and implementation artifacts
 
@@ -133,7 +133,7 @@ This is why test runs are reproducible for a given `(class, seed)` pair.
 | Demo | Classes | Representative waveform composition |
 |---|---|---|
 | Machine Learning Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
-| Tiny Neural Network Accelerator | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
+| Simple Neural Network Accelerator | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
 | Complex Neural Network Accelerator | 6 | richer combinations: triangle+saw, burst trains, damped ringing, impulse+saw |
 
 Complex Neural Network training and inference use the same waveform family definition (`gen_signal`) to keep deployment behavior aligned with training assumptions.
@@ -155,19 +155,19 @@ Complex Neural Network training and inference use the same waveform family defin
   <img src="images/classifier-waveforms/classifier_class5.svg" alt="Machine Learning Classifier class 5 waveform" width="280" />
 </p>
 
-#### Tiny Neural Network Accelerator
+#### Simple Neural Network Accelerator
 
 <p>
-  <img src="images/nn-waveforms/nn_class0.svg" alt="Tiny Neural Network class 0 waveform" width="280" />
-  <img src="images/nn-waveforms/nn_class1.svg" alt="Tiny Neural Network class 1 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class0.svg" alt="Simple Neural Network class 0 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class1.svg" alt="Simple Neural Network class 1 waveform" width="280" />
 </p>
 <p>
-  <img src="images/nn-waveforms/nn_class2.svg" alt="Tiny Neural Network class 2 waveform" width="280" />
-  <img src="images/nn-waveforms/nn_class3.svg" alt="Tiny Neural Network class 3 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class2.svg" alt="Simple Neural Network class 2 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class3.svg" alt="Simple Neural Network class 3 waveform" width="280" />
 </p>
 <p>
-  <img src="images/nn-waveforms/nn_class4.svg" alt="Tiny Neural Network class 4 waveform" width="280" />
-  <img src="images/nn-waveforms/nn_class5.svg" alt="Tiny Neural Network class 5 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class4.svg" alt="Simple Neural Network class 4 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class5.svg" alt="Simple Neural Network class 5 waveform" width="280" />
 </p>
 
 #### Complex Neural Network Accelerator
@@ -208,11 +208,11 @@ Characteristics:
 - minimal compute depth
 - useful to validate cloud, command, and telemetry pipeline quickly
 
-### 5.2 Tiny Neural Network Accelerator: Compact Fixed-Point NN-Style Classifier
+### 5.2 Simple Neural Network Accelerator: Compact Fixed-Point NN-Style Classifier
 
 Implementation file:
 
-- `ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp`
+- `ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp`
 
 Pipeline:
 
@@ -284,7 +284,7 @@ Important outputs:
 Run from one of:
 
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (Machine Learning Classifier)
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Tiny Neural Network Accelerator)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Simple Neural Network Accelerator)
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_complex/` (Complex Neural Network Accelerator)
 
 ### 7.2 Generated outputs
@@ -364,7 +364,7 @@ HW speedup depends on compute-to-overhead ratio:
 Demo behavior in this repo reflects that progression:
 
 - Machine Learning Classifier: often SW-competitive
-- Tiny Neural Network Accelerator: moderate HW gain
+- Simple Neural Network Accelerator: moderate HW gain
 - Complex Neural Network Accelerator: stronger and more consistent HW advantage (especially with batch)
 
 ---

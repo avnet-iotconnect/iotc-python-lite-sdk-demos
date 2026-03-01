@@ -1,6 +1,6 @@
 # FPGA Logic Source (Generated + Patched)
 
-This folder contains the checked-in Tiny Neural Network Accelerator FPGA integration source:
+This folder contains the checked-in Simple Neural Network Accelerator FPGA integration source:
 
 - `pre_hls_integration.tcl`
 - `tinyml_nn/hls_output/scripts/...`

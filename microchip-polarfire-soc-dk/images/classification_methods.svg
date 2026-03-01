@@ -49,8 +49,8 @@
   <text x="60" y="528" class="small">- Deterministic hand-built templates</text>
   <text x="60" y="556" class="small">- Lowest algorithmic complexity</text>
 
-  <!-- Tiny Neural Network Accelerator -->
-  <text x="505" y="160" class="track">Tiny Neural Network - Fixed-Point NN</text>
+  <!-- Simple Neural Network Accelerator -->
+  <text x="505" y="160" class="track">Simple Neural Network - Fixed-Point NN</text>
   <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
   <text x="540" y="228" class="label">Input 256</text>
   <rect class="box" x="515" y="300" width="130" height="64" fill="#bbf7d0"/>
@@ -106,7 +106,7 @@
   <rect x="44" y="602" width="1312" height="190" fill="#ffffff" stroke="#d1d5db" stroke-width="2" rx="10"/>
   <text x="66" y="638" class="subtitle">Practical takeaway</text>
   <text x="66" y="668" class="small">Machine Learning Classifier is ideal for proving complete workflow quickly.</text>
-  <text x="66" y="696" class="small">Tiny Neural Network Accelerator introduces NN structure with small hardware kernels.</text>
+  <text x="66" y="696" class="small">Simple Neural Network Accelerator introduces NN structure with small hardware kernels.</text>
   <text x="66" y="724" class="small">Complex Neural Network Accelerator adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
   <text x="66" y="752" class="small">All three demos remain command-compatible from the /IOTCONNECT application layer.</text>
 </svg>

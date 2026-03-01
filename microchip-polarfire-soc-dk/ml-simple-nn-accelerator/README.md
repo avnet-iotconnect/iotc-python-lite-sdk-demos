@@ -1,4 +1,4 @@
-# /IOTCONNECT Tiny Neural Network Accelerator Expansion Demo
+# /IOTCONNECT Simple Neural Network Accelerator Expansion Demo
 
 This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [Machine Learning Classifier](../ml-classifier/) demo.
 
@@ -12,7 +12,7 @@ This demo introduces a compact fixed-point neural-network accelerator while pres
 
 This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
 
-The Tiny Neural Network Accelerator uses a fixed-point Tiny Neural Network style classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `32` features, builds a `12`-element hidden representation (`6` positive + `6` negative channels), then produces scores across `6` classes.
+The Simple Neural Network Accelerator uses a fixed-point Simple Neural Network style classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `32` features, builds a `12`-element hidden representation (`6` positive + `6` negative channels), then produces scores across `6` classes.
 
 <img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
@@ -21,14 +21,14 @@ The Tiny Neural Network Accelerator uses a fixed-point Tiny Neural Network style
 - **`classify`**: functional demonstration — select `sw` or `hw`, choose an input class (or `random`), run inference. Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-The Tiny Neural Network Accelerator often shows modest HW gains when workload size and batch are large enough to offset acceleration overhead.
+The Simple Neural Network Accelerator often shows modest HW gains when workload size and batch are large enough to offset acceleration overhead.
 
-## 2. Program FPGA with Tiny Neural Network Accelerator Image
+## 2. Program FPGA with Simple Neural Network Accelerator Image
 
-The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the Tiny Neural Network accelerator in the FPGA fabric, which is required for `hw` mode inference.
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the Simple Neural Network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Tiny Neural Network Accelerator FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
+2. Download the Simple Neural Network Accelerator FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
 3. Create/open project with `MPFS_DISCOVERY_KIT.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -38,7 +38,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/microchip-polarfire-ml-template.json). (right-click and "save link as")
+2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/microchip-polarfire-ml-template.json). (right-click and "save link as")
 3. Save.
 
 ### Switch Device to New Template
@@ -51,7 +51,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/mchp-tiny-nn-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/mchp-tiny-nn-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -59,7 +59,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/package.tar.gz
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/package.tar.gz
 ```
 
 ### Install and run
@@ -76,7 +76,7 @@ python3 app.py
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-nn-dashboard.jpg" alt="Tiny Neural Network Accelerator dashboard result" width="600" />
+<img src="../images/mchp-polarfire-nn-dashboard.jpg" alt="Simple Neural Network Accelerator dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -256,15 +256,15 @@ led stop
 Representative base waveforms:
 
 <p>
-  <img src="../images/nn-waveforms/nn_class0.svg" alt="Tiny Neural Network class 0 waveform" width="280" />
-  <img src="../images/nn-waveforms/nn_class1.svg" alt="Tiny Neural Network class 1 waveform" width="280" />
-  <img src="../images/nn-waveforms/nn_class2.svg" alt="Tiny Neural Network class 2 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class0.svg" alt="Simple Neural Network class 0 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class1.svg" alt="Simple Neural Network class 1 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class2.svg" alt="Simple Neural Network class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/nn-waveforms/nn_class3.svg" alt="Tiny Neural Network class 3 waveform" width="280" />
-  <img src="../images/nn-waveforms/nn_class4.svg" alt="Tiny Neural Network class 4 waveform" width="280" />
-  <img src="../images/nn-waveforms/nn_class5.svg" alt="Tiny Neural Network class 5 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class3.svg" alt="Simple Neural Network class 3 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class4.svg" alt="Simple Neural Network class 4 waveform" width="280" />
+  <img src="../images/nn-waveforms/nn_class5.svg" alt="Simple Neural Network class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization

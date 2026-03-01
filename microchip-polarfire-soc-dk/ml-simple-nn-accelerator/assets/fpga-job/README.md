@@ -8,7 +8,7 @@ SHA256:
 
 - `2EA1CB030E957219FDF9A498F6B6F51F81064C80FC043778B2A6391E140E418B`
 
-This job must match the Tiny Neural Network accelerator build used to produce:
+This job must match the Simple Neural Network accelerator build used to produce:
 
 - `src/runtimes/tinyml_nn.accel.elf`
 - `src/runtimes/tinyml_nn.no_accel.elf`

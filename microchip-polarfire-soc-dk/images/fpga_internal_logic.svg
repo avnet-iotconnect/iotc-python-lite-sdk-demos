@@ -43,9 +43,9 @@
   <line class="arrow" x1="620" y1="224" x2="670" y2="224"/>
   <line class="arrow" x1="890" y1="224" x2="940" y2="224"/>
 
-  <!-- Tiny Neural Network Accelerator lane -->
+  <!-- Simple Neural Network Accelerator lane -->
   <rect x="28" y="364" width="1344" height="255" fill="#eefcf4" stroke="#bbf7d0" stroke-width="2" rx="12"/>
-  <text x="48" y="398" class="track">Tiny Neural Network Accelerator - Fixed-Point NN</text>
+  <text x="48" y="398" class="track">Simple Neural Network Accelerator - Fixed-Point NN</text>
   <line x1="60" y1="426" x2="1320" y2="426" class="bus"/>
   <text x="64" y="419" class="small">AXI fabric interconnect</text>
 

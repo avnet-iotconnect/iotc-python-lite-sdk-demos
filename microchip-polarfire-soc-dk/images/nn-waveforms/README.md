@@ -1,6 +1,6 @@
-# Tiny Neural Network Accelerator Waveform Images
+# Simple Neural Network Accelerator Waveform Images
 
-These SVG files show the Tiny Neural Network Accelerator base signal equations (noise omitted).
+These SVG files show the Simple Neural Network Accelerator base signal equations (noise omitted).
 
 - `nn_class0.svg`: triangle
 - `nn_class1.svg`: triangle mix

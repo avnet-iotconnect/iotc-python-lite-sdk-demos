@@ -1,4 +1,4 @@
-# Tiny Neural Network SmartHLS Module
+# Simple Neural Network SmartHLS Module
 
 This directory contains a SmartHLS module for a small NN-style classifier (`tinyml_nn`).
 

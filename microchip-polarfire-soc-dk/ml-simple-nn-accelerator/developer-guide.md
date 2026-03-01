@@ -1,6 +1,6 @@
-# Developer Guide: /IOTCONNECT Tiny Neural Network Accelerator
+# Developer Guide: /IOTCONNECT Simple Neural Network Accelerator
 
-This is the full source-build flow for the **Tiny Neural Network Accelerator** demo.
+This is the full source-build flow for the **Simple Neural Network Accelerator** demo.
 
 If this is your first time in this repo, start with:
 
@@ -51,7 +51,7 @@ If you previously used a SmartHLS argument flow, you may instead have:
 
 - `soc\Discovery_SoC.prjx`
 
-## 4. Build Tiny Neural Network ELFs (SmartHLS)
+## 4. Build Simple Neural Network ELFs (SmartHLS)
 
 Note:
 
@@ -70,7 +70,7 @@ Option B (download module from GitHub zip):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-tiny-nn-accelerator\tools\fetch-tinyml-nn-module.ps1 `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-simple-nn-accelerator\tools\fetch-tinyml-nn-module.ps1 `
   -ReferenceDesignRoot C:\dev\MCHP\Libero25-3\polarfire-soc-discovery-kit-reference-design-2025.07 `
   -RepoZipUrl "https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/archive/refs/heads/polarfire-workshop.zip"
 ```
@@ -78,15 +78,15 @@ powershell -ExecutionPolicy Bypass -File `
 Important:
 
 - The branch/tag in `RepoZipUrl` must already contain:
-  - `microchip-polarfire-soc-dk/ml-tiny-nn-accelerator/assets/smarthls-module/tinyml_nn`
+  - `microchip-polarfire-soc-dk/ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn`
 
 Option C (use local module path, no GitHub dependency):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File `
-  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-tiny-nn-accelerator\tools\fetch-tinyml-nn-module.ps1 `
+  C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-simple-nn-accelerator\tools\fetch-tinyml-nn-module.ps1 `
   -ReferenceDesignRoot C:\dev\MCHP\Libero25-3\polarfire-soc-discovery-kit-reference-design-2025.07 `
-  -LocalModulePath C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-tiny-nn-accelerator\assets\smarthls-module\tinyml_nn
+  -LocalModulePath C:\dev\MCHP\iotc-python-lite-sdk-demos\microchip-polarfire-soc-dk\ml-simple-nn-accelerator\assets\smarthls-module\tinyml_nn
 ```
 
 If you prefer `wget` syntax in PowerShell, this works too (`wget` maps to `Invoke-WebRequest`):
@@ -143,7 +143,7 @@ Set root in Design Hierarchy to:
 
 - `MPFS_DISCOVERY_KIT`
 
-## 6. Integrate Tiny Neural Network Accelerator
+## 6. Integrate Simple Neural Network Accelerator
 
 In Libero, use `Project -> Execute Script` (or `Ctrl+U`), then use `...` browse to pick each script.
 
@@ -196,16 +196,16 @@ Expected output:
 Copy these into the demo folder:
 
 - Job:
-  - `ml-tiny-nn-accelerator\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
+  - `ml-simple-nn-accelerator\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
 - ELFs:
-  - `ml-tiny-nn-accelerator\src\runtimes\tinyml_nn.no_accel.elf`
-  - `ml-tiny-nn-accelerator\src\runtimes\tinyml_nn.accel.elf`
+  - `ml-simple-nn-accelerator\src\runtimes\tinyml_nn.no_accel.elf`
+  - `ml-simple-nn-accelerator\src\runtimes\tinyml_nn.accel.elf`
 
 ## 9. Build Package
 
 From:
 
-- `ml-tiny-nn-accelerator\`
+- `ml-simple-nn-accelerator\`
 
 ```bash
 bash ./create-package.sh
