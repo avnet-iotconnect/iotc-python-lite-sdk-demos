@@ -16,7 +16,7 @@
   </defs>
 
   <rect x="0" y="0" width="1400" height="860" fill="#f8fafc"/>
-  <text x="44" y="58" class="title">Three Classification Methods Used Across the Workshops</text>
+  <text x="44" y="58" class="title">Three Classification Methods Used Across the Expansion Demos</text>
   <text x="44" y="92" class="subtitle">Same control plane (/IOTCONNECT), different model structures and compute intensity.</text>
 
   <!-- Column backgrounds -->
@@ -24,8 +24,8 @@
   <rect x="485" y="120" width="430" height="700" fill="#eefcf4" stroke="#bde7cf" stroke-width="2" rx="14"/>
   <rect x="940" y="120" width="430" height="700" fill="#fff6ee" stroke="#f5d2b5" stroke-width="2" rx="14"/>
 
-  <!-- Track 1 -->
-  <text x="50" y="160" class="track">Track 1 - Template Correlation</text>
+  <!-- ML Classifier -->
+  <text x="50" y="160" class="track">ML Classifier - Template Correlation</text>
   <rect class="box" x="60" y="190" width="150" height="64" fill="#dbeafe"/>
   <text x="83" y="228" class="label">Input 256</text>
   <rect class="box" x="240" y="190" width="180" height="64" fill="#bfdbfe"/>
@@ -49,8 +49,8 @@
   <text x="60" y="528" class="small">- Deterministic hand-built templates</text>
   <text x="60" y="556" class="small">- Lowest algorithmic complexity</text>
 
-  <!-- Track 2 -->
-  <text x="505" y="160" class="track">Track 2 - Tiny Fixed-Point NN</text>
+  <!-- Tiny-NN Accelerator -->
+  <text x="505" y="160" class="track">Tiny-NN - Fixed-Point NN</text>
   <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
   <text x="540" y="228" class="label">Input 256</text>
   <rect class="box" x="515" y="300" width="130" height="64" fill="#bbf7d0"/>
@@ -75,8 +75,8 @@
   <text x="515" y="528" class="small">- Compact model, moderate compute</text>
   <text x="515" y="556" class="small">- Modest HW gain depending on overhead</text>
 
-  <!-- Track 3 -->
-  <text x="960" y="160" class="track">Track 3 - Complex Batched NN</text>
+  <!-- Complex-NN Accelerator -->
+  <text x="960" y="160" class="track">Complex-NN - Batched NN</text>
   <rect class="box" x="970" y="190" width="180" height="64" fill="#ffedd5"/>
   <text x="987" y="228" class="label">Batch Input N x 256</text>
   <rect class="box" x="1175" y="190" width="170" height="64" fill="#fed7aa"/>
@@ -90,7 +90,7 @@
   <rect class="box" x="1030" y="410" width="250" height="64" fill="#f97316"/>
   <text x="1060" y="448" class="label">Trained Head + Argmax</text>
 
-  <!-- Track 3 flows -->
+  <!-- Complex-NN flows -->
   <line class="arrow" x1="1060" y1="254" x2="1060" y2="300"/>
   <line class="arrow" x1="1150" y1="332" x2="1175" y2="332"/>
   <line class="arrow" x1="1260" y1="364" x2="1260" y2="410"/>
@@ -105,8 +105,8 @@
 
   <rect x="44" y="602" width="1312" height="190" fill="#ffffff" stroke="#d1d5db" stroke-width="2" rx="10"/>
   <text x="66" y="638" class="subtitle">Practical takeaway</text>
-  <text x="66" y="668" class="small">Track 1 is ideal for proving complete workflow quickly.</text>
-  <text x="66" y="696" class="small">Track 2 introduces NN structure with small hardware kernels.</text>
-  <text x="66" y="724" class="small">Track 3 adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
-  <text x="66" y="752" class="small">All three tracks remain command-compatible from the /IOTCONNECT application layer.</text>
+  <text x="66" y="668" class="small">ML Classifier is ideal for proving complete workflow quickly.</text>
+  <text x="66" y="696" class="small">Tiny-NN Accelerator introduces NN structure with small hardware kernels.</text>
+  <text x="66" y="724" class="small">Complex-NN Accelerator adds training + batching to show a stronger end-to-end HW throughput benefit.</text>
+  <text x="66" y="752" class="small">All three demos remain command-compatible from the /IOTCONNECT application layer.</text>
 </svg>

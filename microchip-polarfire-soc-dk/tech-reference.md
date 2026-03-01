@@ -1,12 +1,12 @@
-# Technical White Paper: PolarFire SoC TinyML Workshop Stack (Tracks 1-3)
+# Technical White Paper: PolarFire SoC TinyML Expansion Demo Stack
 
 ## 1. Purpose and Scope
 
-This document is the single technical reference for the three expansion demo tracks:
+This document is the single technical reference for the three expansion demos:
 
-- `track1-iotc-ml-classifier`
-- `track2-iotc-ml-nn-accelerator`
-- `track3-iotc-ml-complex-accelerator`
+- `ml-classifier`
+- `ml-nn-accelerator`
+- `ml-complex-accelerator`
 
 It explains, from a coding and implementation perspective:
 
@@ -20,7 +20,7 @@ It explains, from a coding and implementation perspective:
 
 ## 2. System-Level Context
 
-The three workshop tracks run the same end-to-end architecture: `/IOTCONNECT` sends commands to a Linux application on the PolarFire SoC processor complex, and that application executes either CPU inference or FPGA-accelerated inference, then publishes telemetry back to cloud dashboards.
+The three expansion demos run the same end-to-end architecture: `/IOTCONNECT` sends commands to a Linux application on the PolarFire SoC processor complex, and that application executes either CPU inference or FPGA-accelerated inference, then publishes telemetry back to cloud dashboards.
 
 <img src="images/polarfire-soc-bd.jpg" alt="PolarFire SoC architecture overview" width="860" />
 
@@ -44,21 +44,21 @@ The project top-level view above is the concrete workshop design integration poi
 
 In both paths, the same synthetic-input definition and output schema are used, so results can be compared directly for correctness and performance.
 
-### 2.3 Fabric Integration Model Used in All Tracks
+### 2.3 Fabric Integration Model Used in All Demos
 
 - SmartHLS compiles C/C++ accelerator code to RTL (`.v`/`.vhd`).
 - Generated integration Tcl (`shls_integrate_accels.tcl`) instantiates and wires accelerator cores.
 - `pre_hls_integration.tcl` normalizes project prerequisites (interconnect/core setup).
 - Libero synthesis/place-route produces the job file used by FlashPro.
 
-This is why the workshop can be taught in two modes:
+This is why the demos support two modes:
 
-- **Participant quickstart**: consume prebuilt `.job` + prebuilt ELFs.
-- **Instructor/developer flow**: regenerate HLS/RTL/ELFs and rebuild fabric.
+- **Quickstart**: consume prebuilt `.job` + prebuilt ELFs.
+- **Developer flow**: regenerate HLS/RTL/ELFs and rebuild fabric.
 
 ### 2.4 Responsibility Split by System Block
 
-| System Block | Role in Workshops |
+| System Block | Role |
 |---|---|
 | `/IOTCONNECT` cloud | Command source and telemetry sink |
 | Python app (`app.py`) | Command parser, job control, telemetry formatting |
@@ -69,30 +69,30 @@ This is why the workshop can be taught in two modes:
 
 ### 2.5 Why This Context Matters for Benchmark Interpretation
 
-Single-inference latency includes fixed software/orchestration overhead (process launch, interface setup). Batch inference amortizes this overhead and better exposes accelerator throughput. This is the key reason Track 3 emphasizes batch-aware inference and shows clearer HW advantage than simpler kernels.
+Single-inference latency includes fixed software/orchestration overhead (process launch, interface setup). Batch inference amortizes this overhead and better exposes accelerator throughput. This is the key reason the Complex-NN Accelerator emphasizes batch-aware inference and shows clearer HW advantage than simpler kernels.
 
 ---
 
 ## 3. Repository Structure and Canonical Source Locations
 
-### 3.1 Track-specific source of truth
+### 3.1 Demo-specific source of truth
 
-| Track | SmartHLS C/C++ model source | SmartHLS config/make | Runtime app and benchmark control |
+| Demo | SmartHLS C/C++ model source | SmartHLS config/make | Runtime app and benchmark control |
 |---|---|---|---|
-| Track 1 | `track1-iotc-ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `track1-iotc-ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `track1-iotc-ml-classifier/src/app.py`, `src/ml_runner.py` |
-| Track 2 | `track2-iotc-ml-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `track2-iotc-ml-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `track2-iotc-ml-nn-accelerator/src/app.py`, `src/ml_runner.py` |
-| Track 3 | `track3-iotc-ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `track3-iotc-ml-complex-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `track3-iotc-ml-complex-accelerator/src/app.py`, `src/ml_runner.py` |
+| ML Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
+| Tiny-NN Accelerator | `ml-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-nn-accelerator/src/app.py`, `src/ml_runner.py` |
+| Complex-NN Accelerator | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-accelerator/src/app.py`, `src/ml_runner.py` |
 
 ### 3.2 FPGA integration and generated RTL locations
 
-| Artifact Type | Track 1 | Track 2 | Track 3 |
+| Artifact Type | ML Classifier | Tiny-NN Accelerator | Complex-NN Accelerator |
 |---|---|---|---|
-| Pre-integration Tcl | `track1-iotc-ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `track2-iotc-ml-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
-| Accel integration Tcl | `track1-iotc-ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `track2-iotc-ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
-| Generated Verilog | `track1-iotc-ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `track2-iotc-ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
-| Generated VHDL | `track1-iotc-ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `track2-iotc-ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
-| Cycle counter RTL | `track1-iotc-ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `track2-iotc-ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
-| Memory init files | n/a | `track2-iotc-ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `track3-iotc-ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
+| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
+| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
+| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
+| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
+| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
+| Memory init files | n/a | `ml-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
 
 ### 3.3 Programming and implementation artifacts
 
@@ -128,74 +128,74 @@ This is why test runs are reproducible for a given `(class, seed)` pair.
   <img src="images/sawtooth_wave.svg" alt="Saw waveform" width="180" />
 </p>
 
-### 4.3 Track-specific synthetic classes
+### 4.3 Demo-specific synthetic classes
 
-| Track | Classes | Representative waveform composition |
+| Demo | Classes | Representative waveform composition |
 |---|---|---|
-| Track 1 | 3 | triangle, mixed triangle frequencies, burst+triangle |
-| Track 2 | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
-| Track 3 | 6 | richer combinations: triangle+saw, burst trains, damped ringing, impulse+saw |
+| ML Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
+| Tiny-NN Accelerator | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
+| Complex-NN Accelerator | 6 | richer combinations: triangle+saw, burst trains, damped ringing, impulse+saw |
 
-Track-3 training and inference use the same waveform family definition (`gen_signal`) to keep deployment behavior aligned with training assumptions.
+Complex-NN training and inference use the same waveform family definition (`gen_signal`) to keep deployment behavior aligned with training assumptions.
 
 ### 4.4 Waveform galleries
 
-#### Track 1
+#### ML Classifier
 
 <p>
-  <img src="images/track1-waveforms/track1_class0.svg" alt="Track 1 class 0 waveform" width="280" />
-  <img src="images/track1-waveforms/track1_class1.svg" alt="Track 1 class 1 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class0.svg" alt="ML Classifier class 0 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class1.svg" alt="ML Classifier class 1 waveform" width="280" />
 </p>
 <p>
-  <img src="images/track1-waveforms/track1_class2.svg" alt="Track 1 class 2 waveform" width="280" />
-  <img src="images/track1-waveforms/track1_class3.svg" alt="Track 1 class 3 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class2.svg" alt="ML Classifier class 2 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class3.svg" alt="ML Classifier class 3 waveform" width="280" />
 </p>
 <p>
-  <img src="images/track1-waveforms/track1_class4.svg" alt="Track 1 class 4 waveform" width="280" />
-  <img src="images/track1-waveforms/track1_class5.svg" alt="Track 1 class 5 waveform" width="280" />
-</p>
-
-#### Track 2
-
-<p>
-  <img src="images/track2-waveforms/track2_class0.svg" alt="Track 2 class 0 waveform" width="280" />
-  <img src="images/track2-waveforms/track2_class1.svg" alt="Track 2 class 1 waveform" width="280" />
-</p>
-<p>
-  <img src="images/track2-waveforms/track2_class2.svg" alt="Track 2 class 2 waveform" width="280" />
-  <img src="images/track2-waveforms/track2_class3.svg" alt="Track 2 class 3 waveform" width="280" />
-</p>
-<p>
-  <img src="images/track2-waveforms/track2_class4.svg" alt="Track 2 class 4 waveform" width="280" />
-  <img src="images/track2-waveforms/track2_class5.svg" alt="Track 2 class 5 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class4.svg" alt="ML Classifier class 4 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class5.svg" alt="ML Classifier class 5 waveform" width="280" />
 </p>
 
-#### Track 3
+#### Tiny-NN Accelerator
 
 <p>
-  <img src="images/track3-waveforms/track3_class0.svg" alt="Track 3 class 0 waveform" width="280" />
-  <img src="images/track3-waveforms/track3_class1.svg" alt="Track 3 class 1 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class0.svg" alt="Tiny-NN class 0 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class1.svg" alt="Tiny-NN class 1 waveform" width="280" />
 </p>
 <p>
-  <img src="images/track3-waveforms/track3_class2.svg" alt="Track 3 class 2 waveform" width="280" />
-  <img src="images/track3-waveforms/track3_class3.svg" alt="Track 3 class 3 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class2.svg" alt="Tiny-NN class 2 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class3.svg" alt="Tiny-NN class 3 waveform" width="280" />
 </p>
 <p>
-  <img src="images/track3-waveforms/track3_class4.svg" alt="Track 3 class 4 waveform" width="280" />
-  <img src="images/track3-waveforms/track3_class5.svg" alt="Track 3 class 5 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class4.svg" alt="Tiny-NN class 4 waveform" width="280" />
+  <img src="images/nn-waveforms/nn_class5.svg" alt="Tiny-NN class 5 waveform" width="280" />
+</p>
+
+#### Complex-NN Accelerator
+
+<p>
+  <img src="images/complex-waveforms/complex_class0.svg" alt="Complex-NN class 0 waveform" width="280" />
+  <img src="images/complex-waveforms/complex_class1.svg" alt="Complex-NN class 1 waveform" width="280" />
+</p>
+<p>
+  <img src="images/complex-waveforms/complex_class2.svg" alt="Complex-NN class 2 waveform" width="280" />
+  <img src="images/complex-waveforms/complex_class3.svg" alt="Complex-NN class 3 waveform" width="280" />
+</p>
+<p>
+  <img src="images/complex-waveforms/complex_class4.svg" alt="Complex-NN class 4 waveform" width="280" />
+  <img src="images/complex-waveforms/complex_class5.svg" alt="Complex-NN class 5 waveform" width="280" />
 </p>
 
 ---
 
-## 5. Classification/Inference Methods by Track
+## 5. Classification/Inference Methods by Demo
 
-<img src="images/classification_methods.svg" alt="Three workshop classification methods" width="900" />
+<img src="images/classification_methods.svg" alt="Classification methods comparison" width="900" />
 
-### 5.1 Track 1: Template-Correlation Classifier (Deterministic Baseline)
+### 5.1 ML Classifier: Template-Correlation (Deterministic Baseline)
 
 Implementation file:
 
-- `track1-iotc-ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp`
+- `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp`
 
 Core operation:
 
@@ -208,11 +208,11 @@ Characteristics:
 - minimal compute depth
 - useful to validate cloud, command, and telemetry pipeline quickly
 
-### 5.2 Track 2: Compact Fixed-Point NN-Style Classifier
+### 5.2 Tiny-NN Accelerator: Compact Fixed-Point NN-Style Classifier
 
 Implementation file:
 
-- `track2-iotc-ml-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp`
+- `ml-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp`
 
 Pipeline:
 
@@ -226,13 +226,13 @@ Characteristics:
 - true NN-style multi-stage integer pipeline
 - still relatively small, so SW/HW speed delta is modest at low batch
 
-### 5.3 Track 3: Deeper Complex NN with Batch-Aware Accelerator Interface
+### 5.3 Complex-NN Accelerator: Deeper NN with Batch-Aware Interface
 
 Implementation files:
 
-- Inference: `track3-iotc-ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp`
-- Exported weights: `track3-iotc-ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/model_weights.h`
-- Training/export tool: `track3-iotc-ml-complex-accelerator/tools/train_and_export_complex.py`
+- Inference: `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp`
+- Exported weights: `ml-complex-accelerator/assets/smarthls-module/tinyml_complex/main_variations/model_weights.h`
+- Training/export tool: `ml-complex-accelerator/tools/train_and_export_complex.py`
 
 Network shape:
 
@@ -250,13 +250,13 @@ This increases arithmetic intensity and amortizes offload overhead, which is whe
 
 ---
 
-## 6. Track-3 Training and Weight Export Flow
+## 6. Complex-NN Training and Weight Export Flow
 
-Track 3 includes an explicit training/export stage.
+The Complex-NN Accelerator includes an explicit training/export stage.
 
 Script:
 
-- `track3-iotc-ml-complex-accelerator/tools/train_and_export_complex.py`
+- `ml-complex-accelerator/tools/train_and_export_complex.py`
 
 What it does:
 
@@ -283,9 +283,9 @@ Important outputs:
 
 Run from one of:
 
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (Track 1)
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Track 2)
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_complex/` (Track 3)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (ML Classifier)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Tiny-NN Accelerator)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_complex/` (Complex-NN Accelerator)
 
 ### 7.2 Generated outputs
 
@@ -310,9 +310,9 @@ Where `<module>` is one of:
 
 ---
 
-## 8. FPGA Fabric Composition Across Tracks
+## 8. FPGA Fabric Composition Across Demos
 
-<img src="images/fpga_internal_logic_3tracks.svg" alt="Internal FPGA logic by track" width="900" />
+<img src="images/fpga_internal_logic.svg" alt="Internal FPGA logic by demo" width="900" />
 
 Common pattern:
 
@@ -321,7 +321,7 @@ Common pattern:
 - cycle counter/auxiliary support logic
 - DMA/AXI initiator path used by accelerated ELF
 
-Differences by track are primarily in accelerator complexity (operator count, memory init usage, and interface behavior such as batch DMA).
+Differences by demo are primarily in accelerator complexity (operator count, memory init usage, and interface behavior such as batch DMA).
 
 ---
 
@@ -342,7 +342,7 @@ Expected check points:
 
 ### 9.2 Cloud command loop (/IOTCONNECT)
 
-Commands used in workshop app:
+Commands used in demo app:
 
 - `classify <sw|hw> <class> <seed> [batch]`
 - `bench both <class> <seed> <batch>`
@@ -361,11 +361,11 @@ HW speedup depends on compute-to-overhead ratio:
 - Small/simple models: offload setup + transfer overhead can dominate.
 - Larger/deeper/batched models: arithmetic dominates, so fabric throughput wins.
 
-Track behavior in this repo reflects that progression:
+Demo behavior in this repo reflects that progression:
 
-- Track 1: often SW-competitive
-- Track 2: moderate HW gain
-- Track 3: stronger and more consistent HW advantage (especially with batch)
+- ML Classifier: often SW-competitive
+- Tiny-NN Accelerator: moderate HW gain
+- Complex-NN Accelerator: stronger and more consistent HW advantage (especially with batch)
 
 ---
 
@@ -390,10 +390,10 @@ flowchart TD
 ## 11. Practical Guidance for Modifying Models
 
 1. Change waveform generator and/or model code in `main.fifo.cpp`.
-2. For Track 3, regenerate `model_weights.h` with `tools/train_and_export_complex.py`.
+2. For Complex-NN Accelerator, regenerate `model_weights.h` with `tools/train_and_export_complex.py`.
 3. Re-run SmartHLS compile targets.
 4. Re-apply integration Tcl scripts in a clean Libero project.
-5. Rebuild `.job` and replace runtime ELFs in workshop package.
+5. Rebuild `.job` and replace runtime ELFs in demo package.
 6. Re-run `classify` and `bench` parity/performance validation.
 
 This keeps software, hardware, and cloud telemetry behavior aligned after each model revision.
