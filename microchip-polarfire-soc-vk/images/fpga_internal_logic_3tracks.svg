@@ -1,0 +1,111 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="980" viewBox="0 0 1400 980">
+  <defs>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .track { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #0b3a5b; }
+      .label { font: 600 15px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .small { font: 500 13px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .box { stroke: #1f2937; stroke-width: 2; rx: 10; ry: 10; }
+      .arrow { stroke: #0f172a; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .bus { stroke: #2563eb; stroke-width: 5; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#0f172a" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="980" fill="#f8fafc"/>
+  <text x="40" y="56" class="title">Internal FPGA Logic Overview for Tracks 1, 2, and 3</text>
+
+  <!-- Track 1 lane -->
+  <rect x="28" y="90" width="1344" height="255" fill="#eef6ff" stroke="#bfdbfe" stroke-width="2" rx="12"/>
+  <text x="48" y="124" class="track">Track 1 - Template Correlation Accelerator</text>
+  <line x1="60" y1="152" x2="1320" y2="152" class="bus"/>
+  <text x="64" y="145" class="small">AXI fabric interconnect</text>
+
+  <rect class="box" x="90" y="184" width="210" height="80" fill="#dbeafe"/>
+  <text x="130" y="215" class="label">AXI Target</text>
+  <text x="112" y="238" class="small">Input/Output buffers</text>
+
+  <rect class="box" x="350" y="184" width="270" height="80" fill="#bfdbfe"/>
+  <text x="393" y="215" class="label">Correlator MAC Engine</text>
+  <text x="377" y="238" class="small">Dot products vs templates</text>
+
+  <rect class="box" x="670" y="184" width="220" height="80" fill="#93c5fd"/>
+  <text x="715" y="215" class="label">Score Registers</text>
+  <text x="726" y="238" class="small">Class scores</text>
+
+  <rect class="box" x="940" y="184" width="220" height="80" fill="#60a5fa"/>
+  <text x="997" y="215" class="label">Done/IRQ</text>
+  <text x="977" y="238" class="small">Completion signaling</text>
+
+  <line class="arrow" x1="300" y1="224" x2="350" y2="224"/>
+  <line class="arrow" x1="620" y1="224" x2="670" y2="224"/>
+  <line class="arrow" x1="890" y1="224" x2="940" y2="224"/>
+
+  <!-- Track 2 lane -->
+  <rect x="28" y="364" width="1344" height="255" fill="#eefcf4" stroke="#bbf7d0" stroke-width="2" rx="12"/>
+  <text x="48" y="398" class="track">Track 2 - Tiny Fixed-Point NN Accelerator</text>
+  <line x1="60" y1="426" x2="1320" y2="426" class="bus"/>
+  <text x="64" y="419" class="small">AXI fabric interconnect</text>
+
+  <rect class="box" x="90" y="458" width="180" height="80" fill="#dcfce7"/>
+  <text x="124" y="489" class="label">AXI Target</text>
+  <text x="132" y="512" class="small">Control + data</text>
+
+  <rect class="box" x="320" y="458" width="210" height="80" fill="#bbf7d0"/>
+  <text x="346" y="489" class="label">Feature Extractor</text>
+  <text x="346" y="512" class="small">Window/stat features</text>
+
+  <rect class="box" x="580" y="458" width="210" height="80" fill="#86efac"/>
+  <text x="610" y="489" class="label">Dense Hidden</text>
+  <text x="610" y="512" class="small">Fixed-point MACs</text>
+
+  <rect class="box" x="840" y="458" width="180" height="80" fill="#4ade80"/>
+  <text x="875" y="489" class="label">Output Head</text>
+  <text x="883" y="512" class="small">Scores/argmax</text>
+
+  <rect class="box" x="1070" y="458" width="220" height="80" fill="#22c55e"/>
+  <text x="1118" y="489" class="label">Cycle Counter</text>
+  <text x="1102" y="512" class="small">Profiling telemetry</text>
+
+  <line class="arrow" x1="270" y1="498" x2="320" y2="498"/>
+  <line class="arrow" x1="530" y1="498" x2="580" y2="498"/>
+  <line class="arrow" x1="790" y1="498" x2="840" y2="498"/>
+  <line class="arrow" x1="1020" y1="498" x2="1070" y2="498"/>
+
+  <!-- Track 3 lane -->
+  <rect x="28" y="638" width="1344" height="315" fill="#fff7ed" stroke="#fed7aa" stroke-width="2" rx="12"/>
+  <text x="48" y="672" class="track">Track 3 - Complex/Batched NN Accelerator</text>
+  <line x1="60" y1="700" x2="1320" y2="700" class="bus"/>
+  <text x="64" y="693" class="small">AXI fabric interconnect</text>
+
+  <rect class="box" x="80" y="730" width="190" height="86" fill="#ffedd5"/>
+  <text x="114" y="762" class="label">AXI + DMA</text>
+  <text x="98" y="786" class="small">Burst batch transfers</text>
+
+  <rect class="box" x="310" y="730" width="190" height="86" fill="#fed7aa"/>
+  <text x="340" y="762" class="label">Batch Controller</text>
+  <text x="334" y="786" class="small">N-sample scheduling</text>
+
+  <rect class="box" x="540" y="730" width="190" height="86" fill="#fdba74"/>
+  <text x="565" y="762" class="label">Feature Pipeline</text>
+  <text x="565" y="786" class="small">On-chip buffering</text>
+
+  <rect class="box" x="770" y="730" width="210" height="86" fill="#fb923c"/>
+  <text x="810" y="762" class="label">NN Core</text>
+  <text x="790" y="786" class="small">L1/L2 fixed-point layers</text>
+
+  <rect class="box" x="1020" y="730" width="250" height="86" fill="#f97316"/>
+  <text x="1075" y="762" class="label">Trained Head</text>
+  <text x="1042" y="786" class="small">W3/B3 + argmax per sample</text>
+
+  <line class="arrow" x1="270" y1="773" x2="310" y2="773"/>
+  <line class="arrow" x1="500" y1="773" x2="540" y2="773"/>
+  <line class="arrow" x1="730" y1="773" x2="770" y2="773"/>
+  <line class="arrow" x1="980" y1="773" x2="1020" y2="773"/>
+
+  <rect x="80" y="842" width="1190" height="82" fill="#fff" stroke="#f59e0b" stroke-width="1.8" rx="8"/>
+  <text x="98" y="870" class="small">Track 3 key hardware advantage mechanism:</text>
+  <text x="98" y="896" class="small">One accelerator invocation processes full batch (N), reducing per-inference launch overhead and improving compute amortization.</text>
+</svg>
