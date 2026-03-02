@@ -28,7 +28,7 @@ For very small workloads, SW can be close to or faster than HW due to offload/se
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 1-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 1 FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track1-iotc-ml-classifier/assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
+2. Download the Track 1 FPGA job file [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/add-pf-soc-vk/microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.

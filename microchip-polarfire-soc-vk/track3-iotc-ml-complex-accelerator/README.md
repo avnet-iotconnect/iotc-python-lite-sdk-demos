@@ -30,7 +30,7 @@ Track 3 is where HW advantage is usually most visible. For moderate/large batch,
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 3-specific FPGA image that includes the complex-NN accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 3 FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track3-iotc-ml-complex-accelerator/assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
+2. Download the Track 3 FPGA job file [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/add-pf-soc-vk/microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.

@@ -19,7 +19,7 @@ for IoT application development, enabling secure device onboarding, telemetry co
 
 <table>
   <tr>
-    <td><img src=".//media/videokit.png" width="6000"></td>
+    <td><img src=".//media/videokit.png" width="8000"></td>
     <td>This open-source development kit features a quad-core, 64-bit CPU cluster based on the RISC-V application-class 
 processor that supports Linux® and real-time applications, a rich set of peripherals and 95K of low-power, high-performance 
 FPGA logic elements. The kit is ready for rapid testing of applications in an easy-to-use hardware development platform and 
