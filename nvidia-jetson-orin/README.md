@@ -102,11 +102,8 @@ sudo mkdir -p /opt/demo && cd /opt/demo
 sudo chown -R username:username /opt/demo
 ```
 
-For example if your username was `TestUser` your command would be
-
-```
-sudo chown -R TestUser:TestUser /opt/demo
-```
+> [!NOTE]
+> For example, if your username was `TestUser` your command would be `sudo chown -R TestUser:TestUser /opt/demo`
 
 # 6. Onboard Device
 
