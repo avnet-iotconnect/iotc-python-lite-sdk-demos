@@ -16,10 +16,10 @@ This demo uses the NXP eIQ Vision AI stack to analyze a live camera feed for dri
 To view the live DMS video feed on the board, connect an [AES-ACC-MAAX-DISP2 MIPI ribbon-cable display](https://www.avnet.com/americas/product/avnet-engineering-services/aes-acc-maax-disp2/evolve-57464320/) to the MIPI_DSI port. After connecting the display (contacts facing in towards the board), configure the board to use it:
 
 ```bash
-apt-get install nano
-cd ~
-mkdir mount
-mount /dev/mmcblk0p1 mount/
+apt-get install nano && cd ~ && mkdir mount && mount /dev/mmcblk0p1 mount/
+```
+
+```bash
 nano mount/uEnv.txt
 ```
 
