@@ -1,4 +1,4 @@
-# Developer Guide: /IOTCONNECT Machine Learning Classifier
+# Developer Guide: /IOTCONNECT Template Correlation Classifier
 
 This guide is the full developer procedure to regenerate the Machine Learning classifier FPGA `.job` and runtime ELFs from a clean reference design checkout.
 
@@ -142,10 +142,10 @@ Expected job location:
 Copy generated artifacts into workshop folder:
 
 - FPGA job:
-  - `ml-classifier\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
+  - `ml-template-correlation-classifier\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
 - ELFs:
-  - `ml-classifier\src\runtimes\invert_and_threshold.no_accel.elf`
-  - `ml-classifier\src\runtimes\invert_and_threshold.accel.elf`
+  - `ml-template-correlation-classifier\src\runtimes\invert_and_threshold.no_accel.elf`
+  - `ml-template-correlation-classifier\src\runtimes\invert_and_threshold.accel.elf`
 
 Then build package:
 

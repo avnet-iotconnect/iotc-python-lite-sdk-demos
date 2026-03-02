@@ -1,6 +1,6 @@
 # invert_and_threshold SmartHLS Module
 
-This is the Machine Learning Classifier SmartHLS source module.
+This is the Template Correlation Classifier SmartHLS source module.
 
 Key files:
 

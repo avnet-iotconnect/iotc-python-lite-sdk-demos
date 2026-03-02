@@ -1,6 +1,6 @@
 # /IOTCONNECT Simple Neural Network Accelerator Expansion Demo
 
-This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [Machine Learning Classifier](../ml-classifier/) demo.
+This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [Template Correlation Classifier](../ml-template-correlation-classifier/) demo.
 
 > [!IMPORTANT]
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
@@ -10,9 +10,9 @@ This demo introduces a compact fixed-point neural-network accelerator while pres
 
 ## 1. Introduction
 
-This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
+This is the first demo in the series to implement a true neural network in FPGA fabric. Rather than hand-crafted templates, it classifies using a trained fixed-point network: 256 input samples → 32 extracted features → a 12-node hidden layer (split into 6 positive and 6 negative channels) → scores for 6 classes, all computed in `int8`/`int32` integer arithmetic.
 
-The Simple Neural Network Accelerator uses a fixed-point Simple Neural Network style classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `32` features, builds a `12`-element hidden representation (`6` positive + `6` negative channels), then produces scores across `6` classes.
+Because the network is intentionally small and has no training step in the demo, the hardware speedup over software is modest — per-invocation setup overhead is comparable to the compute time itself. This makes it a focused example of the neural network acceleration pipeline without the added complexity of model training or batch processing.
 
 <img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
@@ -21,7 +21,7 @@ The Simple Neural Network Accelerator uses a fixed-point Simple Neural Network s
 - **`classify`**: functional demonstration — select `sw` or `hw`, choose an input class (or `random`), run inference. Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-The Simple Neural Network Accelerator often shows modest HW gains when workload size and batch are large enough to offset acceleration overhead.
+Scaling batch size is the most effective way to see hardware gain with this model — try progressively larger batch values in `bench` to observe where HW begins to pull ahead.
 
 ## 2. Program FPGA with Simple Neural Network Accelerator Image
 

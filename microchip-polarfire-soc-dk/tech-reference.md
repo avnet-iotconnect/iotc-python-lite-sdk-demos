@@ -4,7 +4,7 @@
 
 This document is the single technical reference for the three expansion demos:
 
-- `ml-classifier`
+- `ml-template-correlation-classifier`
 - `ml-simple-nn-accelerator`
 - `ml-complex-nn-accelerator`
 
@@ -79,19 +79,19 @@ Single-inference latency includes fixed software/orchestration overhead (process
 
 | Demo | SmartHLS C/C++ model source | SmartHLS config/make | Runtime app and benchmark control |
 |---|---|---|---|
-| Machine Learning Classifier | `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-classifier/src/app.py`, `src/ml_runner.py` |
+| Template Correlation Classifier | `ml-template-correlation-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp` | `ml-template-correlation-classifier/assets/smarthls-module/invert_and_threshold/Makefile`, `config.tcl` | `ml-template-correlation-classifier/src/app.py`, `src/ml_runner.py` |
 | Simple Neural Network Accelerator | `ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn/main_variations/main.fifo.cpp` | `ml-simple-nn-accelerator/assets/smarthls-module/tinyml_nn/Makefile`, `config.tcl` | `ml-simple-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 | Complex Neural Network Accelerator | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/main_variations/main.fifo.cpp` | `ml-complex-nn-accelerator/assets/smarthls-module/tinyml_complex/Makefile`, `config.tcl` | `ml-complex-nn-accelerator/src/app.py`, `src/ml_runner.py` |
 
 ### 3.2 FPGA integration and generated RTL locations
 
-| Artifact Type | Machine Learning Classifier | Simple Neural Network Accelerator | Complex Neural Network Accelerator |
+| Artifact Type | Template Correlation Classifier | Simple Neural Network Accelerator | Complex Neural Network Accelerator |
 |---|---|---|---|
-| Pre-integration Tcl | `ml-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
-| Accel integration Tcl | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
-| Generated Verilog | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
-| Generated VHDL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
-| Cycle counter RTL | `ml-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
+| Pre-integration Tcl | `ml-template-correlation-classifier/assets/fpga-source/pre_hls_integration.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/pre_hls_integration.tcl` |
+| Accel integration Tcl | `ml-template-correlation-classifier/assets/fpga-source/invert_and_threshold/hls_output/scripts/shls_integrate_accels.tcl` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/scripts/shls_integrate_accels.tcl` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/scripts/shls_integrate_accels.tcl` |
+| Generated Verilog | `ml-template-correlation-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.v` |
+| Generated VHDL | `ml-template-correlation-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_tinyml_accel.vhd` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_tinyml_accel.vhd` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_tinyml_accel.vhd` |
+| Cycle counter RTL | `ml-template-correlation-classifier/assets/fpga-source/invert_and_threshold/hls_output/rtl/invert_and_threshold_soc_cycle_counter.v` | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/tinyml_nn_soc_cycle_counter.v` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/tinyml_complex_soc_cycle_counter.v` |
 | Memory init files | n/a | `ml-simple-nn-accelerator/assets/fpga-source/tinyml_nn/hls_output/rtl/mem_init/*.mem` | `ml-complex-nn-accelerator/assets/fpga-source/tinyml_complex/hls_output/rtl/mem_init/*.mem` |
 
 ### 3.3 Programming and implementation artifacts
@@ -132,7 +132,7 @@ This is why test runs are reproducible for a given `(class, seed)` pair.
 
 | Demo | Classes | Representative waveform composition |
 |---|---|---|
-| Machine Learning Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
+| Template Correlation Classifier | 3 | triangle, mixed triangle frequencies, burst+triangle |
 | Simple Neural Network Accelerator | 6 | triangle, mixed frequencies, burst, square, chirp, impulse-train |
 | Complex Neural Network Accelerator | 6 | richer combinations: triangle+saw, burst trains, damped ringing, impulse+saw |
 
@@ -140,19 +140,19 @@ Complex Neural Network training and inference use the same waveform family defin
 
 ### 4.4 Waveform galleries
 
-#### Machine Learning Classifier
+#### Template Correlation Classifier
 
 <p>
-  <img src="images/classifier-waveforms/classifier_class0.svg" alt="Machine Learning Classifier class 0 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class1.svg" alt="Machine Learning Classifier class 1 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class0.svg" alt="Template Correlation Classifier class 0 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class1.svg" alt="Template Correlation Classifier class 1 waveform" width="280" />
 </p>
 <p>
-  <img src="images/classifier-waveforms/classifier_class2.svg" alt="Machine Learning Classifier class 2 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class3.svg" alt="Machine Learning Classifier class 3 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class2.svg" alt="Template Correlation Classifier class 2 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class3.svg" alt="Template Correlation Classifier class 3 waveform" width="280" />
 </p>
 <p>
-  <img src="images/classifier-waveforms/classifier_class4.svg" alt="Machine Learning Classifier class 4 waveform" width="280" />
-  <img src="images/classifier-waveforms/classifier_class5.svg" alt="Machine Learning Classifier class 5 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class4.svg" alt="Template Correlation Classifier class 4 waveform" width="280" />
+  <img src="images/classifier-waveforms/classifier_class5.svg" alt="Template Correlation Classifier class 5 waveform" width="280" />
 </p>
 
 #### Simple Neural Network Accelerator
@@ -191,11 +191,11 @@ Complex Neural Network training and inference use the same waveform family defin
 
 <img src="images/classification_methods.svg" alt="Classification methods comparison" width="900" />
 
-### 5.1 Machine Learning Classifier: Template-Correlation (Deterministic Baseline)
+### 5.1 Template Correlation Classifier: Template-Correlation (Deterministic Baseline)
 
 Implementation file:
 
-- `ml-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp`
+- `ml-template-correlation-classifier/assets/smarthls-module/invert_and_threshold/main_variations/main.fifo.cpp`
 
 Core operation:
 
@@ -283,7 +283,7 @@ Important outputs:
 
 Run from one of:
 
-- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (Machine Learning Classifier)
+- `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/invert_and_threshold/` (Template Correlation Classifier)
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_nn/` (Simple Neural Network Accelerator)
 - `<REFERENCE_DESIGN_ROOT>/script_support/additional_configurations/smarthls/tinyml_complex/` (Complex Neural Network Accelerator)
 
@@ -363,7 +363,7 @@ HW speedup depends on compute-to-overhead ratio:
 
 Demo behavior in this repo reflects that progression:
 
-- Machine Learning Classifier: often SW-competitive
+- Template Correlation Classifier: often SW-competitive
 - Simple Neural Network Accelerator: moderate HW gain
 - Complex Neural Network Accelerator: stronger and more consistent HW advantage (especially with batch)
 

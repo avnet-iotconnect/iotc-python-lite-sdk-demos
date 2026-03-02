@@ -10,11 +10,9 @@ This demo targets stronger HW acceleration gains by combining a larger model wit
 
 ## 1. Introduction
 
-This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
+This is the deepest model in the series and the one where hardware acceleration shows the clearest advantage. It uses two hidden layers (256 samples → 64 features → 96 nodes → 48 nodes → 6 classes) with `11,040` trained weights (`~11.1 KiB`), and includes an explicit offline training step — `tools/train_and_export_complex.py` generates the integer weight file compiled into the FPGA image.
 
-The Complex Neural Network Accelerator uses a fixed-point multi-layer classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `64` features, then runs through two hidden layers (`96`, then `48`) before producing scores for `6` classes. The parameter set includes `W1[96x64]`, `W2[48x96]`, `W3[6x48]` (`11,040` weights) and biases, for an approximate model-parameter footprint of `11.1 KiB`.
-
-The runtime supports up to `1024` inferences per request with DMA-safe buffer allocation.
+The FPGA interface is also batch-aware: a single accelerator invocation processes up to `1024` samples using DMA transfers, amortizing the per-call setup cost across the batch. This is what makes the hardware throughput advantage measurable and consistent at moderate batch sizes, unlike the simpler demos where overhead dominates.
 
 <img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 

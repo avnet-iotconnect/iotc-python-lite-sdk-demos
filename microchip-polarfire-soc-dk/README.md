@@ -180,11 +180,11 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 9. Going Further
 
-Three expansion demos build on this quickstart to demonstrate machine learning inference acceleration on the PolarFire SoC FPGA fabric. Each demo programs a demo-specific FPGA image, deploys a Python + ELF runtime package, and uses `/IOTCONNECT` commands (`classify`, `bench`) to compare software vs hardware inference.
+Three expansion demos each use a different inference approach implemented in FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 
-- [Machine Learning Classifier](ml-classifier/): deterministic template-correlation classifier — fastest bring-up path
-- [Simple Neural Network Accelerator](ml-simple-nn-accelerator/): compact fixed-point neural network — intro to true neural network accelerator flow
-- [Complex Neural Network Accelerator](ml-complex-nn-accelerator/): larger model + batching — clearest end-to-end HW acceleration
+- [Template Correlation Classifier](ml-template-correlation-classifier/): classifies by dot-product correlation against three hand-crafted waveform templates — no neural network, no training required
+- [Simple Neural Network Accelerator](ml-simple-nn-accelerator/): the first demo with a real neural network in FPGA fabric — one hidden layer with fixed integer weights, no training step
+- [Complex Neural Network Accelerator](ml-complex-nn-accelerator/): two hidden layers with ~11K trained weights and batch-aware DMA execution — the demo where hardware acceleration throughput is most visible
 
 <img src="./images/classification_methods.svg" alt="Expansion demo comparison diagram" width="900" />
 
