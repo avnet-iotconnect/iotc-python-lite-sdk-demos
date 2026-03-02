@@ -1,6 +1,6 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 [Purchase NXP FRDM i.MX 93 Development Board](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
->[!TIP]
+> [!TIP]
 > To set up and connect this device using the **AWS Greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
 
 1. [Introduction](#1-introduction)

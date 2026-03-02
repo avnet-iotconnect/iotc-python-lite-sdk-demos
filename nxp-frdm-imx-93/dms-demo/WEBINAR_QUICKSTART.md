@@ -135,11 +135,11 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 
 # 9. /IOTCONNECT: Import Dashboard Template
 
-1. **Download** the demo [Dashboard Template](FRDM_i.MX_93_DSM_Demo_dashboard_template.json)
+1. **Download** the demo [Dashboard Template](FRDM_i.MX_93_DMS_Demo_dashboard_template.json)
 2. **Download** the template then select `Create Dashboard` from the top of the page
 3. **Select** the `Import Dashboard` option and click `browse` to select the template you just downloaded.
-4. **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device** 
-5. **Enter** a name (such as `FRDM i.MX 93 DSM Demo`) and click `Save` to complete the import
+4. **Select** `eiqIOTC` for **template** and `FRDMiMX93` for **device**
+5. **Enter** a name (such as `FRDM i.MX 93 DMS Demo`) and click `Save` to complete the import
 6. To get the "Live View" to display your webcam, edit the widget and update the IP address which was displayed in the terminal after installation.
 7. **Click** `Save` in the upper-right corner to commit the dashboard.
 
@@ -147,8 +147,8 @@ The telemetry data can be viewed and verified under the "Live Data" tab for your
 <img src="../media/dashboard_reduced.png">
 The Driver Safety Monitor demo solution will look for a variety of facial attributes from the webcam and interpret attentiveness.
 <details>
-<summary>Table of Supported DSM Attributes</summary>
-<img src="../media/dsm_metrics.png" width="1000">
+<summary>Table of Supported DMS Attributes</summary>
+<img src="../media/dms_metrics.png" width="1000">
 </details>
 
 >[!TIP]
