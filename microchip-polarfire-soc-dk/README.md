@@ -70,18 +70,16 @@ Using the above image as reference, make the following connections:
 # 4. Software Setup
 
 ## Update FPGA
-
 1. Download the latest pre-built programming file (MPFS_DISCOVERY_KIT_XXXX_XX.zip) from [here](https://github.com/polarfire-soc/polarfire-soc-discovery-kit-reference-design/releases)
 and then extract the package and locate the **.job** file. 
 2. Ensure that the board is connected to your PC via the USB-C cable, as instructed in the Hardware Setup.
-3. Open FlashPro Express, and start a new project. In the "Import 
-FlashPro Express job file" browse section, select the downloaded .job file. For the project location, simply choose the 
-same downloaded/extracted folder that contains the .job file. Select "Ok" to open the new project.
-4. After the new project has loaded, click the "RUN" button to flash the board.
-5. After the flash has completed, unplug and re-plug in the board to power-cycle and ensure the new programming is in effect.
+3. Open FlashPro Express, and click  **New Job Project**
+4. For the "Import FlashPro Express job file", click **Browse...** and select the downloaded `MPFS_DISCOVERY_KIT_XXXX_XX.job` file just extracted.
+5. For the "FlashPro Express job project location" click **Browse...** and create/choose a folder near the root of your drive (eg `C:\Microchip\PolarFire`) and click **OK**
+6. After the new project has loaded, click the **RUN** button to flash the board.
+7. After the flash has completed, cycle the power by unpluging and re-plugggin in the board
 
 ## Flash Linux Image
-
 1. Download the latest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
 SoC Releases page](https://github.com/linux4microchip/meta-mchp/releases), scrolling down to the "Pre-built images for 
 the Discovery Kit Reference Design" section and clicking on the "pre-built image" link. The downloaded filename should
