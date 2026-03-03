@@ -28,7 +28,7 @@ For very small workloads, SW can be close to or faster than HW due to offload/se
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 1-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 1 FPGA job file [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/add-pf-soc-vk/microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
+2. Download the Track 1 FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -38,7 +38,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/common/templates/microchip-polarfire-tinyml-template.json). (right-click and "save link as")
+2. Download and import the device template [here](microchip-polarfire-ml-template.json). (right-click and "save link as")
 3. Save.
 
 ### Switch Device to New Template
@@ -51,7 +51,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track1-iotc-ml-classifier/mchp-track1-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](mchp-classifier-dashboard.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -59,7 +59,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/track1-iotc-ml-classifier/package.tar.gz
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track1-iotc-ml-classifier/package.tar.gz
 ```
 
 ### Install and run
