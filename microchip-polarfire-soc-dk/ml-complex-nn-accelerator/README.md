@@ -279,7 +279,7 @@ Representative base waveforms:
 
 ## 9. Resources
 
-- Base platform quickstart: `../README.md`
+- Base platform quickstart: [README.md](../README.md)
 - Technical white paper: [tech-reference.md](../tech-reference.md)
-- `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
+- /IOTCONNECT onboarding UI guide: [UI-ONBOARD.md](../../common/general-guides/UI-ONBOARD.md)
 - [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
