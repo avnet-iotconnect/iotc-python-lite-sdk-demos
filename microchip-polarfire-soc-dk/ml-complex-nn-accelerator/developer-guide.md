@@ -114,7 +114,7 @@ Run design flow:
 
 Copy into this workshop folder:
 
-- job file -> `assets/fpga-job/MPFS_DISCOVERY_KIT.job`
+- job file -> `assets/fpga-job/MPFS_DISCOVERY_KIT_COMPLEX_NN.job`
 - ELFs -> `src/runtimes/`
   - `tinyml_complex.no_accel.elf`
   - `tinyml_complex.accel.elf`

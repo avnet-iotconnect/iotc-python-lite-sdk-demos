@@ -196,7 +196,7 @@ Expected output:
 Copy these into the demo folder:
 
 - Job:
-  - `ml-simple-nn-accelerator\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
+  - `ml-simple-nn-accelerator\assets\fpga-job\MPFS_DISCOVERY_KIT_SIMPLE_NN.job`
 - ELFs:
   - `ml-simple-nn-accelerator\src\runtimes\tinyml_nn.no_accel.elf`
   - `ml-simple-nn-accelerator\src\runtimes\tinyml_nn.accel.elf`

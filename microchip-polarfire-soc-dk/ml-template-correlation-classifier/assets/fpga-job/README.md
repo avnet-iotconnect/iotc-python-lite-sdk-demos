@@ -2,7 +2,7 @@
 
 This folder contains the prebuilt FlashPro job used by this workshop:
 
-- `MPFS_DISCOVERY_KIT.job`
+- `MPFS_DISCOVERY_KIT_TEMPLATE_CLASSIFIER.job`
 
 SHA256:
 

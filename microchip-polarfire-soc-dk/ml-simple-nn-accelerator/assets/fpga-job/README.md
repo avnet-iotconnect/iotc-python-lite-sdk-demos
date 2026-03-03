@@ -2,7 +2,7 @@
 
 Place the neural network workshop FlashPro job file here:
 
-- `MPFS_DISCOVERY_KIT.job`
+- `MPFS_DISCOVERY_KIT_SIMPLE_NN.job`
 
 SHA256:
 

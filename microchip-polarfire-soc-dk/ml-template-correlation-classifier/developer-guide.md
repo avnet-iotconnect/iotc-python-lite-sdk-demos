@@ -142,7 +142,7 @@ Expected job location:
 Copy generated artifacts into workshop folder:
 
 - FPGA job:
-  - `ml-template-correlation-classifier\assets\fpga-job\MPFS_DISCOVERY_KIT.job`
+  - `ml-template-correlation-classifier\assets\fpga-job\MPFS_DISCOVERY_KIT_TEMPLATE_CLASSIFIER.job`
 - ELFs:
   - `ml-template-correlation-classifier\src\runtimes\invert_and_threshold.no_accel.elf`
   - `ml-template-correlation-classifier\src\runtimes\invert_and_threshold.accel.elf`

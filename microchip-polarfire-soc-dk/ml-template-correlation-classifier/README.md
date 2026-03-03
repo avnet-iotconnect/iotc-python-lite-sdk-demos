@@ -26,8 +26,8 @@ Because the correlation computation is so lightweight, SW and HW timings are clo
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Template Correlation Classifier FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT.job) (right-click, "save as").
-3. Create/open project with `MPFS_DISCOVERY_KIT.job`.
+2. Download the Template Correlation Classifier FPGA job file [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/assets/fpga-job/MPFS_DISCOVERY_KIT_TEMPLATE_CLASSIFIER.job) (right-click, "save as").
+3. Create/open project with `MPFS_DISCOVERY_KIT_TEMPLATE_CLASSIFIER.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
 
