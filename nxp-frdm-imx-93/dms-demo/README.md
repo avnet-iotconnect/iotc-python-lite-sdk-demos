@@ -61,7 +61,7 @@ Once running, the live video feed with DMS bounding boxes and alerts appears on 
 
 A pre-built /IOTCONNECT dashboard is available to visualize the DMS telemetry:
 
-1. Download the [Dashboard Template](./FRDM_i.MX_93_DMS_Demo_dashboard_template.json?raw=1) (**must** Right-Click, Save As).
+1. Download the [Dashboard Template](./FRDM_i.MX_93_DMS_Demo_dashboard.json?raw=1) (**must** Right-Click, Save As).
 2. In /IOTCONNECT, select **Create Dashboard** from the top of the page.
 3. Select **Import Dashboard** and browse to the downloaded template file.
 4. Select `eiqIOTC` for **template** and `FRDMiMX93` for **device**.

@@ -6,8 +6,6 @@ This demo targets stronger HW acceleration gains by combining a larger model wit
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
 > complete that first and then return here.
 
-<img src="../images/pf-discovery-board.jpg" alt="Microchip PolarFire SoC Discovery Kit" width="760" />
-
 ## 1. Introduction
 
 This is the deepest model in the series and the one where hardware acceleration shows the clearest advantage. It uses two hidden layers (256 samples → 64 features → 96 nodes → 48 nodes → 6 classes) with `11,040` trained weights (`~11.1 KiB`), and includes an explicit offline training step — `tools/train_and_export_complex.py` generates the integer weight file compiled into the FPGA image.
@@ -51,7 +49,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-complex-nn-accelerator/mchp-complex-nn-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-complex-nn-accelerator/mchp-complex-nn-dashboard.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -277,11 +275,11 @@ Representative base waveforms:
   - `src/runtimes/tinyml_complex.no_accel.elf`
   - `src/runtimes/tinyml_complex.accel.elf`
 - `tools/train_and_export_complex.py`: training/weight export tool
-- Technical reference: `../tech-reference.md`
+- Technical reference: [tech-reference.md](../tech-reference.md)
 
 ## 9. Resources
 
 - Base platform quickstart: `../README.md`
-- Technical white paper: `../tech-reference.md`
+- Technical white paper: [tech-reference.md](../tech-reference.md)
 - `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
 - [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)

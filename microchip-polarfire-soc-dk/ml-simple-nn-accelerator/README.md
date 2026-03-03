@@ -6,8 +6,6 @@ This demo introduces a compact fixed-point neural-network accelerator while pres
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
 > complete that first and then return here.
 
-<img src="../images/pf-discovery-board.jpg" alt="Microchip PolarFire SoC Discovery Kit" width="760" />
-
 ## 1. Introduction
 
 This is the first demo in the series to implement a true neural network in FPGA fabric. Rather than hand-crafted templates, it classifies using a trained fixed-point network: 256 input samples → 32 extracted features → a 12-node hidden layer (split into 6 positive and 6 negative channels) → scores for 6 classes, all computed in `int8`/`int32` integer arithmetic.
@@ -51,7 +49,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/mchp-tiny-nn-dashboard-template.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/mchp-simple-nn-dashboard.json). (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -275,11 +273,11 @@ Representative base waveforms:
 - `src/`: runtime app, install script, and ELFs
   - `src/runtimes/tinyml_nn.no_accel.elf`
   - `src/runtimes/tinyml_nn.accel.elf`
-- Technical reference: `../tech-reference.md`
+- Technical reference: [tech-reference.md](../tech-reference.md)
 
 ## 9. Resources
 
 - Base platform quickstart: `../README.md`
-- Technical white paper: `../tech-reference.md`
+- Technical white paper: [tech-reference.md](../tech-reference.md)
 - `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
 - [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
