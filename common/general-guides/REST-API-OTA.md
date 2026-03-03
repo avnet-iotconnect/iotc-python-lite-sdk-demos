@@ -3,16 +3,10 @@
 Pushing an OTA from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the
 /IOTCONNECT REST API.
 
-First make sure you install the /IOTCONNECT REST API Python module to your host machine:
+First install the /IOTCONNECT REST API Python module and protect your credentials from being saved in shell history:
 
 ```
-python3 -m pip install iotconnect-rest-api
-```
-
-Run this command to protect your /IOTCONNECT credentials:
-
-```
-export HISTCONTROL=ignoreboth
+python3 -m pip install iotconnect-rest-api && export HISTCONTROL=ignoreboth
 ```
 
 Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT account
@@ -72,16 +66,10 @@ Successful OTA push!
 Pushing an package from your local machine requires you to be logged into your /IOTCONNECT account so it can utilize the
 /IOTCONNECT REST API.
 
-First make sure you install the /IOTCONNECT REST API Python module to your host machine:
+First install the /IOTCONNECT REST API Python module and protect your credentials from being saved in shell history:
 
 ```
-python3 -m pip install iotconnect-rest-api
-```
-
-Run this command to protect your /IOTCONNECT credentials:
-
-```
-export HISTCONTROL=ignoreboth
+python3 -m pip install iotconnect-rest-api && export HISTCONTROL=ignoreboth
 ```
 
 Then run this /IOTCONNECT REST API CLI command (with your credentials substituted in) to log into your /IOTCONNECT account

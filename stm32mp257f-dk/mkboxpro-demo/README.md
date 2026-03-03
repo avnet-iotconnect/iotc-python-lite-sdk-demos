@@ -1,127 +1,86 @@
-# MKBOXPRO Demo: Package Creation and Deployment
+# MKBOXPRO Expansion Demo
 
-This guide will help you upgrade the basic /IOTCONNECT Starter Demo on the STM32MP257F-DK to the MKBOXPRO sensor pack
-demo with a single package.
-
-> [!IMPORTANT]
-> The installation of this demo depends on a pre-compiled .whl file for a key BLE package that is made specifically for
-> Python 3.12, so it will only work on the **Scarthgap** Yocto release. Make sure your STM32MP257F-DK is loaded with a
-> Scarthgap image before proceeding through any other steps.
-
-> [!NOTE]
-> Make sure your MKBOXPRO sensor pack is loaded with the correct firmware by
-> following [this MKBOXPRO setup guide](MKBOXPRO-SETUP.md) before attempting to run this demo.
+Upgrades the /IOTCONNECT Starter Demo on the STM32MP257F-DK to the MKBOXPRO BLE sensor pack demo.
 
 > [!IMPORTANT]
-> If you have not yet followed
-> the [/IOTCONNECT quickstart guide for this board](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp257f-dk/README.md),
-> complete that first and then return here to pick up on Step 1
-
-## 1. Clone This Git Repository to Your Host Machine
-
-Clone a copy of this repo to your local PC. This is where you will make changes/additions to the demo files.
-> [!NOTE]
-> On a Linux machine this can simply be done in the terminal, but a Windows host machine will require Git Bash or WSL.
-
-## 2. Customize Package
-
-Inside of the cloned repo (```iotc-python-lite-sdk-demos```), navigate to the ```stm32mp257f-dk/mkboxpro-demo/src/```
-directory:
-
-```
-cd ./stm32mp257f-dk/mkboxpro-demo/src/
-```
-
-By default, this directory contains the necessary files to upgrade from the basic quickstart application to the MKBOXPRO
-sensor pack demo. If this is all you wish to do with this package, you may move to step 3.
-
-If you wish to achieve something other than that, you will need to modify, add, and/or remove files to/from ```src```
-accordingly.
-
-## 3. Create Package
-
-Navigate back to the ```mkboxpro-demo``` directory and then run this command to create ```package.tar.gz``` which
-includes the necessary demo files and installation script:
-
-```
-bash ./create-package.sh
-```
-
-> [!NOTE]
-> At the end of the package creation script, ```package.tar.gz``` is automatically copied into the ```common```
-> directory so it can be readily accessed by the scripts used in optional steps 5B and 5C.
-
-## 4. Prepare Device to Receive Package
+> Complete the [/IOTCONNECT quickstart guide for the STM32MP257F-DK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/stm32mp257f-dk/README.md) before proceeding.
 
 > [!IMPORTANT]
-> Upgrading from the basic quickstart demo to the MKBOXPRO demo requires a template change (to `mkboxpro`) for the
-> device in /IOTCONNECT. If you send the package via OTA or command from your host PC, this is taken care of during that
-> process. If you are sending the package through a local file transfer or through an OTA via the /IOTCONNECT online
-> platform, you will have to manually change your device's template on your device's page in the online /IOTCONNECT
-> platform.
+> This demo requires Python 3.12 (Scarthgap Yocto release). Verify your board is running a Scarthgap image before continuing.
 
-For your board to receive the package through /IOTCONNECT, it must be actively connected. Do this by running the main
-/IOTCONNECT program on your board called ```app.py```:
+> [!NOTE]
+> Load your MKBOXPRO sensor pack with the correct firmware before running this demo by following the [MKBOXPRO setup guide](MKBOXPRO-SETUP.md).
 
-From here, you have the option to push the package to your devices directly to your device in one of the following ways:
+## 1. Introduction
 
-### 5A. Deliver Package Through Local File Transfer
+This demo streams BLE sensor telemetry from a SensorTile.box PRO (MKBOXPRO) sensor pack to /IOTCONNECT via the STM32MP257F-DK. Sensor data appears in real time under the **Live Data** tab of your device in the /IOTCONNECT platform.
 
-To deliver your package to a device through a local file transfer, the recommended method is to use an ```scp``` (secure
-copy) command.
+## 2. Change Device Template
 
-First find the active IP address of your device and then use that IP address to copy ```package.tar.gz``` into the main
-application directory of the device (```/opt/demo```).
+Before installing, change your device's template to `mkboxpro` in the /IOTCONNECT online platform:
 
-After the file transfer is complete, open a terminal on your device, navigate to the main application directory, and
-verify that there is a ```package.tar.gz``` present.
+1. Open [awspoc.iotconnect.io](https://awspoc.iotconnect.io) and navigate to your device's page.
+2. Locate the **Template** field (mid-left on the page) and click the edit icon.
+3. Select the `mkboxpro` template from the drop-down and save.
 
-If ```package.tar.gz``` is there, run this command to decompress the file and overwrite existing files in the directory:
+> [!TIP]
+> If the `mkboxpro` template is not yet present in your /IOTCONNECT instance, import it from [mkboxpro-template.json](mkboxpro-template.json) via **Templates → Create Template → Import**.
 
-```
+## 3. Deploy and Run
+
+### Download and Install
+
+On the board, run:
+
+```bash
+cd /opt/demo
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp257f-dk/mkboxpro-demo/package.tar.gz
 tar -xzf package.tar.gz --overwrite
-```
-
-Lastly, execute the ```install.sh``` script to perform any additional file movements/modifications that you programmed
-into your install package:
-
-```
 bash ./install.sh
 ```
 
-### 5B. Upload and Push Package Through OTA in /IOTCONNECT Online Platform
+### Run
 
-1) In the "Device" Page of the online /IOTCONNECT platform, on the blue toolbar at the bottom of the page select "
-   Firmware"
-2) If a firmware has already been created for your device's template, skip to step 3. Otherwise:
-    * Select the blue "Create Firmware" button in the top-right of the screen
-    * Name your firmware (remember this name for later)
-    * Select your device's template from the "Template" drop-down (if your device's template is not in the list, a
-      firmware for it already exists in your /IOTCONNECT instance)
-    * Enter hardware and software version numbers (can be arbitrary such as 0, 0)
-    * Select the "Browse" button in the "File" section and select your ```package.tar.gz```
-    * Add descriptions if you desire
-    * Select the "Save" button
-3) Navigate back to the Firmware page and find your new firmware name in the list
-4) Under the "Draft" column within the "Software Upgrades" column, click on the draft number (will be "1" for
-   newly-created firmwares)
-5) Select the black square with the black arrow under "Actions" to publish your firmware and make it available for OTA
-6) In the "Firmware" page of /IOTCONNECT, select the "OTA Updates" button in the top-right of the screen
-7) For "Hardware Version" select your firmware's name with the hyphenated hardware version from the drop-down
-8) Select the software version you chose for your firmware
-9) For "Target" select "Devices" from the drop-down
-10) Select your device's unique ID from the "Devices" drop-down
-11) Click the blue "Update" button to initialize the OTA update
+```bash
+python3 app.py
+```
 
-> [!NOTE]
-> If you have obtained a solution key for your /IOTCONNECT account from Softweb Solutions, you can utilize the
-> /IOTCONNECT REST API to automate the OTA deployment via 2 other methods outlined in [this guide](../../common/general-guides/REST-API-OTA.md)
+## 4. Using the Demo
 
-## 6. View Update in Device Console
+Once running and connected to /IOTCONNECT, telemetry from the MKBOXPRO sensor pack streams to your device's **Live Data** tab. The sensor pack reports temperature, humidity, pressure, and other on-board sensor readings.
 
-Shortly after sending the update via any method, you should see an interruption in the telemetry printout on the console
-of your device informing you that an update package was received, downloaded and executed.
+## 5. Customize and Rebuild (Optional)
 
-The program is designed to re-start itself after the update files have been automatically decompressed and the
-```install.sh``` script is executed (if included). There is no need for you to do any manual reboots or file
-manipulation. Your package installation is complete and the program is working again already!
+To modify the demo files before deploying:
+
+1. Clone the repository to your host machine:
+   ```bash
+   git clone https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos.git
+   ```
+
+2. Edit files in `stm32mp257f-dk/mkboxpro-demo/src/` as needed.
+
+3. Rebuild the package:
+   ```bash
+   cd stm32mp257f-dk/mkboxpro-demo
+   bash ./create-package.sh
+   ```
+
+4. Deliver the new package to the board:
+
+   **Option A — Direct copy (scp):**
+   ```bash
+   # On host:
+   scp package.tar.gz root@<board-ip>:/opt/demo/
+   # On board:
+   cd /opt/demo && tar -xzf package.tar.gz --overwrite && bash ./install.sh
+   ```
+
+   **Option B — OTA via /IOTCONNECT platform:**
+   1. In the **Device** page, select **Firmware** on the bottom toolbar.
+   2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `mkboxpro` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
+   3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
+   4. Click the publish icon (black square with arrow) under **Actions**.
+   5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.
+
+   Shortly after, the running `app.py` will receive the package, decompress it, execute `install.sh`, and restart automatically.

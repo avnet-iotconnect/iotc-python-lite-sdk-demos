@@ -105,15 +105,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 6. Run these commands to begin to configure your board for /IOTCONNECT:
 
 ```
-sudo apt-get update
-```
-
-```
-python3 -m pip install iotconnect-sdk-lite requests
-```
-
-```
-mkdir -p /opt/demo && cd /opt/demo
+sudo apt-get update && python3 -m pip install iotconnect-sdk-lite requests && mkdir -p /opt/demo && cd /opt/demo
 ```
 
 > [!TIP]

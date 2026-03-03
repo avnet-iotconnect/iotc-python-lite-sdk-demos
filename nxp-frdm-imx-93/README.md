@@ -1,6 +1,6 @@
 # NXP FRDM i.MX 93 Development Board QuickStart
 [Purchase NXP FRDM i.MX 93 Development Board](https://www.newark.com/nxp/frdm-imx93/frdm-dev-board-arm-cortex-a55/dp/48AM1905)
->[!TIP]
+> [!TIP]
 > To set up and connect this device using the **AWS Greengrass Lite SDK**, refer to this [QuickStart Guide](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
 
 1. [Introduction](#1-introduction)
@@ -91,11 +91,7 @@ The free subscription may be obtained directly from iotconnect.io or through the
 5. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
-sudo apt-get update
-```
-
-```
-python3 -m pip install iotconnect-sdk-lite requests
+sudo apt-get update && python3 -m pip install iotconnect-sdk-lite requests
 ```
 
 6. Run this command to create and move into a directory for your demo files:

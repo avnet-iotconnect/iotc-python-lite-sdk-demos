@@ -1,4 +1,4 @@
-# Technical ML Images
+# Technical Machine Learning Images
 
 This folder stores local copies of public images used across workshop navigation and track documentation.
 

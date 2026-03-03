@@ -81,37 +81,13 @@ so users can keep default settings if desired.
 3. The Python version on the board will be 3.8, but the /IOTCONNECT Python Lite SDK requires at least Python 3.9 so to 
 upgrade the Python version to 3.9 and set it to be the default version, execute these commands:
 ```
-sudo apt install software-properties-common
-```
-
-```
-sudo add-apt-repository ppa:deadsnakes/ppa
-```
-
-```
-sudo apt update
-```
-
-```
-sudo apt install python3.9 python3.9-distutils python3.9-venv
-```
-
-```
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
-```
-
-```
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+sudo apt install software-properties-common && sudo add-apt-repository ppa:deadsnakes/ppa && sudo apt update && sudo apt install python3.9 python3.9-distutils python3.9-venv && sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 && sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
 ```
 
 4. Now execute these commands on your board to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
-sudo apt-get install python3-pip -y
-```
-
-```
-sudo python3 -m pip install iotconnect-sdk-lite
+sudo apt-get install python3-pip -y && sudo python3 -m pip install iotconnect-sdk-lite
 ```
 
 5. Run this command to create and move into a directory for your demo files:
@@ -126,17 +102,14 @@ sudo mkdir -p /opt/demo && cd /opt/demo
 sudo chown -R username:username /opt/demo
 ```
 
-For example if your username was `TestUser` your command would be
-
-```
-sudo chown -R TestUser:TestUser /opt/demo
-```
+> [!NOTE]
+> For example, if your username was `TestUser` your command would be `sudo chown -R TestUser:TestUser /opt/demo`
 
 # 6. Onboard Device
 
 > [!IMPORTANT]
 > If users plan to deploy the KVS PutMedia demo, the device needs to be created in /IOTCONNECT with 
-> the `plitekvs` template (available [here](../common/templates/plitekvs-template.json)), and then the Stream Type should 
+> the `plitekvs` template (available [here](kvs-putmedia/plitekvs-template.json)), and then the Stream Type should 
 > be "USB Based". The AWS backend will not register the device for KVS if it is created with the `plitedemo` template and 
 > then later switched to `plitekvs`, it needs to be set at device creation.
 

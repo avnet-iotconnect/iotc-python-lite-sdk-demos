@@ -47,7 +47,7 @@ Download the zip archive containing the necessary demo and template files [here]
 Unzip the archive and inside is a folder called `QCS6490-Vision-AI-Demo` which contains the Vision-AI demo files as well as these two /IOTCONNECT template files:
 
 * `VAI6490-template.json`
-* `vision-ai-kit-6490-dashboard-template.json`
+* `vision-ai-kit-6490-dashboard.json`
 
 The two template files can be copied out to a different local location on your PC and then deleted from the folder.
 
@@ -112,7 +112,7 @@ well as send commands to your device to start and stop demos on different AI mod
 
 1. In /IOTCONNECT, along the top of the screen you should see 3 dashboard-related buttons. Click on “Create Dashboard”.
 2. At the first radio-button choice, select “Import Dashboard”.
-3. Click “Browse” to search for and upload `vision-ai-kit-6490-dashboard-template.json`
+3. Click “Browse” to search for and upload `vision-ai-kit-6490-dashboard.json`
 4. In the resulting window, under “Template” select “VAI6490”.
 5. Under “Device” select the device that this dashboard is going to be connected to
 > [!NOTE]
