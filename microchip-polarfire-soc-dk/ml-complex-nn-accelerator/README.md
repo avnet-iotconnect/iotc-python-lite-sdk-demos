@@ -41,10 +41,10 @@ The quickstart programmed the board with the stock Microchip reference design. T
 
 ### Switch Device to New Template
 
-> [!IMPORTANT]
-> Upgrading from the basic quickstart demo to this expansion demo requires a template change (to `Microchip Polarfire ML`)
-> for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the
-> device's template from `plitedemo` to `Microchip Polarfire ML`.
+Upgrading from the basic quickstart demo to this demo requires a template change (to `Microchip Polarfire ML`) for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the device's template from `plitedemo` to `Microchip Polarfire ML`.
+
+> [!TIP]
+> All three PolarFire SoC ML demos share the same device template (`Microchip Polarfire ML`), so if you have already set it for one demo you do not need to set it again.
 
 ### Import Dashboard
 
