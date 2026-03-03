@@ -57,17 +57,13 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/package.tar.gz
+wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/package.tar.gz
 ```
 
 ### Install and run
 
 ```bash
-rm -f package.tar.gz.*
-tar -xzf package.tar.gz --overwrite
-bash ./install.sh
-pkill -f app.py || true
-python3 app.py
+cd /opt/demo && rm -f package.tar.gz.* && tar -xzf package.tar.gz --overwrite && bash ./install.sh && (pkill -f app.py || true) && python3 app.py
 ```
 
 ## 5. Verify Data
