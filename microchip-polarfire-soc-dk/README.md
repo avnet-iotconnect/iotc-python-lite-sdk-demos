@@ -71,29 +71,24 @@ Using the above image as reference, make the following connections:
 # 4. Software Setup
 
 ## Update FPGA
-
 1. Download the latest pre-built programming file (MPFS_DISCOVERY_KIT_XXXX_XX.zip) from [here](https://github.com/polarfire-soc/polarfire-soc-discovery-kit-reference-design/releases)
 and then extract the package and locate the **.job** file. 
 2. Ensure that the board is connected to your PC via the USB-C cable, as instructed in the Hardware Setup.
-3. Open FlashPro Express, and start a new project. In the "Import 
-FlashPro Express job file" browse section, select the downloaded .job file. For the project location, simply choose the 
-same downloaded/extracted folder that contains the .job file. Select "Ok" to open the new project.
-4. After the new project has loaded, click the "RUN" button to flash the board.
-5. After the flash has completed, unplug and re-plug in the board to power-cycle and ensure the new programming is in effect.
+3. Open FlashPro Express, and click  **New Job Project**
+4. For the "Import FlashPro Express job file", click **Browse...** and select the downloaded `MPFS_DISCOVERY_KIT_XXXX_XX.job` file just extracted.
+5. For the "FlashPro Express job project location" click **Browse...** and create/choose a folder near the root of your drive (eg `C:\Microchip\PolarFire`) and click **OK**
+6. After the new project has loaded, click the **RUN** button to flash the board.
+7. After the flash has completed disconnect the USB cable from the board.
 
 ## Flash Linux Image
-
-1. Download the latest Linux Image release for the PolarFire SoC Discovery Kit by navigating [the linux4microchip PolarFire
+1. Download the latest Linux Image release for the PolarFire SoC Discovery Kit by navigating the [linux4microchip PolarFire
 SoC Releases page](https://github.com/linux4microchip/meta-mchp/releases), scrolling down to the "Pre-built images for 
 the Discovery Kit Reference Design" section and clicking on the "pre-built image" link. The downloaded filename should
-be similar to "mchp-base-image-mpfs-disco-kit.rootfs-20250725104508.wic.gz" with only the timestamp potentially being different 
-depending on what the latest release is at the time.
-2. Extract the downloaded image so that you have a **.wic** file to flash. Attempting to flash the compressed .gz file 
-is known to cause issues with the bootloader.
-3. Use an SD-Card flashing utility such as Balena Etcher to flash the .wic image file onto your SanDisk-branded micro-SD
-card.
+be similar to `mchp-base-image-mpfs-disco-kit.rootfs-xxxxxxxxxxxxxx.wic.gz"
+2. Extract the image so that you have a `.wic` file.
+3. Use an SD-Card flashing utility, such as Balena Etcher, to flash the `.wic` file to the micro-SD card.
 4. After flashing, insert the Micro-SD card into the Micro-SD card slot on the PolarFire SoC Discovery Kit.
-5. Unplug and replug the board to power-cycle it.
+5. Reconnect the USB cable to the board.
 
 # 5. /IOTCONNECT: Cloud Account Setup
 
@@ -120,8 +115,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 - Stop Bits: 1
 - Parity: None
 
-3. Check your device manager list and see that there are 3 COM port entries for your PolarFire SoC Discovery Kit. Connect 
-to the **middle-numbered port.** For example, given these COM ports:
+3. Click **File** -> **New connection...** -> **Serial** and observe 3 COM port entries for the PolarFire SoC Discovery Kit.
+4. Select the **middle-numbered port.** For example, given these COM ports:
 
 * COM10
 * COM11
