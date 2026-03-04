@@ -41,10 +41,10 @@ replicated in other environments.
 * Microchip PolarFire SoC Discovery Kit [Purchase](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474) | [User Manual & Kit Contents](https://ww1.microchip.com/downloads/aemDocuments/documents/FPGA/ProductDocuments/UserGuides/PolarFire_SoC_FPGA_Discovery_Kit_User_Guide.pdf) | [All Resources](https://www.microchip.com/en-us/development-tool/mpfs-disco-kit)
 * Ethernet Cable
 * USB-C Cable (included in kit)
-* SanDisk UHS-1 Class 10 Micro-SD card (Such as [SanDisk Industrial](https://www.amazon.com/SanDisk-Industrial-MicroSD-SDSDQAF3-008G-I-Adapter/dp/B07BZ5SY18/))
+* High Quality SanDisk UHS-1 Class 10 A1/A2 Micro-SD card
 
 > [!IMPORTANT]
-> The PolarFire SoC Discovery Kit requires a **SanDisk-brand UHS-1 Class 10 Micro-SD card**. Other brands or specs will 
+> The PolarFire SoC Discovery Kit requires a **High Quality, name brand UHS-1 Class 10 A1/A2 Micro-SD card**. Other brands or specs will 
 > not work properly with this board.
 
 ## Software
@@ -144,12 +144,6 @@ python3 -m pip install iotconnect-sdk-lite requests
 ```
 mkdir -p /opt/demo && cd /opt/demo
 ```
-
-> [!TIP]
-> To gain access to "copy" and "paste" functions inside of a PuTTY terminal window, you can CTRL+RIGHTCLICK within the
-> window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
-> the terminal.
-
 
 # 7. Onboard Device
 
