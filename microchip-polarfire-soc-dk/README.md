@@ -7,8 +7,8 @@
 5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
 6. [Device Setup](#6-device-setup)
 7. [Onboard Device](#7-onboard-device)
-8. [Using the Demo](#8-using-the-demo)
-9. [Going Further](#9-going-further)
+8. [Using the Basic Demo](#8-using-the-basic-demo)
+9. [Deploying Additional Demos](#9-deploying-additional-demos)
 10. [Resources](#10-resources)
 
 # 1. Introduction
@@ -151,7 +151,7 @@ The next step is to onboard your device into /IOTCONNECT. This will be done via 
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 8. Using the Demo
+# 8. Using the Basic Demo
 
 Run the basic demo with this command:
 
@@ -165,24 +165,24 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Going Further
+# 9. Deploying Additional Demos
 
-Three expansion demos each use a different inference approach implemented in FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
+Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 
-- [Template Correlation Classifier](ml-template-correlation-classifier/): classifies by dot-product correlation against three hand-crafted waveform templates — no neural network, no training required
-- [Simple Neural Network Accelerator](ml-simple-nn-accelerator/): the first demo with a real neural network in FPGA fabric — one hidden layer with fixed integer weights, no training step
-- [Complex Neural Network Accelerator](ml-complex-nn-accelerator/): two hidden layers with ~11K trained weights and batch-aware DMA execution — the demo where hardware acceleration throughput is most visible
+- [Template Correlation Classifier](ml-template-correlation-classifier/):  
+Classifies by dot-product correlation against three hand-crafted waveform templates. No neural network, no training required.
+- [Simple Neural Network Accelerator](ml-simple-nn-accelerator/):  
+Demo with a real neural network in FPGA fabric. One hidden layer with fixed integer weights, no training required.
+- [Complex Neural Network Accelerator](ml-complex-nn-accelerator/):  
+Two hidden layers with ~11K trained weights and batch-aware DMA execution. Hardware acceleration throughput is most visible
+
+## Demo Block Diagrams:
 
 <img src="./images/classification_methods.svg" alt="Expansion demo comparison diagram" width="900" />
 
-Expected end state in `/IOTCONNECT` (Complex Neural Network Accelerator dashboard example):
-
-<img src="./images/mchp-polarfire-complex-dashboard.jpg" alt="Complex Neural Network Accelerator /IOTCONNECT dashboard snapshot" width="520" />
-
-Technical deep dive: [tech-reference.md](tech-reference.md)
-
 # 10. Resources
 
+* [Technical Deep Dive](tech-reference.md)
 * [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
