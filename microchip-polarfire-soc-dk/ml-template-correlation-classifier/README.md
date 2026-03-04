@@ -1,10 +1,11 @@
 # /IOTCONNECT Template Correlation Classifier Expansion Demo
 
-This is the baseline expansion demo: a deterministic template-correlation classifier for validating end-to-end cloud command/control and telemetry on PolarFire SoC.
+This is a deterministic template-correlation classifier demo for validating end-to-end cloud command/control and telemetry on the Microchip PolarFire SoC.
+
+This is add-on to the QuickStart which is a prerequsite: [Microchip PolarFire SoC Discovery Kit QuickStart](../README.md)
 
 > [!IMPORTANT]
-> If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
-> complete that first and then return here.
+> You must complete the QuickStart guide, above, before proceeding.
 
 ## 1. Introduction
 
