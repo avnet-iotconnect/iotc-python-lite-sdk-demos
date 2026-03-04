@@ -69,7 +69,7 @@
   <polyline class="arrow" points="850,364 850,387 720,387 720,410"/>
   <text x="590" y="286" class="pathnote">Input Path</text>
   <text x="680" y="286" class="pathnote">Neural Network Forward Path</text>
-  <text x="858" y="380" class="pathnote">Class Scores</text>
+  <text x="747" y="383" class="pathnote">Class Scores</text>
 
   <text x="515" y="500" class="small">- Fixed-point neural network topology</text>
   <text x="515" y="528" class="small">- Compact model, moderate compute</text>
@@ -97,7 +97,7 @@
   <line class="arrow" x1="1260" y1="254" x2="1260" y2="300"/>
 
   <text x="972" y="280" class="pathnote">Data Path</text>
-  <text x="1188" y="280" class="pathnote">Control Path</text>
+  <text x="1265" y="280" class="pathnote">Control Path</text>
 
   <text x="970" y="500" class="small">- Trained classifier-head weights (W3/B3)</text>
   <text x="970" y="528" class="small">- Batch processed in one accelerator launch</text>
