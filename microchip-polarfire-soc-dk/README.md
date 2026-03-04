@@ -156,12 +156,8 @@ Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through 
 Run the basic demo with this command:
 
 ```
-python3 app.py
+cd /opt/demo && python3 app.py
 ```
-
-> [!NOTE]
-> Always make sure you are in the ```/opt/demo``` directory before running the demo. You can move to this
-> directory with the command: ```cd /opt/demo```
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
