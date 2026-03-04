@@ -8,8 +8,6 @@ set -e
 # workaround for Git bash failing with subject formatting error for openssl
 export MSYS_NO_PATHCONV=1
 
-use_curl=true
-
 function check_sdk {
   if ! python3 -c 'from avnet.iotconnect.sdk.lite import Client' > /dev/null; then
     echo "The Python Lite SDK was not found. Please see instructions on how to install it at https://github.com/avnet-iotconnect/iotc-python-lite-sdk." >&2
@@ -132,23 +130,7 @@ if [[ ${do_download} && -f app.py ]]; then
 fi
 
 if ${do_download}; then
-  if ! has curl; then
-    if has wget; then
-      echo "Using wget to download..."
-      use_curl=false
-    else
-      echo "No curl or wget found on this system. Please install one of the tools." >&2
-      exit 5
-    fi
-  fi
-
-  echo "Downloading the quickstart Python app..."
-
-  if ${use_curl}; then
-    curl -o app.py https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/starter-demo/src/app.py
-  else
-    wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/starter-demo/src/app.py -O app.py
-  fi
+  wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/starter-demo/src/app.py -O app.py
   echo "Download complete."
 fi
 
