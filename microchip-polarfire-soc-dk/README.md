@@ -114,8 +114,8 @@ The free subscription may be obtained directly from iotconnect.io or through the
 - Stop Bits: 1
 - Parity: None
 
-3. Check your device manager list and see that there are 3 COM port entries for your PolarFire SoC Discovery Kit. Connect 
-to the **middle-numbered port.** For example, given these COM ports:
+3. Click **File** -> **New connection...** -> **Serial** and observe 3 COM port entries for the PolarFire SoC Discovery Kit.
+4. Select the **middle-numbered port.** For example, given these COM ports:
 
 * COM10
 * COM11
