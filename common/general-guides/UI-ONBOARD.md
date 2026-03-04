@@ -75,13 +75,13 @@ cd /opt/demo && wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-pyt
 
 15. When prompted, press ENTER to have the script print out the generated device certificate.
 
-<img src="../media/quickstart-script-initial.png">
-
 *(before pressing ENTER)*
 
-<img src="../media/cert-printout.png">
+<img src="../media/quickstart-script-initial.png">
 
 *(after pressing ENTER)*
+
+<img src="../media/cert-printout.png">
 
 16. Copy the device certificate text (including BEGIN and END lines) and paste the text into the certificate box in the /IOTCONNECT device creation page.
 
