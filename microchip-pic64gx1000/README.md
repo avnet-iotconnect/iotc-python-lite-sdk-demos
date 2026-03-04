@@ -4,11 +4,10 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Onboard Device](#6-onboard-device)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+4. [Device Setup](#4-device-setup)
+5. [Onboard Device](#5-onboard-device)
+6. [Using the Demo](#6-using-the-demo)
+7. [Resources](#7-resources)
 
 # 1. Introduction
 
@@ -61,22 +60,7 @@ Using the above image as reference, make the following connections:
 2. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#2**.
 3. Ensure that the included Micro-SD card is fully-seated (should click) into the Micro-SD card slot on the board, labeled **#3**.
 
-# 4. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (
-  Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) -
-  60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no
-  credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 5. Device Setup
+# 4. Device Setup
 
 To serially communicate with the Curiosity PIC64GX1000 Kit, Windows and Linux users will each need to follow their own 
 additional steps laid out in [Microchip's Curiosity PIC64GX1000 Kit Quickstart Guide](https://ww1.microchip.com/downloads/aemDocuments/documents/MPU64/ProductDocuments/UserGuides/production-kit-qsguide/Curiosity-PIC64GX1000-Kit_QSGuide.pdf).
@@ -148,13 +132,13 @@ sudo chown -R $USER:$USER /opt/demo
 > the terminal.
 
 
-# 6. Onboard Device
+# 5. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 7. Using the Demo
+# 6. Using the Demo
 
 Run the basic demo with this command:
 
@@ -168,7 +152,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 7. Resources
 
 * [Purchase the Microchip Curiosity PIC64GX1000 Kit](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)

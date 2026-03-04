@@ -98,24 +98,11 @@ else
 fi
 
 cat <<END
----- IoTConnect Python Lite SDK Quickstart ----
-This script will help guide you through the setup this device with IoTConnect.
-Ensure that you have read the guide at https://github.com/avnet-iotconnect/iotc-python-lite-sdk on how to install the lite SDK before proceeding.
-If you are already familiar with IoTConnect you can follow these simple steps:
-- Create the device template by uploading TBD link to template.
-- Create a new device and:
-  - Select your Entity and the newly created template.
-  - Click the "Use my certificate" radio button.
-  - Copy and paste the certificate that will be printed, including the BEGIN and END lines into the Certificate Text field:
+---- /IOTCONNECT Python Lite SDK Quickstart ----
 END
 
 read -rp "ENTER to print the certificate and proceed:"
 cat device-cert.pem
-
-cat <<END
-- Click the "Save & View" button.
-- Click the "Paper and Cog" icon at top right to download your device configuration file.
-END
 
 paste_config_json=true
 if [[ -f "iotcDeviceConfig.json" ]]; then
@@ -125,7 +112,7 @@ if [[ -f "iotcDeviceConfig.json" ]]; then
 fi
 
 if ${paste_config_json} ]]; then
-  echo "Open the downloaded file in a text editor and paste the content into this terminal and press ENTER to add the last line:"
+  echo "Open the downloaded file in a text editor and paste the content into this terminal and press ENTER after the last line:"
 
   echo > iotcDeviceConfig.json
   while true; do
@@ -166,11 +153,6 @@ if ${do_download}; then
 fi
 
 cat <<END
-If you are connecting via a serial terminal, ensure that the content of iotcDeviceConfig.json matches what you 
-pasted (type "cat iotcDeviceConfig.json" at the prompt to view it). In some cases, pasting text into a serial 
-terminal can cause it to skip characters. If using TeraTerm on Windows, enter a 10ms "Transmit delay" for both 
-lines and characters in the Settings -> Serial Port dialog.
-
 The Quickstart setup is complete.
 
 You can now run this command on the command line to execute the basic demo:

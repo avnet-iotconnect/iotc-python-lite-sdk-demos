@@ -4,11 +4,10 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Onboard Device](#6-onboard-device)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+4. [Device Setup](#4-device-setup)
+5. [Onboard Device](#5-onboard-device)
+6. [Using the Demo](#6-using-the-demo)
+7. [Resources](#7-resources)
 
 # 1. Introduction
 
@@ -54,19 +53,7 @@ See the reference image below for cable connections.
 > [!NOTE]
 > The board may take a few minutes to boot up after powering on for the first time.
 
-# 4. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-
-[/IOTCONNECT Free Trial (AWS Version)](https://subscription.iotconnect.io/subscribe?cloud=aws)
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
-
-# 5. Device Setup
+# 4. Device Setup
 
 1. After the board boots up for the first time, users will go through a standard Ubuntu installation/configuration process 
 including setting up a username and password, selecting timezone, etc. No special configuration is required for this QuickStart 
@@ -105,7 +92,7 @@ sudo chown -R username:username /opt/demo
 > [!NOTE]
 > For example, if your username was `TestUser` your command would be `sudo chown -R TestUser:TestUser /opt/demo`
 
-# 6. Onboard Device
+# 5. Onboard Device
 
 > [!IMPORTANT]
 > If users plan to deploy the KVS PutMedia demo, the device needs to be created in /IOTCONNECT with 
@@ -117,7 +104,7 @@ The next step is to onboard your device into /IOTCONNECT. This will be done via 
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 7. Using the Demo
+# 6. Using the Demo
 
 Run the basic demo with this command:
 
@@ -131,7 +118,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 7. Resources
 
 * [Purchase the Seeed Studio reComputer J4011](https://www.newark.com/seeed-studio/110110144/recomputer-j4011-edge-ai-device/dp/74AK7856)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

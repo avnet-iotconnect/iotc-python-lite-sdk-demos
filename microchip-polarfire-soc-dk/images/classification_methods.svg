@@ -25,7 +25,7 @@
   <rect x="940" y="120" width="430" height="700" fill="#fff6ee" stroke="#f5d2b5" stroke-width="2" rx="14"/>
 
   <!-- Template Correlation Classifier -->
-  <text x="50" y="160" class="track">Template Correlation Classifier - Template Correlation</text>
+  <text x="50" y="150" class="track">Template Correlation<tspan x="50" dy="26">Classifier</tspan></text>
   <rect class="box" x="60" y="190" width="150" height="64" fill="#dbeafe"/>
   <text x="83" y="228" class="label">Input 256</text>
   <rect class="box" x="240" y="190" width="180" height="64" fill="#bfdbfe"/>
@@ -50,7 +50,7 @@
   <text x="60" y="556" class="small">- Lowest algorithmic complexity</text>
 
   <!-- Simple Neural Network Accelerator -->
-  <text x="505" y="160" class="track">Simple Neural Network - Fixed-Point NN</text>
+  <text x="505" y="150" class="track">Simple Neural Network<tspan x="505" dy="26">Accelerator</tspan></text>
   <rect class="box" x="515" y="190" width="130" height="64" fill="#dcfce7"/>
   <text x="540" y="228" class="label">Input 256</text>
   <rect class="box" x="515" y="300" width="130" height="64" fill="#bbf7d0"/>
@@ -69,23 +69,23 @@
   <polyline class="arrow" points="850,364 850,387 720,387 720,410"/>
   <text x="590" y="286" class="pathnote">Input Path</text>
   <text x="680" y="286" class="pathnote">Neural Network Forward Path</text>
-  <text x="812" y="402" class="pathnote">Class Scores</text>
+  <text x="858" y="380" class="pathnote">Class Scores</text>
 
-  <text x="515" y="500" class="small">- Real neural network topology in fixed-point arithmetic</text>
+  <text x="515" y="500" class="small">- Fixed-point neural network topology</text>
   <text x="515" y="528" class="small">- Compact model, moderate compute</text>
   <text x="515" y="556" class="small">- Modest HW gain depending on overhead</text>
 
   <!-- Complex Neural Network Accelerator -->
-  <text x="960" y="160" class="track">Complex Neural Network - Batched NN</text>
+  <text x="960" y="150" class="track">Complex Neural Network<tspan x="960" dy="26">Accelerator</tspan></text>
   <rect class="box" x="970" y="190" width="180" height="64" fill="#ffedd5"/>
-  <text x="987" y="228" class="label">Batch Input N x 256</text>
+  <text x="979" y="228" class="label">Batch Input N x 256</text>
   <rect class="box" x="1175" y="190" width="170" height="64" fill="#fed7aa"/>
   <text x="1201" y="228" class="label">Batch Control</text>
 
   <rect class="box" x="970" y="300" width="180" height="64" fill="#fdba74"/>
   <text x="995" y="338" class="label">Feature Extractor</text>
   <rect class="box" x="1175" y="300" width="170" height="64" fill="#fb923c"/>
-  <text x="1210" y="338" class="label">Neural Network Core</text>
+  <text x="1260" y="325" class="label" text-anchor="middle">Neural Network<tspan x="1260" dy="22">Core</tspan></text>
 
   <rect class="box" x="1030" y="410" width="250" height="64" fill="#f97316"/>
   <text x="1060" y="448" class="label">Trained Head + Argmax</text>

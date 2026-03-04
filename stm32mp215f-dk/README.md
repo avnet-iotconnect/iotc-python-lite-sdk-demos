@@ -4,12 +4,11 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Onboard Device](#6-onboard-device)
-7. [Using the Demo](#7-using-the-demo)
-8. [Troubleshooting](#8-troubleshooting)
-9. [Resources](#9-resources)
+4. [Device Setup](#4-device-setup)
+5. [Onboard Device](#5-onboard-device)
+6. [Using the Demo](#6-using-the-demo)
+7. [Troubleshooting](#7-troubleshooting)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -75,19 +74,7 @@ Using the above image as reference, make the following connections:
 > If you have trouble connecting to the board via the serial terminal, try swapping the TX and RX connections, as it is
 > easy to get confused with the labeling.
 
-# 4. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 5. Device Setup
+# 4. Device Setup
 
 1. **Image Flashing**: Before continuing, the STM32MP215F-DK requires a Yocto Linux image to be flashed to the
    microSD card using the STM32CubeProgrammer software. Ensure you are using the latest release of STM32CubeProgrammer.
@@ -131,7 +118,7 @@ mkdir -p /opt/demo && cd /opt/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-# 6. Onboard Device
+# 5. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
@@ -143,7 +130,7 @@ Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through 
 > `apt-get install python3-cffi -y` and then you can check out [this guide](../common/general-guides/REST-API-ONBOARD.md)
 > for more info on the rest of that process.
 
-# 7. Using the Demo
+# 6. Using the Demo
 
 Run the basic demo with this command:
 
@@ -157,12 +144,12 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Troubleshooting
+# 7. Troubleshooting
 
 To return the board to an out-of-box state, you can re-flash a fresh Yocto image to the SD card. For instructions on
 this process, refer to [ST's guide on populating the target and booting the image](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP215x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
 
-# 9. Resources
+# 8. Resources
 * [Purchase the STM32MP215F-DK](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp215f-dk/evolve-151041109/)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

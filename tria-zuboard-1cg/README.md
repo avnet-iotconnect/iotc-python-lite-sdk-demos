@@ -4,11 +4,10 @@
 2. [Requirements](#2-requirements)
 3. [Linux Image Flashing](#3-linux-image-flashing)
 4. [Hardware Setup](#4-hardware-setup)
-5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
-6. [Device Setup](#6-device-setup)
-7. [Onboard Device via Online /IOTCONNECT Platform](#7-onboard-device-via-online-iotconnect-platform)
-8. [Using the Demo](#8-using-the-demo)
-9. [Resources](#9-resources)
+5. [Device Setup](#5-device-setup)
+6. [Onboard Device via Online /IOTCONNECT Platform](#6-onboard-device-via-online-iotconnect-platform)
+7. [Using the Demo](#7-using-the-demo)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -65,22 +64,7 @@ card slot to power-on the board. You will see additional LEDs illuminate as the 
 
 <img src="./media/on-button.png">
 
-# 5. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (
-  Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) -
-  60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no
-  credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 6. Device Setup
+# 5. Device Setup
 
 1. With the board powered on and connected to your host machine, open your Device Manager list and note the COM port
    being utilized by your adapter cable.
@@ -118,13 +102,13 @@ mkdir -p /opt/demo && cd /opt/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser
 > and the terminal.
 
-# 7. Onboard Device
+# 6. Onboard Device via Online /IOTCONNECT Platform
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 8. Using the Demo
+# 7. Using the Demo
 
 Run the basic demo with this command:
 
@@ -138,7 +122,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Resources
+# 8. Resources
 * [Purchase the Tria ZUBOARD-1CG](https://www.newark.com/avnet/aes-zub-1cg-dk-g/development-board-arm-cortex-a53/dp/41AK2454)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

@@ -7,11 +7,10 @@
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Image Flashing](#4-image-flashing)
-5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
-6. [Device Setup](#6-device-setup)
-7. [Onboard Device](#7-onboard-device)
-8. [Using the Demo](#8-using-the-demo)
-9. [Resources](#9-resources)
+5. [Device Setup](#5-device-setup)
+6. [Onboard Device](#6-onboard-device)
+7. [Using the Demo](#7-using-the-demo)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -100,19 +99,7 @@ Raspberry Pi 4).
 10. Accept the warning prompts and flash the image.
 11. After the flash is complete, insert the Micro-SD card into the Micro-SD card slot on the board.
 
-# 5. Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-
-[/IOTCONNECT Free Trial (AWS Version)](https://subscription.iotconnect.io/subscribe?cloud=aws)
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
-
-# 6. Device Setup
+# 5. Device Setup
 
 1. After plugin in your Raspberry Pi, you should see a login prompt on your monitor. Enter the username and then the password 
 that you created before the image flashing.
@@ -157,13 +144,13 @@ sudo chown -R TestUser:TestUser /opt/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-# 7. Onboard Device
+# 6. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 8. Using the Demo
+# 7. Using the Demo
 
 Run the basic demo with this command:
 
@@ -177,7 +164,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Resources
+# 8. Resources
 * Explore connecting the Raspberry Pi through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/raspberry-pi/)
 * Purchase the Raspberry Pi:
   * [Raspberry Pi 5 (4GB RAM)](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346)

@@ -3,11 +3,10 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Onboard Device](#6-onboard-device)
-7. [Using the Demo](#7-using-the-demo)
-8. [Resources](#8-resources)
+4. [Device Setup](#4-device-setup)
+5. [Onboard Device](#5-onboard-device)
+6. [Using the Demo](#6-using-the-demo)
+7. [Resources](#7-resources)
 
 # 1. Introduction
 
@@ -54,21 +53,7 @@ See the reference image below for cable connections.
 2. Connect a USB-C cable from a 5V power source (such as your host machine) to the "USB0/POWER" port on your board.
 3. Connect a USB-C cable from your host machine to the "Debug" port for connection to the console.
 
-# 4. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-
-[/IOTCONNECT Free Trial (AWS Version)](https://subscription.iotconnect.io/subscribe?cloud=aws)
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-See the
-/IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md)
-for more details on the trial.
-
-# 5. Device Setup
+# 4. Device Setup
 
 1. With the board powered on and connected to your host machine, open your Device Manager and note the COM ports that
    are in use by a "USB Serial Port" (should be 4 of them). You will use the **2nd-highest port number**. For example,
@@ -109,7 +94,7 @@ mkdir -p /opt/demo && cd /opt/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-# 6. Onboard Device
+# 5. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
@@ -120,7 +105,7 @@ Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through 
 > REST API to automate the device onboarding process via shell scripts. Check out [this guide](../common/general-guides/REST-API-ONBOARD.md) 
 > for more info on that.
 
-# 7. Using the Demo
+# 6. Using the Demo
 
 Run the basic demo with this command:
 
@@ -134,7 +119,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Resources
+# 7. Resources
 * [Purchase the TRIA MaaXBoard 8ULP](https://www.newark.com/avnet/aes-maaxb-8ulp-sk-g/maaxboard-8ulp-sbc-arm-cortex/dp/87AK5106)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

@@ -6,12 +6,11 @@
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
-4. [/IOTCONNECT: Cloud Account Setup](#4-iotconnect-cloud-account-setup)
-5. [Device Setup](#5-device-setup)
-6. [Onboard Device](#6-onboard-device)
-7. [Using the Demo](#7-using-the-demo)
-8. [Troubleshooting](#8-troubleshooting)
-9. [Resources](#9-resources)
+4. [Device Setup](#4-device-setup)
+5. [Onboard Device](#5-onboard-device)
+6. [Using the Demo](#6-using-the-demo)
+7. [Troubleshooting](#7-troubleshooting)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -60,22 +59,7 @@ Using the above image as reference, make the following connections:
 2. Connect the USB-C cable from a your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2
    **.
 
-# 4. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (
-  Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) -
-  60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no
-  credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 5. Device Setup
+# 4. Device Setup
 
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
@@ -122,7 +106,7 @@ mkdir -p /opt/demo && cd /opt/demo
 > window to utilize a dropdown menu with these commands. This is very helpful for copying/pasting between your browser and
 > the terminal.
 
-# 6. Onboard Device
+# 5. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
@@ -134,7 +118,7 @@ Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through 
 > `apt-get install python3-cffi -y` and then you can check out [this guide](../common/general-guides/REST-API-ONBOARD.md) 
 > for more info on the rest of that process.
 
-# 7. Using the Demo
+# 6. Using the Demo
 
 Run the basic demo with this command:
 
@@ -148,11 +132,11 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Troubleshooting
+# 7. Troubleshooting
 
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
-# 9. Resources
+# 8. Resources
 * Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
 * [Purchase the STM32MP257F-EV1](https://www.newark.com/stmicroelectronics/stm32mp257f-ev1/eval-brd-arm-cortex-a35-m33-m0/dp/13AM6530)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)

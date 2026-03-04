@@ -4,11 +4,10 @@
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Software Setup](#4-software-setup)
-5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
-6. [Device Setup](#6-device-setup)
-7. [Onboard Device](#7-onboard-device)
-8. [Using the Demo](#8-using-the-demo)
-9. [Resources](#9-resources)
+5. [Device Setup](#5-device-setup)
+6. [Onboard Device](#6-onboard-device)
+7. [Using the Demo](#7-using-the-demo)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -86,22 +85,7 @@ with the image for the first time.
 
 Complete all the steps from that guide (except for "2.2 Build the Linux Environment) and then resume here at step 5.
 
-# 5. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (
-  Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) -
-  60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no
-  credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 6. Device Setup
+# 5. Device Setup
 
 1. With the board powered on (3 green LEDs should be illuminated), connect serially again in TeraTerm.
 2. Ensure that your serial settings in your session are set to:
@@ -146,13 +130,13 @@ mkdir -p /opt/demo && cd /opt/demo
 > the terminal.
 
 
-# 7. Onboard Device
+# 6. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 8. Using the Demo
+# 7. Using the Demo
 
 Run the basic demo with this command:
 
@@ -166,7 +150,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Resources
+# 8. Resources
 
 * [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

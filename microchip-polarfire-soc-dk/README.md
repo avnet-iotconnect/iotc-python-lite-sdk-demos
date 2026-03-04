@@ -4,12 +4,11 @@
 2. [Requirements](#2-requirements)
 3. [Hardware Setup](#3-hardware-setup)
 4. [Software Setup](#4-software-setup)
-5. [/IOTCONNECT: Cloud Account Setup](#5-iotconnect-cloud-account-setup)
-6. [Device Setup](#6-device-setup)
-7. [Onboard Device](#7-onboard-device)
-8. [Using the Basic Demo](#8-using-the-basic-demo)
-9. [Deploying Additional Demos](#9-deploying-additional-demos)
-10. [Resources](#10-resources)
+5. [Device Setup](#5-device-setup)
+6. [Onboard Device](#6-onboard-device)
+7. [Using the Basic Demo](#7-using-the-basic-demo)
+8. [Deploying Additional Demos](#8-deploying-additional-demos)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -90,22 +89,7 @@ be similar to `mchp-base-image-mpfs-disco-kit.rootfs-xxxxxxxxxxxxxx.wic.gz"
 4. After flashing, insert the Micro-SD card into the Micro-SD card slot on the PolarFire SoC Discovery Kit.
 5. Reconnect the USB cable to the board.
 
-# 5. /IOTCONNECT: Cloud Account Setup
-
-An /IOTCONNECT account with AWS backend is required. If you need to create an account, a free trial subscription is
-available.
-The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
-
-* Option #1 (
-  Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) -
-  60 day trial; AWS account creation required
-* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no
-  credit card required
-
-> [!NOTE]
-> Be sure to check any SPAM folder for the temporary password after registering.
-
-# 6. Device Setup
+# 5. Device Setup
 
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
@@ -145,13 +129,13 @@ python3 -m pip install iotconnect-sdk-lite requests
 mkdir -p /opt/demo && cd /opt/demo
 ```
 
-# 7. Onboard Device
+# 6. Onboard Device
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-# 8. Using the Basic Demo
+# 7. Using the Basic Demo
 
 Run the basic demo with this command:
 
@@ -161,7 +145,7 @@ cd /opt/demo && python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 9. Deploying Additional Demos
+# 8. Deploying Additional Demos
 
 Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 
@@ -176,7 +160,7 @@ Two hidden layers with ~11K trained weights and batch-aware DMA execution. Hardw
 
 <img src="./images/classification_methods.svg" alt="Expansion demo comparison diagram" width="900" />
 
-# 10. Resources
+# 9. Resources
 
 * [Technical Deep Dive](tech-reference.md)
 * [Purchase the Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)

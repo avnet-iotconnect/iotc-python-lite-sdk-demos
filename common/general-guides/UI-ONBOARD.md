@@ -1,5 +1,19 @@
 # Onboarding a Device to /IOTCONNECT via Online User Interface
 
+## Prerequisite: /IOTCONNECT Cloud Account
+
+If you do not yet have an /IOTCONNECT account, a free trial subscription with an AWS backend is available. The free subscription may be obtained directly from iotconnect.io or through the AWS Marketplace.
+
+* Option #1 (Recommended) [/IOTCONNECT via AWS Marketplace](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/iotconnect_aws_marketplace.md) - 60 day trial; AWS account creation required
+* Option #2 [/IOTCONNECT via iotconnect.io](https://subscription.iotconnect.io/subscribe?cloud=aws) - 30 day trial; no credit card required
+
+> [!NOTE]
+> Be sure to check any SPAM folder for the temporary password after registering.
+
+See the /IOTCONNECT [Subscription Information](https://github.com/avnet-iotconnect/avnet-iotconnect.github.io/blob/main/documentation/iotconnect/subscription/subscription.md) for more details on the trial.
+
+## Onboarding Steps
+
 Follow these steps to onboard your device into /IOTCONNECT via the online user interface.
 
 1. In a web browser, navigate to console.iotconnect.io and log into your account.
