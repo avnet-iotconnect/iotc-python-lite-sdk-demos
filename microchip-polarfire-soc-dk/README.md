@@ -72,6 +72,8 @@ Using the above image as reference, make the following connections:
 ## Update FPGA
 1. Download the latest pre-built programming file (MPFS_DISCOVERY_KIT_XXXX_XX.zip) from [here](https://github.com/polarfire-soc/polarfire-soc-discovery-kit-reference-design/releases)
 and then extract the package and locate the **.job** file. 
+> [!NOTE]
+> You will need to create a free Microchip account to access the downloadable file.
 2. Ensure that the board is connected to your PC via the USB-C cable, as instructed in the Hardware Setup.
 3. Open FlashPro Express, and click  **New Job Project**
 4. For the "Import FlashPro Express job file", click **Browse...** and select the downloaded `MPFS_DISCOVERY_KIT_XXXX_XX.job` file just extracted.
