@@ -1,0 +1,12 @@
+* text=auto
+
+# Ensure Unix line endings for executable scripts used on target boards.
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Keep Python and config files LF as well to avoid shell/tooling edge cases.
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
