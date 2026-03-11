@@ -21,8 +21,8 @@ _stream_process: Optional[subprocess.Popen] = None
 
 camera_options = {
     "video": {
-        "width": 320,
-        "height": 240,
+        "width": 960,
+        "height": 720,
         "framerate": 15
     },
     "verbose": False
@@ -107,9 +107,8 @@ def start_video_stream(
 
     # Build GStreamer command.
     # The STM32MP135F-DK has no SoC or UVC H264 encoder, so we use x264enc for
-    # software encoding. The default resolution is kept low (320x240@15fps) to
-    # stay within the Cortex-A7's encoding budget. Adjust camera_options if the
-    # board handles a higher resolution comfortably.
+    # software encoding. The default is 960x720@15fps (~58% CPU on the Cortex-A7).
+    # Adjust camera_options for a different resolution if needed.
     verbose = camera_options.get("verbose", False)
     verbose_flag = "-v " if verbose else ""
     gst_command = (
