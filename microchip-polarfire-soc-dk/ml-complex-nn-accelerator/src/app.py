@@ -893,14 +893,33 @@ def parse_bench_args(args):
 
 
 def _run_batch_inference(mode: str, input_class: int, seed: int, batch: int):
+    def _run_inference_compat(run_mode: str, run_class: int, run_seed: int, run_batch: int, run_timeout_s: int = None):
+        kwargs = {
+            "mode": run_mode,
+            "input_class": run_class,
+            "seed": run_seed,
+        }
+        if run_timeout_s is not None:
+            kwargs["timeout_s"] = run_timeout_s
+        try:
+            return ml_runner.run_inference(batch_n=run_batch, **kwargs)
+        except TypeError as e:
+            if "unexpected keyword argument 'batch_n'" not in str(e):
+                raise
+            print(
+                "WARNING: ml_runner.run_inference does not support batch_n; "
+                f"falling back to legacy call (mode={run_mode}, batch={run_batch})."
+            )
+            return ml_runner.run_inference(**kwargs)
+
     # Preferred path: one ELF run that executes a full batch. This can map to one HW
     # accelerator invocation and removes per-inference host-side setup overhead.
-    result = ml_runner.run_inference(
-        mode=mode,
-        input_class=input_class,
-        seed=seed,
-        batch_n=batch,
-        timeout_s=max(60, 30 + (batch // 10)),
+    result = _run_inference_compat(
+        run_mode=mode,
+        run_class=input_class,
+        run_seed=seed,
+        run_batch=batch,
+        run_timeout_s=max(60, 30 + (batch // 10)),
     )
     result_batch = int(result.get("batch_n", 1))
     if result_batch < 1:
@@ -934,7 +953,7 @@ def _run_batch_inference(mode: str, input_class: int, seed: int, batch: int):
 
     for i in range(1, batch):
         run_seed = seed + i
-        result_i = ml_runner.run_inference(mode=mode, input_class=input_class, seed=run_seed, batch_n=1)
+        result_i = _run_inference_compat(run_mode=mode, run_class=input_class, run_seed=run_seed, run_batch=1)
         exec_mode = result_i["exec_mode"]
         total_time_s += result_i["time_s"]
         pred_hist[result_i["pred"]] = pred_hist.get(result_i["pred"], 0) + 1
