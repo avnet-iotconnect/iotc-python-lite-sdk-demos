@@ -11,6 +11,12 @@ PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade iotconnect-sdk-lite
 # Install Python dependencies
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install requests
 
+# Install libx264 runtime library required by the bundled GStreamer x264 plugin.
+# The Yocto gst-plugins-ugly package is not built with x264 support, so we
+# provide a cross-compiled libgstx264.so and rely on the distro's libx264.
+apt-get update -qq
+apt-get install -y libx264-164 || true
+
 # Install pre-built KVS Producer SDK shared libraries.
 # The libs/ directory is extracted alongside this script from the OTA package.
 KVS_BUILD_DIR="/opt/kvs-producer-sdk-cpp/build"
@@ -51,6 +57,12 @@ GST_PLUGIN_DIR=$(find /usr/lib -maxdepth 4 -type d -name "gstreamer-1.0" 2>/dev/
 if [ -n "$GST_PLUGIN_DIR" ] && [ -d "$GST_PLUGIN_DIR" ]; then
   ln -sf "$KVS_BUILD_DIR/libgstkvssink.so" "$GST_PLUGIN_DIR/"
   echo "Symlinked kvssink into $GST_PLUGIN_DIR"
+  # Install the bundled x264 GStreamer plugin (cross-compiled since the Yocto
+  # gst-plugins-ugly package is not built with x264 support).
+  if [ -f "$KVS_BUILD_DIR/libgstx264.so" ]; then
+    cp "$KVS_BUILD_DIR/libgstx264.so" "$GST_PLUGIN_DIR/"
+    echo "Installed libgstx264.so into $GST_PLUGIN_DIR"
+  fi
 else
   echo "WARNING: Could not locate GStreamer system plugin directory."
   echo "Falling back to GST_PLUGIN_PATH environment variable."

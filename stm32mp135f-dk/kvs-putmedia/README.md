@@ -9,11 +9,11 @@ Upgrades the /IOTCONNECT Starter Demo on the STM32MP135F-DK to the AWS Kinesis V
 
 This demo streams live video from a USB camera through the STM32MP135F-DK to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK libraries are pre-built and bundled in the package — no on-device compilation is required.
 
-The STM32MP135F-DK has no hardware or software H264 encoder, so this demo uses the C920 camera's built-in UVC H264 encoding via the `uvch264src` GStreamer plugin. The camera performs the encoding internally, offloading the SoC entirely.
+The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package set does not include a software H264 encoder. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The default resolution is 320×240 at 15 fps to stay within the Cortex-A7's encoding budget.
 
 ## 2. Set Up Hardware and Template
 
-1. Plug a **Logitech C920** (or other UVC H264-capable) USB camera into a USB port on the STM32MP135F-DK.
+1. Plug a USB camera into a USB port on the STM32MP135F-DK.
 
 > [!TIP]
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if the onboard camera interface is also present.
@@ -54,8 +54,8 @@ Once the application is running and connected to /IOTCONNECT:
 ### Camera Configuration
 
 The default camera settings in `app.py` are:
-- Resolution: 640×480
-- Framerate: 30 fps
+- Resolution: 320×240
+- Framerate: 15 fps
 
 These can be adjusted by modifying the `camera_options` dictionary in `app.py`.
 
@@ -84,11 +84,11 @@ If you need to pick up a newer version of the KVS Producer SDK, cross-compile it
 
 **Prerequisites:** Docker must be installed on your host machine.
 
-**Step 1:** Cross-compile the KVS Producer SDK for armv7l (armhf):
+**Step 1:** Cross-compile the KVS Producer SDK and GStreamer x264 plugin for armv7l (armhf):
 ```bash
 bash ~/kvs-build-armv7l.sh
 ```
-This places the resulting `.so` library files in `~/kvs-libs-armv7l/`. The build takes several minutes.
+This places the resulting `.so` library files (including `libgstx264.so`) in `~/kvs-libs-armv7l/`. The build takes several minutes.
 
 **Step 2:** Rebuild the package (bundles the new libraries alongside the source files):
 ```bash

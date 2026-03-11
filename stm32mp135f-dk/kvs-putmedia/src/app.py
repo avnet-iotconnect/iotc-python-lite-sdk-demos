@@ -21,9 +21,9 @@ _stream_process: Optional[subprocess.Popen] = None
 
 camera_options = {
     "video": {
-        "width": 640,
-        "height": 480,
-        "framerate": 30
+        "width": 320,
+        "height": 240,
+        "framerate": 15
     },
     "verbose": False
 }
@@ -106,22 +106,23 @@ def start_video_stream(
     video_framerate = camera_options.get("video", {}).get("framerate", 30)
 
     # Build GStreamer command.
-    # The STM32MP135F-DK has no SoC H264 encoder, so we use uvch264src to leverage
-    # the C920 camera's built-in UVC H264 encoding. The vfsrc (viewfinder) pad is
-    # connected to fakesink since we only need the H264 video stream.
+    # The STM32MP135F-DK has no SoC or UVC H264 encoder, so we use x264enc for
+    # software encoding. The default resolution is kept low (320x240@15fps) to
+    # stay within the Cortex-A7's encoding budget. Adjust camera_options if the
+    # board handles a higher resolution comfortably.
     verbose = camera_options.get("verbose", False)
     verbose_flag = "-v " if verbose else ""
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
-        f"uvch264src device={device_port} auto-start=true iframe-period=2000 name=src "
-        f"src.vidsrc ! queue ! "
-        f"video/x-h264,width={video_width},height={video_height},framerate={video_framerate}/1,stream-format=avc,alignment=au ! "
+        f"v4l2src device={device_port} do-timestamp=true ! "
+        f"video/x-raw,format=YUY2,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
+        f"videoconvert ! video/x-raw,format=I420 ! "
+        f"x264enc tune=zerolatency speed-preset=ultrafast key-int-max={video_framerate * 2} ! "
         f"h264parse ! "
         f"video/x-h264,stream-format=avc,alignment=au ! "
         f"kvssink stream-name={stream_name} storage-size=512 "
         f"access-key={access_key} secret-key={secret_key} "
-        f"session-token={session_token} aws-region={region} "
-        f"src.vfsrc ! fakesink"
+        f"session-token={session_token} aws-region={region}"
     )
 
     if camera_options.get("verbose", False):
