@@ -120,7 +120,7 @@ def start_video_stream(
         f"x264enc tune=zerolatency speed-preset=ultrafast key-int-max={video_framerate * 2} ! "
         f"h264parse ! "
         f"video/x-h264,stream-format=avc,alignment=au ! "
-        f"kvssink stream-name={stream_name} storage-size=512 "
+        f"kvssink stream-name={stream_name} storage-size=128 "
         f"access-key={access_key} secret-key={secret_key} "
         f"session-token={session_token} aws-region={region}"
     )
