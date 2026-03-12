@@ -118,10 +118,6 @@ You would connect to COM11.
 5. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
-sudo opkg update
-```
-
-```
 python3 -m pip install iotconnect-sdk-lite requests
 ```
 
