@@ -1,34 +1,32 @@
-# /IOTCONNECT Tiny-NN Accelerator Expansion Demo (Track 2)
+# /IOTCONNECT Simple Neural Network Accelerator Expansion Demo
 
-Track 2 introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in Track 1.
+This demo introduces a compact fixed-point neural-network accelerator while preserving the same `/IOTCONNECT` command interface used in the [Template Correlation Classifier](../track1-iotc-ml-classifier/) demo.
 
 > [!IMPORTANT]
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
 > complete that first and then return here.
 
-<img src="../media/videokit.png" alt="Microchip PolarFire SoC Video Kit" width="400" />
-
 ## 1. Introduction
 
-This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
+This is the first demo in the series to implement a true neural network in FPGA fabric. Rather than hand-crafted templates, it classifies using a trained fixed-point network: 256 input samples → 32 extracted features → a 12-node hidden layer (split into 6 positive and 6 negative channels) → scores for 6 classes, all computed in `int8`/`int32` integer arithmetic.
 
-Track 2 uses a fixed-point Tiny-NN style classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `32` features, builds a `12`-element hidden representation (`6` positive + `6` negative channels), then produces scores across `6` classes.
+Because the network is intentionally small and has no training step in the demo, the hardware speedup over software is modest — per-invocation setup overhead is comparable to the compute time itself. This makes it a focused example of the neural network acceleration pipeline without the added complexity of model training or batch processing.
 
-<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload workshop architecture flow" width="980" />
+<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
 ### Built-In Application Flows
 
 - **`classify`**: functional demonstration — select `sw` or `hw`, choose an input class (or `random`), run inference. Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-Track 2 often shows modest HW gains when workload size and batch are large enough to offset acceleration overhead.
+Scaling batch size is the most effective way to see hardware gain with this model — try progressively larger batch values in `bench` to observe where HW begins to pull ahead.
 
-## 2. Program FPGA with Track 2 Accelerator Image
+## 2. Program FPGA with Simple Neural Network Accelerator Image
 
-The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 2-specific FPGA image that includes the Tiny-NN accelerator in the FPGA fabric, which is required for `hw` mode inference.
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the Simple Neural Network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 2 FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (Download raw file).
+2. Download the Simple Neural Network Accelerator FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -38,21 +36,20 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](microchip-polarfire-ml-template.json). (Download raw file)
+2. Download and import the device template [here](microchip-polarfire-ml-template.json). (right-click and "save link as")
 3. Save.
 
 ### Switch Device to New Template
 
-> [!IMPORTANT]
-> Upgrading from the basic quickstart demo to this expansion demo requires a template change (to `Microchip Polarfire ML`)
-> for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the
-> device's template from `plitedemo` to `Microchip Polarfire ML`.
+Upgrading from the basic quickstart demo to this demo requires a template change (to `Microchip Polarfire ML`) for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the device's template from `plitedemo` to `Microchip Polarfire ML`.
+
+> [!TIP]
+> All three PolarFire SoC ML demos share the same device template (`Microchip Polarfire ML`), so if you have already set it for one demo you do not need to set it again.
 
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](mchp-simple-nn-dashboard.json). (Download raw file), 
-then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](mchp-simple-nn-dashboard.json) (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -60,24 +57,20 @@ then click **Import Dashboard** and upload the JSON file.
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/package.tar.gz
+wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/package.tar.gz
 ```
 
 ### Install and run
 
 ```bash
-rm -f package.tar.gz.*
-tar -xzf package.tar.gz --overwrite
-bash ./install.sh
-pkill -f app.py || true
-python3 app.py
+cd /opt/demo && rm -f package.tar.gz.* && tar -xzf package.tar.gz --overwrite && bash ./install.sh && (pkill -f app.py || true) && python3 app.py
 ```
 
 ## 5. Verify Data
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-track2-dashboard.jpg" alt="Track dashboard result" width="600" />
+<img src="../images/mchp-polarfire-track2-dashboard.jpg" alt="Simple Neural Network Accelerator dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -257,28 +250,27 @@ led stop
 Representative base waveforms:
 
 <p>
-  <img src="../images/track2-waveforms/track2_class0.svg" alt="Track 2 class 0 waveform" width="280" />
-  <img src="../images/track2-waveforms/track2_class1.svg" alt="Track 2 class 1 waveform" width="280" />
-  <img src="../images/track2-waveforms/track2_class2.svg" alt="Track 2 class 2 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class0.svg" alt="Simple Neural Network class 0 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class1.svg" alt="Simple Neural Network class 1 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class2.svg" alt="Simple Neural Network class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/track2-waveforms/track2_class3.svg" alt="Track 2 class 3 waveform" width="280" />
-  <img src="../images/track2-waveforms/track2_class4.svg" alt="Track 2 class 4 waveform" width="280" />
-  <img src="../images/track2-waveforms/track2_class5.svg" alt="Track 2 class 5 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class3.svg" alt="Simple Neural Network class 3 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class4.svg" alt="Simple Neural Network class 4 waveform" width="280" />
+  <img src="../images/track2-waveforms/track2_class5.svg" alt="Simple Neural Network class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization
 
-- `assets/fpga-job/`: prebuilt FlashPro job
+- `assets/fpga-job/`: prebuilt FlashPro job + reports
 - `src/`: runtime app, install script, and ELFs
   - `src/runtimes/tinyml_nn.no_accel.elf`
   - `src/runtimes/tinyml_nn.accel.elf`
-- Cross-track technical reference: `../tech-reference.md`
+- Technical reference: [tech-reference.md](../tech-reference.md)
 
 ## 9. Resources
 
-- Base platform quickstart: `../README.md`
-- Cross-track technical white paper: `../tech-reference.md`
-- `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
+- Base platform quickstart: [README.md](../README.md)
+- Technical white paper: [tech-reference.md](../tech-reference.md)
 - [Purchase the Microchip PolarFire SoC Video Kit](https://www.avnet.com/americas/product/microchip/mpfs250-video-kit/evolve-56820956/)

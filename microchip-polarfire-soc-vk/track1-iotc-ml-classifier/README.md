@@ -1,34 +1,33 @@
-# /IOTCONNECT ML Classifier Expansion Demo (Track 1)
+# /IOTCONNECT Template Correlation Classifier Expansion Demo
 
-Track 1 is the baseline workshop: deterministic template-correlation classifier for validating end-to-end cloud command/control and telemetry on PolarFire SoC.
+This is a deterministic template-correlation classifier demo for validating end-to-end cloud command/control and telemetry on the Microchip PolarFire SoC Video Kit.
+
+This is an add-on to the QuickStart which is a prerequisite: [Microchip PolarFire SoC Video Kit QuickStart](../README.md)
 
 > [!IMPORTANT]
-> If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
-> complete that first and then return here.
-
-<img src="../media/videokit.png" alt="Microchip PolarFire SoC Video Kit" width="400" />
+> You must complete the QuickStart guide, above, before proceeding.
 
 ## 1. Introduction
 
-This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
+Unlike the other expansion demos, this one does not use a neural network. Classification works by correlating each 256-sample input waveform against three hand-crafted reference templates using dot products — the class whose template scores highest wins. There are no learned weights, no hidden layers, and no training step.
 
-Track 1 uses a compact fixed-point template-matching classifier designed for clarity and reproducibility. Each inference starts from `256` time-domain samples and computes three class scores (`N_CLASSES=3`) by correlating the input against three waveform templates.
+The FPGA accelerator implements the correlation MAC engine in hardware. Because the algorithm is simple and fully deterministic, this demo is the easiest to reason about end-to-end, but classification quality is bounded by how well the hand-crafted templates represent the signal classes.
 
-<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload workshop architecture flow" width="980" />
+<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
 ### Built-In Application Flows
 
 - **`classify`**: functional demonstration — select `sw` or `hw`, choose an input class (or `random`), run inference. Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-For very small workloads, SW can be close to or faster than HW due to offload/setup overhead. This track intentionally demonstrates that baseline behavior.
+Because the correlation computation is so lightweight, SW and HW timings are close — this demo intentionally exposes that baseline overhead behavior before introducing larger models.
 
-## 2. Program FPGA with Track 1 Accelerator Image
+## 2. Program FPGA with Template Correlation Classifier Accelerator Image
 
-The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 1-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the template-correlation accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 1 FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (Download raw file).
+2. Download the Template Correlation Classifier FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -38,21 +37,20 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](microchip-polarfire-ml-template.json). (Download raw file)
+2. Download and import the device template [here](microchip-polarfire-ml-template.json).
 3. Save.
 
 ### Switch Device to New Template
 
-> [!IMPORTANT]
-> Upgrading from the basic quickstart demo to this expansion demo requires a template change (to `Microchip Polarfire ML`)
-> for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the
-> device's template from `plitedemo` to `Microchip Polarfire ML`.
+Upgrading from the basic quickstart demo to this demo requires a template change (to `Microchip Polarfire ML`) for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the device's template from `plitedemo` to `Microchip Polarfire ML`.
+
+> [!TIP]
+> All three PolarFire SoC ML demos share the same device template (`Microchip Polarfire ML`), so if you have already set it for one demo you do not need to set it again.
 
 ### Import Dashboard
 
-1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](mchp-classifier-dashboard.json). (Download raw file), 
-then click **Import Dashboard** and upload the JSON file.
+1. Download dashboard template [here](mchp-classifier-dashboard.json).
+2. Open /IOTCONNECT and go to **Dashboard** then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -60,24 +58,20 @@ then click **Import Dashboard** and upload the JSON file.
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track1-iotc-ml-classifier/package.tar.gz
+wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track1-iotc-ml-classifier/package.tar.gz
 ```
 
 ### Install and run
 
 ```bash
-rm -f package.tar.gz.*
-tar -xzf package.tar.gz --overwrite
-bash ./install.sh
-pkill -f app.py || true
-python3 app.py
+cd /opt/demo && rm -f package.tar.gz.* && tar -xzf package.tar.gz --overwrite && bash ./install.sh && (pkill -f app.py || true) && python3 app.py
 ```
 
 ## 5. Verify Data
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-track1-dashboard.jpg" alt="Track dashboard result" width="600" />
+<img src="../images/mchp-polarfire-track1-dashboard.jpg" alt="Template Correlation Classifier dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -163,7 +157,7 @@ Valid values:
 
 - `<mode>`: `sw` or `hw`
 - `<class_id>`: integer `0..5`
-- Track 1 waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
+- Template Correlation Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
 - `random` class: current runtime chooses from classes `0..2`
 - `<seed>`: integer or `random` (`random` generates `1..1000`)
 - `<n>` / `[batch]`: integer `1..10000` (default `1`)
@@ -192,7 +186,7 @@ Valid values:
 
 - `<mode>`: `sw`, `hw`, or `both`
 - `<class_id>`: integer `0..5`
-- Track 1 waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
+- Template Correlation Classifier waveform behavior: classes `0..2` are native; `3..5` map to class `2` behavior
 - `random` class: current runtime chooses from classes `0..2`
 - `<seed>`: integer or `random` (`random` generates `1..1000`)
 - `<batch>` / `<n>`: integer `1..10000`
@@ -252,33 +246,32 @@ led stop
 | `0` | triangle |
 | `1` | triangle mix (64 + 32 periods) |
 | `2` | burst + triangle |
-| `3..5` | accepted by parser, mapped to class `2` behavior in Track 1 runtime |
+| `3..5` | accepted by parser, mapped to class `2` behavior in Template Correlation Classifier runtime |
 
 Representative base waveforms:
 
 <p>
-  <img src="../images/track1-waveforms/track1_class0.svg" alt="Track 1 class 0 waveform" width="280" />
-  <img src="../images/track1-waveforms/track1_class1.svg" alt="Track 1 class 1 waveform" width="280" />
-  <img src="../images/track1-waveforms/track1_class2.svg" alt="Track 1 class 2 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class0.svg" alt="Template Correlation Classifier class 0 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class1.svg" alt="Template Correlation Classifier class 1 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class2.svg" alt="Template Correlation Classifier class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/track1-waveforms/track1_class3.svg" alt="Track 1 class 3 waveform" width="280" />
-  <img src="../images/track1-waveforms/track1_class4.svg" alt="Track 1 class 4 waveform" width="280" />
-  <img src="../images/track1-waveforms/track1_class5.svg" alt="Track 1 class 5 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class3.svg" alt="Template Correlation Classifier class 3 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class4.svg" alt="Template Correlation Classifier class 4 waveform" width="280" />
+  <img src="../images/track1-waveforms/track1_class5.svg" alt="Template Correlation Classifier class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization
 
-- `assets/fpga-job/`: prebuilt FlashPro job
+- `assets/fpga-job/`: prebuilt FlashPro `.job` and implementation reports
 - `src/`: runtime Python app, installer, and runtime ELFs
   - `src/runtimes/invert_and_threshold.no_accel.elf`
   - `src/runtimes/invert_and_threshold.accel.elf`
-- Cross-track technical reference: `../tech-reference.md`
+- Technical reference: [tech-reference.md](../tech-reference.md)
 
 ## 9. Resources
 
-- Base platform quickstart: `../README.md`
-- Cross-track technical white paper: `../tech-reference.md`
-- `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
+- Base platform quickstart: [README.md](../README.md)
+- Technical white paper: [tech-reference.md](../tech-reference.md)
 - [Purchase the Microchip PolarFire SoC Video Kit](https://www.avnet.com/americas/product/microchip/mpfs250-video-kit/evolve-56820956/)

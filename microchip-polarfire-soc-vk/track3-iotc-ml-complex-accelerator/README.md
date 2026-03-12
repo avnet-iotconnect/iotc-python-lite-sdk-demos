@@ -1,36 +1,32 @@
-# /IOTCONNECT Complex-NN Accelerator Expansion Demo (Track 3)
+# /IOTCONNECT Complex Neural Network Accelerator Expansion Demo
 
-Track 3 targets stronger HW acceleration gains by combining a larger model with batched execution.
+This demo targets stronger HW acceleration gains by combining a larger model with batched execution.
 
 > [!IMPORTANT]
 > If you have not yet followed the [/IOTCONNECT quickstart guide for this board](../README.md),
 > complete that first and then return here.
 
-<img src="../media/videokit.png" alt="Microchip PolarFire SoC Video Kit" width="400" />
-
 ## 1. Introduction
 
-This demo uses the PolarFire SoC hybrid architecture (RISC-V MPU + FPGA fabric) to demonstrate neural-network acceleration by offloading inference from MPU software into FPGA logic.
+This is the deepest model in the series and the one where hardware acceleration shows the clearest advantage. It uses two hidden layers (256 samples → 64 features → 96 nodes → 48 nodes → 6 classes) with `11,040` trained weights (`~11.1 KiB`), and includes an explicit offline training step — `tools/train_and_export_complex.py` generates the integer weight file compiled into the FPGA image.
 
-Track 3 uses a fixed-point multi-layer classifier (`int8` weights with `int16/int32` accumulation). Each inference starts from `256` time-domain samples, extracts `64` features, then runs through two hidden layers (`96`, then `48`) before producing scores for `6` classes. The parameter set includes `W1[96x64]`, `W2[48x96]`, `W3[6x48]` (`11,040` weights) and biases, for an approximate model-parameter footprint of `11.1 KiB`.
+The FPGA interface is also batch-aware: a single accelerator invocation processes up to `1024` samples using DMA transfers, amortizing the per-call setup cost across the batch. This is what makes the hardware throughput advantage measurable and consistent at moderate batch sizes, unlike the simpler demos where overhead dominates.
 
-The runtime supports up to `1024` inferences per request with DMA-safe buffer allocation.
-
-<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload workshop architecture flow" width="980" />
+<img src="../images/intro-offload-flow.svg" alt="PolarFire SoC offload architecture flow" width="980" />
 
 ### Built-In Application Flows
 
 - **`classify`**: functional demonstration — select `sw` or `hw`, classify one of six waveform classes (`0..5`, or `random`). Telemetry focuses on prediction behavior (`pred`, `scores_csv`, timing, batch stats).
 - **`bench`**: performance demonstration — runs SW, HW, or both and publishes benchmark telemetry (`sw_avg_time_s`, `hw_avg_time_s`, `speedup_sw_over_hw`).
 
-Track 3 is where HW advantage is usually most visible. For moderate/large batch, `hw_avg_time_s` should improve relative to `sw_avg_time_s` more clearly than Track 1/2.
+The Complex Neural Network Accelerator is where HW advantage is usually most visible. For moderate/large batch, `hw_avg_time_s` should improve relative to `sw_avg_time_s` more clearly than the other demos.
 
-## 2. Program FPGA with Track 3 Accelerator Image
+## 2. Program FPGA with Complex Neural Network Accelerator Image
 
-The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a Track 3-specific FPGA image that includes the complex-NN accelerator in the FPGA fabric, which is required for `hw` mode inference.
+The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the complex neural network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Track 3 FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (Download raw file).
+2. Download the Complex Neural Network Accelerator FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -40,21 +36,20 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](microchip-polarfire-ml-template.json). (Download raw file)
+2. Download and import the device template [here](microchip-polarfire-ml-template.json). (right-click and "save link as")
 3. Save.
 
 ### Switch Device to New Template
 
-> [!IMPORTANT]
-> Upgrading from the basic quickstart demo to this expansion demo requires a template change (to `Microchip Polarfire ML`)
-> for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the
-> device's template from `plitedemo` to `Microchip Polarfire ML`.
+Upgrading from the basic quickstart demo to this demo requires a template change (to `Microchip Polarfire ML`) for the device in /IOTCONNECT. Navigate to your device's page in the online /IOTCONNECT platform and change the device's template from `plitedemo` to `Microchip Polarfire ML`.
+
+> [!TIP]
+> All three PolarFire SoC ML demos share the same device template (`Microchip Polarfire ML`), so if you have already set it for one demo you do not need to set it again.
 
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](mchp-complex-nn-dashboard.json). (Download raw file), 
-then click **Import Dashboard** and upload the JSON file.
+2. Download dashboard template [here](mchp-complex-nn-dashboard.json) (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -62,24 +57,20 @@ then click **Import Dashboard** and upload the JSON file.
 ### Download package on board
 
 ```bash
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/package.tar.gz
+wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/package.tar.gz
 ```
 
 ### Install and run
 
 ```bash
-rm -f package.tar.gz.*
-tar -xzf package.tar.gz --overwrite
-bash ./install.sh
-pkill -f app.py || true
-python3 app.py
+cd /opt/demo && rm -f package.tar.gz.* && tar -xzf package.tar.gz --overwrite && bash ./install.sh && (pkill -f app.py || true) && python3 app.py
 ```
 
 ## 5. Verify Data
 
 Expected dashboard end state:
 
-<img src="../images/mchp-polarfire-track3-dashboard.jpg" alt="Track dashboard result" width="600" />
+<img src="../images/mchp-polarfire-track3-dashboard.jpg" alt="Complex Neural Network Accelerator dashboard result" width="600" />
 
 ### What You Are Seeing
 
@@ -218,10 +209,10 @@ status include_leds=<true|false>
 
 #### `load`
 
-Description: start/stop/query synthetic CPU load workers (built-in Python multiprocessing backend).
+Description: start/stop/query synthetic CPU load workers.
 
 ```text
-load <start|stop|status|off> [workers] [duty_pct]
+load <start|stop|status> [workers] [duty_pct]
 ```
 
 Examples:
@@ -230,7 +221,6 @@ Examples:
 load start 2 60
 load status
 load stop
-load off
 ```
 
 #### `led`
@@ -260,28 +250,27 @@ led stop
 Representative base waveforms:
 
 <p>
-  <img src="../images/track3-waveforms/track3_class0.svg" alt="Track 3 class 0 waveform" width="280" />
-  <img src="../images/track3-waveforms/track3_class1.svg" alt="Track 3 class 1 waveform" width="280" />
-  <img src="../images/track3-waveforms/track3_class2.svg" alt="Track 3 class 2 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class0.svg" alt="Complex Neural Network class 0 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class1.svg" alt="Complex Neural Network class 1 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class2.svg" alt="Complex Neural Network class 2 waveform" width="280" />
 </p>
 
 <p>
-  <img src="../images/track3-waveforms/track3_class3.svg" alt="Track 3 class 3 waveform" width="280" />
-  <img src="../images/track3-waveforms/track3_class4.svg" alt="Track 3 class 4 waveform" width="280" />
-  <img src="../images/track3-waveforms/track3_class5.svg" alt="Track 3 class 5 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class3.svg" alt="Complex Neural Network class 3 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class4.svg" alt="Complex Neural Network class 4 waveform" width="280" />
+  <img src="../images/track3-waveforms/track3_class5.svg" alt="Complex Neural Network class 5 waveform" width="280" />
 </p>
 
 ## 8. Project Organization
 
-- `assets/fpga-job/`: prebuilt FlashPro job
+- `assets/fpga-job/`: prebuilt FlashPro job + timing/resource reports
 - `src/`: runtime app and ELFs
   - `src/runtimes/tinyml_complex.no_accel.elf`
   - `src/runtimes/tinyml_complex.accel.elf`
-- Cross-track technical reference: `../tech-reference.md`
+- Technical reference: [tech-reference.md](../tech-reference.md)
 
 ## 9. Resources
 
-- Base platform quickstart: `../README.md`
-- Cross-track technical white paper: `../tech-reference.md`
-- `/IOTCONNECT` onboarding UI guide: `../../common/general-guides/UI-ONBOARD.md`
+- Base platform quickstart: [README.md](../README.md)
+- Technical white paper: [tech-reference.md](../tech-reference.md)
 - [Purchase the Microchip PolarFire SoC Video Kit](https://www.avnet.com/americas/product/microchip/mpfs250-video-kit/evolve-56820956/)
