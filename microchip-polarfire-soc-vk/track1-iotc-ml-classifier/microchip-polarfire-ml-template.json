@@ -1,0 +1,598 @@
+{
+    "code": "polarML",
+    "name": "Microchip Polarfire ML",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "event",
+            "displayName": "Event",
+            "type": "STRING",
+            "description": "Telemetry event name emitted by app.py (heartbeat, device_status, ml_classify, ml_bench, led_state, load_state, job_state).",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "status",
+            "displayName": "Status",
+            "type": "STRING",
+            "description": "Event status value such as ok, error, busy, started, or done.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "error",
+            "displayName": "Error",
+            "type": "STRING",
+            "description": "Error details when a command or job fails.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IoTConnect Lite SDK version running on the device application.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "mode",
+            "displayName": "Benchmark Mode",
+            "type": "STRING",
+            "description": "Benchmark request mode (sw, hw, or both).",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "input_class",
+            "displayName": "Input Class",
+            "type": "INTEGER",
+            "description": "Input waveform class requested for inference, in range 0..5.",
+            "unit": "class_id",
+            "attributeColor": "#1E88E5",
+            "aggregateTypes": []
+        },
+        {
+            "name": "pred",
+            "displayName": "Prediction",
+            "type": "INTEGER",
+            "description": "Predicted output class for the latest inference, in range 0..5.",
+            "unit": "class_id",
+            "attributeColor": "#1E88E5",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sw_pred",
+            "displayName": "SW Prediction",
+            "type": "INTEGER",
+            "description": "Predicted class from software-only inference path.",
+            "unit": "class_id",
+            "attributeColor": "#1E88E5",
+            "aggregateTypes": []
+        },
+        {
+            "name": "hw_pred",
+            "displayName": "HW Prediction",
+            "type": "INTEGER",
+            "description": "Predicted class from hardware-accelerated inference path.",
+            "unit": "class_id",
+            "attributeColor": "#1E88E5",
+            "aggregateTypes": []
+        },
+        {
+            "name": "seed",
+            "displayName": "Seed",
+            "type": "INTEGER",
+            "description": "Pseudo-random seed used for deterministic waveform/noise generation.",
+            "unit": "seed",
+            "attributeColor": "#6D4C41",
+            "aggregateTypes": []
+        },
+        {
+            "name": "batch_n",
+            "displayName": "Batch Count",
+            "type": "INTEGER",
+            "description": "Number of inference samples processed in the command run.",
+            "unit": "count",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "pred_mode_count",
+            "displayName": "Mode Prediction Count",
+            "type": "INTEGER",
+            "description": "Count of times the mode class prediction occurred across a batch run.",
+            "unit": "count",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "match_count",
+            "displayName": "Match Count",
+            "type": "INTEGER",
+            "description": "Number of predictions equal to requested input class across the batch.",
+            "unit": "count",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "match_rate",
+            "displayName": "Match Rate",
+            "type": "DECIMAL",
+            "description": "Fraction of predictions matching the requested class (0.0 to 1.0).",
+            "unit": "ratio",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sw_match_rate",
+            "displayName": "SW Match Rate",
+            "type": "DECIMAL",
+            "description": "Software-path batch match ratio for requested class (0.0 to 1.0).",
+            "unit": "ratio",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "hw_match_rate",
+            "displayName": "HW Match Rate",
+            "type": "DECIMAL",
+            "description": "Hardware-path batch match ratio for requested class (0.0 to 1.0).",
+            "unit": "ratio",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "scores_csv",
+            "displayName": "Scores CSV",
+            "type": "STRING",
+            "description": "Comma-separated list of per-class integer scores.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score0",
+            "displayName": "Score 0",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 0.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score1",
+            "displayName": "Score 1",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 1.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score2",
+            "displayName": "Score 2",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 2.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score3",
+            "displayName": "Score 3",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 3.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score4",
+            "displayName": "Score 4",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 4.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "score5",
+            "displayName": "Score 5",
+            "type": "INTEGER",
+            "description": "Raw classification score for class 5.",
+            "unit": "score",
+            "attributeColor": "#3949AB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "time_s",
+            "displayName": "Inference Time",
+            "type": "DECIMAL",
+            "description": "Single inference execution time.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "avg_time_s",
+            "displayName": "Average Time",
+            "type": "DECIMAL",
+            "description": "Average inference time over the batch run.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "total_time_s",
+            "displayName": "Total Time",
+            "type": "DECIMAL",
+            "description": "Total execution time for all inferences in the batch run.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sw_avg_time_s",
+            "displayName": "SW Average Time",
+            "type": "DECIMAL",
+            "description": "Average execution time in software-only mode.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sw_total_time_s",
+            "displayName": "SW Total Time",
+            "type": "DECIMAL",
+            "description": "Total execution time in software-only mode.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "hw_avg_time_s",
+            "displayName": "HW Average Time",
+            "type": "DECIMAL",
+            "description": "Average execution time in hardware-accelerated mode.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "hw_total_time_s",
+            "displayName": "HW Total Time",
+            "type": "DECIMAL",
+            "description": "Total execution time in hardware-accelerated mode.",
+            "unit": "s",
+            "attributeColor": "#00897B",
+            "aggregateTypes": []
+        },
+        {
+            "name": "speedup_sw_over_hw",
+            "displayName": "SW over HW Speedup",
+            "type": "DECIMAL",
+            "description": "Speedup ratio computed as sw_avg_time_s divided by hw_avg_time_s.",
+            "unit": "x",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "speedup_hw_over_sw",
+            "displayName": "HW over SW Speedup",
+            "type": "DECIMAL",
+            "description": "Speedup ratio computed as hw_avg_time_s divided by sw_avg_time_s.",
+            "unit": "x",
+            "attributeColor": "#43A047",
+            "aggregateTypes": []
+        },
+        {
+            "name": "uptime_s",
+            "displayName": "Uptime",
+            "type": "DECIMAL",
+            "description": "Device Linux uptime in seconds.",
+            "unit": "s",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_1m",
+            "displayName": "Load 1m",
+            "type": "DECIMAL",
+            "description": "Linux system load average for the last 1 minute.",
+            "unit": "load",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_5m",
+            "displayName": "Load 5m",
+            "type": "DECIMAL",
+            "description": "Linux system load average for the last 5 minutes.",
+            "unit": "load",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_15m",
+            "displayName": "Load 15m",
+            "type": "DECIMAL",
+            "description": "Linux system load average for the last 15 minutes.",
+            "unit": "load",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_usage_pct",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "CPU utilization percentage sampled from /proc/stat.",
+            "unit": "%",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "mem_total_kb",
+            "displayName": "Memory Total",
+            "type": "INTEGER",
+            "description": "Total system memory reported by Linux.",
+            "unit": "kB",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "mem_available_kb",
+            "displayName": "Memory Available",
+            "type": "INTEGER",
+            "description": "Available memory for new workloads.",
+            "unit": "kB",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "mem_free_kb",
+            "displayName": "Memory Free",
+            "type": "INTEGER",
+            "description": "Current free memory reported by Linux.",
+            "unit": "kB",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "disk_total_mb",
+            "displayName": "Disk Total",
+            "type": "DECIMAL",
+            "description": "Total root filesystem capacity.",
+            "unit": "MB",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "disk_free_mb",
+            "displayName": "Disk Free",
+            "type": "DECIMAL",
+            "description": "Free root filesystem capacity.",
+            "unit": "MB",
+            "attributeColor": "#546E7A",
+            "aggregateTypes": []
+        },
+        {
+            "name": "thermal_zone_count",
+            "displayName": "Thermal Zones",
+            "type": "INTEGER",
+            "description": "Number of thermal zones detected in Linux sysfs.",
+            "unit": "count",
+            "attributeColor": "#E53935",
+            "aggregateTypes": []
+        },
+        {
+            "name": "temp_max_c",
+            "displayName": "Max Temperature",
+            "type": "DECIMAL",
+            "description": "Hottest thermal zone temperature.",
+            "unit": "C",
+            "attributeColor": "#E53935",
+            "aggregateTypes": []
+        },
+        {
+            "name": "temp_max_zone",
+            "displayName": "Max Temp Zone",
+            "type": "STRING",
+            "description": "Name/type of the hottest thermal zone.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "random",
+            "displayName": "Heartbeat Random",
+            "type": "INTEGER",
+            "description": "Heartbeat random value (0..100) used for liveness visibility.",
+            "unit": "count",
+            "attributeColor": "#6D4C41",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_active",
+            "displayName": "Load Active",
+            "type": "BOOLEAN",
+            "description": "True when synthetic CPU load workers are currently running.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_workers",
+            "displayName": "Load Workers",
+            "type": "INTEGER",
+            "description": "Number of active load-generator worker threads.",
+            "unit": "count",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "load_duty_pct",
+            "displayName": "Load Duty",
+            "type": "INTEGER",
+            "description": "Configured busy duty cycle for load workers.",
+            "unit": "%",
+            "attributeColor": "#FB8C00",
+            "aggregateTypes": []
+        },
+        {
+            "name": "led_count",
+            "displayName": "LED Count",
+            "type": "INTEGER",
+            "description": "Number of visible LEDs exposed to the application.",
+            "unit": "count",
+            "attributeColor": "#FDD835",
+            "aggregateTypes": []
+        },
+        {
+            "name": "leds",
+            "displayName": "LED Bitstring",
+            "type": "STRING",
+            "description": "8-bit LED state string where 1 is on and 0 is off.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "action",
+            "displayName": "Action",
+            "type": "STRING",
+            "description": "Action taken for led/load command telemetry.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "requested",
+            "displayName": "Requested Value",
+            "type": "STRING",
+            "description": "Requested value passed for setbits LED operations.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "target",
+            "displayName": "Target",
+            "type": "STRING",
+            "description": "Target LED name or command target value.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "pattern",
+            "displayName": "Pattern",
+            "type": "STRING",
+            "description": "LED pattern name (blink, chase, alternate).",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cycles",
+            "displayName": "Pattern Cycles",
+            "type": "INTEGER",
+            "description": "Number of cycles requested for the LED pattern worker.",
+            "unit": "count",
+            "attributeColor": "#FDD835",
+            "aggregateTypes": []
+        },
+        {
+            "name": "interval_ms",
+            "displayName": "Pattern Interval",
+            "type": "INTEGER",
+            "description": "LED pattern step interval in milliseconds.",
+            "unit": "ms",
+            "attributeColor": "#FDD835",
+            "aggregateTypes": []
+        },
+        {
+            "name": "level",
+            "displayName": "Pattern Level",
+            "type": "INTEGER",
+            "description": "Optional LED brightness level used by the pattern worker.",
+            "unit": "brightness",
+            "attributeColor": "#FDD835",
+            "aggregateTypes": []
+        },
+        {
+            "name": "active_job",
+            "displayName": "Active Job",
+            "type": "STRING",
+            "description": "Current busy asynchronous job name when a new request is rejected.",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "job",
+            "displayName": "Job",
+            "type": "STRING",
+            "description": "Asynchronous job identifier for job_state telemetry.",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "classify",
+            "command": "classify",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "bench",
+            "command": "bench",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "status",
+            "command": "status",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "led",
+            "command": "led",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "leds",
+            "command": "leds",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "load",
+            "command": "load",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4EZ9V",
+    "capability": "0",
+    "enableCSR": "false",
+    "c2dOnDemand": 0,
+    "properties": {
+        "description": null,
+        "dataFrequency": "5",
+        "fileSupport": false,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

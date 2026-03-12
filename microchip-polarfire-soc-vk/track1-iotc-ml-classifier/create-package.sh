@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+
+SRC_DIR="./src"
+ARCHIVE_NAME="package.tar.gz"
+
+tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
+cp "$ARCHIVE_NAME" ../../common/
+echo "Created $ARCHIVE_NAME (also copied to ../../common/)"
