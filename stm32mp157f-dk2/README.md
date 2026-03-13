@@ -31,8 +31,7 @@ replicated in other environments.
 
 ## Hardware
 
-*
-STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
+* STM32MP157F-DK2 [Purchase](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-kit-arm-cortex-a7-cortex/dp/14AJ2731) | [User Manual & Kit Contents](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP1_boards/STM32MP157x-DK2%20) | [All Resources](https://www.st.com/en/evaluation-tools/stm32mp157f-dk2.html#documentation)
 * 1 USB Type-C Cable (second USB-C cable required for flashing)
 * 1 Micro-USB Cable
 * Ethernet Cable **or** WiFi Network SSID and Password
@@ -103,6 +102,12 @@ mkdir -p /opt/demo && cd /opt/demo
 > the terminal.
 
 # 5. Onboard Device
+
+> [!IMPORTANT]
+> If users plan to deploy the KVS PutMedia demo, the device needs to be created in /IOTCONNECT with 
+> the `plitekvs` template (available [here](kvs-putmedia/plitekvs-template.json)), and then the Stream Type should 
+> be "USB Based". The AWS backend will not register the device for KVS if it is created with the `plitedemo` template and 
+> then later switched to `plitekvs`, it needs to be set at device creation.
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
