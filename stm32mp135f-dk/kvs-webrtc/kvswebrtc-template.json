@@ -1,6 +1,6 @@
 {
-    "code": "plitekvs",
-    "name": "plitekvs",
+    "code": "kvswebrtc",
+    "name": "kvswebrtc",
     "authType": 2,
     "attributes": [
         {
@@ -67,7 +67,7 @@
         }
     ],
     "messageVersion": "2.1",
-    "msgCode": "XG4E1RN",
+    "msgCode": "PLWEBRTC",
     "capability": "0",
     "enableCSR": "false",
     "c2dOnDemand": 0,
@@ -75,7 +75,7 @@
         "description": null,
         "dataFrequency": "5",
         "fileSupport": true,
-        "supportVideoStream": 2,
+        "supportVideoStream": 1,
         "autoStartVideoStream": true,
         "certRenewalDay": 0,
         "enableCSR": false

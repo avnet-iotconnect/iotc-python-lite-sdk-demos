@@ -17,7 +17,7 @@ This demo streams live video from a USB camera through the Jetson Orin to AWS Ki
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app auto-detects the first available video device.
 
 > [!IMPORTANT]
-> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). If your device was created in /IOTCONNECT with the `plitedemo` template, change it to `plitekvs` now via the edit icon next to the **Template** field on your device's page. If it was originally onboarded with `plitedemo`, the AWS backend may not register it for KVS — in that case, create a new device using the `plitekvs` template.
+> This demo requires the `kvsputmedia` template (available [here](kvsputmedia-template.json)). If your device was created in /IOTCONNECT with the `plitedemo` template, change it to `kvsputmedia` now via the edit icon next to the **Template** field on your device's page. If it was originally onboarded with `plitedemo`, the AWS backend may not register it for KVS — in that case, create a new device using the `kvsputmedia` template.
 
 ## 3. Deploy and Run
 
@@ -100,7 +100,7 @@ To modify the demo files before deploying:
 
    **Option B — OTA via /IOTCONNECT platform:**
    1. In the **Device** page, select **Firmware** on the bottom toolbar.
-   2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `plitekvs` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
+   2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `kvsputmedia` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
    3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
    4. Click the publish icon (black square with arrow) under **Actions**.
    5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.
