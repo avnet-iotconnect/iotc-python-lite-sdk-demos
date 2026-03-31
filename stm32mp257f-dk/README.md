@@ -41,9 +41,9 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 
 > [!NOTE]
-> STM32MP257F-DK must be running a Scarthgap (the newest) image release for the X-LINUX-AI expansion demo. For
-> instructions on flashing this image to the board, refer to the "Populate the target and boot the
-> image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image)
+> The demos for this device have been tested with the Scarthgap version 6.0.0 Yocto image release from ST. Older or newer 
+> versions may have significant incompatibilities, so it is recommended to use the 6.0.0 release. 
+> Download that image by clicking [here](https://downloads.iotconnect.io/images/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip)
 
 # 3. Hardware Setup
 
@@ -64,23 +64,31 @@ Using the above image as reference, make the following connections:
 
 # 4. Device Setup
 
-1. Open a serial terminal emulator program such as TeraTerm.
-2. Ensure that your serial settings in your terminal emulator are set to:
+1. Flash the downloaded v6.0.0 Scarthgap image to the device, referring to the "Populate the target and boot the image" 
+[page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image) 
+for guidance.
+
+> [!NOTE]
+> It is recommended to use [the provided version of the image](https://downloads.iotconnect.io/images/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip) 
+> and not download the newest version from ST as these demos have not been tested on newer releases and may have incompatibilities.
+
+2. Open a serial terminal emulator program such as TeraTerm.
+3. Ensure that your serial settings in your terminal emulator are set to:
 
 - Baud Rate: 115200
 - Data Bits: 8
 - Stop Bits: 1
 - Parity: None
 
-3. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to
+4. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to
    connect to your board via the terminal emulator
 
 > [!NOTE]
 > A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key
 > to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
-4. If prompted for a login, type `root` followed by the ENTER key.
-5. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
+5. If prompted for a login, type `root` followed by the ENTER key.
+6. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
 su
@@ -90,7 +98,7 @@ su
 apt-get update && apt-get install python3-pip -y && python3 -m pip install iotconnect-sdk-lite requests
 ```
 
-6. Run this command to create and move into a directory for your demo files:
+7. Run this command to create and move into a directory for your demo files:
 
 ```
 mkdir -p /opt/demo && cd /opt/demo
@@ -136,8 +144,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 # 7. Troubleshooting
 
 To return the board to an out-of-box state, you can flash a fresh image onto the SD card. For instructions on this
-process, refer to the "Populate the target and boot the
-image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
+process, refer to the "Populate the target and boot the image" [page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP257x-DK/Let%27s_start/Populate_the_target_and_boot_the_image).
 
 # 8. Resources
 * Explore connecting the STM32MP257F-DK through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-dk/)

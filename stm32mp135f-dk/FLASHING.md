@@ -7,8 +7,7 @@ and then flash the image to the board.
 
 # Guide
 
-* Download the zipped image folder containing the latest STM32MP1 image from
-  the [STM32MP1 OpenSTLinux Starter Package page](https://www.st.com/en/embedded-software/stm32mp1starter.html).
+* To download the zipped image folder, [click here](https://downloads.iotconnect.io/images/stm32mp1-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip).
 
 > [!NOTE]
 > You may have to create an ST account (it's free) to get access to software downloads.

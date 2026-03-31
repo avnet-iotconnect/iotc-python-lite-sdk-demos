@@ -7,8 +7,7 @@ and then flash the image to the board.
 
 # Guide
 
-* Download the zipped image folder containing the latest STM32MP2 image from
-  the [STM32MP2 OpenSTLinux Starter Package page](https://www.st.com/en/embedded-software/stm32mp2starter.html).
+* To download the zipped image folder, [click here](https://downloads.iotconnect.io/images/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip).
 
 > [!NOTE]
 > You may have to create an ST account (it's free) to get access to software downloads.
@@ -17,7 +16,7 @@ and then flash the image to the board.
 * Download and Install the [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) software (
   the utility for flashing the image to the device).
 * Set up the STM32MP257F-EV1 board for flashing:
-    * Set all 4 of the the dip-switches to "OPEN" for flashing
+    * Set all 4 of the dip-switches to "OPEN" for flashing
 
        <img src="media/switches-flash.png"/>
 

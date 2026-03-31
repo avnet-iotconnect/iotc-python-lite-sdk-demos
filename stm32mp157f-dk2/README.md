@@ -42,9 +42,9 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 
 > [!NOTE]
-> STM32MP157F-DK2 must be running a Scarthgap (or newer) image release for the X-LINUX-AI expansion demo. The BLE demos
-> utilize a pre-compiled .whl file that specifically requires Python 3.12, which is the version found in Scarthgap images.
-> Follow [this flashing guide](FLASHING.md) to download and flash an image to your board.
+> The demos for this device have been tested with the Scarthgap version 6.0 Yocto image release from ST. Older or newer 
+> versions may have significant incompatibilities, so it is recommended to use the 6.0 release.
+> Follow [this flashing guide](FLASHING.md) to download and flash this image to your board.
 
 # 3. Hardware Setup
 

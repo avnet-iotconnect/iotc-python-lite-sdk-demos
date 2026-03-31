@@ -41,8 +41,9 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 
 > [!NOTE]
-> STM32MP257F-EV1 must be running a Scarthgap (the newest) image release for the X-LINUX-AI expansion demo.
-> Follow [this flashing guide](FLASHING.md) to download and flash the most up-to-date image to your board.
+> The demos for this device have been tested with the Scarthgap version 6.0.0 Yocto image release from ST. Older or newer 
+> versions may have significant incompatibilities, so it is recommended to use the 6.0.0 release.
+> Follow [this flashing guide](FLASHING.md) to download and flash this image to your board.
 
 # 3. Hardware Setup
 
@@ -56,28 +57,29 @@ Using the above image as reference, make the following connections:
 
 1. (OPTIONAL) Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#1**. If you
    instead wish to use Wi-Fi, after booting your board refer to the [WIFI](WIFI.md) guide.
-2. Connect the USB-C cable from a your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2
+2. Connect the USB-C cable from your host machine to the "USB_PWR STLINK" USB-C connector on the board, labeled **#2
    **.
 
 # 4. Device Setup
 
-1. Open a serial terminal emulator program such as TeraTerm.
-2. Ensure that your serial settings in your terminal emulator are set to:
+1. Flash the compatible OpenSTLinux Yocto image from ST to the device, following the [flashing guide](FLASHING.md).
+2. Open a serial terminal emulator program such as TeraTerm.
+3. Ensure that your serial settings in your terminal emulator are set to:
 
 - Baud Rate: 115200
 - Data Bits: 8
 - Stop Bits: 1
 - Parity: None
 
-3. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to
+4. Noting the COM port value for "STMicroelectronics STLink Virtual COM Port" in the Device Manager list, attempt to
    connect to your board via the terminal emulator
 
 > [!NOTE]
 > A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key
 > to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
 
-4. If prompted for a login, type `root` followed by the ENTER key.
-5. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
+5. If prompted for a login, type `root` followed by the ENTER key.
+6. Run these commands to update the core board packages and install necessary /IOTCONNECT packages:
 
 ```
 su
@@ -95,7 +97,7 @@ apt-get install python3-pip -y
 python3 -m pip install iotconnect-sdk-lite requests
 ```
 
-6. Run this command to create and move into a directory for your demo files:
+7. Run this command to create and move into a directory for your demo files:
 
 ```
 mkdir -p /opt/demo && cd /opt/demo

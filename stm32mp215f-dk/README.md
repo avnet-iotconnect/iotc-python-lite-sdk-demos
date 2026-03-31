@@ -50,8 +50,9 @@ replicated in other environments.
   or [PuTTY](https://www.putty.org/)
 
 > [!NOTE]
-> Before using this board, a Yocto Linux image must be flashed to the microSD card. See
-> [step 1 of Device Setup](#5-device-setup) for instructions on populating the SD card using STM32CubeProgrammer.
+> The demos for this device have been tested with the Scarthgap version 6.0.0 Yocto image release from ST. Older or newer 
+> versions may have significant incompatibilities, so it is recommended to use the 6.0.0 release. 
+> Download that image by clicking [here](https://downloads.iotconnect.io/images/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip)
 
 # 3. Hardware Setup
 
@@ -76,10 +77,13 @@ Using the above image as reference, make the following connections:
 
 # 4. Device Setup
 
-1. **Image Flashing**: Before continuing, the STM32MP215F-DK requires a Yocto Linux image to be flashed to the
-   microSD card using the STM32CubeProgrammer software. Ensure you are using the latest release of STM32CubeProgrammer.
-   Follow [ST's guide on populating the target and booting the image](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP215x-DK/Let%27s_start/Populate_the_target_and_boot_the_image)
-   before continuing with the steps below.
+1. Flash the downloaded v6.0.0 Scarthgap image to the device, referring to the "Populate the target and boot the image" 
+[page on the STM32MP257x-DK section of ST's wiki](https://wiki.st.com/stm32mpu/wiki/Getting_started/STM32MP2_boards/STM32MP215x-DK/Let%27s_start/Populate_the_target_and_boot_the_image) 
+for guidance.
+
+> [!NOTE]
+> It is recommended to use [the provided version of the image](https://downloads.iotconnect.io/images/stm32mp2-openstlinux-6.6-yocto-scarthgap-mpu-v24.11.06.zip) 
+> and not download the newest version from ST as these demos have not been tested on newer releases and may have incompatibilities.
 
 2. Open a serial terminal emulator program such as TeraTerm.
 3. Ensure that your serial settings in your terminal emulator are set to:
