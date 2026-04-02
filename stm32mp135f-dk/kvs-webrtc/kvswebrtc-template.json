@@ -9,6 +9,7 @@
             "type": "INTEGER",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -17,6 +18,7 @@
             "type": "BOOLEAN",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -25,6 +27,7 @@
             "type": "STRING",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -33,6 +36,7 @@
             "type": "STRING",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         }
     ],
@@ -52,22 +56,22 @@
             "isOTACommand": false
         },
         {
-            "name": "aws-qualification-start",
-            "command": "aws-qualification-start",
+            "name": "dummynoack",
+            "command": "dummynoack",
             "requiredParam": false,
             "requiredAck": false,
             "isOTACommand": false
         },
         {
-            "name": "dummynoack",
-            "command": "dummynoack",
+            "name": "aws-qualification-start",
+            "command": "aws-qualification-start",
             "requiredParam": false,
             "requiredAck": false,
             "isOTACommand": false
         }
     ],
     "messageVersion": "2.1",
-    "msgCode": "PLWEBRTC",
+    "msgCode": "XG4E7L6",
     "capability": "0",
     "enableCSR": "false",
     "c2dOnDemand": 0,
@@ -75,8 +79,9 @@
         "description": null,
         "dataFrequency": "5",
         "fileSupport": true,
-        "supportVideoStream": 1,
-        "autoStartVideoStream": true,
+        "videoStreamResource": "2",
+        "videoStreamType": "2",
+        "autoStartVideoStream": false,
         "certRenewalDay": 0,
         "enableCSR": false
     },
