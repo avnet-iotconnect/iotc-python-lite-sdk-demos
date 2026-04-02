@@ -1,6 +1,6 @@
 {
-    "code": "kvswebrtc",
-    "name": "kvswebrtc",
+    "code": "webrtc",
+    "name": "webrtc",
     "authType": 2,
     "attributes": [
         {
