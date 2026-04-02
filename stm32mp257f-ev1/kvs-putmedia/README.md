@@ -17,7 +17,7 @@ This demo streams live video from a USB camera through the STM32MP257F-EV1 to AW
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if onboard camera interfaces are also present.
 
 > [!IMPORTANT]
-> This demo requires the `kvsputmedia` template (available [here](kvsputmedia-template.json)). The device **must be created in /IOTCONNECT with the `kvsputmedia` template** — the AWS backend will not register a device for KVS if it was originally created with the `plitedemo` template and later switched. If your device was created with `plitedemo`, create a new device using `kvsputmedia`.
+> This demo requires the `putmedia` template (available [here](putmedia-template.json)). The device **must be created in /IOTCONNECT with the `putmedia` template** — the AWS backend will not register a device for KVS if it was originally created with the `plitedemo` template and later switched. If your device was created with `plitedemo`, create a new device using `putmedia`.
 
 ## 3. Deploy and Run
 
@@ -106,7 +106,7 @@ cd /opt/demo && tar -xzf package.tar.gz --overwrite && bash ./install.sh
 
 **Option B — OTA via /IOTCONNECT platform:**
 1. In the **Device** page, select **Firmware** on the bottom toolbar.
-2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `kvsputmedia` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
+2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `putmedia` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
 3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
 4. Click the publish icon (black square with arrow) under **Actions**.
 5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.

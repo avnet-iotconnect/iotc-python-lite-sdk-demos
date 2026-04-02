@@ -276,7 +276,7 @@ def on_video_stream(kvs_client):
             channel_arn = kvs_client.get_signaling_channel_arn()
             if not channel_arn:
                 print("No KVS signaling channel ARN available.")
-                print("Ensure the device is created with the 'kvswebrtc' template.")
+                print("Ensure the device is created with the 'webrtc' template.")
                 return
 
             proc = start_capture_process()
