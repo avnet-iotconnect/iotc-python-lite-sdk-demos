@@ -9,6 +9,7 @@
             "type": "INTEGER",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -17,6 +18,7 @@
             "type": "BOOLEAN",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -25,6 +27,7 @@
             "type": "STRING",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -33,17 +36,11 @@
             "type": "STRING",
             "description": "",
             "unit": "",
+            "attributeColor": "",
             "aggregateTypes": []
         }
     ],
     "commands": [
-        {
-            "name": "dummy",
-            "command": "dummy",
-            "requiredParam": false,
-            "requiredAck": true,
-            "isOTACommand": false
-        },
         {
             "name": "file-download",
             "command": "file-download",
@@ -59,6 +56,13 @@
             "isOTACommand": false
         },
         {
+            "name": "dummy",
+            "command": "dummy",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
             "name": "dummynoack",
             "command": "dummynoack",
             "requiredParam": false,
@@ -67,7 +71,7 @@
         }
     ],
     "messageVersion": "2.1",
-    "msgCode": "XG4E1RN",
+    "msgCode": "XG4EXFL",
     "capability": "0",
     "enableCSR": "false",
     "c2dOnDemand": 0,
@@ -75,8 +79,9 @@
         "description": null,
         "dataFrequency": "5",
         "fileSupport": true,
-        "supportVideoStream": 2,
-        "autoStartVideoStream": true,
+        "videoStreamResource": "1",
+        "videoStreamType": "2",
+        "autoStartVideoStream": false,
         "certRenewalDay": 0,
         "enableCSR": false
     },
