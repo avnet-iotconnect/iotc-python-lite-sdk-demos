@@ -5,10 +5,10 @@
 
 export PIP_ROOT_USER_ACTION=ignore
 
-# cffi has no pre-built wheel for armv7l on PyPI and requires a C compiler to build
-# from source. The OpenSTLinux Yocto image does not include GCC, so we install cffi
-# via the system package manager (shipped as a compiled Yocto package).
-apt-get install -y python3-cffi
+# cffi and av (PyAV) have no pre-built wheels for armv7l on PyPI and require a C
+# compiler to build from source. The OpenSTLinux Yocto image does not include GCC,
+# so install both via the system package manager (shipped as compiled Yocto packages).
+apt-get install -y python3-cffi python3-av
 
 # Python 3.12 normally ships tomllib in its stdlib, but this Yocto build strips it.
 # setuptools (>=67) imports tomllib when processing pyproject.toml files, so all
@@ -36,7 +36,6 @@ python3 -m pip install --upgrade iotconnect-sdk-lite
 # present and the tomllib shim above makes setuptools work correctly.
 python3 -m pip install --no-build-isolation \
   "aiortc==1.9.0" \
-  "av" \
   "websockets==13.0.1" \
   "boto3" \
   "numpy" \
