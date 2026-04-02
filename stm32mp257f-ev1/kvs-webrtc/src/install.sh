@@ -8,16 +8,18 @@ export PIP_ROOT_USER_ACTION=ignore
 # Upgrade iotconnect-sdk-lite to ensure KVS WebRTC / vs_cb support is present
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade iotconnect-sdk-lite
 
-# The system pip on OpenSTLinux is old and does not recognise the manylinux_2_17_armv7l
-# wheel tag, causing it to fall back to source tarballs that require a C compiler.
-# The system setuptools is also broken on this Yocto Python build: it tries to
-# import tomllib (stripped from this image) and fails before any build can start.
-# Upgrading both tools first resolves both issues.
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade pip setuptools
+# cffi has no pre-built wheel for armv7l on PyPI and requires a C compiler to build
+# from source.  The OpenSTLinux Yocto image does not include GCC, so we install cffi
+# via the system package manager instead (shipped as a compiled Yocto package).
+# The apt call is allowed to fail gracefully in case the feed is unavailable;
+# pip will then attempt its own install and produce a clear error if it also fails.
+apt-get install -y python3-cffi 2>/dev/null || true
 
-# cffi 2.0.0 is source-only for ARM. 1.x ships a manylinux_2_17_armv7l wheel, but
-# an up-to-date pip (above) is required to resolve that wheel tag correctly.
-PIP_ROOT_USER_ACTION=ignore python3 -m pip install "cffi>=1.14.0,<2.0.0"
+# The system pip on OpenSTLinux is old and does not recognise the manylinux_2_17_armv7l
+# wheel tag.  The system setuptools is also broken on this Yocto Python build: it tries
+# to import tomllib (stripped from this image) and fails before any build can start.
+# Upgrading both tools ensures pip can resolve wheels for remaining packages.
+PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade pip setuptools
 
 # Install WebRTC and supporting Python dependencies.
 # boto3 provides the AWS API clients used by app_webrtc.py for KVS signaling.
