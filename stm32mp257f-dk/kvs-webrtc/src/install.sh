@@ -5,14 +5,18 @@
 
 export PIP_ROOT_USER_ACTION=ignore
 
+# Restore the system pip from the Yocto package feed.
+# pip cannot be upgraded via pip itself on this image: Python 3.12 on OpenSTLinux
+# has tomllib stripped, and pip>=25 imports tomllib at startup, breaking all pip calls.
+# Reinstalling via apt always gives a known-good version that works with this Python build.
+apt-get install -y --reinstall python3-pip 2>/dev/null || true
+
 # Upgrade iotconnect-sdk-lite to ensure KVS WebRTC / vs_cb support is present
 PIP_ROOT_USER_ACTION=ignore python3 -m pip install --upgrade iotconnect-sdk-lite
 
 # cffi has no pre-built wheel for armv7l on PyPI and requires a C compiler to build
 # from source.  The OpenSTLinux Yocto image does not include GCC, so we install cffi
 # via the system package manager instead (shipped as a compiled Yocto package).
-# The apt call is allowed to fail gracefully in case the feed is unavailable;
-# pip will then attempt its own install and produce a clear error if it also fails.
 apt-get install -y python3-cffi 2>/dev/null || true
 
 # Install WebRTC and supporting Python dependencies.
