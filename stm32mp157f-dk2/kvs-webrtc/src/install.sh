@@ -5,16 +5,55 @@
 
 export PIP_ROOT_USER_ACTION=ignore
 
-# cffi and av (PyAV) have no pre-built wheels for armv7l on PyPI and require a C
-# compiler to build from source. The OpenSTLinux Yocto image does not include GCC,
-# so install both via the system package manager (shipped as compiled Yocto packages).
-apt-get install -y python3-cffi python3-av
+# numpy 2.x dropped armv7l wheels, causing pip to download a 20+ MB source tarball
+# that exceeds /tmp space. Install the Yocto apt package instead.
+apt-get install -y python3-numpy
 
-# Python 3.12 normally ships tomllib in its stdlib, but this Yocto build strips it.
+# av (PyAV) has no armv7l wheel on PyPI, no FFmpeg dev headers in the OpenSTLinux
+# apt feed, and no C compiler on the board — so it cannot be built from source.
+# Download the pre-built armhf package from Ubuntu 24.04, which ships FFmpeg 6.1.x
+# matching this board's libavcodec60/libavformat60/etc. (6.1.3). Extract the Python
+# module files and register a dist-info record so pip treats av as already installed
+# and does not attempt to rebuild it when resolving aiortc's dependencies.
+# libavdevice60 is required by the Ubuntu av .so but not installed by the Yocto
+# FFmpeg build; install it explicitly so av can load at runtime.
+apt-get install -y libavdevice60
+# Ubuntu 24.04 .deb packages use zstd compression; install it so dpkg-deb can extract them.
+apt-get install -y zstd
+
+echo "Installing av (PyAV) from Ubuntu 24.04 armhf package..."
+UBUNTU_AV_DEB="python3-av_11.0.0-4build1_armhf.deb"
+UBUNTU_AV_URL="http://ports.ubuntu.com/ubuntu-ports/pool/universe/p/python-av/${UBUNTU_AV_DEB}"
+wget -q --show-progress -O "/tmp/${UBUNTU_AV_DEB}" "${UBUNTU_AV_URL}"
+mkdir -p /tmp/av-deb-extract
+dpkg-deb -x "/tmp/${UBUNTU_AV_DEB}" /tmp/av-deb-extract/
+AV_MODULE_DIR=$(find /tmp/av-deb-extract -type d -name "av" | head -1)
+if [ -z "$AV_MODULE_DIR" ]; then
+    echo "ERROR: Could not find av module in extracted Ubuntu package"
+    exit 1
+fi
+cp -r "$AV_MODULE_DIR" /usr/lib/python3.12/site-packages/
+DIST_INFO="/usr/lib/python3.12/site-packages/av-11.0.0.dist-info"
+mkdir -p "$DIST_INFO"
+printf 'Metadata-Version: 2.1\nName: av\nVersion: 11.0.0\n' > "$DIST_INFO/METADATA"
+printf 'pip\n' > "$DIST_INFO/INSTALLER"
+rm -rf /tmp/av-deb-extract "/tmp/${UBUNTU_AV_DEB}"
+python3 -c "import av; print(f'av {av.__version__} installed successfully')"
+
+# cffi, pylibsrtp, and aiortc have no armv7l wheels on PyPI and cannot be built
+# from source on the board (the Yocto cross-compiler is baked into Python's sysconfig
+# but does not exist at runtime). Pre-compiled armv7l wheels are bundled in wheels/,
+# built via Docker cross-compilation against Ubuntu 24.04 armhf.
+# Runtime shared library dependencies for the native extensions:
+#   libsrtp2-1  — pylibsrtp (SRTP encryption)
+#   libvpx      — aiortc VPX codec extension (_vpx)
+#   libopus     — already present on OpenSTLinux (aiortc Opus codec extension)
+apt-get install -y libsrtp2-1 libvpx
+
+# Python 3.12 on this Yocto build has tomllib stripped from the stdlib.
 # setuptools (>=67) imports tomllib when processing pyproject.toml files, so all
 # source-package builds fail without it. Install the pure-Python backport (tomli)
 # and create a stdlib-level shim so that 'import tomllib' resolves correctly.
-# tomli is a pure-Python wheel — no C compiler or tomllib needed to install it.
 python3 -c "import tomllib" 2>/dev/null || {
     python3 -m pip install --quiet tomli
     printf 'from tomli import load, loads\n' > /usr/lib/python3.12/tomllib.py
@@ -23,22 +62,15 @@ python3 -c "import tomllib" 2>/dev/null || {
 # Upgrade iotconnect-sdk-lite to ensure KVS WebRTC / vs_cb support is present
 python3 -m pip install --upgrade iotconnect-sdk-lite
 
-# Install WebRTC and supporting Python dependencies.
-# boto3 provides the AWS API clients used by app_webrtc.py for KVS signaling.
-# av and aiortc handle WebRTC peer connections and media encoding.
-# websockets handles the KVS signaling WebSocket connection.
-# numpy is used to pass raw video frames between GStreamer capture and aiortc.
-#
-# --no-build-isolation skips pip's isolated build environment for source packages.
-# Without it, pip creates a fresh venv for aiortc's build, installs cffi 2.0.0
-# (source-only, needs C compiler) into that venv, and fails. With this flag, pip
-# uses the current environment instead, where cffi 1.16.0 (from apt) is already
-# present and the tomllib shim above makes setuptools work correctly.
-python3 -m pip install --no-build-isolation \
+# Install WebRTC and supporting Python dependencies from bundled wheels and PyPI.
+# --find-links directs pip to use the pre-compiled armv7l wheels in wheels/ for
+# cffi, pylibsrtp, and aiortc; pure-Python deps are fetched from PyPI as normal.
+python3 -m pip install --find-links=./wheels \
+  "cffi" \
+  "pylibsrtp" \
   "aiortc==1.9.0" \
   "websockets==13.0.1" \
   "boto3" \
-  "numpy" \
   "requests"
 
 # GStreamer is pre-installed on OpenSTLinux via the Yocto build; no apt install needed.
