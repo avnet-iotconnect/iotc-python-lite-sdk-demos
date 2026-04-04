@@ -57,7 +57,7 @@ Once the application is running and connected to /IOTCONNECT:
 ### Camera Configuration
 
 The default camera settings in `app.py` are:
-- Resolution: 640×480
+- Resolution: 320×240
 - Framerate: 15 fps
 
 These can be adjusted by modifying the `camera_options` dictionary in `app.py`. Reduce the resolution or framerate if the board's CPU cannot keep up with both capture and WebRTC encoding simultaneously.

@@ -28,8 +28,8 @@ _frame_queue: queue.Queue = queue.Queue(maxsize=1)
 
 camera_options = {
     "video": {
-        "width": 640,
-        "height": 480,
+        "width": 320,
+        "height": 240,
         "framerate": 15
     },
     "verbose": False
@@ -65,7 +65,7 @@ def extract_and_run_tar_gz(targz_filename: str):
 
 
 def detect_video_device() -> Optional[str]:
-    # On the STM32MP157F-DK2 the onboard camera interface (dcmipp) also appears as
+    # On the STM32MP135F-DK the onboard camera interface (dcmipp) also appears as
     # a /dev/videoN node. To reliably pick a USB camera regardless of which port it
     # is plugged into or what number it is assigned, we check the sysfs path for
     # each video device: USB-connected devices have "usb" in their resolved sysfs
@@ -109,10 +109,10 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     verbose_flag = "-v " if verbose else ""
 
     # GStreamer pipeline: capture raw RGB frames from USB camera and write to stdout.
-    # The STM32MP157F-DK2 has no hardware H264 encoder, but for WebRTC that is not
+    # The STM32MP135F-DK has no hardware H264 encoder, but for WebRTC that is not
     # needed — aiortc handles encoding on the Python side. We capture raw YUY2 from
     # v4l2src, convert to RGB, and pipe the raw bytes to the frame reader thread.
-    # The default is 640x480@15fps to stay within the Cortex-A7's budget alongside
+    # The default is 320x240@15fps to stay within the Cortex-A7's budget alongside
     # the WebRTC encoding performed by aiortc. Adjust camera_options as needed.
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
@@ -457,3 +457,4 @@ if __name__ == "__main__":
             stop_video_stream()
         client.disconnect()
         print("Shutdown complete.")
+        os._exit(0)
