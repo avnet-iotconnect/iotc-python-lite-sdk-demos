@@ -111,11 +111,7 @@ mkdir -p /opt/demo && cd /opt/demo
 # 5. Onboard Device
 
 > [!IMPORTANT]
-> If you plan to use a KVS video streaming expansion demo, the device must be created in /IOTCONNECT with the
-> correct template from the start — the AWS backend provisions different resources per template at device creation
-> time and cannot be switched afterward. Use the `putmedia` template (available
-> [here](kvs-putmedia/putmedia-template.json), Stream Type: "USB Based") for the KVS PutMedia demo, or the
-> `webrtc` template (available [here](kvs-webrtc/webrtc-template.json)) for the KVS WebRTC demo.
+> If users plan to deploy a KVS expansion demo, the device needs to be originally created in /IOTCONNECT with the `plitekvs` template (available [here](kvs-putmedia/plitekvs-template.json)). During the device creation steps, the Stream Type should be set to "USB Based" and the Stream Resource should be set as either "Video Stream" (for the PutMedia demo) or "WebRTC" (for the WebRTC demo). The AWS backend will not register the device for KVS if it is created with a different template and then later switched to `plitekvs`, it needs to be set at device creation.
 
 The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 

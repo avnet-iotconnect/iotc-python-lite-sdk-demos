@@ -19,7 +19,7 @@ Unlike the KVS PutMedia demo, WebRTC is a peer-to-peer protocol — the video is
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if onboard camera interfaces (dcmipp, vdec, venc) are also present.
 
 > [!IMPORTANT]
-> This demo requires the `webrtc` template (available [here](webrtc-template.json)). The device **must be created in /IOTCONNECT with the `webrtc` template** — the AWS backend provisions a KVS WebRTC signaling channel for `webrtc` devices and a KVS stream for `putmedia` devices, and these cannot be switched after device creation. If your device was created with `plitedemo` or `putmedia`, create a new device using `webrtc`.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device **must be created in /IOTCONNECT with the `plitekvs` template** — the AWS backend provisions a KVS WebRTC signaling channel for `webrtc` devices and a KVS stream for `putmedia` devices, and these cannot be switched after device creation. If your device was created with `plitedemo` or `putmedia`, create a new device using `plitekvs`.
 
 ## 3. Deploy and Run
 
@@ -89,7 +89,7 @@ cd /opt/demo && tar -xzf package.tar.gz --overwrite && bash ./install.sh
 
 **Option B — OTA via /IOTCONNECT platform:**
 1. In the **Device** page, select **Firmware** on the bottom toolbar.
-2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `webrtc` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
+2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `plitekvs` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
 3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
 4. Click the publish icon (black square with arrow) under **Actions**.
 5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.
