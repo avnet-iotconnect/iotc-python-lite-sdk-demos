@@ -25,6 +25,7 @@ _record_process: Optional[subprocess.Popen] = None
 _uploader_thread: Optional[threading.Thread] = None
 _uploader_stop_event = threading.Event()
 _recording_lock = threading.Lock()
+_upload_lock = threading.Lock()
 _stats_lock = threading.Lock()
 _uploaded_clips = 0
 _upload_failures = 0
@@ -436,52 +437,61 @@ def upload_pending_clips(flush_all: bool = False):
     global _upload_failures
     global _last_uploaded_clip
 
-    if client is None or not client.is_connected():
-        return
+    with _upload_lock:
+        if client is None or not client.is_connected():
+            return
 
-    for clip_path in ready_clip_files(flush_all=flush_all):
-        clip_size = clip_path.stat().st_size
-        if clip_size <= 0:
-            with _stats_lock:
-                _upload_failures += 1
-            print(f"Skipping empty clip artifact: {clip_path.name}")
+        for clip_path in ready_clip_files(flush_all=flush_all):
             try:
-                clip_path.unlink(missing_ok=True)
-            except Exception as exc:
-                print(f"Unable to remove empty clip artifact {clip_path.name}: {exc}")
-            continue
-        relative_path = build_relative_upload_path(clip_path)
-        clip_session_id = session_id_for_clip(clip_path)
-        custom_values = {
-            "cf": {
-                "type": "video_clip",
-                "duration_secs": clip_options["duration_secs"],
-                "size_bytes": clip_size,
-                "session": clip_session_id
+                clip_size = clip_path.stat().st_size
+            except FileNotFoundError:
+                continue
+
+            if clip_size <= 0:
+                with _stats_lock:
+                    _upload_failures += 1
+                print(f"Skipping empty clip artifact: {clip_path.name}")
+                try:
+                    clip_path.unlink(missing_ok=True)
+                except Exception as exc:
+                    print(f"Unable to remove empty clip artifact {clip_path.name}: {exc}")
+                continue
+
+            relative_path = build_relative_upload_path(clip_path)
+            clip_session_id = session_id_for_clip(clip_path)
+            custom_values = {
+                "cf": {
+                    "type": "video_clip",
+                    "duration_secs": clip_options["duration_secs"],
+                    "size_bytes": clip_size,
+                    "session": clip_session_id
+                }
             }
-        }
 
-        try:
-            print(f"Uploading clip to S3: {clip_path.name}")
-            client.s3_upload(
-                local_path=str(clip_path),
-                custom_values=custom_values,
-                relative_upload_path=relative_path
-            )
+            try:
+                print(f"Uploading clip to S3: {clip_path.name}")
+                client.s3_upload(
+                    local_path=str(clip_path),
+                    custom_values=custom_values,
+                    relative_upload_path=relative_path
+                )
 
-            if clip_options["delete_after_upload"] and clip_path.exists():
-                clip_path.unlink()
+                if clip_options["delete_after_upload"] and clip_path.exists():
+                    clip_path.unlink()
 
-            with _stats_lock:
-                _uploaded_clips += 1
-                _last_uploaded_clip = relative_path
+                with _stats_lock:
+                    _uploaded_clips += 1
+                    _last_uploaded_clip = relative_path
 
-            print(f"Uploaded clip successfully: {relative_path}")
-        except Exception as exc:
-            with _stats_lock:
-                _upload_failures += 1
-            print(f"Failed to upload {clip_path.name}: {exc}")
-            break
+                print(f"Uploaded clip successfully: {relative_path}")
+            except FileNotFoundError:
+                print(f"Clip disappeared before upload completed: {clip_path.name}")
+                continue
+            except Exception as exc:
+                with _stats_lock:
+                    _upload_failures += 1
+                print(f"Failed to upload {clip_path.name}: {exc}")
+                break
 
 
 def upload_worker():
