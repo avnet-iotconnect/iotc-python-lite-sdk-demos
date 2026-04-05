@@ -9,6 +9,7 @@ import sys
 import threading
 import time
 import urllib.request
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -28,7 +29,10 @@ _stats_lock = threading.Lock()
 _uploaded_clips = 0
 _upload_failures = 0
 _last_uploaded_clip = ""
+_last_record_error = ""
+_recording_requested = False
 _current_session_id = ""
+_gst_stderr_buffer = deque(maxlen=120)
 
 BUNDLE_LIB_PATH = "/opt/video-upload-libs"
 
@@ -129,11 +133,27 @@ def _bundle_gst_env() -> dict:
     return gst_env
 
 
+def _clear_gst_stderr_buffer():
+    _gst_stderr_buffer.clear()
+
+
+def _print_recent_gst_stderr():
+    if not _gst_stderr_buffer:
+        print("No GStreamer stderr output was captured.")
+        return
+
+    print("Recent GStreamer stderr:")
+    for line in _gst_stderr_buffer:
+        print(f"GSTERR: {line}")
+
+
 def _pipe_reader(prefix: str, pipe, verbose: bool = False):
     try:
         for line in iter(pipe.readline, b""):
+            decoded = line.decode(errors="replace").rstrip()
+            if prefix == "GSTERR" and len(decoded) > 0:
+                _gst_stderr_buffer.append(decoded)
             if verbose:
-                decoded = line.decode(errors="replace").rstrip()
                 print(f"{prefix}: {decoded}")
     except Exception as exc:
         print(f"Error reading {prefix}: {exc}")
@@ -147,6 +167,7 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
 def start_clip_recording() -> Optional[subprocess.Popen]:
     global _record_process
     global _current_session_id
+    global _last_record_error
 
     if sys.platform not in ("linux", "linux2"):
         print("GStreamer video recording is only supported on Linux")
@@ -170,6 +191,8 @@ def start_clip_recording() -> Optional[subprocess.Popen]:
         verbose = camera_options.get("verbose", False)
         verbose_flag = "-v " if verbose else ""
 
+        _clear_gst_stderr_buffer()
+        _last_record_error = ""
         _current_session_id = datetime.now(timezone.utc).strftime("clip-%Y%m%dT%H%M%SZ")
         output_pattern = clip_directory() / f"{_current_session_id}-%05d.mp4"
         clip_duration_ns = clip_options["duration_secs"] * 1_000_000_000
@@ -215,23 +238,29 @@ def start_clip_recording() -> Optional[subprocess.Popen]:
 
             return_code = _record_process.poll()
             if return_code is not None:
+                _last_record_error = f"GStreamer exited immediately with code {return_code}"
                 print(f"GStreamer exited immediately with code {return_code}")
                 print("This usually means:")
                 print("   - GStreamer is not installed")
                 print("   - x264enc plugin is not installed")
                 print("   - splitmuxsink/mp4mux plugin is not installed")
                 print("   - Video device is not accessible")
+                _print_recent_gst_stderr()
                 _record_process = None
+                _current_session_id = ""
                 return None
 
             print(f"Clip recorder started successfully; creating {clip_options['duration_secs']}-second MP4 clips")
             return _record_process
         except FileNotFoundError:
+            _last_record_error = "GStreamer is NOT installed on this system"
             print("GStreamer is NOT installed on this system")
             return None
         except Exception as exc:
+            _last_record_error = f"Error starting clip recorder: {exc}"
             print(f"Error starting clip recorder: {exc}")
             _record_process = None
+            _current_session_id = ""
             return None
 
 
@@ -282,6 +311,24 @@ def is_recording() -> bool:
     return True
 
 
+def recording_requested() -> bool:
+    with _recording_lock:
+        return _recording_requested
+
+
+def _set_recording_requested(requested: bool):
+    global _recording_requested
+    with _recording_lock:
+        _recording_requested = requested
+
+
+def session_id_for_clip(clip_path: Path) -> str:
+    clip_stem = clip_path.stem
+    if "-" not in clip_stem:
+        return ""
+    return clip_stem.rsplit("-", 1)[0]
+
+
 def pending_clip_files() -> list[Path]:
     if not clip_directory().exists():
         return []
@@ -330,6 +377,40 @@ def build_relative_upload_path(clip_path: Path) -> str:
     return f"clips/{clip_time.strftime('%Y/%m/%d')}/{clip_path.name}"
 
 
+def handle_recorder_exit_if_needed():
+    global _record_process
+    global _recording_requested
+    global _last_record_error
+    global _current_session_id
+
+    with _recording_lock:
+        process = _record_process
+        requested = _recording_requested
+
+    if process is None:
+        return False
+
+    return_code = process.poll()
+    if return_code is None:
+        return False
+
+    with _recording_lock:
+        _record_process = None
+        if requested:
+            _recording_requested = False
+            _last_record_error = (
+                f"Clip recorder exited unexpectedly with code {return_code}. "
+                "Recording has been disabled until record-start is requested again."
+            )
+        _current_session_id = ""
+
+    if requested:
+        print(_last_record_error)
+        _print_recent_gst_stderr()
+
+    return True
+
+
 def upload_pending_clips(flush_all: bool = False):
     global _uploaded_clips
     global _upload_failures
@@ -341,12 +422,13 @@ def upload_pending_clips(flush_all: bool = False):
     for clip_path in ready_clip_files(flush_all=flush_all):
         clip_size = clip_path.stat().st_size
         relative_path = build_relative_upload_path(clip_path)
+        clip_session_id = session_id_for_clip(clip_path)
         custom_values = {
             "cf": {
                 "type": "video_clip",
                 "duration_secs": clip_options["duration_secs"],
                 "size_bytes": clip_size,
-                "session": _current_session_id
+                "session": clip_session_id
             }
         }
 
@@ -410,7 +492,9 @@ def stop_upload_worker():
         _uploader_thread = None
 
 
-def start_recording_if_possible() -> bool:
+def start_recording_if_requested() -> bool:
+    global _last_record_error
+
     if client is None:
         return False
 
@@ -418,14 +502,50 @@ def start_recording_if_possible() -> bool:
         print("S3 support is not available for this device template")
         return False
 
+    if not recording_requested():
+        return False
+
+    handle_recorder_exit_if_needed()
+    if not recording_requested():
+        return False
+
     if is_recording():
         return True
 
     process = start_clip_recording()
-    return process is not None
+    if process is None:
+        _set_recording_requested(False)
+        if len(_last_record_error) == 0:
+            _last_record_error = "Unable to start MP4 clip recording"
+        return False
+
+    return True
+
+
+def request_recording_start() -> bool:
+    global _last_record_error
+
+    _set_recording_requested(True)
+    _last_record_error = ""
+    return start_recording_if_requested()
+
+
+def request_recording_stop() -> bool:
+    _set_recording_requested(False)
+    handle_recorder_exit_if_needed()
+
+    if is_recording():
+        if not stop_clip_recording():
+            return False
+    else:
+        print("Clip recorder already stopped")
+
+    upload_pending_clips(flush_all=True)
+    return True
 
 
 def telemetry_snapshot() -> dict:
+    handle_recorder_exit_if_needed()
     with _stats_lock:
         telemetry = {
             "recording": is_recording(),
@@ -474,7 +594,7 @@ def on_command(msg: C2dCommand):
         return
 
     if msg.command_name == "record-start":
-        if start_recording_if_possible():
+        if request_recording_start():
             if msg.ack_id is not None:
                 client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "MP4 clip recording started")
         else:
@@ -483,8 +603,7 @@ def on_command(msg: C2dCommand):
         return
 
     if msg.command_name == "record-stop":
-        if stop_clip_recording():
-            upload_pending_clips(flush_all=True)
+        if request_recording_stop():
             if msg.ack_id is not None:
                 client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "MP4 clip recording stopped")
         else:
@@ -526,6 +645,7 @@ def on_ota(msg: C2dOta):
 
 def on_disconnect(reason: str, disconnected_from_server: bool):
     print(f"Disconnected. Reason: {reason}")
+    handle_recorder_exit_if_needed()
     if is_recording():
         print("Stopping clip recorder due to disconnect...")
         stop_clip_recording()
@@ -576,7 +696,7 @@ if __name__ == "__main__":
     print(f"Clip directory: {clip_directory()}")
     print(f"Available buckets: {[bucket.bucket_name for bucket in s3_client.get_buckets()]}")
 
-    start_recording_if_possible()
+    request_recording_start()
 
     print("\n" + "=" * 50)
     print("Recording fixed-length MP4 clips and uploading them to S3")
@@ -587,13 +707,15 @@ if __name__ == "__main__":
 
     try:
         while True:
+            handle_recorder_exit_if_needed()
+
             if not client.is_connected():
                 print("Connection lost, attempting to reconnect...")
                 client.connect()
                 if client.is_connected():
-                    start_recording_if_possible()
+                    start_recording_if_requested()
             else:
-                start_recording_if_possible()
+                start_recording_if_requested()
 
             client.send_telemetry(telemetry_snapshot())
             time.sleep(10)

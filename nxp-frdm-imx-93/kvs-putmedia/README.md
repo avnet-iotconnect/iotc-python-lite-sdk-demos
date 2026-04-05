@@ -34,6 +34,7 @@ Default behavior:
 - upload path in S3: `device-uploads/<client-id>/clips/YYYY/MM/DD/<clip-file>.mp4`
 
 Completed clips are uploaded in a background worker. After a successful upload, the local file is deleted by default.
+If the recorder crashes, the app leaves recording stopped and prints recent GStreamer stderr so you can inspect the real failure before sending `record-start` again.
 
 ## 3. Deploy and Run
 
@@ -61,7 +62,7 @@ The installer:
 python3 app.py
 ```
 
-If the device template includes file support, the demo connects to /IOTCONNECT, starts recording automatically, and begins uploading finished clips to S3.
+If the device template includes file support, the demo connects to /IOTCONNECT, starts recording automatically, and begins uploading finished clips to S3. After a manual `record-stop`, it stays stopped until `record-start` is sent again.
 
 ## 4. Commands and Telemetry
 
