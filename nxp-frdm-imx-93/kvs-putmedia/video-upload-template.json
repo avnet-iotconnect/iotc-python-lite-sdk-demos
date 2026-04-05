@@ -1,20 +1,11 @@
 {
-    "code": "putmedia",
-    "name": "putmedia",
+    "code": "imx93VidUp",
+    "name": "imx93VidUp",
     "authType": 2,
     "attributes": [
         {
-            "name": "random",
-            "displayName": "",
-            "type": "INTEGER",
-            "description": "",
-            "unit": "",
-            "attributeColor": "",
-            "aggregateTypes": []
-        },
-        {
-            "name": "streaming",
-            "displayName": "",
+            "name": "recording",
+            "displayName": "recording",
             "type": "BOOLEAN",
             "description": "",
             "unit": "",
@@ -22,17 +13,35 @@
             "aggregateTypes": []
         },
         {
-            "name": "url",
-            "displayName": "url",
-            "type": "STRING",
+            "name": "pending_uploads",
+            "displayName": "pending_uploads",
+            "type": "INTEGER",
             "description": "",
             "unit": "",
             "attributeColor": "",
             "aggregateTypes": []
         },
         {
-            "name": "sdk_version",
-            "displayName": "sdk_version",
+            "name": "uploaded_clips",
+            "displayName": "uploaded_clips",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "upload_failures",
+            "displayName": "upload_failures",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_clip",
+            "displayName": "last_clip",
             "type": "STRING",
             "description": "",
             "unit": "",
@@ -49,24 +58,17 @@
             "isOTACommand": false
         },
         {
-            "name": "aws-qualification-start",
-            "command": "aws-qualification-start",
-            "requiredParam": false,
-            "requiredAck": false,
-            "isOTACommand": false
-        },
-        {
-            "name": "dummy",
-            "command": "dummy",
+            "name": "record-start",
+            "command": "record-start",
             "requiredParam": false,
             "requiredAck": true,
             "isOTACommand": false
         },
         {
-            "name": "dummynoack",
-            "command": "dummynoack",
+            "name": "record-stop",
+            "command": "record-stop",
             "requiredParam": false,
-            "requiredAck": false,
+            "requiredAck": true,
             "isOTACommand": false
         }
     ],
@@ -77,11 +79,8 @@
     "c2dOnDemand": 0,
     "properties": {
         "description": null,
-        "dataFrequency": "5",
+        "dataFrequency": "10",
         "fileSupport": true,
-        "videoStreamResource": "1",
-        "videoStreamType": "2",
-        "autoStartVideoStream": false,
         "certRenewalDay": 0,
         "enableCSR": false
     },

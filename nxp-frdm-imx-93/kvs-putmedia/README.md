@@ -1,25 +1,39 @@
-# KVS PutMedia Expansion Demo
+# Fixed-Length MP4 Upload Demo
 
-Upgrades the /IOTCONNECT Starter Demo on the NXP FRDM-IMX93 to the AWS Kinesis Video Streams (KVS) PutMedia video streaming demo.
+This branch repurposes the original `nxp-frdm-imx-93/kvs-putmedia` demo into a clip recorder that:
+
+- captures USB camera video on the NXP FRDM-IMX93
+- writes fixed-length MP4 clips locally with GStreamer
+- uploads completed clips to the device's S3 file-support bucket through `iotconnect-sdk-lite`
+- publishes the file-upload message so the clips appear in /IOTCONNECT
 
 > [!IMPORTANT]
 > Complete the [/IOTCONNECT quickstart guide for the NXP FRDM-IMX93](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-93/README.md) before proceeding.
 
-## 1. Introduction
-
-This demo streams live video from a USB camera through the NXP FRDM-IMX93 to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK libraries are pre-built and bundled in the package — no on-device compilation is required.
-
-The NXP FRDM-IMX93 has no hardware H264 encoder accessible via V4L2, and the NXP Yocto image does not include x264 in its apt repositories. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) and the x264 runtime library (`libx264.so.164`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The USB camera is captured in MJPG format at 1280×720 to stay within USB 2.0 bandwidth limits, then decoded and re-encoded to H264 via x264enc on the Cortex-A55 CPU. The default resolution is 1280×720 at 30 fps.
-
-## 2. Set Up Hardware and Template
+## 1. Hardware and Template
 
 1. Plug a USB camera into a USB port on the NXP FRDM-IMX93.
+2. Verify the camera is present with `ls /dev/video*`.
+3. Create the device in /IOTCONNECT using [video-upload-template.json](video-upload-template.json).
 
-> [!TIP]
-> Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device.
+The template enables file support and exposes:
 
-> [!IMPORTANT]
-> This demo requires the `putmedia` template (available [here](putmedia-template.json)). The device **must be created in /IOTCONNECT with the `putmedia` template** — the AWS backend will not register a device for KVS if it was originally created with the `plitedemo` template and later switched. If your device was created with `plitedemo`, create a new device using `putmedia`.
+- telemetry attributes: `recording`, `pending_uploads`, `uploaded_clips`, `upload_failures`, `last_clip`
+- commands: `record-start`, `record-stop`, `file-download`
+
+## 2. How It Works
+
+The app uses `gst-launch-1.0` with `splitmuxsink` to create rolling MP4 clips from the USB camera.
+
+Default behavior:
+
+- clip length: 30 seconds
+- resolution: 1280x720
+- frame rate: 30 fps
+- local clip directory: `/opt/demo/video-clips`
+- upload path in S3: `device-uploads/<client-id>/clips/YYYY/MM/DD/<clip-file>.mp4`
+
+Completed clips are uploaded in a background worker. After a successful upload, the local file is deleted by default.
 
 ## 3. Deploy and Run
 
@@ -29,13 +43,17 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/kvs-putmedia/package.tar.gz
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/frdm93-video_upload/nxp-frdm-imx-93/kvs-putmedia/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
 
-> [!NOTE]
-> Warning messages in the console during the installation script are expected and can be ignored.
+The installer:
+
+- upgrades to `iotconnect-sdk-lite[aws-s3]`
+- installs `requests`
+- places the bundled `x264` runtime and plugin under `/opt/video-upload-libs`
+- verifies `x264enc`, `mp4mux`, and `splitmuxsink`
 
 ### Run
 
@@ -43,77 +61,54 @@ bash ./install.sh
 python3 app.py
 ```
 
-## 4. Using the Demo
+If the device template includes file support, the demo connects to /IOTCONNECT, starts recording automatically, and begins uploading finished clips to S3.
 
-Once the application is running and connected to /IOTCONNECT:
+## 4. Commands and Telemetry
 
-- **Telemetry**: Sends a random integer and the current streaming status (true/false) every 10 seconds.
-- **Auto-start**: If KVS is configured with auto-start in /IOTCONNECT, the video stream begins automatically 3 seconds after connecting.
-- **Manual control**: Video streaming can be started/stopped via /IOTCONNECT commands from the device's **Video Streaming** tab. A **Start** button appears when streaming is off; a **Stop** button appears when streaming is active.
+Commands:
 
-### Camera Configuration
+- `record-start`: starts the MP4 clip recorder if it is not already running
+- `record-stop`: stops the recorder and uploads the last finalized clip
+- `file-download`: downloads and installs a replacement package, then restarts the app
 
-The default camera settings in `app.py` are:
-- Resolution: 1280×720
-- Framerate: 30 fps
+Telemetry sent every 10 seconds:
 
-These can be adjusted by modifying the `camera_options` dictionary in `app.py`.
+- `recording`: recorder process running or not
+- `pending_uploads`: MP4 files waiting to be uploaded
+- `uploaded_clips`: number of successfully uploaded clips since boot
+- `upload_failures`: upload attempts that failed since boot
+- `last_clip`: last uploaded relative S3 path
 
-## 5. Customize and Rebuild (Optional)
+Uploaded files are published through the file-upload topic, so they should appear in /IOTCONNECT Telemetry Files.
 
-To modify the demo files before deploying, or to rebuild the package with a newer version of the KVS Producer SDK:
+## 5. Environment Overrides
 
-### Modify Source Files
+You can tune the app without editing `app.py`:
 
-1. Clone the repository to your host machine:
-   ```bash
-   git clone https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos.git
-   ```
-
-2. Edit files in `nxp-frdm-imx-93/kvs-putmedia/src/` as needed.
-
-3. To rebuild with the existing pre-built libraries, run:
-   ```bash
-   cd nxp-frdm-imx-93/kvs-putmedia
-   bash ./create-package.sh
-   ```
-
-### Rebuild KVS Producer SDK (Advanced)
-
-If you need to pick up a newer version of the KVS Producer SDK, cross-compile it on a Linux host using Docker:
-
-**Prerequisites:** Docker must be installed on your host machine.
-
-**Step 1:** Cross-compile the KVS Producer SDK, GStreamer x264 plugin, and x264 runtime for aarch64:
 ```bash
-bash ~/kvs-build-imx93.sh
+export VIDEO_CLIP_LENGTH_SECS=15
+export VIDEO_UPLOAD_SCAN_SECS=3
+export VIDEO_UPLOAD_MIN_FILE_AGE_SECS=2
+export VIDEO_UPLOAD_DIR=/opt/demo/video-clips
+export VIDEO_DELETE_AFTER_UPLOAD=1
 ```
-This places the resulting `.so` library files (including `libgstx264.so` and `libx264.so.164`) in `~/kvs-libs-imx93/`. The build takes several minutes.
 
-**Step 2:** Rebuild the package (bundles the new libraries alongside the source files):
+Notes:
+
+- `VIDEO_CLIP_LENGTH_SECS` controls the fixed MP4 segment duration.
+- `VIDEO_DELETE_AFTER_UPLOAD=0` keeps local clips after upload.
+
+## 6. Rebuild the Package
+
+To rebuild the package on a host machine:
+
 ```bash
 cd nxp-frdm-imx-93/kvs-putmedia
 bash ./create-package.sh
 ```
 
-### Deliver the New Package
+`create-package.sh` prefers fresh shared libraries from `~/kvs-libs-imx93/`. If those are not available, it reuses the bundled libraries already present in the existing `package.tar.gz`.
 
-**Option A — Direct copy (scp):**
-```bash
-# On host:
-scp package.tar.gz root@<board-ip>:/opt/demo/
-# On board:
-cd /opt/demo && tar -xzf package.tar.gz --overwrite && bash ./install.sh
-```
+## 7. OTA Delivery
 
-**Option B — OTA via /IOTCONNECT platform:**
-1. In the **Device** page, select **Firmware** on the bottom toolbar.
-2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `putmedia` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
-3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
-4. Click the publish icon (black square with arrow) under **Actions**.
-5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.
-
-> [!NOTE]
-> Warning messages in the console during the installation script are expected and can be ignored.
-
-Shortly after, the running `app.py` will receive the package, decompress it, execute `install.sh`, and restart automatically.
+You can still deliver this package through the /IOTCONNECT OTA flow. Upload the generated `package.tar.gz` as firmware, target the device created from `video-upload-template.json`, and the running app will download, install, and restart itself.
