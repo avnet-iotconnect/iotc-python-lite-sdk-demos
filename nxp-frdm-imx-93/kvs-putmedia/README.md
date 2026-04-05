@@ -63,6 +63,7 @@ python3 app.py
 ```
 
 If the device template includes file support, the demo connects to /IOTCONNECT, starts recording automatically, and begins uploading finished clips to S3. After a manual `record-stop`, it stays stopped until `record-start` is sent again.
+The demo also maps `/IOTCONNECT` video stream control messages (`ct 112` / `ct 113`) to the same start and stop behavior.
 
 ## 4. Commands and Telemetry
 

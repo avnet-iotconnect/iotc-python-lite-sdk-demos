@@ -17,7 +17,7 @@ from typing import Optional
 import requests
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, C2dOta, Callbacks, DeviceConfigError
-from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
+from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dMessage
 
 client: Optional[Client] = None
 device_config: Optional[DeviceConfig] = None
@@ -31,6 +31,7 @@ _upload_failures = 0
 _last_uploaded_clip = ""
 _last_record_error = ""
 _recording_requested = False
+_record_request_version = 0
 _current_session_id = ""
 _gst_stderr_buffer = deque(maxlen=120)
 
@@ -316,10 +317,29 @@ def recording_requested() -> bool:
         return _recording_requested
 
 
-def _set_recording_requested(requested: bool):
+def _recording_request_snapshot() -> tuple[bool, int]:
+    with _recording_lock:
+        return _recording_requested, _record_request_version
+
+
+def _set_recording_requested(requested: bool) -> int:
     global _recording_requested
+    global _record_request_version
     with _recording_lock:
         _recording_requested = requested
+        _record_request_version += 1
+        return _record_request_version
+
+
+def _clear_recording_request_if_version(expected_version: int) -> bool:
+    global _recording_requested
+    global _record_request_version
+    with _recording_lock:
+        if _record_request_version != expected_version or not _recording_requested:
+            return False
+        _recording_requested = False
+        _record_request_version += 1
+        return True
 
 
 def session_id_for_clip(clip_path: Path) -> str:
@@ -511,11 +531,13 @@ def start_recording_if_requested() -> bool:
         print("S3 support is not available for this device template")
         return False
 
-    if not recording_requested():
+    requested, request_version = _recording_request_snapshot()
+    if not requested:
         return False
 
     handle_recorder_exit_if_needed()
-    if not recording_requested():
+    requested, current_version = _recording_request_snapshot()
+    if not requested or current_version != request_version:
         return False
 
     if is_recording():
@@ -523,9 +545,15 @@ def start_recording_if_requested() -> bool:
 
     process = start_clip_recording()
     if process is None:
-        _set_recording_requested(False)
+        _clear_recording_request_if_version(request_version)
         if len(_last_record_error) == 0:
             _last_record_error = "Unable to start MP4 clip recording"
+        return False
+
+    requested, current_version = _recording_request_snapshot()
+    if not requested or current_version != request_version:
+        print("Start request was superseded before recorder stabilized; stopping clip recorder.")
+        stop_clip_recording()
         return False
 
     return True
@@ -551,6 +579,19 @@ def request_recording_stop() -> bool:
 
     upload_pending_clips(flush_all=True)
     return True
+
+
+def on_generic_message(msg: C2dMessage, raw_message: dict):
+    message_name = C2dMessage.TYPES.get(msg.type, f"type {msg.type}")
+    print(f"Received generic message {message_name}: {raw_message}")
+
+    if msg.type == C2dMessage.START_STREAM:
+        request_recording_start()
+        return
+
+    if msg.type == C2dMessage.STOP_STREAM:
+        request_recording_stop()
+        return
 
 
 def telemetry_snapshot() -> dict:
@@ -674,7 +715,11 @@ if __name__ == "__main__":
     callbacks = Callbacks(
         command_cb=on_command,
         ota_cb=on_ota,
-        disconnected_cb=on_disconnect
+        disconnected_cb=on_disconnect,
+        generic_message_callbacks={
+            C2dMessage.START_STREAM: on_generic_message,
+            C2dMessage.STOP_STREAM: on_generic_message
+        }
     )
 
     try:
