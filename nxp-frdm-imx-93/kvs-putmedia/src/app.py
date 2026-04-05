@@ -421,6 +421,15 @@ def upload_pending_clips(flush_all: bool = False):
 
     for clip_path in ready_clip_files(flush_all=flush_all):
         clip_size = clip_path.stat().st_size
+        if clip_size <= 0:
+            with _stats_lock:
+                _upload_failures += 1
+            print(f"Skipping empty clip artifact: {clip_path.name}")
+            try:
+                clip_path.unlink(missing_ok=True)
+            except Exception as exc:
+                print(f"Unable to remove empty clip artifact {clip_path.name}: {exc}")
+            continue
         relative_path = build_relative_upload_path(clip_path)
         clip_session_id = session_id_for_clip(clip_path)
         custom_values = {
