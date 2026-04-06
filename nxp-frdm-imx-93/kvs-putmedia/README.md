@@ -5,7 +5,7 @@ This branch repurposes the original `nxp-frdm-imx-93/kvs-putmedia` demo into a c
 - captures single JPEG pictures from the USB camera on demand
 - captures USB camera video on the NXP FRDM-IMX93
 - writes fixed-length MP4 clips locally with GStreamer
-- uploads completed pictures and clips to the device's S3 file-support bucket through `iotconnect-sdk-lite`
+- uploads completed pictures and ZIP-wrapped video clips to the device's S3 file-support bucket through `iotconnect-sdk-lite`
 - publishes the file-upload message so the media appears in /IOTCONNECT
 
 > [!IMPORTANT]
@@ -35,10 +35,10 @@ Default behavior:
 - resolution: 1280x720
 - frame rate: 30 fps
 - local clip directory: `/opt/demo/video-clips`
-- video upload path in S3: `device-uploads/<client-id>/clips/YYYY/MM/DD/<clip-file>.mp4`
+- video upload path in S3: `device-uploads/<client-id>/clips/YYYY/MM/DD/<clip-file>.mp4.zip`
 - picture upload path in S3: `device-uploads/<client-id>/pictures/YYYY/MM/DD/<picture-file>.jpg`
 
-Completed media files are uploaded in a background worker. After a successful upload, the local file is deleted by default.
+Completed media files are uploaded in a background worker. MP4 clips are ZIP-archived immediately before upload so the downloaded file preserves the original bytes across the current /IOTCONNECT download path. After a successful upload, the local file is deleted by default.
 If the recorder crashes, the app leaves recording stopped and prints recent GStreamer stderr so you can inspect the real failure before sending `record-start` again.
 
 ## 3. Deploy and Run
@@ -105,7 +105,7 @@ export VIDEO_AUTOSTART=0
 Notes:
 
 - `VIDEO_CLIP_LENGTH_SECS` controls the fixed MP4 segment duration.
-- `VIDEO_DELETE_AFTER_UPLOAD=0` keeps local clips after upload.
+- `VIDEO_DELETE_AFTER_UPLOAD=0` keeps local MP4 clips and JPEG captures after upload. Temporary ZIP archives used for clip uploads are always cleaned up after each attempt.
 - `VIDEO_AUTOSTART=1` starts MP4 recording automatically when the app launches.
 
 ## 6. Rebuild the Package

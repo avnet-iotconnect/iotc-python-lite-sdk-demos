@@ -9,6 +9,7 @@ import sys
 import threading
 import time
 import urllib.request
+import zipfile
 from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
@@ -506,10 +507,11 @@ def ready_media_files(flush_all: bool = False) -> list[Path]:
     return ready
 
 
-def build_relative_upload_path(media_path: Path) -> str:
+def build_relative_upload_path(media_path: Path, upload_name: Optional[str] = None) -> str:
     media_time = datetime.fromtimestamp(media_path.stat().st_mtime, tz=timezone.utc)
     media_type_dir = "pictures" if media_path.suffix.lower() == ".jpg" else "clips"
-    return f"{media_type_dir}/{media_time.strftime('%Y/%m/%d')}/{media_path.name}"
+    target_name = upload_name or media_path.name
+    return f"{media_type_dir}/{media_time.strftime('%Y/%m/%d')}/{target_name}"
 
 
 def handle_recorder_exit_if_needed():
@@ -568,6 +570,27 @@ def media_custom_values(media_path: Path, media_size: int) -> dict:
     }
 
 
+def create_clip_archive(clip_path: Path) -> Optional[Path]:
+    archive_path = clip_path.with_name(f"{clip_path.name}.zip")
+
+    try:
+        archive_path.unlink(missing_ok=True)
+        with zipfile.ZipFile(archive_path, mode="w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.write(clip_path, arcname=clip_path.name)
+        if archive_path.stat().st_size <= 0:
+            print(f"Clip archive is empty: {archive_path.name}")
+            archive_path.unlink(missing_ok=True)
+            return None
+        return archive_path
+    except Exception as exc:
+        print(f"Failed to create clip archive {archive_path.name}: {exc}")
+        try:
+            archive_path.unlink(missing_ok=True)
+        except Exception:
+            pass
+        return None
+
+
 def upload_pending_media(flush_all: bool = False):
     global _uploaded_clips
     global _upload_failures
@@ -593,19 +616,35 @@ def upload_pending_media(flush_all: bool = False):
                     print(f"Unable to remove empty media artifact {media_path.name}: {exc}")
                 continue
 
-            relative_path = build_relative_upload_path(media_path)
             custom_values = media_custom_values(media_path, media_size)
+            upload_path = media_path
+            relative_path = build_relative_upload_path(media_path)
+            remove_upload_artifact = False
+
+            if media_path.suffix.lower() == ".mp4":
+                archive_path = create_clip_archive(media_path)
+                if archive_path is None:
+                    with _stats_lock:
+                        _upload_failures += 1
+                    break
+                upload_path = archive_path
+                relative_path = build_relative_upload_path(media_path, upload_name=archive_path.name)
+                custom_values["cf"]["archive_format"] = "zip"
+                custom_values["cf"]["original_name"] = media_path.name
+                remove_upload_artifact = True
 
             try:
-                print(f"Uploading media to S3: {media_path.name}")
+                print(f"Uploading media to S3: {upload_path.name}")
                 client.s3_upload(
-                    local_path=str(media_path),
+                    local_path=str(upload_path),
                     custom_values=custom_values,
                     relative_upload_path=relative_path
                 )
 
                 if clip_options["delete_after_upload"] and media_path.exists():
                     media_path.unlink()
+                if remove_upload_artifact and upload_path.exists():
+                    upload_path.unlink()
 
                 with _stats_lock:
                     _uploaded_clips += 1
@@ -613,12 +652,16 @@ def upload_pending_media(flush_all: bool = False):
 
                 print(f"Uploaded media successfully: {relative_path}")
             except FileNotFoundError:
-                print(f"Media disappeared before upload completed: {media_path.name}")
+                print(f"Media disappeared before upload completed: {upload_path.name}")
+                if remove_upload_artifact and upload_path.exists():
+                    upload_path.unlink(missing_ok=True)
                 continue
             except Exception as exc:
                 with _stats_lock:
                     _upload_failures += 1
-                print(f"Failed to upload {media_path.name}: {exc}")
+                print(f"Failed to upload {upload_path.name}: {exc}")
+                if remove_upload_artifact and upload_path.exists():
+                    upload_path.unlink(missing_ok=True)
                 break
 
 
