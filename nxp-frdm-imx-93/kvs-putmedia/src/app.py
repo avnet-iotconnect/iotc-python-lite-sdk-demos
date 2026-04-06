@@ -53,6 +53,21 @@ def _env_int(name: str, default: int, minimum: int = 1) -> int:
         return default
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.getenv(name)
+    if raw is None or len(raw.strip()) == 0:
+        return default
+
+    normalized = raw.strip().lower()
+    if normalized in ("1", "true", "yes", "on"):
+        return True
+    if normalized in ("0", "false", "no", "off"):
+        return False
+
+    print(f"Invalid value for {name}={raw!r}. Using default {default}.")
+    return default
+
+
 # The NXP FRDM-IMX93 has no onboard camera hardware, only the USB camera.
 # The C920 captures MJPG at 1280x720 @ 30fps over USB, which is then decoded
 # in software and re-encoded to H264 via x264enc on the Cortex-A55 CPU.
@@ -71,6 +86,10 @@ clip_options = {
     "min_file_age_secs": _env_int("VIDEO_UPLOAD_MIN_FILE_AGE_SECS", 3),
     "output_dir": os.getenv("VIDEO_UPLOAD_DIR", "/opt/demo/video-clips"),
     "delete_after_upload": os.getenv("VIDEO_DELETE_AFTER_UPLOAD", "1") != "0",
+}
+
+app_options = {
+    "auto_start_recording": _env_bool("VIDEO_AUTOSTART", False),
 }
 
 
@@ -137,6 +156,13 @@ def _bundle_gst_env() -> dict:
 
 def _clear_gst_stderr_buffer():
     _gst_stderr_buffer.clear()
+
+
+def _capture_recent_gst_stderr(stderr_output: bytes):
+    for raw_line in stderr_output.splitlines():
+        decoded = raw_line.decode(errors="replace").rstrip()
+        if len(decoded) > 0:
+            _gst_stderr_buffer.append(decoded)
 
 
 def _print_recent_gst_stderr():
@@ -266,6 +292,86 @@ def start_clip_recording() -> Optional[subprocess.Popen]:
             return None
 
 
+def capture_picture_file() -> Optional[Path]:
+    if sys.platform not in ("linux", "linux2"):
+        print("GStreamer image capture is only supported on Linux")
+        return None
+
+    handle_recorder_exit_if_needed()
+    if is_recording() or recording_requested():
+        print("Stop MP4 recording before capturing a picture")
+        return None
+
+    ensure_clip_directory()
+
+    device_port = camera_options.get("deviceport") or detect_video_device()
+    if not device_port:
+        print("No video device available")
+        return None
+
+    video_width = camera_options.get("video", {}).get("width", 1280)
+    video_height = camera_options.get("video", {}).get("height", 720)
+    video_framerate = camera_options.get("video", {}).get("framerate", 30)
+    verbose = camera_options.get("verbose", False)
+    verbose_flag = "-v " if verbose else ""
+
+    picture_path = clip_directory() / (
+        datetime.now(timezone.utc).strftime("picture-%Y%m%dT%H%M%S%fZ.jpg")
+    )
+
+    gst_command = (
+        f"gst-launch-1.0 -e {verbose_flag}"
+        f"v4l2src device={device_port} num-buffers=1 do-timestamp=true ! "
+        f"image/jpeg,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
+        f"filesink location=\"{picture_path}\""
+    )
+
+    if verbose:
+        print(f"GStreamer picture command:\n{gst_command}")
+
+    _clear_gst_stderr_buffer()
+
+    try:
+        result = subprocess.run(
+            gst_command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=False,
+            env=_bundle_gst_env(),
+            timeout=15,
+            check=False
+        )
+    except subprocess.TimeoutExpired:
+        print("Timed out while capturing picture")
+        return None
+    except FileNotFoundError:
+        print("GStreamer is NOT installed on this system")
+        return None
+    except Exception as exc:
+        print(f"Error capturing picture: {exc}")
+        return None
+
+    _capture_recent_gst_stderr(result.stderr)
+
+    if result.returncode != 0:
+        print(f"Picture capture failed with code {result.returncode}")
+        _print_recent_gst_stderr()
+        return None
+
+    try:
+        if picture_path.stat().st_size <= 0:
+            print("Picture capture produced an empty file")
+            picture_path.unlink(missing_ok=True)
+            return None
+    except FileNotFoundError:
+        print("Picture capture did not produce an output file")
+        return None
+
+    print(f"Captured picture: {picture_path.name}")
+    return picture_path
+
+
 def stop_clip_recording() -> bool:
     global _record_process
 
@@ -343,59 +449,67 @@ def _clear_recording_request_if_version(expected_version: int) -> bool:
         return True
 
 
-def session_id_for_clip(clip_path: Path) -> str:
-    clip_stem = clip_path.stem
-    if "-" not in clip_stem:
+def session_id_for_media(media_path: Path) -> str:
+    media_stem = media_path.stem
+    if "-" not in media_stem:
         return ""
-    return clip_stem.rsplit("-", 1)[0]
+    return media_stem.rsplit("-", 1)[0]
 
 
-def pending_clip_files() -> list[Path]:
+def pending_media_files() -> list[Path]:
     if not clip_directory().exists():
         return []
-    clips = []
-    for clip_path in clip_directory().glob("*.mp4"):
-        try:
-            clips.append((clip_path.stat().st_mtime, clip_path))
-        except FileNotFoundError:
-            continue
-    clips.sort(key=lambda item: item[0])
-    return [item[1] for item in clips]
+    media_files = []
+    for pattern in ("*.mp4", "*.jpg"):
+        for media_path in clip_directory().glob(pattern):
+            try:
+                media_files.append((media_path.stat().st_mtime, media_path))
+            except FileNotFoundError:
+                continue
+    media_files.sort(key=lambda item: item[0])
+    return [item[1] for item in media_files]
 
 
 def count_pending_clips() -> int:
-    return len(pending_clip_files())
+    return len(pending_media_files())
 
 
-def ready_clip_files(flush_all: bool = False) -> list[Path]:
-    clips = pending_clip_files()
-    if not clips:
+def ready_media_files(flush_all: bool = False) -> list[Path]:
+    media_files = pending_media_files()
+    if not media_files:
         return []
 
-    newest_clip = clips[-1] if is_recording() and not flush_all else None
+    newest_video = None
+    if is_recording() and not flush_all:
+        for media_path in reversed(media_files):
+            if media_path.suffix.lower() == ".mp4":
+                newest_video = media_path
+                break
+
     now = time.time()
     ready = []
 
-    for clip_path in clips:
-        if newest_clip is not None and clip_path == newest_clip:
+    for media_path in media_files:
+        if newest_video is not None and media_path == newest_video:
             continue
 
         try:
-            clip_age = now - clip_path.stat().st_mtime
+            clip_age = now - media_path.stat().st_mtime
         except FileNotFoundError:
             continue
 
         if not flush_all and clip_age < clip_options["min_file_age_secs"]:
             continue
 
-        ready.append(clip_path)
+        ready.append(media_path)
 
     return ready
 
 
-def build_relative_upload_path(clip_path: Path) -> str:
-    clip_time = datetime.fromtimestamp(clip_path.stat().st_mtime, tz=timezone.utc)
-    return f"clips/{clip_time.strftime('%Y/%m/%d')}/{clip_path.name}"
+def build_relative_upload_path(media_path: Path) -> str:
+    media_time = datetime.fromtimestamp(media_path.stat().st_mtime, tz=timezone.utc)
+    media_type_dir = "pictures" if media_path.suffix.lower() == ".jpg" else "clips"
+    return f"{media_type_dir}/{media_time.strftime('%Y/%m/%d')}/{media_path.name}"
 
 
 def handle_recorder_exit_if_needed():
@@ -432,7 +546,29 @@ def handle_recorder_exit_if_needed():
     return True
 
 
-def upload_pending_clips(flush_all: bool = False):
+def media_custom_values(media_path: Path, media_size: int) -> dict:
+    if media_path.suffix.lower() == ".jpg":
+        return {
+            "cf": {
+                "type": "picture_capture",
+                "size_bytes": media_size,
+                "width": camera_options.get("video", {}).get("width", 1280),
+                "height": camera_options.get("video", {}).get("height", 720),
+                "capture_id": media_path.stem
+            }
+        }
+
+    return {
+        "cf": {
+            "type": "video_clip",
+            "duration_secs": clip_options["duration_secs"],
+            "size_bytes": media_size,
+            "session": session_id_for_media(media_path)
+        }
+    }
+
+
+def upload_pending_media(flush_all: bool = False):
     global _uploaded_clips
     global _upload_failures
     global _last_uploaded_clip
@@ -441,56 +577,48 @@ def upload_pending_clips(flush_all: bool = False):
         if client is None or not client.is_connected():
             return
 
-        for clip_path in ready_clip_files(flush_all=flush_all):
+        for media_path in ready_media_files(flush_all=flush_all):
             try:
-                clip_size = clip_path.stat().st_size
+                media_size = media_path.stat().st_size
             except FileNotFoundError:
                 continue
 
-            if clip_size <= 0:
+            if media_size <= 0:
                 with _stats_lock:
                     _upload_failures += 1
-                print(f"Skipping empty clip artifact: {clip_path.name}")
+                print(f"Skipping empty media artifact: {media_path.name}")
                 try:
-                    clip_path.unlink(missing_ok=True)
+                    media_path.unlink(missing_ok=True)
                 except Exception as exc:
-                    print(f"Unable to remove empty clip artifact {clip_path.name}: {exc}")
+                    print(f"Unable to remove empty media artifact {media_path.name}: {exc}")
                 continue
 
-            relative_path = build_relative_upload_path(clip_path)
-            clip_session_id = session_id_for_clip(clip_path)
-            custom_values = {
-                "cf": {
-                    "type": "video_clip",
-                    "duration_secs": clip_options["duration_secs"],
-                    "size_bytes": clip_size,
-                    "session": clip_session_id
-                }
-            }
+            relative_path = build_relative_upload_path(media_path)
+            custom_values = media_custom_values(media_path, media_size)
 
             try:
-                print(f"Uploading clip to S3: {clip_path.name}")
+                print(f"Uploading media to S3: {media_path.name}")
                 client.s3_upload(
-                    local_path=str(clip_path),
+                    local_path=str(media_path),
                     custom_values=custom_values,
                     relative_upload_path=relative_path
                 )
 
-                if clip_options["delete_after_upload"] and clip_path.exists():
-                    clip_path.unlink()
+                if clip_options["delete_after_upload"] and media_path.exists():
+                    media_path.unlink()
 
                 with _stats_lock:
                     _uploaded_clips += 1
                     _last_uploaded_clip = relative_path
 
-                print(f"Uploaded clip successfully: {relative_path}")
+                print(f"Uploaded media successfully: {relative_path}")
             except FileNotFoundError:
-                print(f"Clip disappeared before upload completed: {clip_path.name}")
+                print(f"Media disappeared before upload completed: {media_path.name}")
                 continue
             except Exception as exc:
                 with _stats_lock:
                     _upload_failures += 1
-                print(f"Failed to upload {clip_path.name}: {exc}")
+                print(f"Failed to upload {media_path.name}: {exc}")
                 break
 
 
@@ -498,13 +626,13 @@ def upload_worker():
     print("Clip upload worker started")
     while not _uploader_stop_event.is_set():
         try:
-            upload_pending_clips(flush_all=False)
+            upload_pending_media(flush_all=False)
         except Exception as exc:
             print(f"Unexpected upload worker error: {exc}")
         _uploader_stop_event.wait(clip_options["scan_interval_secs"])
 
     try:
-        upload_pending_clips(flush_all=True)
+        upload_pending_media(flush_all=True)
     except Exception as exc:
         print(f"Upload worker flush failed: {exc}")
 
@@ -587,8 +715,22 @@ def request_recording_stop() -> bool:
     else:
         print("Clip recorder already stopped")
 
-    upload_pending_clips(flush_all=True)
+    upload_pending_media(flush_all=True)
     return True
+
+
+def request_picture_capture() -> bool:
+    picture_path = capture_picture_file()
+    if picture_path is None:
+        return False
+
+    expected_relative_path = build_relative_upload_path(picture_path)
+    upload_pending_media(flush_all=True)
+
+    with _stats_lock:
+        last_uploaded_path = _last_uploaded_clip
+
+    return last_uploaded_path == expected_relative_path
 
 
 def on_generic_message(msg: C2dMessage, raw_message: dict):
@@ -669,6 +811,15 @@ def on_command(msg: C2dCommand):
         else:
             if msg.ack_id is not None:
                 client.send_command_ack(msg, C2dAck.CMD_FAILED, "Unable to stop MP4 clip recording")
+        return
+
+    if msg.command_name in ("capture-picture", "record-picture"):
+        if request_picture_capture():
+            if msg.ack_id is not None:
+                client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Picture captured and uploaded")
+        else:
+            if msg.ack_id is not None:
+                client.send_command_ack(msg, C2dAck.CMD_FAILED, "Unable to capture picture")
         return
 
     print("Command %s not implemented!" % msg.command_name)
@@ -760,12 +911,17 @@ if __name__ == "__main__":
     print(f"Clip directory: {clip_directory()}")
     print(f"Available buckets: {[bucket.bucket_name for bucket in s3_client.get_buckets()]}")
 
-    request_recording_start()
-
     print("\n" + "=" * 50)
-    print("Recording fixed-length MP4 clips and uploading them to S3")
+    print("Capturing pictures or fixed-length MP4 clips and uploading them to S3")
+    if app_options["auto_start_recording"]:
+        request_recording_start()
+        print("Auto-start recording is enabled")
+    else:
+        print("Auto-start recording is disabled")
+        print("Use capture-picture for still images or record-start for video")
     print("Send command record-start to start recording")
     print("Send command record-stop to stop recording")
+    print("Send command capture-picture to capture and upload one JPEG")
     print("Press Ctrl+C to exit")
     print("=" * 50 + "\n")
 
@@ -788,7 +944,7 @@ if __name__ == "__main__":
         print("\nShutting down...")
         if is_recording():
             stop_clip_recording()
-        upload_pending_clips(flush_all=True)
+        upload_pending_media(flush_all=True)
         stop_upload_worker()
         client.disconnect()
         print("Shutdown successful.")
