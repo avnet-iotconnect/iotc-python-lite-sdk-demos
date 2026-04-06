@@ -8,11 +8,16 @@ import subprocess
 import signal
 import os
 import urllib.request
+import warnings
 import requests
 import threading
 import queue
 import traceback
 from typing import Optional
+
+# google-crc32c falls back to a pure-Python implementation on this platform and
+# always emits a RuntimeWarning about it. Suppress it to avoid confusing users.
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="google_crc32c")
 
 import numpy as np
 import app_webrtc
@@ -106,7 +111,7 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     video_framerate = camera_options.get("video", {}).get("framerate", 15)
 
     verbose = camera_options.get("verbose", False)
-    verbose_flag = "-v " if verbose else ""
+    verbose_flag = "-v " if verbose else "-q "
 
     # GStreamer pipeline: capture raw RGB frames from USB camera and write to stdout.
     # The STM32MP135F-DK has no hardware H264 encoder, but for WebRTC that is not
