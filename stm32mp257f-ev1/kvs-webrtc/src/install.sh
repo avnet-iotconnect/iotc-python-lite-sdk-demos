@@ -5,22 +5,20 @@
 
 export PIP_ROOT_USER_ACTION=ignore
 
-# cffi has no armv7l wheel on PyPI and requires a C compiler to build from source.
-# The OpenSTLinux Yocto image does not include GCC, so install via apt instead.
-apt-get install -y python3-cffi
+# av (PyAV) has no aarch64 wheel on PyPI and requires pkg-config + FFmpeg dev
+# headers to build from source — neither of which is present on OpenSTLinux.
+# The board has libavcodec60 (FFmpeg 6.1.1) from its Yocto image, which matches
+# the FFmpeg version shipped with Ubuntu 24.04. Download the pre-built arm64
+# package from Ubuntu 24.04, extract the Python module, and register a dist-info
+# record so pip treats av as already installed.
+# dpkg-deb delegates zstd decompression to the zstd binary; Ubuntu 24.04 debs
+# use zstd by default. Install it first so dpkg-deb can extract the package.
+# libavdevice60 is not installed by default on OpenSTLinux but is required by
+# the Ubuntu-built av (PyAV) shared extension.
+apt-get install -y zstd libavdevice60
 
-# numpy 2.x dropped armv7l wheels, causing pip to download a 20+ MB source tarball
-# that exceeds /tmp space. Install the Yocto apt package instead.
-apt-get install -y python3-numpy
-
-# av (PyAV) has no armv7l wheel on PyPI, no FFmpeg dev headers in the OpenSTLinux
-# apt feed, and no C compiler on the board — so it cannot be built from source.
-# Download the pre-built armhf package from Ubuntu 24.04, which ships FFmpeg 6.1.x
-# matching this board's libavcodec60/libavformat60/etc. (6.1.3). Extract the Python
-# module files and register a dist-info record so pip treats av as already installed
-# and does not attempt to rebuild it when resolving aiortc's dependencies.
-echo "Installing av (PyAV) from Ubuntu 24.04 armhf package..."
-UBUNTU_AV_DEB="python3-av_11.0.0-4build1_armhf.deb"
+echo "Installing av (PyAV) from Ubuntu 24.04 arm64 package..."
+UBUNTU_AV_DEB="python3-av_11.0.0-4build1_arm64.deb"
 UBUNTU_AV_URL="http://ports.ubuntu.com/ubuntu-ports/pool/universe/p/python-av/${UBUNTU_AV_DEB}"
 wget -q --show-progress -O "/tmp/${UBUNTU_AV_DEB}" "${UBUNTU_AV_URL}"
 mkdir -p /tmp/av-deb-extract
@@ -51,18 +49,13 @@ python3 -c "import tomllib" 2>/dev/null || {
 python3 -m pip install --upgrade iotconnect-sdk-lite
 
 # Install WebRTC and supporting Python dependencies.
-# boto3 provides the AWS API clients used by app_webrtc.py for KVS signaling.
-# aiortc handles WebRTC peer connections and media encoding.
-# websockets handles the KVS signaling WebSocket connection.
-#
-# --no-build-isolation skips pip's isolated build environment so source packages
-# use the system cffi (from apt) and system setuptools (with our tomllib shim)
-# rather than fetching incompatible versions into a fresh venv.
-# av and numpy are excluded — both installed above outside of pip.
-python3 -m pip install --no-build-isolation \
+# On aarch64, pip wheels are available for all of these (cffi, numpy, websockets)
+# so no apt workarounds or --no-build-isolation flags are needed.
+python3 -m pip install \
   "aiortc==1.9.0" \
   "websockets==13.0.1" \
   "boto3" \
+  "numpy" \
   "requests"
 
 # GStreamer is pre-installed on OpenSTLinux via the Yocto build; no apt install needed.
