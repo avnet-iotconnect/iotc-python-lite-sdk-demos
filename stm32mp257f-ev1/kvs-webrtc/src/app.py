@@ -213,7 +213,7 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
 
 
 def stop_video_stream() -> bool:
-    global _stream_process
+    global _stream_process, _webrtc_thread
 
     if sys.platform not in ('linux', 'linux2'):
         print("Stopping GStreamer is only supported on Linux")
@@ -228,10 +228,17 @@ def stop_video_stream() -> bool:
         os.killpg(os.getpgid(_stream_process.pid), signal.SIGTERM)
         _stream_process = None
         print("Capture pipeline stopped")
-        return True
     except Exception as e:
         print(f"Error stopping capture pipeline: {e}")
         return False
+
+    app_webrtc.stop_webrtc()
+    if _webrtc_thread is not None and _webrtc_thread.is_alive():
+        _webrtc_thread.join(timeout=5.0)
+        if not _webrtc_thread.is_alive():
+            _webrtc_thread = None
+
+    return True
 
 
 def is_streaming() -> bool:
@@ -457,7 +464,12 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nShutting down...")
         if is_streaming():
-            print("Stopping capture pipeline...")
             stop_video_stream()
+        else:
+            # GStreamer already stopped; WebRTC thread may still be running
+            # (e.g. blocked in pc.close() after a stop command was issued)
+            app_webrtc.stop_webrtc()
+            if _webrtc_thread is not None and _webrtc_thread.is_alive():
+                _webrtc_thread.join(timeout=10.0)
         client.disconnect()
         print("Shutdown complete.")
