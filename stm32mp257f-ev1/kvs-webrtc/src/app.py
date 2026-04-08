@@ -113,16 +113,19 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     verbose = camera_options.get("verbose", False)
     verbose_flag = "-v " if verbose else "-q "
 
-    # GStreamer pipeline: capture raw RGB frames from USB camera and write to stdout.
-    # For WebRTC, hardware H264 encoding (v4l2slh264enc) is not used — aiortc handles
-    # encoding on the Python side. We let v4l2src negotiate its native format, convert
-    # to RGB, and pipe raw frames to the frame reader thread.
-    # Adjust camera_options for a different resolution or framerate if needed.
+    # GStreamer pipeline: capture frames from USB camera and write raw I420 to stdout.
+    # I420 (YUV420 planar) is used instead of RGB because its plane strides (width for Y,
+    # width/2 for U/V) are always aligned to any hardware boundary — no padding is ever
+    # added. RGB at 640px (stride=1920) can acquire hardware-alignment padding on the
+    # STM32MP2's M2M video path (e.g. 2048-byte rows), which shifts frame data and
+    # causes the right-edge wrap artifact seen in the stream.
+    # videoscale ensures the output is exactly the requested dimensions regardless of
+    # the camera's native resolution.
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
         f"v4l2src device={device_port} do-timestamp=true ! "
-        f"videoconvert ! "
-        f"video/x-raw,format=RGB,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
+        f"videoconvert ! videoscale ! "
+        f"video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
         f"fdsink fd=1"
     )
 

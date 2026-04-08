@@ -1,6 +1,7 @@
 import asyncio
 import json
 import queue
+import threading
 import traceback
 from base64 import b64decode, b64encode
 
@@ -17,6 +18,7 @@ from botocore.session import Session
 
 webrtc_client: 'KinesisVideoClient | None' = None
 _webrtc_loop: asyncio.AbstractEventLoop | None = None
+_stop_event: threading.Event = threading.Event()
 
 
 class FrameQueueVideoTrack(MediaStreamTrack):
@@ -50,6 +52,7 @@ class KinesisVideoClient:
         self.channel_arn = channel_arn
         self.credentials = credentials
         self.video_track = FrameQueueVideoTrack(frame_queue)
+        self._websocket = None
         if self.credentials:
             self.kinesisvideo = boto3.client('kinesisvideo',
                                              region_name=self.region,
@@ -205,38 +208,38 @@ class KinesisVideoClient:
             candidate.sdpMLineIndex = payload['sdpMLineIndex']
             await self.PCMap[client_id].addIceCandidate(candidate)
 
-    async def close_peers(self):
-        for pc in list(self.PCMap.values()):
-            try:
-                await asyncio.wait_for(pc.close(), timeout=3.0)
-            except Exception:
-                pass
-        self.PCMap.clear()
-        self.DCMap.clear()
-
     async def signaling_client(self):
         self.get_signaling_channel_endpoint()
         wss_url = self.create_wss_url()
 
         try:
-            while True:
+            while not _stop_event.is_set():
                 try:
                     async with websockets.connect(wss_url) as websocket:
+                        self._websocket = websocket
                         print('Signaling Server Connected!')
                         async for message in websocket:
+                            if _stop_event.is_set():
+                                return
                             msg_type, payload, client_id = self.decode_msg(message)
                             if msg_type == 'SDP_OFFER':
                                 await self.handle_sdp_offer(payload, client_id, websocket)
                             elif msg_type == 'ICE_CANDIDATE':
                                 await self.handle_ice_candidate(payload, client_id)
                 except websockets.ConnectionClosed:
+                    if _stop_event.is_set():
+                        return
                     print('Connection closed, reconnecting...')
                     self.get_signaling_channel_endpoint()
                     wss_url = self.create_wss_url()
                     continue
+                finally:
+                    self._websocket = None
         except asyncio.CancelledError:
-            await self.close_peers()
-            raise
+            pass
+        finally:
+            self.PCMap.clear()
+            self.DCMap.clear()
 
     def refresh_credentials(self, access_key_id, secret_access_key, session_token):
         self.credentials = {
@@ -254,21 +257,33 @@ class KinesisVideoClient:
 
 
 def stop_webrtc():
+    """Signal the WebRTC signaling loop to exit and close the active websocket."""
     global _webrtc_loop
+    _stop_event.set()
     loop = _webrtc_loop
     if loop is None or loop.is_closed():
         return
 
-    async def _cancel_all():
+    async def _do_stop():
+        # Close the websocket to immediately break out of the async-for receive loop.
+        client = webrtc_client
+        if client is not None and client._websocket is not None:
+            try:
+                await client._websocket.close()
+            except Exception:
+                pass
+        # Also cancel any remaining aiortc tasks (ICE, DTLS, encoder) so they
+        # don't linger after signaling_client() returns.
         tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
         for t in tasks:
             t.cancel()
 
-    asyncio.run_coroutine_threadsafe(_cancel_all(), loop)
+    asyncio.run_coroutine_threadsafe(_do_stop(), loop)
 
 
 def start_webrtc(region, channel_arn, access_key_id, secret_access_key, session_token, frame_queue):
     global webrtc_client, _webrtc_loop
+    _stop_event.clear()
     try:
         assert all([region, channel_arn, access_key_id, secret_access_key])
 
@@ -294,12 +309,12 @@ def start_webrtc(region, channel_arn, access_key_id, secret_access_key, session_
         except asyncio.CancelledError:
             pass
         finally:
+            # Drain any remaining aiortc tasks before closing the loop.
             pending = asyncio.all_tasks(loop)
             for task in pending:
                 task.cancel()
             if pending:
                 loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
-            loop.run_until_complete(loop.shutdown_default_executor())
             loop.close()
             _webrtc_loop = None
     except Exception:
