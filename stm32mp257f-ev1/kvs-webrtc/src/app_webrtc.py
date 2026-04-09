@@ -30,19 +30,24 @@ class FrameQueueVideoTrack(MediaStreamTrack):
         self._timestamp = 0
 
     async def recv(self):
-        # Poll the queue with async sleep to avoid blocking an executor thread.
-        # asyncio.sleep() is immediately cancellable, so task cancellation is clean.
-        while True:
-            try:
-                frame_array = self._queue.get_nowait()
-            except queue.Empty:
-                await asyncio.sleep(0.005)
-                continue
+        try:
+            loop = asyncio.get_event_loop()
+            while True:
+                try:
+                    frame_array = await loop.run_in_executor(
+                        None, lambda: self._queue.get(timeout=0.5)
+                    )
+                    break
+                except queue.Empty:
+                    continue
             frame = av.VideoFrame.from_ndarray(frame_array, format='rgb24')
             frame.pts = self._timestamp
             frame.time_base = '1/30'
             self._timestamp += 1
             return frame
+        except Exception:
+            traceback.print_exc()
+            raise
 
 
 class KinesisVideoClient:
