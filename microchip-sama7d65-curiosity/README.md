@@ -151,6 +151,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 # 7. Resources
 
 * [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853)
+* [Keyword Spotting Demo for USB Microphone Input](./kws-demo/README.md)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

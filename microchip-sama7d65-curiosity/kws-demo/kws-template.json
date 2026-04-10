@@ -1,0 +1,178 @@
+{
+    "code": "sama7d65KwsDemo",
+    "name": "sama7d65KwsDemo",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "sdk_version",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "listening",
+            "displayName": "listening",
+            "type": "BOOLEAN",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "kws_label",
+            "displayName": "kws_label",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "kws_confidence",
+            "displayName": "kws_confidence",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "kws_class_id",
+            "displayName": "kws_class_id",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "kws_detected",
+            "displayName": "kws_detected",
+            "type": "BOOLEAN",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "inference_count",
+            "displayName": "inference_count",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "detection_count",
+            "displayName": "detection_count",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_detected_word",
+            "displayName": "last_detected_word",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_detected_confidence",
+            "displayName": "last_detected_confidence",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_detected_at",
+            "displayName": "last_detected_at",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "audio_device",
+            "displayName": "audio_device",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "detection_threshold",
+            "displayName": "detection_threshold",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_error",
+            "displayName": "last_error",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "listen-start",
+            "command": "listen-start",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "listen-stop",
+            "command": "listen-stop",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-threshold",
+            "command": "set-threshold",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4EKWS",
+    "capability": "0",
+    "enableCSR": "false",
+    "c2dOnDemand": 0,
+    "properties": {
+        "description": null,
+        "dataFrequency": "5",
+        "fileSupport": false,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
