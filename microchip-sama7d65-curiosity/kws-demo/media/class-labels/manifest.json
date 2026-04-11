@@ -1,0 +1,55 @@
+{
+  "tile_size_px": 144,
+  "theme": "signal-deck",
+  "labels": [
+    {
+      "label": "_silence_",
+      "filename": "silence.png"
+    },
+    {
+      "label": "_unknown_",
+      "filename": "unknown.png"
+    },
+    {
+      "label": "yes",
+      "filename": "yes.png"
+    },
+    {
+      "label": "no",
+      "filename": "no.png"
+    },
+    {
+      "label": "up",
+      "filename": "up.png"
+    },
+    {
+      "label": "down",
+      "filename": "down.png"
+    },
+    {
+      "label": "left",
+      "filename": "left.png"
+    },
+    {
+      "label": "right",
+      "filename": "right.png"
+    },
+    {
+      "label": "on",
+      "filename": "on.png"
+    },
+    {
+      "label": "off",
+      "filename": "off.png"
+    },
+    {
+      "label": "stop",
+      "filename": "stop.png"
+    },
+    {
+      "label": "go",
+      "filename": "go.png"
+    }
+  ],
+  "preview": "class-labels-preview.png"
+}

@@ -1,6 +1,6 @@
 {
-    "code": "sama7d65KwsDemo",
-    "name": "sama7d65KwsDemo",
+    "code": "sama7d6Kws",
+    "name": "sama7d6Kws",
     "authType": 2,
     "attributes": [
         {
@@ -112,8 +112,44 @@
             "aggregateTypes": []
         },
         {
+            "name": "model_name",
+            "displayName": "model_name",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "model_package",
+            "displayName": "model_package",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "model_sha256",
+            "displayName": "model_sha256",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "detection_threshold",
             "displayName": "detection_threshold",
+            "type": "DECIMAL",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "telemetry_interval",
+            "displayName": "telemetry_interval",
             "type": "DECIMAL",
             "description": "",
             "unit": "",
@@ -153,6 +189,13 @@
             "isOTACommand": false
         },
         {
+            "name": "set-interval",
+            "command": "set-interval",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
             "name": "file-download",
             "command": "file-download",
             "requiredParam": true,
@@ -167,7 +210,7 @@
     "c2dOnDemand": 0,
     "properties": {
         "description": null,
-        "dataFrequency": "5",
+        "dataFrequency": "60",
         "fileSupport": false,
         "certRenewalDay": 0,
         "enableCSR": false

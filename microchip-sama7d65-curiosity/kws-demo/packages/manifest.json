@@ -1,0 +1,56 @@
+{
+  "generated_from": "C:\\dev\\fileupload\\iotc-python-lite-sdk-demos\\microchip-sama7d65-curiosity\\kws-demo",
+  "packages": [
+    {
+      "name": "kws-demo-package.zip",
+      "type": "full-app",
+      "sha256": "a90ebd044f31b3baa9289e54e6498360a56ca66c449caaf9212868e3384e6a9e",
+      "size_bytes": 77405
+    },
+    {
+      "name": "model-ds-cnn-small-int8.zip",
+      "type": "model-only",
+      "display_name": "DS-CNN Small INT8",
+      "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/ds_cnn_small/model_package_tf/model_archive/TFLite/tflite_int8/ds_cnn_s_quantized.tflite",
+      "accuracy": "93.11%",
+      "sha256": "532b1950c74e1420fb04a47f4f853ba606f274824fe0803c9ee01b0c8f3f2bf7",
+      "size_bytes": 31277
+    },
+    {
+      "name": "model-ds-cnn-small-fp32.zip",
+      "type": "model-only",
+      "display_name": "DS-CNN Small FP32",
+      "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/ds_cnn_small/model_package_tf/model_archive/TFLite/tflite_fp32/ds_cnn_s.tflite",
+      "accuracy": "93.89%",
+      "sha256": "e07e15624b33f40847d635731f3798e10900a118939b2585eee375bc4687cd5e",
+      "size_bytes": 87735
+    },
+    {
+      "name": "model-ds-cnn-medium-int8.zip",
+      "type": "model-only",
+      "display_name": "DS-CNN Medium INT8",
+      "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/ds_cnn_medium/model_package_tf/model_archive/TFLite/tflite_int8/ds_cnn_m_quantized.tflite",
+      "accuracy": "93.93%",
+      "sha256": "88c527e6234472fc97efe242fef3e99410a04bf8d8f1bb30a030a1fa226d8cb3",
+      "size_bytes": 148324
+    },
+    {
+      "name": "model-ds-cnn-medium-fp32.zip",
+      "type": "model-only",
+      "display_name": "DS-CNN Medium FP32",
+      "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/ds_cnn_medium/model_package_tf/model_archive/TFLite/tflite_fp32/ds_cnn_m.tflite",
+      "accuracy": "94.27%",
+      "sha256": "3b16d5bd8e6b553a388cbcba04ffc377a7ac503e9b6f1d95f5d485284f6e7ef0",
+      "size_bytes": 505430
+    },
+    {
+      "name": "model-cnn-small-int8.zip",
+      "type": "model-only",
+      "display_name": "CNN Small INT8",
+      "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/cnn_small/model_package_tf/model_archive/TFLite/tflite_int8/cnn_s_quantized.tflite",
+      "accuracy": "90.18%",
+      "sha256": "1b654dceb8247aa1a87bf543be6a4ad61c3756104b613c05dc3148056d1e8a6e",
+      "size_bytes": 62919
+    }
+  ]
+}
