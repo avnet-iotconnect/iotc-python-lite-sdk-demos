@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KWS Training Studio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="grain"></div>
+  <main class="page">
+    <section class="hero card">
+      <div>
+        <p class="eyebrow">SAMA7D65 Voice Dataset Builder</p>
+        <h1>KWS Training Studio</h1>
+        <p class="lead">Capture one-second voice clips on the board, grow command folders in-place, then package and push the dataset through the `/IOTCONNECT` upload path when the device template exposes it.</p>
+      </div>
+      <div class="hero-meta">
+        <div>
+          <span>Audio Device</span>
+          <strong id="audio-device">loading</strong>
+        </div>
+        <div>
+          <span>Dataset Root</span>
+          <strong id="dataset-root">loading</strong>
+        </div>
+        <div>
+          <span>AWS Region</span>
+          <strong id="aws-region">loading</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Step 1</p>
+            <h2>Pick Or Create Command</h2>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label>
+            <span>Type New Voice Command</span>
+            <input id="new-label" type="text" placeholder="lights">
+          </label>
+          <label>
+            <span>Or Select Existing Folder</span>
+            <select id="existing-label">
+              <option value="">Choose existing folder</option>
+            </select>
+          </label>
+        </div>
+        <div class="record-panel">
+          <div class="record-head">
+            <span class="record-pill" id="record-phase">Ready</span>
+            <strong id="record-label">No folder selected</strong>
+          </div>
+          <p id="record-prompt">Choose a label, press Start Recording, speak once, then press Stop And Save Clip.</p>
+          <small id="record-file">Aim for about 1 second per clip.</small>
+        </div>
+        <div class="actions">
+          <button class="primary" id="start-record-btn">Start Recording</button>
+          <button id="stop-record-btn" disabled>Stop And Save Clip</button>
+        </div>
+        <p class="hint">Each clip is manual now. Press Start, say the command one time, then press Stop to save that single utterance. Use <code>_background_noise_</code> for ambient recordings.</p>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Step 2</p>
+            <h2>Send Through /IOTCONNECT</h2>
+          </div>
+          <span class="status" id="sm-status">checking</span>
+        </div>
+        <div class="aws-panel">
+          <div class="kv">
+            <span>Upload Mode</span>
+            <strong id="upload-mode">checking</strong>
+          </div>
+          <div class="kv">
+            <span>/IOTCONNECT Status</span>
+            <strong id="iotc-status">checking</strong>
+          </div>
+          <div class="kv">
+            <span>FILE Topic</span>
+            <strong id="file-topic">checking</strong>
+          </div>
+          <div class="kv">
+            <span>Data Bucket</span>
+            <strong id="data-bucket">not set</strong>
+          </div>
+          <div class="kv">
+            <span>Output Bucket</span>
+            <strong id="output-bucket">not set</strong>
+          </div>
+          <div class="kv">
+            <span>Training Mode</span>
+            <strong id="training-mode">checking</strong>
+          </div>
+          <div class="kv">
+            <span>Training Status</span>
+            <strong id="training-status">checking</strong>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="upload-btn">Upload Dataset Archive</button>
+          <button class="primary" id="train-btn">Upload And Start Training</button>
+        </div>
+        <p class="hint">When `/IOTCONNECT` file upload is configured on the device, the board uploads with its client certificate and publishes a `FILE` event. If that cloud-side config is missing, the app can still fall back to direct S3 when those env vars are set.</p>
+      </section>
+    </section>
+
+    <section class="grid bottom">
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Dataset</p>
+            <h2>Command Folders</h2>
+          </div>
+        </div>
+        <div class="folder-list" id="label-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Activity</p>
+            <h2>Board And AWS Events</h2>
+          </div>
+        </div>
+        <div class="event-list" id="events"></div>
+        <div class="message" id="message">Ready.</div>
+      </section>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

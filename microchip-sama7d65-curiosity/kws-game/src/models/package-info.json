@@ -1,0 +1,9 @@
+{
+  "package_name": "kws-demo-bundled-model",
+  "display_name": "DS-CNN Small INT8 (Bundled)",
+  "upstream_filename": "ds_cnn_s_quantized.tflite",
+  "source_url": "https://media.githubusercontent.com/media/Arm-Examples/ML-zoo/master/models/keyword_spotting/ds_cnn_small/model_package_tf/model_archive/TFLite/tflite_int8/ds_cnn_s_quantized.tflite",
+  "installed_model_name": "model.tflite",
+  "labels_file": "labels.txt",
+  "accuracy": "93.11%"
+}
