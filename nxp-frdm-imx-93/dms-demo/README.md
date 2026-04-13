@@ -77,7 +77,7 @@ The demo detects a variety of facial attributes and interprets driver attentiven
 </details>
 
 > [!TIP]
-> Additional context on the demo is available in the [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf).
+> Additional context on the demo is available in the [Webinar Slides](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf).
 
 ## 6. Customize and Rebuild (Optional)
 

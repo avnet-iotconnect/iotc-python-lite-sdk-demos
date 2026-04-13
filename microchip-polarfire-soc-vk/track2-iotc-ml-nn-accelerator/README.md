@@ -26,7 +26,7 @@ Scaling batch size is the most effective way to see hardware gain with this mode
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the Simple Neural Network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Simple Neural Network Accelerator FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
+2. Download the Simple Neural Network Accelerator FPGA job file [here](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.

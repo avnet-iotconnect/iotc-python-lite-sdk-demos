@@ -21,7 +21,9 @@ This document captures the full, reproducible steps to create and run the FIC0-o
 
 Use the prebuilt AXI4 stream demo .job in this repo:
 
-`microchip-polarfire-soc-dk/fpga-assets/AXI4_STREAM_DEMO_2025_07/MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07/MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job`
+Download the `.job` file from S3: [MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job)
+
+The full design archive (including source) is also available: [MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.zip](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.zip)
 
 Program it with FlashPro Express:
 
@@ -149,4 +151,4 @@ Options:
 - `fabric-accel-demo/app.py`
 - `fabric-accel-demo/README.md`
 - `microchip-polarfire-soc-dk/FPGA-ACCEL-WORKSHOP.md`
-- `microchip-polarfire-soc-dk/fpga-assets/AXI4_STREAM_DEMO_2025_07/.../MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job`
+- [MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_DISCOVERY_KIT_AXI4_STREAM_DEMO_2025_07.job) (S3)
