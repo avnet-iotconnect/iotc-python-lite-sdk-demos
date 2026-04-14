@@ -19,6 +19,21 @@ from botocore.session import Session
 webrtc_client: 'KinesisVideoClient | None' = None
 
 
+def _asyncio_exception_handler(loop, context):
+    """Suppress benign TURN channel-bind 403 errors from aioice.
+
+    The AWS KVS TURN server rejects CHANNEL-BIND requests from certain IPs
+    with a 403 Forbidden response. This is transient and harmless — aiortc
+    falls back to direct (STUN/host) candidates and the WebRTC connection
+    succeeds. Without this handler the unhandled background task exception
+    produces a noisy 'Task exception was never retrieved' traceback.
+    """
+    exc = context.get('exception')
+    if exc is not None and 'Forbidden IP' in str(exc):
+        return
+    loop.default_exception_handler(context)
+
+
 class FrameQueueVideoTrack(MediaStreamTrack):
     kind = "video"
 
@@ -213,6 +228,7 @@ class KinesisVideoClient:
             await self.PCMap[client_id].addIceCandidate(candidate)
 
     async def signaling_client(self):
+        asyncio.get_event_loop().set_exception_handler(_asyncio_exception_handler)
         self.get_signaling_channel_endpoint()
         wss_url = self.create_wss_url()
 
