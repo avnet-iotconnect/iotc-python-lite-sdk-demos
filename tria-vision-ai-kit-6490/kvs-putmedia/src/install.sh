@@ -52,11 +52,15 @@ ldconfig
 GST_PLUGIN_DIR=$(find /usr/lib -maxdepth 4 -type d -name "gstreamer-1.0" 2>/dev/null | head -1)
 
 if [ -n "$GST_PLUGIN_DIR" ] && [ -d "$GST_PLUGIN_DIR" ]; then
-  ln -sf "$KVS_BUILD_DIR/libgstkvssink.so" "$GST_PLUGIN_DIR/"
-  echo "Symlinked kvssink into $GST_PLUGIN_DIR"
+  if ln -sf "$KVS_BUILD_DIR/libgstkvssink.so" "$GST_PLUGIN_DIR/" 2>/dev/null; then
+    echo "Symlinked kvssink into $GST_PLUGIN_DIR"
+  else
+    echo "NOTE: Could not symlink kvssink into $GST_PLUGIN_DIR (read-only filesystem)."
+    echo "kvssink will be loaded via GST_PLUGIN_PATH instead."
+  fi
 else
-  echo "WARNING: Could not locate GStreamer system plugin directory."
-  echo "Falling back to GST_PLUGIN_PATH environment variable."
+  echo "NOTE: Could not locate GStreamer system plugin directory."
+  echo "kvssink will be loaded via GST_PLUGIN_PATH instead."
 fi
 
 # Set up GST_PLUGIN_PATH and LD_LIBRARY_PATH for KVS SDK
@@ -66,14 +70,13 @@ export LD_LIBRARY_PATH=/opt/kvs-producer-sdk-cpp/build${LD_LIBRARY_PATH:+:$LD_LI
 ENVEOF
 chmod 644 /etc/profile.d/kvs-gstreamer.sh
 
-# Verify kvssink plugin
-if gst-inspect-1.0 kvssink > /dev/null 2>&1; then
+# Verify kvssink plugin (set GST_PLUGIN_PATH explicitly since /usr/lib/gstreamer-1.0 may be read-only)
+if GST_PLUGIN_PATH="$KVS_BUILD_DIR" gst-inspect-1.0 kvssink > /dev/null 2>&1; then
   echo "kvssink GStreamer plugin verified successfully"
 else
-  echo "WARNING: kvssink plugin could not be verified by gst-inspect-1.0."
-  echo "You may need to log out and back in, or manually run:"
-  echo "  export GST_PLUGIN_PATH=/opt/kvs-producer-sdk-cpp/build"
-  echo "Then verify with: gst-inspect-1.0 kvssink"
+  echo "WARNING: kvssink plugin could not be verified. The KVS SDK libraries may be incomplete."
+  echo "Manually verify with:"
+  echo "  GST_PLUGIN_PATH=/opt/kvs-producer-sdk-cpp/build gst-inspect-1.0 kvssink"
 fi
 
 # Clear GStreamer plugin registry cache so kvssink is rescanned cleanly on next run.
