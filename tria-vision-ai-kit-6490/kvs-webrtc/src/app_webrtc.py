@@ -3,6 +3,7 @@ import json
 import queue
 import traceback
 from base64 import b64decode, b64encode
+from fractions import Fraction
 
 import av
 import boto3
@@ -41,7 +42,7 @@ class FrameQueueVideoTrack(MediaStreamTrack):
                     continue
             frame = av.VideoFrame.from_ndarray(frame_array, format='rgb24')
             frame.pts = self._timestamp
-            frame.time_base = '1/30'
+            frame.time_base = Fraction(1, 30)
             self._timestamp += 1
             return frame
         except Exception:
