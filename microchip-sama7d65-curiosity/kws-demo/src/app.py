@@ -25,6 +25,7 @@ from kws_engine import KeywordSpotter, KeywordSpotterError, KwsSettings, Inferen
 
 client: Optional[Client] = None
 spotter: Optional[KeywordSpotter] = None
+CONFIG_DIR = Path(os.getenv("KWS_CONFIG_DIR", os.getcwd()))
 listening_enabled = os.getenv("KWS_AUTOSTART", "1").strip().lower() not in ("0", "false", "no", "off")
 last_error = ""
 last_result: Optional[InferenceResult] = None
@@ -317,6 +318,7 @@ def make_spotter() -> KeywordSpotter:
             labels_path=resolve_labels_path(model_dir),
             threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.80")),
             cooldown_secs=float(os.getenv("KWS_COOLDOWN_SECS", "2.0")),
+            min_signal_rms=float(os.getenv("KWS_MIN_SIGNAL_RMS", "0.012")),
             arecord_device=os.getenv("KWS_ARECORD_DEVICE") or None,
         )
     )
@@ -376,9 +378,9 @@ def main():
 
     try:
         device_config = DeviceConfig.from_iotc_device_config_json_file(
-            device_config_json_path="iotcDeviceConfig.json",
-            device_cert_path="device-cert.pem",
-            device_pkey_path="device-pkey.pem",
+            device_config_json_path=str(CONFIG_DIR / "iotcDeviceConfig.json"),
+            device_cert_path=str(CONFIG_DIR / "device-cert.pem"),
+            device_pkey_path=str(CONFIG_DIR / "device-pkey.pem"),
         )
     except DeviceConfigError as exc:
         print(exc)

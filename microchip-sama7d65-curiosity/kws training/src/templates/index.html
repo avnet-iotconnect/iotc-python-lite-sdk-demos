@@ -63,7 +63,7 @@
           <button class="primary" id="start-record-btn">Start Recording</button>
           <button id="stop-record-btn" disabled>Stop And Save Clip</button>
         </div>
-        <p class="hint">Each clip is manual now. Press Start, say the command one time, then press Stop to save that single utterance. Use <code>_background_noise_</code> for ambient recordings.</p>
+        <p class="hint">Each clip is manual now. Press Start, say one utterance, then press Stop to save that single clip. Use <code>_unknown_</code> for non-command speech and <code>_background_noise_</code> for ambient recordings.</p>
       </section>
 
       <section class="card">
@@ -112,6 +112,28 @@
       </section>
     </section>
 
+    <section class="card collection-card">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Step 1A</p>
+          <h2>Collection Plan</h2>
+        </div>
+        <span class="status" id="collection-status">scanning</span>
+      </div>
+      <p class="collection-summary" id="collection-summary">Reviewing dataset balance.</p>
+      <div class="collection-stats" id="collection-stats"></div>
+      <div class="collection-grid">
+        <section>
+          <h3>Capture Next</h3>
+          <div class="plan-list" id="collection-priorities"></div>
+        </section>
+        <section>
+          <h3>Negative Data Targets</h3>
+          <div class="plan-list" id="collection-specials"></div>
+        </section>
+      </div>
+    </section>
+
     <section class="grid bottom">
       <section class="card">
         <div class="section-head">
@@ -133,6 +155,40 @@
         <div class="event-list" id="events"></div>
         <div class="message" id="message">Ready.</div>
       </section>
+    </section>
+
+    <section class="card deploy-card">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Step 3</p>
+          <h2>Install Converted Model</h2>
+        </div>
+        <span class="status" id="deploy-status">checking</span>
+      </div>
+      <div class="deploy-summary">
+        <div class="kv">
+          <span>Deploy Target</span>
+          <strong id="deploy-target">checking</strong>
+        </div>
+        <div class="kv">
+          <span>Installed Package</span>
+          <strong id="installed-package">none</strong>
+        </div>
+        <div class="kv">
+          <span>Installed Labels</span>
+          <strong id="installed-labels">none</strong>
+        </div>
+        <div class="kv">
+          <span>Last Install Source</span>
+          <strong id="installed-source">none</strong>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="refresh-models-btn">Refresh Model List</button>
+        <button class="primary" id="install-latest-btn">Install Latest Model</button>
+      </div>
+      <div class="model-list" id="model-list"></div>
+      <p class="hint">The install action downloads a converted package from S3 onto the board, extracts it in a temporary directory, and runs the package <code>install.sh</code> so the latest TFLite model lands under the demo model directory.</p>
     </section>
   </main>
   <script src="{{ url_for('static', filename='app.js') }}"></script>

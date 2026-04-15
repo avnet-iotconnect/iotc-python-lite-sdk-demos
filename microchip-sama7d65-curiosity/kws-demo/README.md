@@ -24,6 +24,16 @@ The bundled model is Arm's quantized `DS-CNN Small` Speech Commands model. The s
 - `stop`
 - `go`
 
+For the current custom retraining flow used with [`../kws training/`](../kws%20training/), the board can instead run a board-trained DS-CNN package from `/opt/demo/models`. The current recommended custom label set is:
+
+- `_silence_`
+- `_unknown_`
+- `deal`
+- `double`
+- `hit`
+- `reset`
+- `stand`
+
 ## 2. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
@@ -126,7 +136,14 @@ export KWS_ARECORD_DEVICE=plughw:1,0
 export KWS_MODEL_DIR=/opt/demo/models
 export KWS_MODEL_FILE=model.tflite
 export KWS_LABELS_FILE=labels.txt
+export KWS_CONFIG_DIR=/root
 ```
+
+`KWS_CONFIG_DIR` lets you point the demo at a specific `/IOTCONNECT` device identity directory containing:
+
+- `iotcDeviceConfig.json`
+- `device-cert.pem`
+- `device-pkey.pem`
 
 Notes:
 
@@ -136,6 +153,28 @@ Notes:
 - `KWS_TELEMETRY_SECS` sets the default heartbeat interval before any cloud command changes it.
 - `KWS_ARECORD_DEVICE` lets you pin the app to a specific USB mic if the default ALSA selection is wrong.
 - `KWS_MODEL_DIR`, `KWS_MODEL_FILE`, and `KWS_LABELS_FILE` let you swap in a different model package later.
+
+### Current Board Helper Script Flow
+
+When using the paired training workflow in [`../kws training/`](../kws%20training/), the preferred board command is:
+
+```bash
+/root/start-kws-demo-zal1.sh
+```
+
+That script:
+
+- stops competing `kws-training`, `kws-demo`, and `kws-game` processes first
+- uses `ZaL1` as the `/IOTCONNECT` identity
+- points `KWS_MODEL_DIR` at `/opt/demo/models`
+- runs the demo in the foreground for serial-console use
+
+After installing a new converted model, verify the active package and labels with:
+
+```bash
+cat /opt/demo/models/labels.txt
+cat /opt/demo/models/package-info.json
+```
 
 ## 7. Training New Commands
 

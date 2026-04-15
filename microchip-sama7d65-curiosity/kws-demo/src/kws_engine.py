@@ -48,6 +48,7 @@ class KwsSettings:
     upper_frequency_hz: float = 4000.0
     threshold: float = 0.80
     cooldown_secs: float = 2.0
+    min_signal_rms: float = 0.012
     arecord_device: Optional[str] = None
 
 
@@ -322,15 +323,37 @@ class KeywordSpotter:
 
         raise KeywordSpotterError(f"Unsupported output dtype: {output_dtype}")
 
+    @staticmethod
+    def _softmax(scores: np.ndarray) -> np.ndarray:
+        shifted = scores.astype(np.float32) - np.max(scores.astype(np.float32))
+        exp_values = np.exp(np.clip(shifted, -60.0, 0.0))
+        total = float(np.sum(exp_values))
+        if total <= 0.0:
+            return np.zeros_like(exp_values, dtype=np.float32)
+        return exp_values / total
+
     def run_once(self) -> InferenceResult:
         audio = self._capture_audio_clip()
+        signal_rms = float(np.sqrt(np.mean(np.square(audio), dtype=np.float64)))
+        if signal_rms < self.settings.min_signal_rms:
+            with self._state_lock:
+                self._inference_count += 1
+            return InferenceResult(
+                timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                label="_silence_",
+                confidence=0.0,
+                class_id=-1,
+                detected=False,
+                audio_device=self.audio_device_name(),
+            )
+
         features = self._compute_mfcc(audio)
         quantized_input = self._quantize_input(features)
 
         self._interpreter.set_tensor(self._input_details["index"], quantized_input)
         self._interpreter.invoke()
         output_tensor = self._interpreter.get_tensor(self._output_details["index"])[0]
-        scores = self._dequantize_output(output_tensor)
+        scores = self._softmax(self._dequantize_output(output_tensor))
 
         class_id = int(np.argmax(scores))
         confidence = float(scores[class_id])

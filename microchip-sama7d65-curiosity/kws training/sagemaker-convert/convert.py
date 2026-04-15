@@ -21,6 +21,8 @@ MODEL_FILE_NAME = "model.tflite"
 LABELS_FILE_NAME = "labels.txt"
 PACKAGE_INFO_FILE_NAME = "package-info.json"
 CONVERSION_RESULT_FILE_NAME = "conversion-result.json"
+SPECIAL_LABELS = {"_silence_", "_unknown_"}
+DEFAULT_DSCNN_ARCHITECTURE = "ds-cnn-mfcc"
 
 INSTALL_SCRIPT = """#!/bin/sh
 set -e
@@ -93,7 +95,7 @@ def load_training_result() -> dict[str, Any]:
     return json.loads(result_path.read_text(encoding="utf-8"))
 
 
-def build_keras_model(input_features: int, hidden_sizes: list[int], label_count: int) -> tf.keras.Model:
+def build_mlp_model(input_features: int, hidden_sizes: list[int], label_count: int) -> tf.keras.Model:
     inputs = tf.keras.Input(shape=(input_features,), dtype=tf.float32, name="input_features")
     current = inputs
     dense_layers: list[tf.keras.layers.Layer] = []
@@ -111,7 +113,7 @@ def build_keras_model(input_features: int, hidden_sizes: list[int], label_count:
     return model
 
 
-def assign_weights(model: tf.keras.Model, state_dict: dict[str, torch.Tensor], hidden_sizes: list[int]) -> None:
+def assign_mlp_weights(model: tf.keras.Model, state_dict: dict[str, torch.Tensor], hidden_sizes: list[int]) -> None:
     linear_key_pairs = []
     linear_indices = list(range(0, (len(hidden_sizes) + 1) * 2, 2))
     for index in linear_indices:
@@ -129,6 +131,87 @@ def assign_weights(model: tf.keras.Model, state_dict: dict[str, torch.Tensor], h
         keras_layer.set_weights([weight, bias])
 
 
+def build_ds_cnn_model(input_features: int, feature_shape: list[int], stem_channels: int, block_count: int, label_count: int) -> tf.keras.Model:
+    inputs = tf.keras.Input(shape=(input_features,), dtype=tf.float32, name="input_features")
+    current = tf.keras.layers.Reshape((feature_shape[0], feature_shape[1], 1), name="reshape_input")(inputs)
+    current = tf.keras.layers.Conv2D(
+        filters=stem_channels,
+        kernel_size=(5, 3),
+        strides=(1, 1),
+        padding="same",
+        use_bias=False,
+        name="stem_conv",
+    )(current)
+    current = tf.keras.layers.BatchNormalization(name="stem_bn")(current)
+    current = tf.keras.layers.ReLU(name="stem_relu")(current)
+
+    for index in range(block_count):
+        prefix = f"ds_{index}"
+        current = tf.keras.layers.DepthwiseConv2D(
+            kernel_size=(3, 3),
+            strides=(1, 1),
+            padding="same",
+            use_bias=False,
+            name=f"{prefix}_depthwise",
+        )(current)
+        current = tf.keras.layers.BatchNormalization(name=f"{prefix}_depthwise_bn")(current)
+        current = tf.keras.layers.ReLU(name=f"{prefix}_depthwise_relu")(current)
+        current = tf.keras.layers.Conv2D(
+            filters=stem_channels,
+            kernel_size=(1, 1),
+            strides=(1, 1),
+            padding="same",
+            use_bias=False,
+            name=f"{prefix}_pointwise",
+        )(current)
+        current = tf.keras.layers.BatchNormalization(name=f"{prefix}_pointwise_bn")(current)
+        current = tf.keras.layers.ReLU(name=f"{prefix}_pointwise_relu")(current)
+
+    current = tf.keras.layers.GlobalAveragePooling2D(name="avg_pool")(current)
+    outputs = tf.keras.layers.Dense(label_count, activation=None, name="classifier")(current)
+    model = tf.keras.Model(inputs=inputs, outputs=outputs, name="kws_ds_cnn")
+    model(np.zeros((1, input_features), dtype=np.float32))
+    return model
+
+
+def assign_batch_norm(layer: tf.keras.layers.BatchNormalization, state_dict: dict[str, torch.Tensor], prefix: str) -> None:
+    gamma = state_dict[f"{prefix}.weight"].detach().cpu().numpy().astype(np.float32)
+    beta = state_dict[f"{prefix}.bias"].detach().cpu().numpy().astype(np.float32)
+    moving_mean = state_dict[f"{prefix}.running_mean"].detach().cpu().numpy().astype(np.float32)
+    moving_variance = state_dict[f"{prefix}.running_var"].detach().cpu().numpy().astype(np.float32)
+    layer.set_weights([gamma, beta, moving_mean, moving_variance])
+
+
+def assign_conv2d(layer: tf.keras.layers.Conv2D, weight: torch.Tensor) -> None:
+    kernel = weight.detach().cpu().numpy().astype(np.float32)
+    kernel = np.transpose(kernel, (2, 3, 1, 0))
+    layer.set_weights([kernel])
+
+
+def assign_depthwise_conv2d(layer: tf.keras.layers.DepthwiseConv2D, weight: torch.Tensor) -> None:
+    kernel = weight.detach().cpu().numpy().astype(np.float32)
+    kernel = np.transpose(kernel, (2, 3, 0, 1))
+    layer.set_weights([kernel])
+
+
+def assign_dense(layer: tf.keras.layers.Dense, weight: torch.Tensor, bias: torch.Tensor) -> None:
+    kernel = weight.detach().cpu().numpy().astype(np.float32).T
+    bias_values = bias.detach().cpu().numpy().astype(np.float32)
+    layer.set_weights([kernel, bias_values])
+
+
+def assign_ds_cnn_weights(model: tf.keras.Model, state_dict: dict[str, torch.Tensor], block_count: int) -> None:
+    assign_conv2d(model.get_layer("stem_conv"), state_dict["stem_conv.weight"])
+    assign_batch_norm(model.get_layer("stem_bn"), state_dict, "stem_bn")
+    for index in range(block_count):
+        prefix = f"blocks.{index}"
+        assign_depthwise_conv2d(model.get_layer(f"ds_{index}_depthwise"), state_dict[f"{prefix}.depthwise.weight"])
+        assign_batch_norm(model.get_layer(f"ds_{index}_depthwise_bn"), state_dict, f"{prefix}.depthwise_bn")
+        assign_conv2d(model.get_layer(f"ds_{index}_pointwise"), state_dict[f"{prefix}.pointwise.weight"])
+        assign_batch_norm(model.get_layer(f"ds_{index}_pointwise_bn"), state_dict, f"{prefix}.pointwise_bn")
+    assign_dense(model.get_layer("classifier"), state_dict["classifier.weight"], state_dict["classifier.bias"])
+
+
 def convert_to_tflite(model: tf.keras.Model) -> bytes:
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     return converter.convert()
@@ -137,14 +220,15 @@ def convert_to_tflite(model: tf.keras.Model) -> bytes:
 def make_package_name(labels: list[str]) -> str:
     if PACKAGE_NAME_OVERRIDE:
         return PACKAGE_NAME_OVERRIDE
-    base_name = slugify("-".join(labels[:4]) or "kws-model")
+    command_labels = [label for label in labels if label not in SPECIAL_LABELS]
+    base_name = slugify("-".join(command_labels[:4]) or "kws-model")
     return f"{base_name}-model.zip"
 
 
 def package_display_name(labels: list[str]) -> str:
     if PACKAGE_DISPLAY_NAME:
         return PACKAGE_DISPLAY_NAME
-    return ", ".join(labels)
+    return ", ".join(label for label in labels if label not in SPECIAL_LABELS)
 
 
 def write_package_zip(package_path: Path, model_path: Path, labels_path: Path, package_info_path: Path) -> None:
@@ -190,10 +274,35 @@ def main() -> None:
     labels = load_labels(metadata)
     training_result = load_training_result()
 
-    input_features = int(metadata.get("input_features", 490))
-    hidden_sizes = [int(value) for value in metadata.get("hidden_sizes", [128, 64])]
-    keras_model = build_keras_model(input_features, hidden_sizes, len(labels))
-    assign_weights(keras_model, state_dict, hidden_sizes)
+    architecture = str(metadata.get("model_architecture", "")).strip().lower()
+    if not architecture:
+        architecture = str(training_result.get("model_architecture", "mlp")).strip().lower() or "mlp"
+
+    if architecture == DEFAULT_DSCNN_ARCHITECTURE:
+        input_features = int(metadata.get("input_features", 490))
+        feature_shape = [int(value) for value in metadata.get("feature_shape", [49, 10])]
+        stem_channels = int(metadata.get("stem_channels", 64))
+        block_count = int(metadata.get("block_count", 4))
+        keras_model = build_ds_cnn_model(input_features, feature_shape, stem_channels, block_count, len(labels))
+        assign_ds_cnn_weights(keras_model, state_dict, block_count)
+        model_details = {
+            "input_features": input_features,
+            "feature_shape": feature_shape,
+            "stem_channels": stem_channels,
+            "block_count": block_count,
+            "model_architecture": architecture,
+        }
+    else:
+        input_features = int(metadata.get("input_features", 490))
+        hidden_sizes = [int(value) for value in metadata.get("hidden_sizes", [128, 64])]
+        keras_model = build_mlp_model(input_features, hidden_sizes, len(labels))
+        assign_mlp_weights(keras_model, state_dict, hidden_sizes)
+        model_details = {
+            "input_features": input_features,
+            "hidden_sizes": hidden_sizes,
+            "model_architecture": architecture or "mlp",
+        }
+
     tflite_bytes = convert_to_tflite(keras_model)
 
     model_path = OUTPUT_DIR / MODEL_FILE_NAME
@@ -209,6 +318,7 @@ def main() -> None:
         "display_name": package_display_name(labels),
         "installed_model_name": MODEL_FILE_NAME,
         "labels_file": LABELS_FILE_NAME,
+        "model_architecture": model_details["model_architecture"],
     }
     package_info_path.write_text(json.dumps(package_info, indent=2) + "\n", encoding="utf-8")
     write_package_zip(package_path, model_path, labels_path, package_info_path)
@@ -217,13 +327,12 @@ def main() -> None:
         "input_state_path": str(state_path),
         "label_count": len(labels),
         "labels": labels,
-        "input_features": input_features,
-        "hidden_sizes": hidden_sizes,
         "model_file": MODEL_FILE_NAME,
         "labels_file": LABELS_FILE_NAME,
         "package_info_file": PACKAGE_INFO_FILE_NAME,
         "package_file": package_path.name,
         "training_result": training_result,
+        **model_details,
     }
     result_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 

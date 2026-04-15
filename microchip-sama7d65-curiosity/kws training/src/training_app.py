@@ -10,6 +10,7 @@ import tarfile
 import tempfile
 import threading
 import time
+import zipfile
 from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -34,6 +35,7 @@ PORT = int(os.getenv("KWS_TRAINING_PORT", "8090"))
 DEBUG = os.getenv("KWS_TRAINING_DEBUG", "0").strip().lower() in {"1", "true", "yes"}
 DATASET_ROOT = Path(os.getenv("KWS_TRAINING_DATASET_ROOT", BASE_DIR / "datasets"))
 EXPORT_ROOT = Path(os.getenv("KWS_TRAINING_EXPORT_ROOT", BASE_DIR / "exports"))
+RETIRED_LABELS_ROOT = Path(os.getenv("KWS_TRAINING_RETIRED_ROOT", BASE_DIR / "retired-labels"))
 SAMPLE_RATE = int(os.getenv("KWS_TRAINING_SAMPLE_RATE", "16000"))
 CHANNELS = int(os.getenv("KWS_TRAINING_CHANNELS", "1"))
 CLIP_SECONDS = max(1, int(os.getenv("KWS_TRAINING_CLIP_SECONDS", "1")))
@@ -49,9 +51,26 @@ SAGEMAKER_IMAGE_URI = os.getenv("KWS_SAGEMAKER_IMAGE_URI", "").strip()
 SAGEMAKER_INSTANCE_TYPE = os.getenv("KWS_SAGEMAKER_INSTANCE_TYPE", "ml.m5.xlarge").strip()
 SAGEMAKER_INSTANCE_COUNT = max(1, int(os.getenv("KWS_SAGEMAKER_INSTANCE_COUNT", "1")))
 SAGEMAKER_MAX_RUNTIME_SECS = max(3600, int(os.getenv("KWS_SAGEMAKER_MAX_RUNTIME_SECS", "14400")))
-SAGEMAKER_TRAIN_EPOCHS = max(1, int(os.getenv("KWS_SAGEMAKER_TRAIN_EPOCHS", "20")))
-SAGEMAKER_TRAIN_BATCH_SIZE = max(1, int(os.getenv("KWS_SAGEMAKER_TRAIN_BATCH_SIZE", "16")))
-SAGEMAKER_TRAIN_LEARNING_RATE = float(os.getenv("KWS_SAGEMAKER_TRAIN_LEARNING_RATE", "0.001"))
+SAGEMAKER_TRAIN_EPOCHS = max(1, int(os.getenv("KWS_SAGEMAKER_TRAIN_EPOCHS", "30")))
+SAGEMAKER_TRAIN_BATCH_SIZE = max(1, int(os.getenv("KWS_SAGEMAKER_TRAIN_BATCH_SIZE", "32")))
+SAGEMAKER_TRAIN_LEARNING_RATE = float(os.getenv("KWS_SAGEMAKER_TRAIN_LEARNING_RATE", "0.0007"))
+DEFAULT_TRAINING_LABELS = [item.strip() for item in os.getenv("KWS_TRAINING_DEFAULT_LABELS", "deal,double,hit,reset,stand").split(",") if item.strip()]
+TRAIN_PRETRAIN_ENABLED = os.getenv("KWS_TRAIN_PRETRAIN_ENABLED", "1").strip()
+TRAIN_PRETRAIN_REQUIRED = os.getenv("KWS_TRAIN_PRETRAIN_REQUIRED", "0").strip()
+TRAIN_PRETRAIN_SOURCE = os.getenv(
+    "KWS_TRAIN_PRETRAIN_SOURCE",
+    "http://download.tensorflow.org/data/speech_commands_v0.02.tar.gz",
+).strip()
+TRAIN_PRETRAIN_EPOCHS = os.getenv("KWS_TRAIN_PRETRAIN_EPOCHS", "6").strip()
+TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL = os.getenv("KWS_TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL", "1800").strip()
+TRAIN_PRETRAIN_VALIDATION_SPLIT = os.getenv("KWS_TRAIN_PRETRAIN_VALIDATION_SPLIT", "0.1").strip()
+TRAIN_PRETRAIN_LEARNING_RATE = os.getenv("KWS_TRAIN_PRETRAIN_LEARNING_RATE", "0.001").strip()
+TRAIN_PRETRAIN_WORDS = os.getenv(
+    "KWS_TRAIN_PRETRAIN_WORDS",
+    "yes,no,up,down,left,right,on,off,stop,go",
+).strip()
+TRAIN_MUSAN_SOURCE = os.getenv("KWS_TRAIN_MUSAN_SOURCE", "").strip()
+TRAIN_MUSAN_MAX_CLIPS = os.getenv("KWS_TRAIN_MUSAN_MAX_CLIPS", "128").strip()
 UPLOAD_MODE = os.getenv("KWS_TRAINING_UPLOAD_MODE", "auto").strip().lower() or "auto"
 IOTC_TELEMETRY_SECS = max(5.0, float(os.getenv("KWS_IOTC_TELEMETRY_SECS", "60")))
 IOTC_CONFIG_JSON = Path(os.getenv("KWS_IOTC_CONFIG_JSON", "/root/iotcDeviceConfig.json"))
@@ -81,12 +100,42 @@ PIPELINE_WEIGHTS_NAME = os.getenv("KWS_TRAINING_WEIGHTS_NAME", "").strip()
 PIPELINE_OUTPUT_S3_URI = os.getenv("KWS_TRAINING_PIPELINE_OUTPUT_S3_URI", "").strip()
 AUTO_CONVERT_AFTER_TRAIN = os.getenv("KWS_TRAINING_AUTO_CONVERT_AFTER_TRAIN", "1").strip().lower() in {"1", "true", "yes"}
 TRAINING_POLL_SECS = max(10, int(os.getenv("KWS_TRAINING_POLL_SECS", "15")))
+DEPLOY_ROOT = Path(os.getenv("KWS_TRAINING_DEPLOY_ROOT", "/opt/demo"))
+DEPLOY_MODELS_DIR = Path(os.getenv("KWS_TRAINING_DEPLOY_MODELS_DIR", DEPLOY_ROOT / "models"))
+MODEL_LIST_LIMIT = max(1, int(os.getenv("KWS_TRAINING_MODEL_LIST_LIMIT", "24")))
+MODEL_INSTALL_TIMEOUT_SECS = max(30, int(os.getenv("KWS_TRAINING_MODEL_INSTALL_TIMEOUT_SECS", "900")))
+COMMAND_COLLECTION_TARGET = max(1, int(os.getenv("KWS_TRAINING_COMMAND_TARGET", "50")))
+COMMAND_COLLECTION_MINIMUM = min(
+    COMMAND_COLLECTION_TARGET,
+    max(1, int(os.getenv("KWS_TRAINING_COMMAND_MINIMUM", "20"))),
+)
+UNKNOWN_COLLECTION_TARGET = max(1, int(os.getenv("KWS_TRAINING_UNKNOWN_TARGET", "40")))
+NOISE_COLLECTION_TARGET = max(1, int(os.getenv("KWS_TRAINING_NOISE_TARGET", "30")))
+COLLECTION_PRIORITY_LIMIT = max(1, int(os.getenv("KWS_TRAINING_COLLECTION_PRIORITY_LIMIT", "6")))
 
 ACTIVE_WORKFLOW_STATES = {
     "direct-sagemaker-running",
     "auto-conversion-running",
     "iotconnect-conversion-running",
 }
+SUPPORTED_MODEL_ARCHIVES = (".zip", ".tar.gz")
+SPECIAL_CAPTURE_GUIDANCE = {
+    "_unknown_": {
+        "title": "Unknown Spoken Words",
+        "target": UNKNOWN_COLLECTION_TARGET,
+        "purpose": "Teach the model to reject speech that is not one of the command words.",
+        "recording_tip": "Say short words and phrases that are not valid commands. Mix speakers, pace, and distance.",
+        "examples": ["hello", "thank you", "cancel that", "what time is it"],
+    },
+    "_background_noise_": {
+        "title": "Background Noise",
+        "target": NOISE_COLLECTION_TARGET,
+        "purpose": "Teach the model what the room, fan, HVAC, and board environment sound like when nobody is speaking.",
+        "recording_tip": "Stay quiet while recording. Capture room tone, keyboard noise, fan noise, and chair movement.",
+        "examples": ["silent room", "HVAC hum", "keyboard clicks", "chair movement"],
+    },
+}
+PROTECTED_LABELS = {"_unknown_", "_background_noise_"}
 
 
 def utc_now() -> str:
@@ -129,8 +178,8 @@ def sanitize_label(value: str) -> str:
     normalized = re.sub(r"\s+", "_", value.strip().lower())
     normalized = re.sub(r"[^a-z0-9_-]", "", normalized)
     normalized = normalized.strip("._-")
-    if value.strip() == "_background_noise_":
-        return "_background_noise_"
+    if value.strip() in {"_background_noise_", "_unknown_"}:
+        return value.strip()
     if not normalized:
         raise ValueError("Voice command must contain letters or numbers.")
     return normalized
@@ -222,12 +271,16 @@ class TrainingWorkspace:
         self._last_training_output = ""
         self._last_conversion_job = ""
         self._last_conversion_output = ""
+        self._last_installed_model_name = ""
+        self._last_installed_model_s3_uri = ""
+        self._last_install_at = ""
         self._last_error = ""
         self._training_status = ""
         self._iotconnect_connected = False
         self._workflow_thread: Optional[threading.Thread] = None
         DATASET_ROOT.mkdir(parents=True, exist_ok=True)
         EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
+        RETIRED_LABELS_ROOT.mkdir(parents=True, exist_ok=True)
         self.audio_device = detect_arecord_device()
         self.native_uploader = create_native_uploader()
         self._event("READY", f"Dataset root: {DATASET_ROOT}")
@@ -315,6 +368,29 @@ class TrainingWorkspace:
             "bucket": native["selected_bucket"] if mode == "iotconnect-native" else S3_DATA_BUCKET,
         }
 
+    def deployment_summary(self) -> dict:
+        credentials_ready = standard_aws_credentials_available() or self.native_uploader.boto3_ready()
+        ready = bool(SAGEMAKER_OUTPUT_BUCKET and credentials_ready)
+        if ready:
+            status = "Converted model packages are ready to browse and install."
+        elif not SAGEMAKER_OUTPUT_BUCKET:
+            status = "Converted model bucket is not configured. Set KWS_TRAINING_OUTPUT_BUCKET."
+        else:
+            status = (
+                "AWS credentials are unavailable for model browsing. "
+                "Set AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY or /root/.aws/credentials."
+            )
+        installed = self.installed_model_summary()
+        return {
+            "ready": ready,
+            "status": status,
+            "bucket": SAGEMAKER_OUTPUT_BUCKET,
+            "prefix": PIPELINE_OUTPUT_PREFIX,
+            "target_root": str(DEPLOY_ROOT),
+            "target_models_dir": str(DEPLOY_MODELS_DIR),
+            "installed": installed,
+        }
+
     def list_labels(self) -> list[LabelSummary]:
         labels: list[LabelSummary] = []
         for directory in sorted(DATASET_ROOT.iterdir()) if DATASET_ROOT.exists() else []:
@@ -331,11 +407,348 @@ class TrainingWorkspace:
             )
         return labels
 
+    def collection_plan(self, summaries: Optional[list[LabelSummary]] = None) -> dict:
+        summaries = summaries if summaries is not None else self.list_labels()
+        counts = {summary.label: summary.clip_count for summary in summaries}
+        command_summaries = [
+            summary
+            for summary in summaries
+            if summary.label not in SPECIAL_CAPTURE_GUIDANCE and summary.label != "_silence_"
+        ]
+        command_summaries.sort(key=lambda item: (item.clip_count, item.label))
+
+        command_rows: list[dict] = []
+        for summary in command_summaries:
+            remaining = max(0, COMMAND_COLLECTION_TARGET - summary.clip_count)
+            if summary.clip_count < COMMAND_COLLECTION_MINIMUM:
+                status = "below-minimum"
+                guidance = (
+                    "Below the minimum command floor. Add this word before you trust the next retrain."
+                )
+            elif remaining > 0:
+                status = "below-target"
+                guidance = "Usable, but still below the recommended command target."
+            else:
+                status = "ready"
+                guidance = "Healthy command folder. Keep it only if you want more speaker variety."
+            command_rows.append(
+                {
+                    "label": summary.label,
+                    "kind": "command",
+                    "title": summary.label.replace("_", " "),
+                    "clip_count": summary.clip_count,
+                    "target": COMMAND_COLLECTION_TARGET,
+                    "minimum": COMMAND_COLLECTION_MINIMUM,
+                    "remaining": remaining,
+                    "status": status,
+                    "existing": True,
+                    "latest_capture": summary.latest_capture,
+                    "recording_tip": "Say the real command once per clip with different tone, speed, and mic distance.",
+                    "guidance": guidance,
+                }
+            )
+
+        special_rows: list[dict] = []
+        for label, meta in SPECIAL_CAPTURE_GUIDANCE.items():
+            clip_count = counts.get(label, 0)
+            remaining = max(0, int(meta["target"]) - clip_count)
+            if clip_count == 0:
+                status = "missing"
+            elif remaining > 0:
+                status = "growing"
+            else:
+                status = "ready"
+            special_rows.append(
+                {
+                    "label": label,
+                    "kind": "special",
+                    "title": str(meta["title"]),
+                    "clip_count": clip_count,
+                    "target": int(meta["target"]),
+                    "remaining": remaining,
+                    "status": status,
+                    "existing": label in counts,
+                    "purpose": str(meta["purpose"]),
+                    "recording_tip": str(meta["recording_tip"]),
+                    "guidance": str(meta["purpose"]),
+                    "examples": list(meta["examples"]),
+                }
+            )
+
+        commands_below_minimum = [row for row in command_rows if row["clip_count"] < COMMAND_COLLECTION_MINIMUM]
+        commands_below_target = [row for row in command_rows if row["remaining"] > 0]
+        special_needed = [row for row in special_rows if row["remaining"] > 0]
+
+        priority_rows: list[dict] = []
+
+        def add_priority(row: dict, reason: str):
+            if any(existing["label"] == row["label"] for existing in priority_rows):
+                return
+            prioritized = dict(row)
+            prioritized["priority_reason"] = reason
+            priority_rows.append(prioritized)
+
+        for row in commands_below_minimum[:3]:
+            add_priority(row, "Weakest command folder. Raise this one toward the minimum floor first.")
+        for row in special_needed:
+            if row["label"] == "_unknown_":
+                add_priority(row, "Missing or thin negative speech data. This reduces false positives on unrelated words.")
+            elif row["label"] == "_background_noise_":
+                add_priority(row, "Missing or thin ambient data. This reduces detections when nobody is speaking.")
+        for row in commands_below_target:
+            add_priority(row, "Still below the recommended command target. Add more speaker variety here.")
+
+        priority_rows = priority_rows[:COLLECTION_PRIORITY_LIMIT]
+
+        command_clip_total = sum(row["clip_count"] for row in command_rows)
+        special_clip_total = sum(row["clip_count"] for row in special_rows)
+        if not command_rows:
+            readiness = "commands-first"
+            summary = (
+                "Create your real command folders first. After that, add `_unknown_` and `_background_noise_` "
+                "before trusting a retrain."
+            )
+        elif commands_below_minimum:
+            readiness = "needs-commands"
+            summary = (
+                f"{len(commands_below_minimum)} command folder(s) are still below the minimum floor of "
+                f"{COMMAND_COLLECTION_MINIMUM} clips. Fix those first, then add more negative data."
+            )
+        elif special_needed:
+            readiness = "needs-negatives"
+            summary = (
+                "Your command folders are usable, but the model still needs `_unknown_` and `_background_noise_` "
+                "coverage to reject silence and unrelated speech cleanly."
+            )
+        elif commands_below_target:
+            readiness = "needs-balance"
+            summary = (
+                "Negative data is present. Top off the weaker command folders so the dataset stays balanced across words."
+            )
+        else:
+            readiness = "ready"
+            summary = (
+                "The dataset looks balanced for another retraining pass. Extra clips now should focus on new speakers "
+                "and harder acoustic conditions."
+            )
+
+        return {
+            "readiness": readiness,
+            "summary": summary,
+            "targets": {
+                "command_target": COMMAND_COLLECTION_TARGET,
+                "command_minimum": COMMAND_COLLECTION_MINIMUM,
+                "unknown_target": UNKNOWN_COLLECTION_TARGET,
+                "background_noise_target": NOISE_COLLECTION_TARGET,
+            },
+            "stats": {
+                "command_labels": len(command_rows),
+                "command_clips": command_clip_total,
+                "commands_below_minimum": len(commands_below_minimum),
+                "commands_below_target": len(commands_below_target),
+                "negative_clips": special_clip_total,
+                "unknown_clips": counts.get("_unknown_", 0),
+                "background_noise_clips": counts.get("_background_noise_", 0),
+            },
+            "priorities": priority_rows,
+            "commands": command_rows,
+            "special_labels": special_rows,
+        }
+
+    def installed_model_summary(self) -> dict:
+        package_info_path = DEPLOY_MODELS_DIR / "package-info.json"
+        labels_path = DEPLOY_MODELS_DIR / "labels.txt"
+        model_path = DEPLOY_MODELS_DIR / "model.tflite"
+        package_info: dict = {}
+        if package_info_path.is_file():
+            try:
+                package_info = json.loads(package_info_path.read_text(encoding="utf-8"))
+            except Exception:
+                package_info = {}
+
+        labels: list[str] = []
+        if labels_path.is_file():
+            try:
+                labels = [line.strip() for line in labels_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            except Exception:
+                labels = []
+
+        latest_mtime = max(
+            [
+                path.stat().st_mtime
+                for path in (package_info_path, labels_path, model_path)
+                if path.is_file()
+            ],
+            default=0.0,
+        )
+        return {
+            "package_name": str(package_info.get("package_name", "")).strip(),
+            "display_name": str(package_info.get("display_name", "")).strip(),
+            "model_name": model_path.name if model_path.is_file() else "",
+            "model_sha256": self._sha256_file(model_path) if model_path.is_file() else "",
+            "labels": labels,
+            "installed_at": "" if latest_mtime == 0 else datetime.fromtimestamp(latest_mtime, tz=timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+
+    def _create_model_session(self):
+        if not SAGEMAKER_OUTPUT_BUCKET:
+            raise RuntimeError("Set KWS_TRAINING_OUTPUT_BUCKET before browsing converted models.")
+        if standard_aws_credentials_available():
+            return create_boto3_session()
+        if self.native_uploader.boto3_ready():
+            return self.native_uploader.create_boto3_session()
+        raise RuntimeError(
+            "No AWS credentials are available for converted model browsing. "
+            "Set AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY or keep /IOTCONNECT pipeline credentials available."
+        )
+
+    def _sha256_file(self, path: Path) -> str:
+        import hashlib
+
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
+
+    def list_model_packages(self, limit: int = MODEL_LIST_LIMIT) -> list[dict]:
+        session = self._create_model_session()
+        s3 = session.client("s3")
+        prefix = PIPELINE_OUTPUT_PREFIX.rstrip("/") + "/"
+        paginator = s3.get_paginator("list_objects_v2")
+        packages: list[dict] = []
+        for page in paginator.paginate(Bucket=SAGEMAKER_OUTPUT_BUCKET, Prefix=prefix):
+            for item in page.get("Contents", []):
+                key = str(item.get("Key", "")).strip()
+                if not key or not key.endswith(SUPPORTED_MODEL_ARCHIVES):
+                    continue
+                parts = key.split("/")
+                execution_name = parts[-2] if len(parts) >= 2 else ""
+                last_modified = item.get("LastModified")
+                packages.append(
+                    {
+                        "package_name": Path(key).name,
+                        "execution_name": execution_name,
+                        "bucket": SAGEMAKER_OUTPUT_BUCKET,
+                        "object_key": key,
+                        "s3_uri": f"s3://{SAGEMAKER_OUTPUT_BUCKET}/{key}",
+                        "size_bytes": int(item.get("Size", 0)),
+                        "last_modified": ""
+                        if last_modified is None
+                        else last_modified.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
+                    }
+                )
+        packages.sort(key=lambda item: (item["last_modified"], item["package_name"]), reverse=True)
+        return packages[:limit]
+
+    def _resolve_model_package(self, requested_s3_uri: str) -> dict:
+        packages = self.list_model_packages(limit=max(MODEL_LIST_LIMIT, 100))
+        if not packages:
+            raise RuntimeError("No converted model packages were found in S3 yet.")
+        if not requested_s3_uri:
+            return packages[0]
+        for package in packages:
+            if package["s3_uri"] == requested_s3_uri:
+                return package
+        raise RuntimeError(f"Converted model package not found: {requested_s3_uri}")
+
+    def _validate_extract_target(self, destination: Path, member_name: str):
+        normalized = member_name.replace("\\", "/").lstrip("/")
+        target = (destination / normalized).resolve()
+        try:
+            target.relative_to(destination.resolve())
+        except ValueError as exc:
+            raise RuntimeError(f"Package contains an invalid path: {member_name}") from exc
+
+    def _extract_model_package(self, archive_path: Path, destination: Path):
+        destination.mkdir(parents=True, exist_ok=True)
+        if archive_path.name.endswith(".zip"):
+            with zipfile.ZipFile(archive_path, "r") as archive:
+                for member in archive.namelist():
+                    self._validate_extract_target(destination, member)
+                archive.extractall(destination)
+            return
+        if archive_path.name.endswith(".tar.gz"):
+            with tarfile.open(archive_path, "r:gz") as archive:
+                for member in archive.getmembers():
+                    self._validate_extract_target(destination, member.name)
+                archive.extractall(destination)
+            return
+        raise RuntimeError(f"Unsupported package format: {archive_path.name}")
+
+    def install_model_package(self, requested_s3_uri: str = "") -> dict:
+        package = self._resolve_model_package(requested_s3_uri.strip())
+        session = self._create_model_session()
+        s3 = session.client("s3")
+        self._event("DEPLOY", f"Downloading {package['package_name']} from S3")
+        with tempfile.TemporaryDirectory(prefix="kws-model-install-") as temp_dir_name:
+            temp_dir = Path(temp_dir_name)
+            archive_path = temp_dir / package["package_name"]
+            extract_dir = temp_dir / "package"
+            s3.download_file(package["bucket"], package["object_key"], str(archive_path))
+            self._extract_model_package(archive_path, extract_dir)
+            install_script = extract_dir / "install.sh"
+            if not install_script.is_file():
+                raise RuntimeError("Converted package did not contain install.sh.")
+            try:
+                result = subprocess.run(
+                    ["bash", str(install_script)],
+                    cwd=str(extract_dir),
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    timeout=MODEL_INSTALL_TIMEOUT_SECS,
+                )
+            except subprocess.CalledProcessError as exc:
+                output = "\n".join(part for part in [exc.stdout.strip(), exc.stderr.strip()] if part).strip()
+                raise RuntimeError(output or f"install.sh failed with exit code {exc.returncode}") from exc
+
+        installed = self.installed_model_summary()
+        with self._lock:
+            self._last_installed_model_name = installed["package_name"] or package["package_name"]
+            self._last_installed_model_s3_uri = package["s3_uri"]
+            self._last_install_at = utc_now()
+            self._last_error = ""
+        self._event("DEPLOY", f"Installed model package {package['package_name']} onto {DEPLOY_MODELS_DIR}")
+        return {
+            "selected_package": package,
+            "installed": installed,
+            "stdout": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
+        }
+
     def ensure_label_dir(self, raw_label: str) -> Path:
         label = sanitize_label(raw_label)
         label_dir = DATASET_ROOT / label
         label_dir.mkdir(parents=True, exist_ok=True)
         return label_dir
+
+    def retire_label(self, raw_label: str) -> dict:
+        label = sanitize_label(raw_label)
+        if label in PROTECTED_LABELS:
+            raise RuntimeError(f"{label} is protected. Keep it for negative-data training.")
+        label_dir = DATASET_ROOT / label
+        if not label_dir.is_dir():
+            raise RuntimeError(f"Label folder does not exist: {label}")
+
+        with self._lock:
+            if self._recording_process is not None and self._recording_process.poll() is None:
+                raise RuntimeError("Stop the current recording before retiring a label.")
+            if self._workflow_in_progress_locked():
+                raise RuntimeError("Wait for the current training or conversion workflow to finish before retiring a label.")
+
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        retirement_dir = RETIRED_LABELS_ROOT / timestamp
+        retirement_dir.mkdir(parents=True, exist_ok=True)
+        destination = retirement_dir / label_dir.name
+        if destination.exists():
+            destination = retirement_dir / f"{label_dir.name}-{int(time.time())}"
+        shutil.move(str(label_dir), str(destination))
+        self._event("DATASET", f"Retired label {label} to {destination}")
+        return {
+            "label": label,
+            "retired_to": str(destination),
+        }
 
     def _clear_recording_locked(self):
         self._recording_process = None
@@ -400,6 +813,10 @@ class TrainingWorkspace:
                 _stdout, stderr = process.communicate(timeout=1)
                 output_path.unlink(missing_ok=True)
                 message = stderr.strip() or f"exit code {process.returncode}"
+                if "Device or resource busy" in message:
+                    raise RuntimeError(
+                        f"Microphone is busy on {self.audio_device}. Stop kws-demo, kws-game, or any other arecord user first, then try Start Recording again."
+                    )
                 raise RuntimeError(f"Audio capture failed to start: {message}")
         except Exception as exc:
             output_path.unlink(missing_ok=True)
@@ -467,7 +884,13 @@ class TrainingWorkspace:
         with self._lock:
             if self._recording_process is not None and self._recording_process.poll() is None:
                 raise RuntimeError("Stop the current recording before packaging or uploading the dataset.")
-        selected = {sanitize_label(label) for label in labels} if labels else None
+        if labels:
+            selected = {sanitize_label(label) for label in labels}
+        elif DEFAULT_TRAINING_LABELS:
+            selected = {sanitize_label(label) for label in DEFAULT_TRAINING_LABELS}
+            selected.update(label for label in PROTECTED_LABELS if (DATASET_ROOT / label).is_dir())
+        else:
+            selected = None
         label_rows = []
         for summary in self.list_labels():
             if selected is not None and summary.label not in selected:
@@ -479,7 +902,11 @@ class TrainingWorkspace:
                     "latest_capture": summary.latest_capture,
                 }
             )
-        wanted_words = [row["label"] for row in label_rows if row["label"] != "_background_noise_"]
+        wanted_words = [
+            row["label"]
+            for row in label_rows
+            if row["label"] not in {"_background_noise_", "_unknown_", "_silence_"}
+        ]
         return {
             "created_at": utc_now(),
             "sample_rate": SAMPLE_RATE,
@@ -922,6 +1349,7 @@ class TrainingWorkspace:
         environment = {
             "KWS_DATASET_S3_URI": upload_info["s3_uri"],
             "KWS_WANTED_WORDS": ",".join(manifest["wanted_words"]),
+            "KWS_RECOMMENDED_WANTED_WORDS": ",".join(DEFAULT_TRAINING_LABELS),
             "KWS_SAMPLE_RATE": str(SAMPLE_RATE),
             "KWS_CLIP_SECONDS": str(CLIP_SECONDS),
             "KWS_MANIFEST_S3_URI": upload_info["manifest_s3_uri"],
@@ -932,6 +1360,16 @@ class TrainingWorkspace:
             "KWS_TRAIN_EPOCHS": str(SAGEMAKER_TRAIN_EPOCHS),
             "KWS_TRAIN_BATCH_SIZE": str(SAGEMAKER_TRAIN_BATCH_SIZE),
             "KWS_TRAIN_LEARNING_RATE": str(SAGEMAKER_TRAIN_LEARNING_RATE),
+            "KWS_TRAIN_PRETRAIN_ENABLED": TRAIN_PRETRAIN_ENABLED,
+            "KWS_TRAIN_PRETRAIN_REQUIRED": TRAIN_PRETRAIN_REQUIRED,
+            "KWS_TRAIN_PRETRAIN_SOURCE": TRAIN_PRETRAIN_SOURCE,
+            "KWS_TRAIN_PRETRAIN_EPOCHS": TRAIN_PRETRAIN_EPOCHS,
+            "KWS_TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL": TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL,
+            "KWS_TRAIN_PRETRAIN_VALIDATION_SPLIT": TRAIN_PRETRAIN_VALIDATION_SPLIT,
+            "KWS_TRAIN_PRETRAIN_LEARNING_RATE": TRAIN_PRETRAIN_LEARNING_RATE,
+            "KWS_TRAIN_PRETRAIN_WORDS": TRAIN_PRETRAIN_WORDS,
+            "KWS_TRAIN_MUSAN_SOURCE": TRAIN_MUSAN_SOURCE,
+            "KWS_TRAIN_MUSAN_MAX_CLIPS": TRAIN_MUSAN_MAX_CLIPS,
         }
         hyperparameters = {
             "dataset_s3_uri": upload_info["s3_uri"],
@@ -941,6 +1379,9 @@ class TrainingWorkspace:
             "epochs": str(SAGEMAKER_TRAIN_EPOCHS),
             "batch-size": str(SAGEMAKER_TRAIN_BATCH_SIZE),
             "learning-rate": str(SAGEMAKER_TRAIN_LEARNING_RATE),
+            "pretrain-enabled": TRAIN_PRETRAIN_ENABLED or "1",
+            "pretrain-source": TRAIN_PRETRAIN_SOURCE,
+            "pretrain-epochs": TRAIN_PRETRAIN_EPOCHS or "6",
         }
         sm.create_training_job(
             TrainingJobName=training_job_name,
@@ -1035,6 +1476,7 @@ class TrainingWorkspace:
 
     def snapshot(self) -> dict:
         summaries = self.list_labels()
+        collection_plan = self.collection_plan(summaries)
         with self._lock:
             recording = self._recording_snapshot_locked()
             last_capture_at = self._last_capture_at
@@ -1045,16 +1487,21 @@ class TrainingWorkspace:
             last_training_output = self._last_training_output
             last_conversion_job = self._last_conversion_job
             last_conversion_output = self._last_conversion_output
+            last_installed_model_name = self._last_installed_model_name
+            last_installed_model_s3_uri = self._last_installed_model_s3_uri
+            last_install_at = self._last_install_at
             last_error = self._last_error
             iotconnect_connected = self._iotconnect_connected
         upload = self.upload_summary()
         native = self.native_upload_snapshot()
         training = self.training_summary()
+        deployment = self.deployment_summary()
         return {
             "audio_device": self.audio_device,
             "dataset_root": str(DATASET_ROOT),
             "export_root": str(EXPORT_ROOT),
             "labels": [summary.__dict__ for summary in summaries],
+            "collection_plan": collection_plan,
             "events": self.event_history(),
             "recording": recording,
             "upload": upload,
@@ -1069,6 +1516,9 @@ class TrainingWorkspace:
                 "last_training_output": last_training_output,
                 "last_conversion_job": last_conversion_job,
                 "last_conversion_output": last_conversion_output,
+                "last_installed_model_name": last_installed_model_name,
+                "last_installed_model_s3_uri": last_installed_model_s3_uri,
+                "last_install_at": last_install_at,
                 "last_error": last_error,
                 "iotconnect_connected": iotconnect_connected,
             },
@@ -1078,12 +1528,14 @@ class TrainingWorkspace:
                 "data_prefix": S3_DATA_PREFIX,
                 "output_bucket": SAGEMAKER_OUTPUT_BUCKET,
                 "output_prefix": SAGEMAKER_OUTPUT_PREFIX,
+                "converted_prefix": PIPELINE_OUTPUT_PREFIX,
                 "sagemaker_ready": training["ready"],
                 "image_configured": bool(SAGEMAKER_IMAGE_URI),
                 "role_configured": bool(SAGEMAKER_ROLE_ARN),
                 "upload_mode": upload["mode"],
                 "training_mode": training["mode"],
             },
+            "deployment": deployment,
             "capture": {
                 "sample_rate": SAMPLE_RATE,
                 "channels": CHANNELS,
@@ -1169,6 +1621,21 @@ def api_capture_stop():
     return jsonify({"ok": True, "result": result, "state": workspace.snapshot()})
 
 
+@app.post("/api/labels/retire")
+def api_labels_retire():
+    payload = request.get_json(silent=True) or {}
+    label = str(payload.get("label", "")).strip()
+    if not label:
+        return jsonify({"ok": False, "error": "label is required", "state": workspace.snapshot()}), 400
+    try:
+        result = workspace.retire_label(label)
+    except Exception as exc:
+        workspace.note_error(str(exc))
+        return jsonify({"ok": False, "error": str(exc), "state": workspace.snapshot()}), 400
+    workspace.clear_error()
+    return jsonify({"ok": True, "result": result, "state": workspace.snapshot()})
+
+
 @app.post("/api/aws/upload")
 def api_upload():
     payload = request.get_json(silent=True) or {}
@@ -1206,6 +1673,30 @@ def api_train():
             "state": workspace.snapshot(),
         }
     )
+
+
+@app.get("/api/models")
+def api_models():
+    try:
+        models = workspace.list_model_packages()
+    except Exception as exc:
+        workspace.note_error(str(exc))
+        return jsonify({"ok": False, "error": str(exc), "state": workspace.snapshot()}), 400
+    workspace.clear_error()
+    return jsonify({"ok": True, "models": models, "state": workspace.snapshot()})
+
+
+@app.post("/api/models/install")
+def api_models_install():
+    payload = request.get_json(silent=True) or {}
+    s3_uri = str(payload.get("s3_uri", "")).strip()
+    try:
+        result = workspace.install_model_package(s3_uri)
+    except Exception as exc:
+        workspace.note_error(str(exc))
+        return jsonify({"ok": False, "error": str(exc), "state": workspace.snapshot()}), 400
+    workspace.clear_error()
+    return jsonify({"ok": True, "result": result, "state": workspace.snapshot()})
 
 
 def main():

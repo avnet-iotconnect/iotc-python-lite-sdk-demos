@@ -46,7 +46,15 @@ class InferenceResult:
 
 
 class KeywordSpotter:
-    def __init__(self, model_path: Path, labels_path: Path, threshold: float, cooldown_secs: float, audio_device: Optional[str]):
+    def __init__(
+        self,
+        model_path: Path,
+        labels_path: Path,
+        threshold: float,
+        cooldown_secs: float,
+        min_signal_rms: float,
+        audio_device: Optional[str],
+    ):
         self.sample_rate = 16000
         self.clip_duration_ms = 1000
         self.window_size_ms = 40
@@ -57,6 +65,7 @@ class KeywordSpotter:
         self.upper_frequency_hz = 4000.0
         self.threshold = threshold
         self.cooldown_secs = cooldown_secs
+        self.min_signal_rms = min_signal_rms
         self._state_lock = threading.Lock()
         self._last_detected_word = ""
         self._last_detected_confidence = 0.0
@@ -252,13 +261,35 @@ class KeywordSpotter:
             return (output_tensor.astype(np.float32) - self._output_zero_point) * self._output_scale
         raise KeywordSpotterError(f"Unsupported output dtype: {output_dtype}")
 
+    @staticmethod
+    def _softmax(scores: np.ndarray) -> np.ndarray:
+        shifted = scores.astype(np.float32) - np.max(scores.astype(np.float32))
+        exp_values = np.exp(np.clip(shifted, -60.0, 0.0))
+        total = float(np.sum(exp_values))
+        if total <= 0.0:
+            return np.zeros_like(exp_values, dtype=np.float32)
+        return exp_values / total
+
     def run_once(self) -> InferenceResult:
         audio = self._capture_audio_clip()
+        signal_rms = float(np.sqrt(np.mean(np.square(audio), dtype=np.float64)))
+        if signal_rms < self.min_signal_rms:
+            with self._state_lock:
+                self._inference_count += 1
+            return InferenceResult(
+                timestamp_utc=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                label="_silence_",
+                confidence=0.0,
+                class_id=-1,
+                detected=False,
+                audio_device=self.audio_device_name(),
+            )
+
         features = self._compute_mfcc(audio)
         self._interpreter.set_tensor(self._input_details["index"], self._quantize_input(features))
         self._interpreter.invoke()
         output_tensor = self._interpreter.get_tensor(self._output_details["index"])[0]
-        scores = self._dequantize_output(output_tensor)
+        scores = self._softmax(self._dequantize_output(output_tensor))
         class_id = int(np.argmax(scores))
         confidence = float(scores[class_id])
         label = self.labels[class_id] if class_id < len(self.labels) else f"class_{class_id}"
@@ -608,6 +639,7 @@ def main():
             labels_path=labels_path,
             threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.80")),
             cooldown_secs=float(os.getenv("KWS_COOLDOWN_SECS", "2.0")),
+            min_signal_rms=float(os.getenv("KWS_MIN_SIGNAL_RMS", "0.012")),
             audio_device=os.getenv("KWS_ARECORD_DEVICE") or None,
         )
     except Exception as exc:

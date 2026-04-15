@@ -13,6 +13,13 @@ The implementation is intentionally split into two AWS stages:
 - `sagemaker-train/` handles raw dataset training and produces `model-state.pt`
 - `sagemaker-convert/` handles `.pt` to `.tflite` conversion and packaging
 
+The current recommended training path is intentionally narrower than the full label inventory some older demos used:
+
+- default command set: `deal`, `double`, `hit`, `reset`, `stand`
+- default model: DS-CNN over MFCC features
+- default pretraining: TensorFlow Speech Commands v0.02
+- default board-side supplemental noise source: `https://www.openslr.org/resources/17/musan.tar.gz`
+
 That split matches the common `/IOTCONNECT` pattern where the provisioned `conv-*` Step Functions pipeline is a conversion workflow, not a raw-audio training workflow.
 
 ## Contents
@@ -21,8 +28,10 @@ That split matches the common `/IOTCONNECT` pattern where the provisioned `conv-
 - [`docs/DIAGRAMS.md`](./docs/DIAGRAMS.md): Mermaid diagrams for architecture, setup, training, conversion, and deployment
 - [`docs/AWS_SETUP.md`](./docs/AWS_SETUP.md): AWS, IAM, ECR, SageMaker, and Step Functions setup
 - [`docs/BOARD_SETUP.md`](./docs/BOARD_SETUP.md): board deployment, `/IOTCONNECT` provisioning, and startup
+- [`docs/BOARD_COMMANDS.md`](./docs/BOARD_COMMANDS.md): exact serial-terminal commands for stopping apps, starting training, installing the latest model, and testing `kws-demo`
 - [`docs/OPERATIONS.md`](./docs/OPERATIONS.md): daily usage, retraining flow, monitoring, and deployment
 - [`docs/REFERENCE.md`](./docs/REFERENCE.md): environment variables, HTTP API, template telemetry, and commands
+- [`scripts/`](./scripts/): board helper scripts plus dataset cleanup and clip-optimization tools
 - [`kws-training-template.json`](./kws-training-template.json): `/IOTCONNECT` template for the training device
 - [`sagemaker-train/`](./sagemaker-train/): custom SageMaker training container and PowerShell helpers
 - [`sagemaker-convert/`](./sagemaker-convert/): custom conversion container and Step Functions launcher
@@ -41,23 +50,29 @@ That split matches the common `/IOTCONNECT` pattern where the provisioned `conv-
 5. Decide where training jobs will be submitted from.
    Upload-only mode works with `/IOTCONNECT` credentials alone. Full board-driven training requires AWS credentials on the board.
 6. Capture data.
-   Open the Flask UI, create or select labels, and record clips one utterance at a time.
+   Open the Flask UI, use the `Collection Plan` panel to identify the weakest command folders plus `_unknown_` and `_background_noise_`, then record clips one utterance at a time.
 7. Start training.
-   The app uploads the dataset, submits a SageMaker training job, waits for completion, and can automatically start conversion when configured.
+   The app uploads the dataset, submits a SageMaker training job, waits for completion, and can automatically start conversion when configured. By default, board-triggered training now targets `deal`, `double`, `hit`, `reset`, and `stand` plus `_unknown_` and `_background_noise_`.
 8. Deploy the generated model package.
-   Publish the resulting `.zip` package through `/IOTCONNECT` OTA or install it manually in [`../kws-demo`](../kws-demo/).
+   Use the Flask `Install Converted Model` panel to browse converted packages in S3 and install one onto the board, or publish the resulting `.zip` package through `/IOTCONNECT` OTA.
 
 ## What The Board App Does
 
 - records `16 kHz` mono WAV clips with `arecord`
 - stores clips under `src/datasets/<label>/`
+- computes a guided collection plan so operators can balance command clips and negative data before retraining
 - packages the dataset into a `.tar.gz` archive plus a manifest JSON
 - prefers `/IOTCONNECT` native file upload when the device identity exposes file support
 - falls back to direct `boto3` S3 upload when explicitly configured
 - publishes training telemetry through `iotconnect-sdk-lite`
 - accepts `/IOTCONNECT` commands for upload, training, restart, and package download
 - starts direct SageMaker training jobs when AWS credentials and a trainer image are configured
+- defaults new training runs to the more distinct five-word command set unless explicit labels are supplied
+- uses a DS-CNN MFCC keyword model instead of the older tiny MLP baseline
+- can pretrain the DS-CNN backbone on Speech Commands before fine-tuning on board data
+- can merge MUSAN clips into the `_background_noise_` pool during board-driven training
 - automatically starts the conversion pipeline after successful training when a converter image and Step Functions state machine are configured
+- lists converted model packages from the models bucket and can install a selected package onto `/opt/demo/models`
 
 ## Repository Layout
 
@@ -70,6 +85,9 @@ kws training/
     BOARD_SETUP.md
     OPERATIONS.md
     REFERENCE.md
+  scripts/
+    clean_dataset.py
+    optimize_dataset_clips.py
   kws-training-template.json
   sagemaker-train/
   sagemaker-convert/
