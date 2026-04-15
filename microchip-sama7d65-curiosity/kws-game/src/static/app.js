@@ -6,6 +6,8 @@ const modeEl = document.getElementById("mode");
 const flashText = document.getElementById("flash-text");
 const audioDeviceEl = document.getElementById("audio-device");
 const modelNameEl = document.getElementById("model-name");
+const modelPackageEl = document.getElementById("model-package");
+const cloudStatusEl = document.getElementById("cloud-status");
 const dealerTotalEl = document.getElementById("dealer-total");
 const playerTotalEl = document.getElementById("player-total");
 const dealerCardsEl = document.getElementById("dealer-cards");
@@ -106,6 +108,8 @@ function renderState(state) {
   flashText.textContent = state.flash_text || state.round_result;
   audioDeviceEl.textContent = state.audio_device;
   modelNameEl.textContent = state.model_name;
+  modelPackageEl.textContent = state.model_package || "package unavailable";
+  cloudStatusEl.textContent = state.cloud_connected ? `cloud: ${state.cloud_status}` : `cloud: ${state.cloud_status || "offline"}`;
   dealerTotalEl.textContent = state.dealer_total;
   playerTotalEl.textContent = state.player_total;
   roundResultEl.textContent = state.round_result;
@@ -138,17 +142,17 @@ document.querySelectorAll("[data-command]").forEach((button) => {
 
 document.addEventListener("keydown", (event) => {
   const map = {
-    Enter: "go",
-    " ": "go",
-    y: "yes",
-    n: "no",
-    o: "on",
-    f: "off",
-    ArrowUp: "up",
-    ArrowDown: "down",
-    ArrowRight: "right",
-    ArrowLeft: "left",
-    Escape: "stop",
+    Enter: "deal",
+    " ": "deal",
+    h: "hit",
+    s: "stand",
+    d: "double",
+    f: "safe-bet",
+    ArrowUp: "bet-up",
+    ArrowDown: "bet-down",
+    ArrowRight: "bet-up",
+    ArrowLeft: "bet-down",
+    Escape: "reset",
   };
   const command = map[event.key];
   if (command) {

@@ -1,25 +1,127 @@
 from __future__ import annotations
 
+import hashlib
+import json
+import os
 import random
+import subprocess
+import sys
+import tarfile
 import threading
 import time
+import urllib.request
+import zipfile
 from collections import deque
 from pathlib import Path
-from typing import Deque
+from typing import Deque, Optional
+from urllib.parse import urlparse
 
+import requests
 from flask import Flask, jsonify, render_template, request
+
+try:
+    from avnet.iotconnect.sdk.lite import Callbacks, Client, DeviceConfig, DeviceConfigError, C2dCommand, C2dOta
+    from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
+    from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
+
+    SDK_IMPORT_ERROR = ""
+except Exception as exc:  # pragma: no cover - import depends on target image
+    Callbacks = Client = DeviceConfig = DeviceConfigError = C2dCommand = C2dOta = C2dAck = None  # type: ignore[assignment]
+    SDK_VERSION = "unavailable"
+    SDK_IMPORT_ERROR = str(exc)
 
 from kws_engine import KeywordSpotter, KwsSettings
 
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_DIR = Path(__import__("os").getenv("KWS_MODEL_DIR", BASE_DIR / "models"))
-HOST = __import__("os").getenv("KWS_GAME_HOST", "0.0.0.0")
-PORT = int(__import__("os").getenv("KWS_GAME_PORT", "8080"))
-DEBUG = __import__("os").getenv("KWS_GAME_DEBUG", "0").strip() in {"1", "true", "yes"}
+DEFAULT_MODEL_DIR = Path("/opt/demo/models") if Path("/opt/demo/models").is_dir() else BASE_DIR / "models"
+MODEL_DIR = Path(os.getenv("KWS_MODEL_DIR", str(DEFAULT_MODEL_DIR)))
+CONFIG_DIR = Path(os.getenv("KWS_CONFIG_DIR", os.getcwd()))
+HOST = os.getenv("KWS_GAME_HOST", "0.0.0.0")
+PORT = int(os.getenv("KWS_GAME_PORT", "8080"))
+DEBUG = os.getenv("KWS_GAME_DEBUG", "0").strip().lower() in {"1", "true", "yes"}
+TELEMETRY_INTERVAL_SECS = max(1.0, float(os.getenv("KWS_GAME_TELEMETRY_SECS", os.getenv("KWS_TELEMETRY_SECS", "60"))))
 
-SUITS = ["♠", "♥", "♦", "♣"]
+COMMAND_ALIASES = {
+    "go": "deal",
+    "yes": "hit",
+    "no": "stand",
+    "on": "double",
+    "stop": "reset",
+    "up": "bet-up",
+    "right": "bet-up",
+    "down": "bet-down",
+    "left": "bet-down",
+    "off": "safe-bet",
+}
+GAME_ACTIONS = {"deal", "hit", "stand", "double", "reset", "bet-up", "bet-down", "safe-bet"}
+
+SUITS = ["\u2660", "\u2665", "\u2666", "\u2663"]
 RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+
+cloud_bridge: Optional["IotConnectGameBridge"] = None
+
+
+def restart_process():
+    print("")
+    sys.stdout.flush()
+    os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
+def local_package_name(package_url: str) -> str:
+    candidate = Path(urlparse(package_url).path).name
+    if candidate.endswith(".zip") or candidate.endswith(".tar.gz"):
+        return candidate
+    return "package.zip"
+
+
+def extract_and_run_package(archive_filename: str) -> bool:
+    try:
+        archive_path = Path(archive_filename)
+        if archive_path.suffix == ".zip":
+            with zipfile.ZipFile(archive_path, "r") as archive:
+                archive.extractall(os.getcwd())
+        elif archive_path.name.endswith(".tar.gz"):
+            with tarfile.open(archive_path, "r:gz") as archive:
+                archive.extractall(os.getcwd())
+        else:
+            print(f"Unsupported package format: {archive_path.name}")
+            return False
+
+        script_file_path = Path(os.getcwd()) / "install.sh"
+        if not script_file_path.is_file():
+            print("install.sh not found in the current directory.")
+            return True
+
+        try:
+            subprocess.run(["bash", str(script_file_path)], check=True)
+            script_file_path.unlink(missing_ok=True)
+            print("Successfully executed install.sh")
+            return True
+        except Exception as exc:
+            script_file_path.unlink(missing_ok=True)
+            print(f"Error executing install.sh: {exc}")
+            return False
+    except (subprocess.CalledProcessError, tarfile.TarError, zipfile.BadZipFile):
+        return False
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def read_package_info(model_dir: Path) -> dict:
+    package_info_path = model_dir / "package-info.json"
+    if not package_info_path.is_file():
+        return {}
+    try:
+        return json.loads(package_info_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
 
 
 def make_card(rng: random.Random) -> dict:
@@ -46,11 +148,22 @@ class VoiceBlackjack:
         self._running = True
         self._command_history: Deque[dict] = deque(maxlen=18)
         self._event_history: Deque[dict] = deque(maxlen=12)
+        self.listening_enabled = os.getenv("KWS_AUTOSTART", "1").strip().lower() not in {"0", "false", "no", "off"}
+        self.cloud_connected = False
+        self.cloud_status = "disabled"
+        self.model_name = self._spotter.settings.model_path.name
+        self.model_sha256 = sha256_file(self._spotter.settings.model_path)
+        self.model_package = read_package_info(self._spotter.settings.model_path.parent).get("package_name", "")
         self._reset_table()
         self._kws_thread = threading.Thread(target=self._kws_loop, daemon=True, name="kws-loop")
         self._kws_thread.start()
 
-    def _make_spotter(self):
+    @staticmethod
+    def _normalize_command(label: str) -> str:
+        normalized = str(label or "").strip().lower()
+        return COMMAND_ALIASES.get(normalized, normalized)
+
+    def _make_spotter(self) -> KeywordSpotter:
         model_path = MODEL_DIR / "model.tflite"
         if not model_path.is_file():
             model_path = MODEL_DIR / "ds_cnn_s_quantized.tflite"
@@ -58,9 +171,9 @@ class VoiceBlackjack:
             KwsSettings(
                 model_path=model_path,
                 labels_path=MODEL_DIR / "labels.txt",
-                threshold=float(__import__("os").getenv("KWS_DETECTION_THRESHOLD", "0.80")),
-                cooldown_secs=float(__import__("os").getenv("KWS_COOLDOWN_SECS", "1.2")),
-                arecord_device=__import__("os").getenv("KWS_ARECORD_DEVICE") or None,
+                threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.80")),
+                cooldown_secs=float(os.getenv("KWS_COOLDOWN_SECS", "1.2")),
+                arecord_device=os.getenv("KWS_ARECORD_DEVICE") or None,
             )
         )
 
@@ -73,7 +186,7 @@ class VoiceBlackjack:
         self.dealer_cards: list[dict] = []
         self.last_result = {"label": "", "confidence": 0.0, "detected": False}
         self.last_error = ""
-        self.round_result = "Set your bet, then say GO"
+        self.round_result = "Set your bet, then say DEAL"
         self.flash_text = "Voice Blackjack"
         self.flash_until = time.monotonic() + 60.0
         self.double_available = False
@@ -91,6 +204,24 @@ class VoiceBlackjack:
     def _set_flash(self, text: str, duration: float = 1.6):
         self.flash_text = text
         self.flash_until = time.monotonic() + duration
+
+    def set_listening_enabled(self, enabled: bool):
+        with self._lock:
+            self.listening_enabled = bool(enabled)
+
+    def set_cloud_status(self, connected: bool, status: str):
+        with self._lock:
+            self.cloud_connected = bool(connected)
+            self.cloud_status = status
+
+    def set_last_error(self, message: str):
+        with self._lock:
+            self.last_error = message
+            if message:
+                self._append_event("ERROR", message)
+
+    def set_threshold(self, threshold: float):
+        self._spotter.set_threshold(threshold)
 
     def _start_hand(self, source: str):
         if self.bankroll <= 0:
@@ -177,61 +308,68 @@ class VoiceBlackjack:
         else:
             self._stand(source)
 
-    def handle_command(self, label: str, confidence: float, detected: bool, manual: bool = False):
+    def handle_command(self, label: str, confidence: float, detected: bool, source_name: str = "voice"):
         with self._lock:
-            self.last_result = {"label": label, "confidence": confidence, "detected": detected}
-            self._append_command(label, confidence, detected)
+            command = self._normalize_command(label)
+            self.last_result = {"label": command, "confidence": confidence, "detected": detected}
+            self._append_command(command, confidence, detected)
             if not detected:
                 return
 
-            source = "keyboard" if manual else "voice"
+            source = source_name
 
-            if label == "go":
+            if command == "deal":
                 if self.mode in {"betting", "round_over"}:
                     self._start_hand(source)
+                elif self.mode == "player_turn":
+                    self._set_flash("Hand already active", 0.9)
                 return
 
-            if label == "stop":
+            if command == "reset":
                 self._reset_table()
-                self._append_event("STOP", f"{source} reset the table")
+                self._append_event("RESET", f"{source} reset the table")
                 return
 
             if self.mode == "betting":
-                if label in {"up", "right"}:
+                if command == "bet-up":
                     self.bet = min(self.bankroll, self.bet + 25) if self.bankroll > 0 else self.bet
                     self._set_flash(f"Bet set to {self.bet}", 1.0)
-                elif label in {"down", "left"}:
+                elif command == "bet-down":
                     self.bet = max(5, self.bet - 25)
                     self._set_flash(f"Bet set to {self.bet}", 1.0)
-                elif label == "on":
-                    self.bet = min(self.bankroll, max(50, self.bankroll // 2)) if self.bankroll > 0 else self.bet
-                    self._set_flash(f"Power bet {self.bet}", 1.0)
-                elif label == "off":
+                elif command == "safe-bet":
                     self.bet = 25 if self.bankroll >= 25 else max(5, self.bankroll)
                     self._set_flash(f"Safe bet {self.bet}", 1.0)
+                elif command in {"hit", "stand", "double"}:
+                    self._set_flash("Adjust bet or say DEAL", 0.9)
                 return
 
             if self.mode != "player_turn":
                 return
 
-            if label == "yes":
+            if command == "hit":
                 self._hit(source)
-            elif label == "no":
+            elif command == "stand":
                 self._stand(source)
-            elif label == "on":
+            elif command == "double":
                 self._double_down(source)
-            elif label in {"up", "right"}:
-                self._set_flash("YES = Hit", 0.9)
-            elif label in {"down", "left"}:
-                self._set_flash("NO = Stand", 0.9)
-            elif label == "off":
-                self._set_flash("ON = Double Down", 0.9)
+            elif command in {"bet-up", "bet-down", "safe-bet"}:
+                self._set_flash("Wait for next hand to change bet", 0.9)
 
     def _kws_loop(self):
         while self._running:
+            with self._lock:
+                listening_enabled = self.listening_enabled
+
+            if not listening_enabled:
+                time.sleep(0.25)
+                continue
+
             try:
                 result = self._spotter.run_once()
-                self.handle_command(result.label, result.confidence, result.detected)
+                self.handle_command(result.label, result.confidence, result.detected, source_name="voice")
+                if result.detected and cloud_bridge is not None:
+                    cloud_bridge.send_telemetry(reason="event", detection_event=True)
             except Exception as exc:
                 with self._lock:
                     self.last_error = str(exc)
@@ -258,10 +396,266 @@ class VoiceBlackjack:
                 "last_result": self.last_result,
                 "last_error": self.last_error,
                 "audio_device": self._spotter.audio_device_name(),
-                "model_name": self._spotter.settings.model_path.name,
+                "model_name": self.model_name,
+                "model_package": self.model_package,
+                "model_sha256": self.model_sha256,
+                "detection_threshold": round(self._spotter.threshold, 4),
+                "listening": self.listening_enabled,
+                "cloud_connected": self.cloud_connected,
+                "cloud_status": self.cloud_status,
                 "command_history": list(self._command_history),
                 "events": list(self._event_history),
             }
+
+
+class IotConnectGameBridge:
+    def __init__(self, table: VoiceBlackjack):
+        self.table = table
+        self.telemetry_secs = TELEMETRY_INTERVAL_SECS
+        self.client: Optional[Client] = None  # type: ignore[type-arg]
+        self.device_config = None
+        self.enabled = False
+        self.started = False
+        self._next_periodic_at = 0.0
+        self._stop_event = threading.Event()
+        self._thread: Optional[threading.Thread] = None
+
+    def start(self):
+        if Client is None or DeviceConfig is None:
+            self.table.set_cloud_status(False, f"sdk unavailable: {SDK_IMPORT_ERROR}")
+            return
+
+        config_json = CONFIG_DIR / "iotcDeviceConfig.json"
+        cert_path = CONFIG_DIR / "device-cert.pem"
+        key_path = CONFIG_DIR / "device-pkey.pem"
+        if not config_json.is_file() or not cert_path.is_file() or not key_path.is_file():
+            self.table.set_cloud_status(False, "config files not found")
+            return
+
+        try:
+            self.device_config = DeviceConfig.from_iotc_device_config_json_file(
+                device_config_json_path=str(config_json),
+                device_cert_path=str(cert_path),
+                device_pkey_path=str(key_path),
+            )
+        except DeviceConfigError as exc:
+            self.table.set_cloud_status(False, str(exc))
+            return
+
+        self.client = Client(
+            config=self.device_config,
+            callbacks=Callbacks(  # type: ignore[operator]
+                ota_cb=self.on_ota,
+                command_cb=self.on_command,
+                disconnected_cb=self.on_disconnect,
+            ),
+        )
+        self.enabled = True
+        self._thread = threading.Thread(target=self._run, daemon=True, name="iotconnect-loop")
+        self._thread.start()
+
+    def stop(self):
+        self._stop_event.set()
+        if self.client is not None and self.client.is_connected():
+            try:
+                self.send_telemetry(reason="shutdown")
+                self.client.disconnect()
+            except Exception:
+                pass
+
+    def ensure_connected(self):
+        if self.client is None:
+            raise RuntimeError("Client is not initialized")
+        if self.client.is_connected():
+            self.table.set_cloud_status(True, "connected")
+            return
+        print("(re)connecting to /IOTCONNECT...")
+        self.client.connect()
+        if not self.client.is_connected():
+            self.table.set_cloud_status(False, "connect failed")
+            raise RuntimeError("Unable to connect to /IOTCONNECT")
+        self.table.set_cloud_status(True, "connected")
+
+    def build_telemetry(self, detection_event: bool = False) -> dict:
+        snapshot = self.table.snapshot()
+        last_result = snapshot.get("last_result", {}) or {}
+        return {
+            "sdk_version": SDK_VERSION,
+            "listening": snapshot["listening"],
+            "game_mode": snapshot["mode"],
+            "bankroll": snapshot["bankroll"],
+            "best_bankroll": snapshot["best_bankroll"],
+            "bet": snapshot["bet"],
+            "hand_number": snapshot["hand_number"],
+            "player_total": snapshot["player_total"],
+            "dealer_total": snapshot["dealer_total"],
+            "dealer_bust": snapshot["dealer_bust"],
+            "double_available": snapshot["double_available"],
+            "round_result": snapshot["round_result"],
+            "last_command": last_result.get("label", ""),
+            "last_command_confidence": round(float(last_result.get("confidence", 0.0)), 6),
+            "last_command_detected": bool(detection_event and last_result.get("detected", False)),
+            "audio_device": snapshot["audio_device"],
+            "model_name": snapshot["model_name"],
+            "model_package": snapshot["model_package"],
+            "model_sha256": snapshot["model_sha256"],
+            "detection_threshold": snapshot["detection_threshold"],
+            "telemetry_interval": round(self.telemetry_secs, 3),
+            "last_error": snapshot["last_error"],
+        }
+
+    def send_telemetry(self, reason: str = "periodic", detection_event: bool = False):
+        if self.client is None or not self.client.is_connected():
+            return
+        telemetry = self.build_telemetry(detection_event=detection_event)
+        self.client.send_telemetry(telemetry)
+        print(f"Sent {reason} telemetry:", telemetry)
+
+    def on_command(self, msg: C2dCommand):  # type: ignore[valid-type]
+        print("Received command", msg.command_name, msg.command_args, msg.ack_id)
+        command_name = VoiceBlackjack._normalize_command(msg.command_name)
+
+        if command_name in GAME_ACTIONS:
+            self.table.handle_command(command_name, 1.0, True, source_name="cloud")
+            if msg.ack_id is not None:
+                self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, f"Executed {command_name}")  # type: ignore[union-attr]
+            self.send_telemetry(reason="command")
+            return
+
+        if msg.command_name == "listen-start":
+            self.table.set_listening_enabled(True)
+            if msg.ack_id is not None:
+                self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Voice control listening started")  # type: ignore[union-attr]
+            self.send_telemetry(reason="command")
+            return
+
+        if msg.command_name == "listen-stop":
+            self.table.set_listening_enabled(False)
+            if msg.ack_id is not None:
+                self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Voice control listening stopped")  # type: ignore[union-attr]
+            self.send_telemetry(reason="command")
+            return
+
+        if msg.command_name == "set-threshold":
+            if len(msg.command_args) != 1:
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument")  # type: ignore[union-attr]
+                return
+            try:
+                new_threshold = float(msg.command_args[0])
+                if new_threshold < 0.0 or new_threshold > 1.0:
+                    raise ValueError()
+                self.table.set_threshold(new_threshold)
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, f"Threshold set to {new_threshold:.3f}")  # type: ignore[union-attr]
+                self.send_telemetry(reason="command")
+            except ValueError:
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Threshold must be a decimal from 0.0 to 1.0")  # type: ignore[union-attr]
+            return
+
+        if msg.command_name == "set-interval":
+            if len(msg.command_args) != 1:
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument")  # type: ignore[union-attr]
+                return
+            try:
+                new_interval = float(msg.command_args[0])
+                if new_interval <= 0.0:
+                    raise ValueError()
+                self.telemetry_secs = max(1.0, new_interval)
+                self._next_periodic_at = 0.0
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(  # type: ignore[union-attr]
+                        msg,
+                        C2dAck.CMD_SUCCESS_WITH_ACK,
+                        f"Telemetry interval set to {self.telemetry_secs:g} seconds",
+                    )
+                self.send_telemetry(reason="command")
+            except ValueError:
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Interval must be a positive number of seconds")  # type: ignore[union-attr]
+            return
+
+        if msg.command_name == "refresh-state":
+            if msg.ack_id is not None:
+                self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Sending current state telemetry")  # type: ignore[union-attr]
+            self.send_telemetry(reason="refresh")
+            return
+
+        if msg.command_name == "file-download":
+            if len(msg.command_args) != 1:
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument")  # type: ignore[union-attr]
+                return
+            package_url = msg.command_args[0]
+            try:
+                package_name = local_package_name(package_url)
+                response = requests.get(package_url, stream=True, timeout=60)
+                response.raise_for_status()
+                with open(package_name, "wb") as file_handle:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        file_handle.write(chunk)
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, f"Downloading {package_url}")  # type: ignore[union-attr]
+                print(f"File downloaded successfully and saved to {package_name}")
+                if extract_and_run_package(package_name):
+                    print("Download command successful. Restarting the application...")
+                    restart_process()
+            except Exception as exc:
+                error_message = f"Failed to download package: {exc}"
+                print(error_message)
+                if msg.ack_id is not None:
+                    self.client.send_command_ack(msg, C2dAck.CMD_FAILED, error_message)  # type: ignore[union-attr]
+            return
+
+        print(f"Command {msg.command_name} not implemented")
+        if msg.ack_id is not None:
+            self.client.send_command_ack(msg, C2dAck.CMD_FAILED, "Not Implemented")  # type: ignore[union-attr]
+
+    def on_ota(self, msg: C2dOta):  # type: ignore[valid-type]
+        print(f"Starting OTA downloads for version {msg.version}")
+        self.client.send_ota_ack(msg, C2dAck.OTA_DOWNLOADING)  # type: ignore[union-attr]
+        extraction_success = False
+        for url in msg.urls:
+            print(f"Downloading OTA file {url.file_name} from {url.url}")
+            try:
+                urllib.request.urlretrieve(url.url, url.file_name)
+            except Exception as exc:
+                print("Encountered download error", exc)
+                break
+
+            if url.file_name.endswith(".zip") or url.file_name.endswith(".tar.gz"):
+                extraction_success = extract_and_run_package(url.file_name)
+                if extraction_success is False:
+                    break
+            else:
+                print(f"ERROR: Unhandled file format for file {url.file_name}")
+
+        if extraction_success is True:
+            print("OTA successful. Restarting the application...")
+            self.client.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)  # type: ignore[union-attr]
+            restart_process()
+        else:
+            print("Encountered a download processing error. Not restarting.")
+
+    def on_disconnect(self, reason: str, disconnected_from_server: bool):
+        print("Disconnected%s. Reason: %s" % (" from server" if disconnected_from_server else "", reason))
+        self.table.set_cloud_status(False, reason)
+
+    def _run(self):
+        while not self._stop_event.is_set():
+            try:
+                self.ensure_connected()
+                now_monotonic = time.monotonic()
+                if not self.started or now_monotonic >= self._next_periodic_at:
+                    self.send_telemetry(reason="startup" if not self.started else "periodic")
+                    self.started = True
+                    self._next_periodic_at = now_monotonic + self.telemetry_secs
+            except Exception as exc:
+                self.table.set_cloud_status(False, str(exc))
+                print(exc)
+            self._stop_event.wait(1.0)
 
 
 table = VoiceBlackjack()
@@ -284,16 +678,35 @@ def api_action():
     command = str(payload.get("command", "")).strip().lower()
     if not command:
         return jsonify({"ok": False, "error": "command is required"}), 400
-    table.handle_command(command, 1.0, True, manual=True)
+    table.handle_command(command, 1.0, True, source_name="keyboard")
+    if cloud_bridge is not None:
+        cloud_bridge.send_telemetry(reason="local-action")
     return jsonify({"ok": True, "state": table.snapshot()})
 
 
 def main():
+    global cloud_bridge
+
+    cloud_bridge = IotConnectGameBridge(table)
+    cloud_bridge.start()
+
     print(f"Starting Voice Blackjack on http://{HOST}:{PORT}")
     print(f"Audio device: {table.snapshot()['audio_device']}")
     print(f"Model: {table.snapshot()['model_name']}")
-    app.run(host=HOST, port=PORT, debug=DEBUG, use_reloader=False, threaded=True)
+    print(f"Model package: {table.snapshot()['model_package']}")
+    print(f"IOTCONNECT config directory: {CONFIG_DIR}")
+    print(f"Cloud status: {table.snapshot()['cloud_status']}")
+
+    try:
+        app.run(host=HOST, port=PORT, debug=DEBUG, use_reloader=False, threaded=True)
+    finally:
+        if cloud_bridge is not None:
+            cloud_bridge.stop()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
+        sys.exit(0)
