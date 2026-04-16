@@ -2,6 +2,16 @@
 
 This directory contains files that can be used across many (if not all) supported devices in this repository.
 
+## Generated Package Artifacts
+
+Some device-specific packaging scripts copy a generated archive into this folder as `package.zip`.
+
+Important:
+
+- `common/package.zip` is not guaranteed to exist in git
+- it is typically created on demand by a demo-specific packaging script such as `create-package.sh`
+- if documentation or a workflow refers to `common/package.zip`, generate it first from the owning demo folder rather than assuming it is already present
+
 ## General Guides
 
 ### REST-API-ONBOARD.md

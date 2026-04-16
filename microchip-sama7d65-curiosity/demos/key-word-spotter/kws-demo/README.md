@@ -246,6 +246,8 @@ That refreshes:
 - `packages/kws-demo-package.zip`
 - `../../../../common/package.zip`
 
+`../../../../common/package.zip` is a generated convenience copy, not a checked-in prerequisite. If a workflow or helper script expects that file, run `bash ./create-package.sh` first to generate it.
+
 To regenerate the stock model packages in `packages/`:
 
 ```bash
