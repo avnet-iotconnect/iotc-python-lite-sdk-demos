@@ -78,7 +78,31 @@ These snapshots show the browser UI plus the `/IOTCONNECT` views that pair with 
   </tr>
 </table>
 
-## 3. Set Up Hardware and Template
+## 3. Import The Optional Dashboard
+
+If you want the same `/IOTCONNECT` dashboard layout used during this demo work, import the packaged dashboard export:
+
+- [Microchip_Blackjack_Dash_dashboard_export.json](./dashboards/Microchip_Blackjack_Dash_dashboard_export.json)
+
+Import flow:
+
+1. Create the game template and device first by following [kws-game-template.json](./kws-game-template.json) and the setup in the next section.
+2. In `/IOTCONNECT`, open `Dashboards`.
+3. Choose the dashboard import option and upload `Microchip_Blackjack_Dash_dashboard_export.json`.
+4. Open the imported dashboard and edit the embedded game widget URL so it points at your board:
+
+```text
+http://<board-ip>:8081
+```
+
+5. If your device unique ID is not `blackJack`, rebind the widgets to your actual device after import.
+
+Notes:
+
+- The export was captured from a working `blackJack` device, so some widget bindings may still reference that device identity when first imported.
+- The embedded widget URL in the export is only a snapshot of one board session. It must be updated for your current board IP.
+
+## 4. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
 2. Confirm the microphone is visible to ALSA:
@@ -109,7 +133,7 @@ Notes:
   - `refresh-state`
   - `file-download`
 
-## 4. Telemetry Behavior
+## 5. Telemetry Behavior
 
 The game sends telemetry in these cases:
 
@@ -139,7 +163,7 @@ Key telemetry fields:
 - `telemetry_interval`
 - `last_error`
 
-## 5. Deploy and Install
+## 6. Deploy and Install
 
 Build the board package from the repo:
 
@@ -166,7 +190,7 @@ The installer:
 - copies bundled model assets into `/opt/demo/models`
 - keeps both `model.tflite` and `ds_cnn_s_quantized.tflite` available for compatibility
 
-## 6. Run On The Board
+## 7. Run On The Board
 
 ```bash
 cd /root/kws-game
@@ -198,7 +222,7 @@ The game also accepts the blackjack-specific filenames directly:
 
 If those files are missing, the game still starts locally but reports `cloud_status` as not configured.
 
-## 7. Commands
+## 8. Commands
 
 Game actions:
 
@@ -220,7 +244,7 @@ Runtime controls:
 - `refresh-state`
 - `file-download`
 
-## 8. Keyboard Fallback
+## 9. Keyboard Fallback
 
 - `Enter` or `Space`: `deal`
 - `H`: `hit`
@@ -231,7 +255,7 @@ Runtime controls:
 - `F`: `safe-bet`
 - `Esc`: `reset`
 
-## 9. Environment Overrides
+## 10. Environment Overrides
 
 ```bash
 export KWS_AUTOSTART=1
