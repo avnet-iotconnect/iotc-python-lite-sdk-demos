@@ -35,7 +35,7 @@ The bundled fallback model in `src/models/` matches the current five-keyword cus
 
 When `/opt/demo/models` exists, the game prefers that shared runtime model directory so it stays aligned with the latest installed KWS package.
 
-## 1A. Visual Tour
+## 2. Visual Tour
 
 These snapshots show the browser UI plus the `/IOTCONNECT` views that pair with the game.
 
@@ -78,7 +78,7 @@ These snapshots show the browser UI plus the `/IOTCONNECT` views that pair with 
   </tr>
 </table>
 
-## 2. Set Up Hardware and Template
+## 3. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
 2. Confirm the microphone is visible to ALSA:
@@ -109,7 +109,7 @@ Notes:
   - `refresh-state`
   - `file-download`
 
-## 3. Telemetry Behavior
+## 4. Telemetry Behavior
 
 The game sends telemetry in these cases:
 
@@ -139,7 +139,7 @@ Key telemetry fields:
 - `telemetry_interval`
 - `last_error`
 
-## 4. Deploy and Install
+## 5. Deploy and Install
 
 Build the board package from the repo:
 
@@ -166,7 +166,7 @@ The installer:
 - copies bundled model assets into `/opt/demo/models`
 - keeps both `model.tflite` and `ds_cnn_s_quantized.tflite` available for compatibility
 
-## 5. Run On The Board
+## 6. Run On The Board
 
 ```bash
 cd /root/kws-game
@@ -198,7 +198,7 @@ The game also accepts the blackjack-specific filenames directly:
 
 If those files are missing, the game still starts locally but reports `cloud_status` as not configured.
 
-## 6. Commands
+## 7. Commands
 
 Game actions:
 
@@ -220,7 +220,7 @@ Runtime controls:
 - `refresh-state`
 - `file-download`
 
-## 7. Keyboard Fallback
+## 8. Keyboard Fallback
 
 - `Enter` or `Space`: `deal`
 - `H`: `hit`
@@ -231,7 +231,7 @@ Runtime controls:
 - `F`: `safe-bet`
 - `Esc`: `reset`
 
-## 8. Environment Overrides
+## 9. Environment Overrides
 
 ```bash
 export KWS_AUTOSTART=1

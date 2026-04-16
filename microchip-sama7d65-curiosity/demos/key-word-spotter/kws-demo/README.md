@@ -34,12 +34,6 @@ For the current custom retraining flow used with [`../kws training/`](../kws%20t
 - `reset`
 - `stand`
 
-## 1A. Shared Runtime Example
-
-The same model package installed into `/opt/demo/models` can be reused by downstream apps. The related [`../kws-game/`](../kws-game/) example below runs on the same board-side KWS package after retraining and install.
-
-![Voice Blackjack using the shared keyword spotting runtime](../media/kws-blackjack-1.jpg)
-
 ## 2. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
