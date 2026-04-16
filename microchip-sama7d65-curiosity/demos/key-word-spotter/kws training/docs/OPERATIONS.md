@@ -218,7 +218,7 @@ This path is useful when:
 ### Build The Trainer Image
 
 ```powershell
-cd "<repo-root>\\microchip-sama7d65-curiosity\\kws training\\sagemaker-train"
+cd "<repo-root>\\microchip-sama7d65-curiosity\\demos\\key-word-spotter\\kws training\\sagemaker-train"
 .\setup-powershell.ps1
 
 $TrainerImageUri = .\build-and-push.ps1 `
@@ -251,7 +251,7 @@ Recommended workstation-driven tuning:
 ### Build The Converter Image
 
 ```powershell
-cd "<repo-root>\\microchip-sama7d65-curiosity\\kws training\\sagemaker-convert"
+cd "<repo-root>\\microchip-sama7d65-curiosity\\demos\\key-word-spotter\\kws training\\sagemaker-convert"
 .\setup-powershell.ps1
 
 $ConverterImageUri = .\build-and-push.ps1 `

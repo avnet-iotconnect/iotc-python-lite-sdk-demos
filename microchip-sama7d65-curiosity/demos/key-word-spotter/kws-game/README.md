@@ -130,7 +130,7 @@ cd /root/kws-game
 LD_LIBRARY_PATH=/root/kws-demo/libs:$LD_LIBRARY_PATH \
 KWS_ARECORD_DEVICE=plughw:0,0 \
 KWS_MODEL_DIR=/opt/demo/models \
-KWS_CONFIG_DIR=/root/zal1-config \
+KWS_CONFIG_DIR=/root/blackJack-config \
 KWS_GAME_PORT=8081 \
 /root/kws-venv/bin/python -u /root/kws-game/game_app.py
 ```
@@ -146,6 +146,12 @@ http://<board-ip>:8081
 - `iotcDeviceConfig.json`
 - `device-cert.pem`
 - `device-pkey.pem`
+
+The game also accepts the blackjack-specific filenames directly:
+
+- `cert_blackJack.crt`
+- `pk_blackJack.pem`
+- any `iotcDeviceConfig*.json` file in the config directory
 
 If those files are missing, the game still starts locally but reports `cloud_status` as not configured.
 
@@ -200,5 +206,6 @@ Notes:
 - `KWS_AUTOSTART=0` starts the game with voice listening disabled until a cloud command enables it.
 - `KWS_GAME_TELEMETRY_SECS` sets the default heartbeat interval before any cloud command changes it.
 - `KWS_MODEL_DIR` should usually be `/opt/demo/models` on a board already running the custom KWS workflow.
+- If `/root/blackJack-config` exists, the game prefers it by default for `/IOTCONNECT` identity files even when `KWS_CONFIG_DIR` is not set.
 - If `/opt/demo/models` is missing, the game falls back to `src/models/`.
 - The browser UI now shows both the active model package and the current cloud connection status.

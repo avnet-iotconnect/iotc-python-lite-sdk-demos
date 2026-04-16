@@ -129,7 +129,7 @@ The helper script in [`../sagemaker-convert/start-conversion.ps1`](../sagemaker-
 Initialize tooling:
 
 ```powershell
-cd "<repo-root>\\microchip-sama7d65-curiosity\\kws training\\sagemaker-train"
+cd "<repo-root>\\microchip-sama7d65-curiosity\\demos\\key-word-spotter\\kws training\\sagemaker-train"
 .\setup-powershell.ps1
 ```
 
@@ -156,7 +156,7 @@ Record the returned image URI. It will look like:
 Initialize tooling:
 
 ```powershell
-cd "<repo-root>\\microchip-sama7d65-curiosity\\kws training\\sagemaker-convert"
+cd "<repo-root>\\microchip-sama7d65-curiosity\\demos\\key-word-spotter\\kws training\\sagemaker-convert"
 .\setup-powershell.ps1
 ```
 

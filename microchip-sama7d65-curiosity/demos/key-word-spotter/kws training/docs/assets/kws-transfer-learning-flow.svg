@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">KWS transfer learning flow</title>
+  <desc id="desc">Diagram showing Speech Commands and MUSAN pretraining, board-recorded custom clip fine-tuning, conversion to TensorFlow Lite, and deployment of stock versus custom models to kws-demo and kws-game.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07140d"/>
+      <stop offset="55%" stop-color="#0d2316"/>
+      <stop offset="100%" stop-color="#13331f"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#13311f"/>
+      <stop offset="100%" stop-color="#0d2417"/>
+    </linearGradient>
+    <linearGradient id="panelAlt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#173a24"/>
+      <stop offset="100%" stop-color="#10291a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd36b"/>
+      <stop offset="100%" stop-color="#f4a900"/>
+    </linearGradient>
+    <linearGradient id="accentSoft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6be8b3"/>
+      <stop offset="100%" stop-color="#42c88a"/>
+    </linearGradient>
+    <linearGradient id="accentRose" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff98af"/>
+      <stop offset="100%" stop-color="#e86681"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#020805" flood-opacity="0.45"/>
+    </filter>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#2a5a3d" stroke-opacity="0.17" stroke-width="1"/>
+    </pattern>
+    <marker id="arrowGold" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffd36b"/>
+    </marker>
+    <marker id="arrowMint" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6be8b3"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; }
+      .title { fill: #fff7df; font-size: 40px; font-weight: 800; letter-spacing: 0.4px; }
+      .subtitle { fill: #bed7c6; font-size: 18px; }
+      .phase { fill: #f7c758; font-size: 13px; font-weight: 800; letter-spacing: 2px; }
+      .panelTitle { fill: #fff2cf; font-size: 25px; font-weight: 800; }
+      .panelBody { fill: #d5ead9; font-size: 18px; }
+      .muted { fill: #8fb79b; font-size: 16px; }
+      .chip { font-size: 14px; font-weight: 700; fill: #082012; }
+      .smallTitle { fill: #fff2cf; font-size: 19px; font-weight: 700; }
+      .smallText { fill: #d2e6d8; font-size: 16px; }
+      .tiny { fill: #99b7a4; font-size: 14px; }
+      .compareTitle { fill: #092214; font-size: 17px; font-weight: 800; }
+      .compareBody { fill: #10331f; font-size: 15px; }
+      .num { fill: #082112; font-size: 24px; font-weight: 900; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="980" fill="url(#bg)"/>
+  <rect width="1600" height="980" fill="url(#grid)"/>
+
+  <text x="68" y="72" class="title">Keyword Spotting Flow: Generic Pretraining to Custom Deployment</text>
+  <text x="68" y="108" class="subtitle">A stronger DS-CNN backbone is pretrained on public speech, fine-tuned on project recordings, then converted into board-ready model packages for side-by-side runtime comparison.</text>
+
+  <rect x="66" y="142" width="210" height="38" rx="19" fill="url(#accent)"/>
+  <text x="92" y="167" class="phase">PHASE 1  PUBLIC BASE DATA</text>
+  <circle cx="123" cy="226" r="28" fill="url(#accent)" filter="url(#shadow)"/>
+  <text x="115" y="235" class="num">1</text>
+
+  <rect x="66" y="200" width="430" height="540" rx="26" fill="url(#panel)" stroke="#3b724c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="98" y="252" class="panelTitle">Build the generic speech backbone</text>
+  <text x="98" y="286" class="panelBody">This stage is not tied to blackjack words.</text>
+  <text x="98" y="312" class="muted">It teaches the network what speech, silence, and noise look like.</text>
+
+  <rect x="98" y="350" width="366" height="162" rx="20" fill="url(#panelAlt)" stroke="#4e8b62" stroke-width="1.5"/>
+  <text x="124" y="390" class="smallTitle">TensorFlow Speech Commands v0.02</text>
+  <text x="124" y="425" class="smallText">• 35 spoken word folders</text>
+  <text x="124" y="454" class="smallText">• keep the standard 10 benchmark words as explicit labels</text>
+  <text x="124" y="483" class="smallText">• fold the other word folders into <tspan font-weight="800">_unknown_</tspan></text>
+
+  <rect x="98" y="536" width="366" height="118" rx="20" fill="url(#panelAlt)" stroke="#4e8b62" stroke-width="1.5"/>
+  <text x="124" y="576" class="smallTitle">MUSAN noise library</text>
+  <text x="124" y="611" class="smallText">• adds varied room, ambient, and background noise</text>
+  <text x="124" y="640" class="smallText">• improves <tspan font-weight="800">_background_noise_</tspan> robustness</text>
+
+  <rect x="98" y="674" width="366" height="42" rx="18" fill="#0c2014" stroke="#3d7050" stroke-width="1"/>
+  <text x="121" y="701" class="tiny">Output: a pretrained DS-CNN backbone that already understands generic speech structure</text>
+
+  <rect x="552" y="142" width="250" height="38" rx="19" fill="url(#accentSoft)"/>
+  <text x="580" y="167" class="phase" fill="#0c2819">PHASE 2  PROJECT FINE-TUNING</text>
+  <circle cx="610" cy="226" r="28" fill="url(#accentSoft)" filter="url(#shadow)"/>
+  <text x="602" y="235" class="num">2</text>
+
+  <rect x="552" y="200" width="502" height="540" rx="26" fill="url(#panel)" stroke="#3b724c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="584" y="252" class="panelTitle">Specialize the model for the target commands</text>
+  <text x="584" y="286" class="panelBody">This is where project recordings actually define the final behavior.</text>
+
+  <rect x="584" y="338" width="438" height="156" rx="20" fill="url(#panelAlt)" stroke="#4e8b62" stroke-width="1.5"/>
+  <text x="610" y="378" class="smallTitle">Board / project recordings</text>
+  <text x="610" y="413" class="smallText">• recorded WAV clips under <tspan font-family="Consolas, monospace">datasets/&lt;label&gt;/</tspan></text>
+  <text x="610" y="442" class="smallText">• target command folders plus <tspan font-weight="800">_unknown_</tspan> and <tspan font-weight="800">_background_noise_</tspan></text>
+  <text x="610" y="471" class="smallText">• clip cleanup, trimming, and balancing happen here before retraining</text>
+
+  <rect x="584" y="528" width="438" height="162" rx="20" fill="url(#panelAlt)" stroke="#4e8b62" stroke-width="1.5"/>
+  <text x="610" y="568" class="smallTitle">Fine-tune step</text>
+  <text x="610" y="603" class="smallText">• keep the pretrained backbone weights</text>
+  <text x="610" y="632" class="smallText">• replace the classifier head for the chosen final labels</text>
+  <text x="610" y="661" class="smallText">• train on the custom command set until validation improves</text>
+
+  <rect x="604" y="705" width="142" height="34" rx="17" fill="url(#accentSoft)"/>
+  <text x="632" y="727" class="chip">deal</text>
+  <rect x="756" y="705" width="142" height="34" rx="17" fill="url(#accentSoft)"/>
+  <text x="775" y="727" class="chip">double</text>
+  <rect x="908" y="705" width="114" height="34" rx="17" fill="url(#accentSoft)"/>
+  <text x="944" y="727" class="chip">hit</text>
+  <rect x="604" y="748" width="142" height="34" rx="17" fill="url(#accentSoft)"/>
+  <text x="634" y="770" class="chip">reset</text>
+  <rect x="756" y="748" width="142" height="34" rx="17" fill="url(#accentSoft)"/>
+  <text x="788" y="770" class="chip">stand</text>
+  <text x="913" y="770" class="tiny">final deployed labels</text>
+
+  <rect x="1110" y="142" width="250" height="38" rx="19" fill="url(#accentRose)"/>
+  <text x="1138" y="167" class="phase" fill="#3a0e1b">PHASE 3  PACKAGE AND COMPARE</text>
+  <circle cx="1168" cy="226" r="28" fill="url(#accentRose)" filter="url(#shadow)"/>
+  <text x="1160" y="235" class="num">3</text>
+
+  <rect x="1110" y="200" width="424" height="540" rx="26" fill="url(#panel)" stroke="#3b724c" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1142" y="252" class="panelTitle">Convert, install, and compare</text>
+  <text x="1142" y="286" class="panelBody">Both the benchmark baseline and the custom model can be installed on the board.</text>
+
+  <rect x="1142" y="338" width="360" height="118" rx="20" fill="url(#panelAlt)" stroke="#4e8b62" stroke-width="1.5"/>
+  <text x="1168" y="378" class="smallTitle">Converter and package step</text>
+  <text x="1168" y="413" class="smallText">• <tspan font-family="Consolas, monospace">model-state.pt</tspan> → <tspan font-family="Consolas, monospace">model.tflite</tspan></text>
+  <text x="1168" y="442" class="smallText">• emits <tspan font-family="Consolas, monospace">labels.txt</tspan> and <tspan font-family="Consolas, monospace">package-info.json</tspan></text>
+
+  <rect x="1142" y="490" width="168" height="184" rx="20" fill="#fff4d7" filter="url(#shadow)"/>
+  <text x="1160" y="526" class="compareTitle">Stock benchmark model</text>
+  <text x="1160" y="556" class="compareBody">yes, no, up, down</text>
+  <text x="1160" y="580" class="compareBody">left, right, on, off</text>
+  <text x="1160" y="604" class="compareBody">stop, go</text>
+  <text x="1160" y="644" class="compareBody">Use it as the</text>
+  <text x="1160" y="666" class="compareBody">generic baseline</text>
+
+  <rect x="1334" y="490" width="168" height="184" rx="20" fill="#d2ffeb" filter="url(#shadow)"/>
+  <text x="1352" y="526" class="compareTitle">Custom fine-tuned model</text>
+  <text x="1352" y="556" class="compareBody">deal, double, hit</text>
+  <text x="1352" y="580" class="compareBody">reset, stand</text>
+  <text x="1352" y="644" class="compareBody">Use it as the</text>
+  <text x="1352" y="666" class="compareBody">task-specific model</text>
+
+  <rect x="1142" y="698" width="360" height="42" rx="18" fill="#0c2014" stroke="#3d7050" stroke-width="1"/>
+  <text x="1170" y="725" class="tiny">Deploy through OTA, file-download, or manual install into /opt/demo/models</text>
+
+  <path d="M 464 431 C 507 431, 514 431, 552 431" fill="none" stroke="#ffd36b" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowGold)"/>
+  <path d="M 464 595 C 520 595, 520 595, 552 595" fill="none" stroke="#ffd36b" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowGold)"/>
+  <path d="M 802 522 C 802 505, 802 500, 802 494" fill="none" stroke="#6be8b3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowMint)"/>
+  <path d="M 1054 431 C 1092 431, 1098 404, 1142 404" fill="none" stroke="#6be8b3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowMint)"/>
+  <path d="M 1054 608 C 1104 608, 1104 582, 1142 582" fill="none" stroke="#6be8b3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowMint)"/>
+
+  <rect x="566" y="822" width="468" height="102" rx="24" fill="#0f2a1a" stroke="#45795a" stroke-width="2" filter="url(#shadow)"/>
+  <text x="598" y="862" class="smallTitle">Why this works</text>
+  <text x="598" y="894" class="smallText">Pretraining supplies a good "ear" for speech patterns. Fine-tuning swaps in a new classifier and teaches the network the project-specific vocabulary using the board dataset.</text>
+
+  <text x="1140" y="860" class="smallTitle">Practical use</text>
+  <text x="1140" y="892" class="smallText">Install both packages in turn in <tspan font-family="Consolas, monospace">kws-demo</tspan> or <tspan font-family="Consolas, monospace">kws-game</tspan> to compare</text>
+  <text x="1140" y="920" class="smallText">generic benchmark behavior versus the custom fine-tuned command set.</text>
+</svg>

@@ -36,7 +36,8 @@ from kws_engine import KeywordSpotter, KwsSettings
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_MODEL_DIR = Path("/opt/demo/models") if Path("/opt/demo/models").is_dir() else BASE_DIR / "models"
 MODEL_DIR = Path(os.getenv("KWS_MODEL_DIR", str(DEFAULT_MODEL_DIR)))
-CONFIG_DIR = Path(os.getenv("KWS_CONFIG_DIR", os.getcwd()))
+DEFAULT_CONFIG_DIR = Path("/root/blackJack-config") if Path("/root/blackJack-config").is_dir() else Path(os.getcwd())
+CONFIG_DIR = Path(os.getenv("KWS_CONFIG_DIR", str(DEFAULT_CONFIG_DIR)))
 HOST = os.getenv("KWS_GAME_HOST", "0.0.0.0")
 PORT = int(os.getenv("KWS_GAME_PORT", "8080"))
 DEBUG = os.getenv("KWS_GAME_DEBUG", "0").strip().lower() in {"1", "true", "yes"}
@@ -122,6 +123,25 @@ def read_package_info(model_dir: Path) -> dict:
         return json.loads(package_info_path.read_text(encoding="utf-8"))
     except Exception:
         return {}
+
+
+def resolve_config_file(config_dir: Path, env_var: str, candidate_names: tuple[str, ...], glob_patterns: tuple[str, ...]) -> Path:
+    explicit_value = os.getenv(env_var, "").strip()
+    if explicit_value:
+        explicit_path = Path(explicit_value)
+        return explicit_path if explicit_path.is_absolute() else config_dir / explicit_path
+
+    for name in candidate_names:
+        candidate = config_dir / name
+        if candidate.is_file():
+            return candidate
+
+    for pattern in glob_patterns:
+        matches = sorted(path for path in config_dir.glob(pattern) if path.is_file())
+        if matches:
+            return matches[0]
+
+    return config_dir / candidate_names[0]
 
 
 def make_card(rng: random.Random) -> dict:
@@ -425,14 +445,30 @@ class IotConnectGameBridge:
             self.table.set_cloud_status(False, f"sdk unavailable: {SDK_IMPORT_ERROR}")
             return
 
-        config_json = CONFIG_DIR / "iotcDeviceConfig.json"
-        cert_path = CONFIG_DIR / "device-cert.pem"
-        key_path = CONFIG_DIR / "device-pkey.pem"
+        config_json = resolve_config_file(
+            CONFIG_DIR,
+            "KWS_DEVICE_CONFIG_FILE",
+            ("iotcDeviceConfig.json",),
+            ("*iotcDeviceConfig*.json",),
+        )
+        cert_path = resolve_config_file(
+            CONFIG_DIR,
+            "KWS_DEVICE_CERT_FILE",
+            ("device-cert.pem", "cert_blackJack.crt"),
+            ("cert_*.crt", "*device-cert*.pem", "*.crt"),
+        )
+        key_path = resolve_config_file(
+            CONFIG_DIR,
+            "KWS_DEVICE_PKEY_FILE",
+            ("device-pkey.pem", "pk_blackJack.pem"),
+            ("pk_*.pem", "*device-pkey*.pem", "*pkey*.pem"),
+        )
         if not config_json.is_file() or not cert_path.is_file() or not key_path.is_file():
             self.table.set_cloud_status(False, "config files not found")
             return
 
         try:
+            print(f"Using /IOTCONNECT config files: {config_json.name}, {cert_path.name}, {key_path.name}")
             self.device_config = DeviceConfig.from_iotc_device_config_json_file(
                 device_config_json_path=str(config_json),
                 device_cert_path=str(cert_path),

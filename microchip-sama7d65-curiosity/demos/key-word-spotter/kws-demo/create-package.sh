@@ -28,10 +28,10 @@ with zipfile.ZipFile(archive_path, mode="w", compression=zipfile.ZIP_DEFLATED) a
         archive.write(path, arcname=path.relative_to(staging_dir).as_posix())
 PY
 
-cp "./$ARCHIVE_NAME" ../../common/
+cp "./$ARCHIVE_NAME" ../../../../common/
 mkdir -p "$PACKAGES_DIR"
 cp "./$ARCHIVE_NAME" "$PACKAGES_DIR/kws-demo-package.zip"
 
 rm -rf "$STAGING_DIR"
 
-echo "Created archive $ARCHIVE_NAME and copied it into the common and packages directories."
+echo "Created archive $ARCHIVE_NAME and copied it into the repo common and local packages directories."

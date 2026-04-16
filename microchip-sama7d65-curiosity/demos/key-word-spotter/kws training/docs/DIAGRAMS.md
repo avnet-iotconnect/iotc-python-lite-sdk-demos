@@ -2,6 +2,19 @@
 
 These diagrams describe the full `kws training` system in Mermaid format so they stay editable in the repository.
 
+If you want a rendered image instead of editable Mermaid, use the SVG below.
+
+## 0. Rendered Transfer-Learning Overview
+
+![KWS transfer learning flow](./assets/kws-transfer-learning-flow.svg)
+
+This rendered SVG shows the current recommended flow:
+
+- pretrain a DS-CNN backbone on Speech Commands plus MUSAN noise
+- fine-tune that backbone on board-recorded command clips
+- convert the trained weights into a board package
+- compare the stock benchmark model against the custom task model in `kws-demo` or `kws-game`
+
 If your Markdown viewer does not render Mermaid, copy a block into the Mermaid Live Editor or any Markdown tool that supports Mermaid and export it as SVG or PDF.
 
 ## 1. System Architecture

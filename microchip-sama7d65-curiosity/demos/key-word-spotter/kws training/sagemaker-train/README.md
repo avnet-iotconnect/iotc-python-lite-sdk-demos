@@ -33,7 +33,7 @@ Initialize tooling:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
-cd "<repo-root>\\microchip-sama7d65-curiosity\\kws training\\sagemaker-train"
+cd "<repo-root>\\microchip-sama7d65-curiosity\\demos\\key-word-spotter\\kws training\\sagemaker-train"
 .\setup-powershell.ps1
 ```
 
