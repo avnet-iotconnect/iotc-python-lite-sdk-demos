@@ -22,6 +22,37 @@ The current recommended training path is intentionally narrower than the full la
 
 That split matches the common `/IOTCONNECT` pattern where the provisioned `conv-*` Step Functions pipeline is a conversion workflow, not a raw-audio training workflow.
 
+## UI Walkthrough
+
+The board-side training flow is designed to be driven from the browser. These snapshots show the main stages in the current workflow.
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="../media/kws-trainer-step1a.jpg" alt="KWS Training Studio collection plan panel" />
+      <br />
+      <sub>Collection Plan helps balance command clips, <code>_unknown_</code>, and <code>_background_noise_</code> before retraining.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-trainer-step1and2.jpg" alt="KWS Training Studio capture and upload panels" />
+      <br />
+      <sub>Step 1 captures clips into label folders. Step 2 packages the dataset, uploads it, and launches board-driven training.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="../media/kws-trainer-datasetAndActivity.jpg" alt="KWS Training Studio dataset folders and activity feed" />
+      <br />
+      <sub>The dataset list and activity feed make it easy to spot weak folders and watch upload, telemetry, and AWS events.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-trainer-step3.jpg" alt="KWS Training Studio converted model install panel" />
+      <br />
+      <sub>After conversion, the install panel lets you browse generated packages and deploy the selected model onto <code>/opt/demo/models</code>.</sub>
+    </td>
+  </tr>
+</table>
+
 ## Contents
 
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): end-to-end system design, artifacts, and runtime modes

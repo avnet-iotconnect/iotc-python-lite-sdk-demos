@@ -35,6 +35,49 @@ The bundled fallback model in `src/models/` matches the current five-keyword cus
 
 When `/opt/demo/models` exists, the game prefers that shared runtime model directory so it stays aligned with the latest installed KWS package.
 
+## 1A. Visual Tour
+
+These snapshots show the browser UI plus the `/IOTCONNECT` views that pair with the game.
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="../media/kws-blackjack-1.jpg" alt="Voice Blackjack main game board" />
+      <br />
+      <sub>Main game view with the active bankroll, bet, hand state, and current voice command list.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-blackjack-2.jpg" alt="Voice Blackjack controls and event log" />
+      <br />
+      <sub>Table controls and the event log make it easy to test voice actions against keyboard and button fallbacks.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="../media/kws-blackjack-iotc-latest_value.jpg" alt="IOTCONNECT latest value view for blackjack demo" />
+      <br />
+      <sub>The Latest Value view shows the current game state, active model package, detection threshold, and last command outcome.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-blackjack-iotc-commands.jpg" alt="IOTCONNECT commands view for blackjack demo" />
+      <br />
+      <sub>The Commands view lets operators trigger actions like <code>deal</code>, <code>hit</code>, and <code>reset</code> from the cloud.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="../media/kws-blackjack-iotc-live.jpg" alt="IOTCONNECT live data stream for blackjack demo" />
+      <br />
+      <sub>Live Data shows the raw telemetry stream exactly as the board publishes it during gameplay.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-blackjack-iotc-live_tabular.jpg" alt="IOTCONNECT tabular live data for blackjack demo" />
+      <br />
+      <sub>The tabular view is useful when you want to scan game-mode, totals, bankroll, and command history as structured fields.</sub>
+    </td>
+  </tr>
+</table>
+
 ## 2. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
