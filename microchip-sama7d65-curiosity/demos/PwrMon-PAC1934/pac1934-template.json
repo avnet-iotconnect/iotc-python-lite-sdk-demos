@@ -1,0 +1,146 @@
+{
+    "code": "sama7dPac",
+    "name": "sama7dPac",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "sdk_version",
+            "type": "STRING",
+            "description": "IoTConnect SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "telemetry_interval",
+            "displayName": "telemetry_interval",
+            "type": "DECIMAL",
+            "description": "Current telemetry reporting interval in seconds",
+            "unit": "s",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_3v3_vbus_mv",
+            "displayName": "VDD_3V3 Voltage (mV)",
+            "type": "DECIMAL",
+            "description": "VDD 3.3V rail bus voltage",
+            "unit": "mV",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_3v3_isense_ma",
+            "displayName": "VDD_3V3 Current (mA)",
+            "type": "DECIMAL",
+            "description": "VDD 3.3V rail current draw",
+            "unit": "mA",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_3v3_power_mw",
+            "displayName": "VDD_3V3 Power (mW)",
+            "type": "DECIMAL",
+            "description": "VDD 3.3V rail power consumption",
+            "unit": "mW",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_ddr_io_vbus_mv",
+            "displayName": "VDD_DDR_IO Voltage (mV)",
+            "type": "DECIMAL",
+            "description": "DDR and IO rail bus voltage",
+            "unit": "mV",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_ddr_io_isense_ma",
+            "displayName": "VDD_DDR_IO Current (mA)",
+            "type": "DECIMAL",
+            "description": "DDR and IO rail current draw",
+            "unit": "mA",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_ddr_io_power_mw",
+            "displayName": "VDD_DDR_IO Power (mW)",
+            "type": "DECIMAL",
+            "description": "DDR and IO rail power consumption",
+            "unit": "mW",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vddcore_vbus_mv",
+            "displayName": "VDDCORE Voltage (mV)",
+            "type": "DECIMAL",
+            "description": "Core rail bus voltage",
+            "unit": "mV",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vddcore_isense_ma",
+            "displayName": "VDDCORE Current (mA)",
+            "type": "DECIMAL",
+            "description": "Core rail current draw",
+            "unit": "mA",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vddcore_power_mw",
+            "displayName": "VDDCORE Power (mW)",
+            "type": "DECIMAL",
+            "description": "Core rail power consumption",
+            "unit": "mW",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_cpu_vbus_mv",
+            "displayName": "VDD_CPU Voltage (mV)",
+            "type": "DECIMAL",
+            "description": "CPU rail bus voltage",
+            "unit": "mV",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_cpu_isense_ma",
+            "displayName": "VDD_CPU Current (mA)",
+            "type": "DECIMAL",
+            "description": "CPU rail current draw",
+            "unit": "mA",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vdd_cpu_power_mw",
+            "displayName": "VDD_CPU Power (mW)",
+            "type": "DECIMAL",
+            "description": "CPU rail power consumption",
+            "unit": "mW",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "set-interval",
+            "command": "set-interval",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4EPAC",
+    "capability": "0",
+    "properties": {
+        "description": null,
+        "dataFrequency": "10",
+        "fileSupport": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
