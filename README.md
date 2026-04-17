@@ -54,7 +54,7 @@ the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo
 the directories for those demos you will find instructions on how to use a software package to deliver and install the
 pre-built demo.
 
-# AWS Kinesis Video Streams (KVS) Expansion Demos
+# AWS Kinesis Video Streams (KVS)
 
 [AWS Kinesis Video Streams (KVS)](https://aws.amazon.com/kinesis/video-streams/) is an AWS service for streaming video from devices to the cloud. The /IOTCONNECT platform integrates with KVS to enable live and recorded video directly from your device's dashboard. KVS expansion demos are available for a subset of the boards in this repository and are delivered as OTA software packages that patch on top of the basic /IOTCONNECT starter demo.
 
