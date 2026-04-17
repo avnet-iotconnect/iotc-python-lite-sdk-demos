@@ -19,7 +19,7 @@ The STM32MP157F-DK2 has no hardware H264 encoder, and the Yocto GStreamer packag
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if the onboard camera interface is also present.
 
 > [!IMPORTANT]
-> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device **must be created in /IOTCONNECT with the `plitekvs` template** — the AWS backend will not register a device for KVS if it was originally created with the `plitedemo` template and later switched. If your device was created with `plitedemo`, create a new device using `plitekvs`.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
 
 ## 3. Deploy and Run
 

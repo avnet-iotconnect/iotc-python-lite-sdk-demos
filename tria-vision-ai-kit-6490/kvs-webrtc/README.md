@@ -21,7 +21,7 @@ The QCS6490 Robotics Reference Distro ships with `cffi` and `numpy` pre-installe
 > Verify the camera is detected by running `ls /dev/video*` on the device. The QCS6490 exposes several non-USB video nodes (`/dev/video0`, `/dev/video1` for the Qualcomm camera subsystem and `/dev/video32`, `/dev/video33` for the hardware codec). The app automatically identifies the USB camera by inspecting the hardware path of each video device in sysfs.
 
 > [!IMPORTANT]
-> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device **must be created in /IOTCONNECT with the `plitekvs` template** — the AWS backend provisions a KVS WebRTC signaling channel for `plitekvs` devices and a KVS stream for `putmedia` devices, and these cannot be switched after device creation. If your device was created with `plitedemo` or `putmedia`, create a new device using `plitekvs`.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
 
 ## 3. Deploy and Run
 
