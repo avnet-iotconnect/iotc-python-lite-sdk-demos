@@ -7,8 +7,9 @@
 4. [Device Setup](#4-device-setup)
 5. [Onboard Device](#5-onboard-device)
 6. [Using the Demo](#6-using-the-demo)
-7. [Going Further with the /IOTCONNECT Vision-AI Demo (Optional)](#7-going-further-with-the-iotconnect-vision-ai-demo-optional)
-8. [Resources](#8-resources)
+7. [Highlighted Specialty Demo: /IOTCONNECT Vision-AI Demo](#7-highlighted-specialty-demo-iotconnect-vision-ai-demo)
+8. [Going Further: Expansion Demos](#8-going-further-expansion-demos)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -129,7 +130,7 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Going Further with the /IOTCONNECT Vision-AI Demo (Optional)
+# 7. Highlighted Specialty Demo: /IOTCONNECT Vision-AI Demo
 
 Head over to [this additional guide](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/tria-vision-ai-kit-6490/vision-ai/README.md) to enable the cloud-controlled Vision-AI demo that reports inference and system status telemetry directly to /IOTCONNECT!
 
@@ -137,7 +138,14 @@ Check out this dashboard for the Vision AI-KIT 6490 that was showcased at Embedd
 
 <img src="./media/vision-ai-dash.png">
 
-# 8. Resources
+# 8. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+
+* **[KVS PutMedia Video Streaming](kvs-putmedia/README.md)**: Stream live video from a connected USB camera to AWS Kinesis Video Streams (KVS) and view it through the /IOTCONNECT dashboard. Video is stored as fragments on AWS, making it suitable for security camera and recording use cases (5–15 second latency).
+* **[KVS WebRTC Live Video](kvs-webrtc/README.md)**: Stream live video directly from the board to your browser via WebRTC, brokered through a KVS signaling channel. Delivers sub-second latency for real-time monitoring. Video is not stored — it is only viewable while actively streaming.
+
+# 9. Resources
 * [Purchase the Tria Vision AI-KIT 6490](https://www.newark.com/avnet/sm2-sk-qcs6490-ep6-kit001/dev-kit-64bit-arm-cortex-a55-a78/dp/51AM9843)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)

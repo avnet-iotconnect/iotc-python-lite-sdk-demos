@@ -54,6 +54,36 @@ the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo
 the directories for those demos you will find instructions on how to use a software package to deliver and install the
 pre-built demo.
 
+# AWS Kinesis Video Streams (KVS) Expansion Demos
+
+[AWS Kinesis Video Streams (KVS)](https://aws.amazon.com/kinesis/video-streams/) is an AWS service for streaming video from devices to the cloud. The /IOTCONNECT platform integrates with KVS to enable live and recorded video directly from your device's dashboard. KVS expansion demos are available for a subset of the boards in this repository and are delivered as OTA software packages that patch on top of the basic /IOTCONNECT starter demo.
+
+There are two types of KVS streaming, each suited to different use cases:
+
+## KVS PutMedia
+
+PutMedia streams video from the device to a KVS stream where it is stored and can be played back through the /IOTCONNECT dashboard. Because video is stored as fragments on AWS before playback begins, there is typically 5–15 seconds of end-to-end latency, but the footage is retained and can be reviewed after the fact. PutMedia is well-suited for security camera and recording use cases.
+
+**Supported on:**
+* [NVIDIA Jetson Orin NX](nvidia-jetson-orin/kvs-putmedia/README.md)
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/kvs-putmedia/README.md)
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-putmedia/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-putmedia/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-putmedia/README.md)
+* [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1/kvs-putmedia/README.md)
+* [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/kvs-putmedia/README.md)
+
+## KVS WebRTC
+
+WebRTC establishes a direct peer-to-peer connection between the device and the viewer's browser, brokered through a KVS signaling channel. This delivers sub-second latency, making it suitable for real-time monitoring. Unlike PutMedia, WebRTC video is not stored — it is only viewable while actively streaming.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-webrtc/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-webrtc/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-webrtc/README.md)
+* [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1/kvs-webrtc/README.md)
+* [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/kvs-webrtc/README.md)
+
 ## Licensing
 
 This library is distributed under

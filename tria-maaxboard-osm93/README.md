@@ -6,7 +6,8 @@
 4. [Device Setup](#4-device-setup)
 5. [Onboard Device](#5-onboard-device)
 6. [Using the Demo](#6-using-the-demo)
-7. [Resources](#7-resources)
+7. [Going Further: Expansion Demos](#7-going-further-expansion-demos)
+8. [Resources](#8-resources)
 
 # 1. Introduction
 
@@ -122,7 +123,13 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Resources
+# 7. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+
+* **[EIQ Vision AI Driver Monitoring System (DMS) Demo](dms-demo/README.md)**: Upgrades the starter demo to a real-time driver monitoring system powered by NXP's eIQ machine learning toolkit, detecting drowsiness and distraction events and reporting alerts to /IOTCONNECT.
+
+# 8. Resources
 * [Purchase the Tria MaaXBoard OSM93](https://www.newark.com/avnet/aes-maaxb-osm93-dk-g/maaxboard-som-arm-cortex-a55-m33/dp/25AM3171)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
