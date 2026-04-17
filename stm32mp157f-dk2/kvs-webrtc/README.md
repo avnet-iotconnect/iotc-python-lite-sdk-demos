@@ -11,7 +11,7 @@ This demo streams live video from a USB camera through the STM32MP157F-DK2 to a 
 
 Unlike the KVS PutMedia demo, WebRTC is a peer-to-peer protocol — the video is delivered directly between the device and the viewer with very low latency. No pre-built KVS C++ SDK libraries need to be installed; all WebRTC signaling and media encoding is handled in Python by `aiortc` and `boto3`.
 
-The default capture resolution is 640×480 at 15 fps to stay within the Cortex-A7's CPU budget alongside the software encoding performed by aiortc.
+The default capture resolution is 320×240 at 15 fps to stay within the Cortex-A7's CPU budget alongside the software encoding performed by aiortc.
 
 ## 2. Set Up Hardware and Template
 

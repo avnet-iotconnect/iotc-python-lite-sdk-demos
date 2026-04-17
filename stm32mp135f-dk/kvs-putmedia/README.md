@@ -9,7 +9,7 @@ Upgrades the /IOTCONNECT Starter Demo on the STM32MP135F-DK to the AWS Kinesis V
 
 This demo streams live video from a USB camera through the STM32MP135F-DK to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK libraries are pre-built and bundled in the package — no on-device compilation is required.
 
-The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package set does not include a software H264 encoder. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The default resolution is 320×240 at 15 fps to stay within the Cortex-A7's encoding budget.
+The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package set does not include a software H264 encoder. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The default resolution is 960×720 at 15 fps to stay within the Cortex-A7's encoding budget.
 
 ## 2. Set Up Hardware and Template
 
