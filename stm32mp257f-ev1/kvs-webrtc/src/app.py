@@ -142,7 +142,7 @@ def start_capture_process() -> Optional[subprocess.Popen]:
             text=False
         )
 
-        # Start thread to read raw RGB frames from stdout and feed into _frame_queue
+        # Start thread to read raw I420 frames from stdout and feed into _frame_queue
         threading.Thread(
             target=_frame_reader,
             args=(_stream_process, video_width, video_height),
@@ -181,8 +181,8 @@ def start_capture_process() -> Optional[subprocess.Popen]:
 
 
 def _frame_reader(proc: subprocess.Popen, width: int, height: int):
-    """Read raw RGB frames from the GStreamer fdsink subprocess and enqueue them."""
-    frame_size = width * height * 3
+    """Read raw I420 frames from the GStreamer fdsink subprocess and enqueue them."""
+    frame_size = width * height * 3 // 2  # I420: Y plane + U/V half-size planes
     while True:
         data = b''
         while len(data) < frame_size:
@@ -193,7 +193,7 @@ def _frame_reader(proc: subprocess.Popen, width: int, height: int):
             if not chunk:
                 return
             data += chunk
-        frame = np.frombuffer(data, dtype=np.uint8).reshape((height, width, 3)).copy()
+        frame = np.frombuffer(data, dtype=np.uint8).reshape((height * 3 // 2, width)).copy()
         try:
             _frame_queue.put_nowait(frame)
         except queue.Full:
