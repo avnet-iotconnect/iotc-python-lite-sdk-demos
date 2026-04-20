@@ -206,8 +206,8 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
             if verbose:
                 decoded = line.decode(errors='replace').rstrip()
                 print(f"{decoded}")
-    except Exception as e:
-        print(f"Error reading pipe: {e}")
+    except Exception:
+        pass
     finally:
         try:
             pipe.close()
