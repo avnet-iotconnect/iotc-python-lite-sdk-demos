@@ -27,7 +27,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp257f-ev1/kvs-putmedia/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp257f-ev1/kvs-putmedia/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```

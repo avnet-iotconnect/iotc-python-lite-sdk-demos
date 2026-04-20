@@ -58,7 +58,7 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 ### Download package on board
 
 ```bash
-wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/package.tar.gz
+wget -O /opt/demo/package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/package.tar.gz
 ```
 
 ### Install and run
