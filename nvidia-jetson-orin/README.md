@@ -121,7 +121,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 7. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
 
 * **[KVS PutMedia Video Streaming](kvs-putmedia/README.md)**: Stream live video from a connected USB camera to AWS Kinesis Video Streams (KVS) and view it through the /IOTCONNECT dashboard. Video is stored as fragments on AWS, making it suitable for security camera and recording use cases (5–15 second latency).
 

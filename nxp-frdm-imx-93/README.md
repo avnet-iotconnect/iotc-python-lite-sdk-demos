@@ -127,7 +127,7 @@ To return the board to an out-of-box state, refer to the [flashing](FLASHING.md)
 
 # 9. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
 
 * **[EIQ Vision AI Driver Monitoring System (DMS) Demo](dms-demo/README.md)**: Upgrades the starter demo to a real-time driver monitoring system powered by NXP's eIQ machine learning toolkit, detecting drowsiness and distraction events and reporting alerts to /IOTCONNECT.
 * **[EIQ DMS + Face Recognition Demo](dms_plus_face_recog-demo/AI_model_setup.md)**: Extends the DMS demo with facial recognition to identify known drivers and apply per-driver alert rules or sensitivity adjustments.

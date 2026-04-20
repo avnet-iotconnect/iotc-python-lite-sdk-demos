@@ -137,7 +137,7 @@ To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.
 
 # 8. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
 
 * **[X-LINUX-AI Vision Demo](ai-vision/README.md)**: Upgrades the starter demo to an object detection vision demo powered by ST's X-LINUX-AI package, reporting detected objects and confidence scores as telemetry to /IOTCONNECT.
 * **[MKBOXPRO BLE Sensor Pack Demo](mkboxpro-demo/README.md)**: Connects the ST MKBOXPRO Bluetooth sensor pack to the board and streams its environmental and motion sensor data as telemetry to /IOTCONNECT.

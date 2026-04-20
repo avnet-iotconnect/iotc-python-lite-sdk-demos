@@ -145,7 +145,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 
 - [Template Correlation Classifier](ml-template-correlation-classifier/):  
 Classifies by dot-product correlation against three hand-crafted waveform templates. No neural network, no training required.
