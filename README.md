@@ -78,6 +78,7 @@ PutMedia streams video from the device to a KVS stream where it is stored and ca
 WebRTC establishes a direct peer-to-peer connection between the device and the viewer's browser, brokered through a KVS signaling channel. This delivers sub-second latency, making it suitable for real-time monitoring. Unlike PutMedia, WebRTC video is not stored — it is only viewable while actively streaming.
 
 **Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/kvs-webrtc/README.md)
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-webrtc/README.md)
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-webrtc/README.md)
 * [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-webrtc/README.md)
