@@ -1,0 +1,75 @@
+{
+    "code": "rzv2hSTART",
+    "name": "rzv2h-starter",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IoTConnect SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_percent",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "Overall CPU utilisation (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_percent",
+            "displayName": "Memory Usage",
+            "type": "DECIMAL",
+            "description": "RAM usage (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "cpu_temp_0_c",
+            "displayName": "CPU Temp 0",
+            "type": "DECIMAL",
+            "description": "CPU cluster 0 temperature (°C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "cpu_temp_1_c",
+            "displayName": "CPU Temp 1",
+            "type": "DECIMAL",
+            "description": "CPU cluster 1 temperature (°C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "random",
+            "displayName": "Random",
+            "type": "INTEGER",
+            "description": "Random integer for connectivity check",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "Renesas RZ/V2H EVK Starter Demo",
+        "dataFrequency": "10",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

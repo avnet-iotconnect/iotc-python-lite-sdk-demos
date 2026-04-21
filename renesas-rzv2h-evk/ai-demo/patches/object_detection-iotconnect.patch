@@ -1,0 +1,36 @@
+diff --git a/R01_object_detection/src/main.cpp b/R01_object_detection/src/main.cpp
+index 5b30bfb..ce3a7ae 100755
+--- a/R01_object_detection/src/main.cpp
++++ b/R01_object_detection/src/main.cpp
+@@ -639,7 +639,31 @@ int8_t print_result(Image* img, cv::Mat& proc_image)
+     img->write_string_rgb(str, ALIGHN_LEFT, draw_offset_x, 
+                             IMAGE_OUTPUT_HEIGHT - LINE_HEIGHT*2, CHAR_SCALE_VERY_SMALL, WHITE_DATA, proc_image);
+ 
++    size_t _iotc_det_count = print_det.size();
++    std::string _iotc_top_class;
++    double _iotc_top_conf = 0.0;
++    if (!print_det.empty()) {
++        _iotc_top_class = label_file_map[print_det[0].c].c_str();
++        _iotc_top_conf = print_det[0].prob * 100.0;
++    }
+     mtx.unlock();
++    /* IoTConnect: write detection count, top class + timing to /tmp */
++    {
++        std::ofstream _iotc_out("/tmp/drpai_r01_results.json.tmp", std::ios::trunc);
++        if (_iotc_out.is_open()) {
++            _iotc_out << "{\"ai_time_ms\":" << ai_time
++                      << ",\"pre_time_ms\":" << pre_time
++                      << ",\"post_time_ms\":" << post_time
++                      << ",\"total_time_ms\":" << total_time
++                      << ",\"timestamp\":" << time(NULL)
++                      << ",\"total\":" << _iotc_det_count
++                      << ",\"primary_class\":\"" << _iotc_top_class << "\""
++                      << ",\"primary_confidence\":" << _iotc_top_conf
++                      << "}";
++            _iotc_out.close();
++            std::rename("/tmp/drpai_r01_results.json.tmp", "/tmp/drpai_r01_results.json");
++        }
++    }
+     return 0;
+ }
+ 

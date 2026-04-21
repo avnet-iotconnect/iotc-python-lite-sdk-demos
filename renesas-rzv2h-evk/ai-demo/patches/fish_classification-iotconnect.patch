@@ -1,0 +1,39 @@
+diff --git a/Q04_fish_classification/src/main.cpp b/Q04_fish_classification/src/main.cpp
+index 4c8a3bf..4193763 100755
+--- a/Q04_fish_classification/src/main.cpp
++++ b/Q04_fish_classification/src/main.cpp
+@@ -748,7 +748,33 @@ int8_t R_Main_Process()
+                     }
+                 }
+             }
+-            mtx.unlock();
++            /* IoTConnect: write top-1 classifier result + timing to /tmp */
++            {
++                std::string _iotc_top_class;
++                float _iotc_top_conf = 0.0f;
++                if (!result.empty()) {
++                    auto _it = result.rbegin();
++                    float _v = (float)_it->first * 100.0f;
++                    if (_v == _v) {
++                        _iotc_top_conf = _v;
++                        _iotc_top_class = label_file_map[_it->second];
++                    }
++                }
++                mtx.unlock();
++                std::ofstream _iotc_out("/tmp/drpai_q04_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"total_time_ms\":" << total_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"primary_class\":\"" << _iotc_top_class << "\""
++                              << ",\"primary_confidence\":" << _iotc_top_conf
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q04_results.json.tmp", "/tmp/drpai_q04_results.json");
++                }
++            }
+             cv::cvtColor(bgra_image, bgra_image, cv::COLOR_BGR2BGRA);
+             wayland.commit(bgra_image.data, NULL);
+             img_obj_ready.store(0);

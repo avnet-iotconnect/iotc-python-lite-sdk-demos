@@ -1,0 +1,38 @@
+diff --git a/Q12_yoga_pose_estimation/src/main.cpp b/Q12_yoga_pose_estimation/src/main.cpp
+index 21c9904..1d4fb88 100755
+--- a/Q12_yoga_pose_estimation/src/main.cpp
++++ b/Q12_yoga_pose_estimation/src/main.cpp
+@@ -791,6 +791,33 @@ cv::Mat run_inference(cv::Mat frame)
+         cv::putText(output_frame,"No valid pose detected!!!",cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 10, (DISP_IMAGE_OUTPUT_HEIGHT/2) - 100), cv::FONT_HERSHEY_SIMPLEX, font_scale - 0.1, RED, font_thickness);
+         std::cout << "NO VALID POSE DETECTED !!!"<<std::endl;
+     }
++    /* IoTConnect: write top-1 pose class + dual-model timing to /tmp */
++    {
++        std::string _iotc_top_class;
++        float _iotc_top_conf = 0.0f;
++        if (have_valid_pose && !pose_result.empty()) {
++            auto _it = pose_result.rbegin();
++            _iotc_top_conf = (float)_it->first * 100.0f;
++            _iotc_top_class = label_file_map[_it->second];
++        }
++        std::ofstream _iotc_out("/tmp/drpai_q12_results.json.tmp", std::ios::trunc);
++        if (_iotc_out.is_open()) {
++            _iotc_out << "{\"ai_time_ms\":" << (keypoint_ai_time + classifier_ai_time)
++                      << ",\"keypoint_ai_ms\":" << keypoint_ai_time
++                      << ",\"keypoint_pre_ms\":" << keypoint_pre_time
++                      << ",\"keypoint_post_ms\":" << keypoint_post_time
++                      << ",\"classifier_ai_ms\":" << classifier_ai_time
++                      << ",\"classifier_pre_ms\":" << classifier_pre_time
++                      << ",\"classifier_post_ms\":" << classifier_post_time
++                      << ",\"timestamp\":" << time(NULL)
++                      << ",\"primary_class\":\"" << _iotc_top_class << "\""
++                      << ",\"primary_confidence\":" << _iotc_top_conf
++                      << ",\"valid_pose\":" << (have_valid_pose ? "true" : "false")
++                      << "}";
++            _iotc_out.close();
++            std::rename("/tmp/drpai_q12_results.json.tmp", "/tmp/drpai_q12_results.json");
++        }
++    }
+     return output_frame;
+ }
+ 

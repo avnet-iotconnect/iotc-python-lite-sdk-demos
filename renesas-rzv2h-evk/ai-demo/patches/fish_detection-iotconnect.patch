@@ -1,0 +1,31 @@
+diff --git a/Q11_fish_detection/src/main.cpp b/Q11_fish_detection/src/main.cpp
+index d03b369..5b0d455 100755
+--- a/Q11_fish_detection/src/main.cpp
++++ b/Q11_fish_detection/src/main.cpp
+@@ -931,10 +931,25 @@ int8_t R_Main_Process()
+             text_height = 240;            
+             for (std::string bb_string : detection_string_vector)
+             {
+-                cv::putText(bgra_image, bb_string, cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 20, text_height), 
++                cv::putText(bgra_image, bb_string, cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 20, text_height),
+                         cv::FONT_HERSHEY_DUPLEX, font_size, cv::Scalar(255, 255, 255), font_weight);
+                 text_height += 30;
+             }
++            /* IoTConnect: write detection count + timing to /tmp */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_q11_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"total_time_ms\":" << total_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"total\":" << detection_string_vector.size()
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q11_results.json.tmp", "/tmp/drpai_q11_results.json");
++                }
++            }
+             cv::cvtColor(bgra_image, bgra_image, cv::COLOR_BGR2BGRA);
+             wayland.commit(bgra_image.data, NULL);
+             img_obj_ready.store(0);
