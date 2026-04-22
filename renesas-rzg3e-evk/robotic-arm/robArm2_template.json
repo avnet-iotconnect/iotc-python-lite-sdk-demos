@@ -1,0 +1,640 @@
+{
+    "code": "robArm4",
+    "name": "robArm4",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "shoulder_pan",
+            "displayName": "shoulder_pan",
+            "type": "DECIMAL",
+            "description": "Servo 6 position (0-1000); rotates the base left/right.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "shoulder_lift",
+            "displayName": "shoulder_lift",
+            "type": "DECIMAL",
+            "description": "Servo 5 position (0-1000); raises/lowers the upper arm.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "elbow_flex",
+            "displayName": "elbow_flex",
+            "type": "DECIMAL",
+            "description": "Servo 4 position (0-1000); flexes the elbow joint.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "wrist_flex",
+            "displayName": "wrist_flex",
+            "type": "DECIMAL",
+            "description": "Servo 3 position (0-1000); pitches the wrist up/down.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "wrist_roll",
+            "displayName": "wrist_roll",
+            "type": "DECIMAL",
+            "description": "Servo 2 position (0-1000); rotates the wrist clockwise/counter-clockwise.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "gripper",
+            "displayName": "gripper",
+            "type": "DECIMAL",
+            "description": "Servo 1 position (0-1000); 0 = fully open, higher = closed.",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sysInfo_system",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "Static hardware/OS identification plus host identity and uptime.",
+            "childs": [
+                {
+                    "name": "hostname",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Device hostname.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "uptime",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Human-readable system uptime since boot.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "cpu_brand",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "CPU brand string (e.g. Cortex-A55).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "cpu_vendor",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "CPU vendor (e.g. ARM).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "cpu_mhz",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Advertised clock speed in MHz.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "cpu_physical_cores",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Physical core count.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "architecture",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Machine architecture (e.g. aarch64).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "system",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Operating system name (e.g. Linux).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "release",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Kernel release string.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "platform",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Full platform descriptor.",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "sysInfo_cpu",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "CPU utilization, temperature, and the top CPU-consuming process.",
+            "childs": [
+                {
+                    "name": "usage_percent",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Overall CPU utilization across all cores.",
+                    "unit": "%",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "temp",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Hottest CPU thermal zone (max of cpu*-thermal sensors).",
+                    "unit": "C",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_name",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Process name with the highest CPU usage.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_cmd",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Full command line of the top CPU process (truncated to 100 chars).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_cpu_percent",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "CPU usage of the top process.",
+                    "unit": "%",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "sysInfo_memory",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "RAM utilization, temperature, and the top memory-consuming process.",
+            "childs": [
+                {
+                    "name": "percent",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Memory utilization percentage.",
+                    "unit": "%",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "temp",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "DDR memory thermal zone (ddr-thermal sensor).",
+                    "unit": "C",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "total",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Total physical memory (formatted, e.g. 7.20GB).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "available",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Memory available to start new applications (formatted).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "used",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Memory currently in use (formatted).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_name",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Process name holding the most RAM.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_cmd",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Full command line of the top memory process (truncated to 100 chars).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "top_process_mem",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Resident set size of the top memory process (formatted).",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "sysInfo_storage",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "Disk usage for the root filesystem.",
+            "childs": [
+                {
+                    "name": "total",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Total disk capacity (formatted, e.g. 52.65GB).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "used",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Disk space used (formatted).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "free",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "Disk space free (formatted).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "percent",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Disk utilization percentage.",
+                    "unit": "%",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "sysInfo_gpu",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "Adreno GPU utilization and temperature.",
+            "childs": [
+                {
+                    "name": "usage_percent",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Adreno GPU busy percentage from /sys/class/kgsl/kgsl-3d0/gpubusy.",
+                    "unit": "%",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "temp",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Hottest GPU thermal zone (max of gpuss*-thermal sensors).",
+                    "unit": "C",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "ballTrack",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "Ball-follow mode runtime state (tracking, prediction, servo deltas).",
+            "childs": [
+                {
+                    "name": "state",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "IDLE | TRACKING | PREDICTING | GRABBING | HOLDING.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "is_prediction",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "1 when ball position is extrapolated from velocity (not seen this frame).",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "ball_x",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Ball center X in camera pixels (original, unmirrored frame).",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "ball_y",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Ball center Y in camera pixels.",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "ball_r",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Ball apparent radius in pixels.",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "pan_err",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Horizontal error: ball x minus frame center x.",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "tilt_err",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Vertical error: ball y minus frame center y.",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "radius_err",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Distance error: target radius minus current radius.",
+                    "unit": "px",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "velocity_x",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Estimated horizontal ball velocity in pixels per frame.",
+                    "unit": "px/f",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "velocity_y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "Estimated vertical ball velocity in pixels per frame.",
+                    "unit": "px/f",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "pred_frames_left",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Prediction frames remaining before we give up and recenter.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "no_ball_frames",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Consecutive frames with no ball detected and no active prediction.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "hold_target",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Gripper position being held; 0 when not holding.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "d_pan",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Last commanded shoulder_pan delta.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "d_tilt",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Last commanded wrist_flex delta.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "d_lift",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Last commanded shoulder_lift delta.",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "d_elbow",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "Last commanded elbow_flex delta.",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "move_left",
+            "command": "move_left",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_right",
+            "command": "move_right",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_up",
+            "command": "move_up",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_down",
+            "command": "move_down",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_forward",
+            "command": "move_forward",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_backward",
+            "command": "move_backward",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_to",
+            "command": "move_to",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "move_to_home",
+            "command": "move_to_home",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "open_gripper",
+            "command": "open_gripper",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "close_gripper",
+            "command": "close_gripper",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "wrist_roll_cw",
+            "command": "wrist_roll_cw",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "wrist_roll_ccw",
+            "command": "wrist_roll_ccw",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "wrist_flex_up",
+            "command": "wrist_flex_up",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "wrist_flex_down",
+            "command": "wrist_flex_down",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_wave",
+            "command": "demo_wave",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_bow",
+            "command": "demo_bow",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_stretch",
+            "command": "demo_stretch",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_scan",
+            "command": "demo_scan",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_shake_no",
+            "command": "demo_shake_no",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "demo_pickup",
+            "command": "demo_pickup",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4EVRY",
+    "capability": "0",
+    "enableCSR": "false",
+    "c2dOnDemand": 0,
+    "properties": {
+        "description": null,
+        "dataFrequency": "5",
+        "fileSupport": false,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
