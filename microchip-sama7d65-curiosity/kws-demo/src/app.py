@@ -424,8 +424,8 @@ def main():
             try:
                 safe_send_telemetry(reason="shutdown")
                 client.disconnect()
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"Ignoring shutdown cleanup error: {exc}")
         sys.exit(0)
     except Exception as exc:
         last_error = str(exc)
