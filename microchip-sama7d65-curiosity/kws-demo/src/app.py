@@ -326,7 +326,6 @@ def make_spotter() -> KeywordSpotter:
 
 def run_loop():
     global last_error
-    global last_result
 
     while True:
         ensure_connected()
@@ -335,7 +334,6 @@ def run_loop():
             detection_event = False
             try:
                 result = spotter.run_once()
-                last_result = result
                 last_error = ""
                 detection_event = result.detected
                 print(
