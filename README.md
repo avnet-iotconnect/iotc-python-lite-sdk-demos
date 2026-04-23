@@ -49,10 +49,83 @@ to your device.
 
 Within the [common](./common) directory is a ```starter-demo``` directory with instructions on how to do this.
 
-Some devices also include directories for pre-built expansion demos such as
-the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo) for the NXP FRDM i.MX 93. Inside of
-the directories for those demos you will find instructions on how to use a software package to deliver and install the
-pre-built demo.
+Some devices also include directories for pre-built expansion demos. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo. The available expansion demos are described in the sections below.
+
+# EIQ Vision AI Driver Monitoring System (DMS)
+
+The EIQ DMS demo uses the NXP eIQ Vision AI stack to analyze a live camera feed for driver safety indicators. It detects facial attributes such as eye state, head pose, and drowsiness, and streams the results to /IOTCONNECT in real time. An HDMI display can optionally be connected to view the annotated video feed with AI overlay directly on the board.
+
+**Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/dms-demo/README.md)
+* [Tria MaaXBoard OSM93](tria-maaxboard-osm93/dms-demo/README.md)
+
+# X-LINUX-AI Object Detection
+
+The X-LINUX-AI vision demo runs an on-device object detection model using ST's X-LINUX-AI software stack. It recognizes 80 common object categories from a connected USB camera and streams detected object names with confidence percentages to /IOTCONNECT approximately once per second.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/ai-vision/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/ai-vision/README.md)
+
+# MKBOXPRO BLE Sensor Pack
+
+The MKBOXPRO demo streams live BLE sensor telemetry from a SensorTile.box PRO (MKBOXPRO) sensor pack to /IOTCONNECT. The SensorTile.box PRO connects wirelessly to the host board over Bluetooth Low Energy and provides multi-axis motion, environmental, and audio sensor data, all visible in real time on the /IOTCONNECT platform's Live Data tab.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/mkboxpro-demo/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/mkboxpro-demo/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/mkboxpro-demo/README.md)
+
+# PROTEUS Sensor Pack
+
+The PROTEUS demo streams environmental sensor telemetry from a PROTEUS sensor pack to /IOTCONNECT. The PROTEUS pack provides temperature, humidity, pressure, and other environmental readings that appear in real time under the Live Data tab of your device in the /IOTCONNECT platform.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/proteus-standard-demo/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/proteus-standard-demo/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/proteus-standard-demo/README.md)
+
+# File Upload Demo
+
+The file upload demo captures still pictures and fixed-length video clips from a USB camera, stores them locally on the board, and uploads the completed media files to the device's S3-backed /IOTCONNECT file-support bucket via the SDK. On-demand picture capture and rolling video clip recording are both triggered through /IOTCONNECT commands.
+
+**Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/file-upload-demo/README.md)
+
+# FPGA ML Acceleration (Microchip PolarFire SoC)
+
+These demos leverage the FPGA fabric on Microchip PolarFire SoC boards to accelerate machine learning inference on waveform classification tasks. Each demo compares software vs. FPGA-hardware performance by running the same inference in both modes and reporting timing and prediction telemetry to /IOTCONNECT. Three demos are available with increasing model complexity:
+
+## Template Correlation Classifier
+
+A deterministic classifier with no neural network or training step. Classification works by correlating 256-sample input waveforms against hand-crafted reference templates using dot products. Because the algorithm is lightweight, this demo establishes a clear performance baseline before introducing learned models.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-template-correlation-classifier/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track1-iotc-ml-classifier/README.md)
+
+## Simple Neural Network Accelerator
+
+Introduces a compact fixed-point neural network in FPGA fabric (256 inputs → 12-node hidden layer → 6 classes, int8/int32 arithmetic). Hardware speedup over software is modest at small batch sizes but increases with larger batches, making it a focused demonstration of the neural network acceleration pipeline.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-simple-nn-accelerator/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/README.md)
+
+## Complex Neural Network Accelerator
+
+The deepest model in the series — two hidden layers (~11K trained weights) with a batch-aware FPGA interface using DMA transfers. Hardware acceleration advantage is most measurable and consistent here, especially at moderate to large batch sizes.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-complex-nn-accelerator/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/README.md)
+
+# Tria Vision AI Demo
+
+The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.
+
+**Supported on:**
+* [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/vision-ai/README.md)
 
 # AWS Kinesis Video Streams (KVS)
 
