@@ -34,7 +34,7 @@ No additional cables or peripherals are needed. The PAC1934 is already wired on 
 
 1. Import the [pac1934-template.json](./pac1934-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7dPac`.
 
-<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" />
+<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
 > [!NOTE]
 > Template codes are limited to 10 characters on /IOTCONNECT.

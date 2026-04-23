@@ -90,7 +90,7 @@ arecord -l
 
 3. Import the [kws-game-template.json](./kws-game-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7d6Bj`.
 
-<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" />
+<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
 > [!NOTE]
 > Template codes are limited to 10 characters on /IOTCONNECT.
