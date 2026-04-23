@@ -2,7 +2,7 @@
 
 Complex Neural Network Accelerator FPGA programming artifact:
 
-- `MPFS_DISCOVERY_KIT_COMPLEX_NN.job`
+- [MPFS_DISCOVERY_KIT_COMPLEX_NN.job](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_DISCOVERY_KIT_COMPLEX_NN.job)
 
 Quickstart flow programs this file with FlashPro Express before running the demo package.
 

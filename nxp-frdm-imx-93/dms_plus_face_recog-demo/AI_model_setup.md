@@ -65,10 +65,20 @@ This installs OpenCV, NumPy, and the TensorFlow Lite runtime.
 
 ### 2. Download and Prepare Models
 
-Ensure that you have placed the required five model files (listed below) in the `models/` folder of the repository:
+Several model files must be present in the `models/` folder before running. The smaller models are included in the repo; the larger ones must be downloaded from S3:
+
+```bash
+cd nxp-frdm-imx-93/dms_plus_face_recog-demo/models
+wget https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/facenet_512_int_quantized.tflite
+wget https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MobileFaceNet_INT8.tflite
+wget https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/face_landmark_192_full_integer_quant.tflite
+wget https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/iris_landmark_quant.tflite
+```
+
+Required models in `models/`:
 
 1. **MobileFaceNet_INT8.tflite** – Face Recognition model  
-2. **face_detection_front_128_full_integer_quant.tflite** – DMS Face Detection  
+2. **face_detection_front_128_full_integer_quant.tflite** – DMS Face Detection (included in repo)
 3. **face_landmark_192_full_integer_quant.tflite** – DMS Face Landmark Detection  
 4. **iris_landmark_quant.tflite** – DMS Iris Landmark Detection  
 5. **ssd_mobilenet_v1_quant.tflite** – SSD Face Detection model (used for general-purpose face detection)

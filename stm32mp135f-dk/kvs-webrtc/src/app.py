@@ -8,11 +8,16 @@ import subprocess
 import signal
 import os
 import urllib.request
+import warnings
 import requests
 import threading
 import queue
 import traceback
 from typing import Optional
+
+# google-crc32c falls back to a pure-Python implementation on this platform and
+# always emits a RuntimeWarning about it. Suppress it to avoid confusing users.
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="google_crc32c")
 
 import numpy as np
 import app_webrtc
@@ -106,19 +111,17 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     video_framerate = camera_options.get("video", {}).get("framerate", 15)
 
     verbose = camera_options.get("verbose", False)
-    verbose_flag = "-v " if verbose else ""
+    verbose_flag = "-v " if verbose else "-q "
 
-    # GStreamer pipeline: capture raw RGB frames from USB camera and write to stdout.
-    # The STM32MP135F-DK has no hardware H264 encoder, but for WebRTC that is not
-    # needed — aiortc handles encoding on the Python side. We capture raw YUY2 from
-    # v4l2src, convert to RGB, and pipe the raw bytes to the frame reader thread.
-    # The default is 320x240@15fps to stay within the Cortex-A7's budget alongside
-    # the WebRTC encoding performed by aiortc. Adjust camera_options as needed.
+    # GStreamer pipeline: capture raw I420 frames from USB camera and write to stdout.
+    # I420 is used instead of RGB to avoid hardware row-stride padding that causes a
+    # horizontal wrap artifact. I420's Y-plane stride equals width exactly — no padding
+    # is added. The default is 320x240@15fps to stay within the Cortex-A7's budget.
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
         f"v4l2src device={device_port} do-timestamp=true ! "
         f"video/x-raw,format=YUY2,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
-        f"videoconvert ! video/x-raw,format=RGB ! "
+        f"videoconvert ! video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
         f"fdsink fd=1"
     )
 
@@ -135,7 +138,7 @@ def start_capture_process() -> Optional[subprocess.Popen]:
             text=False
         )
 
-        # Start thread to read raw RGB frames from stdout and feed into _frame_queue
+        # Start thread to read raw I420 frames from stdout and feed into _frame_queue
         threading.Thread(
             target=_frame_reader,
             args=(_stream_process, video_width, video_height),
@@ -174,8 +177,8 @@ def start_capture_process() -> Optional[subprocess.Popen]:
 
 
 def _frame_reader(proc: subprocess.Popen, width: int, height: int):
-    """Read raw RGB frames from the GStreamer fdsink subprocess and enqueue them."""
-    frame_size = width * height * 3
+    """Read raw I420 frames from the GStreamer fdsink subprocess and enqueue them."""
+    frame_size = width * height * 3 // 2  # I420: Y plane + U/V half-size planes
     while True:
         data = b''
         while len(data) < frame_size:
@@ -186,7 +189,7 @@ def _frame_reader(proc: subprocess.Popen, width: int, height: int):
             if not chunk:
                 return
             data += chunk
-        frame = np.frombuffer(data, dtype=np.uint8).reshape((height, width, 3)).copy()
+        frame = np.frombuffer(data, dtype=np.uint8).reshape((height * 3 // 2, width)).copy()
         try:
             _frame_queue.put_nowait(frame)
         except queue.Full:
@@ -199,8 +202,8 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
             if verbose:
                 decoded = line.decode(errors='replace').rstrip()
                 print(f"{decoded}")
-    except Exception as e:
-        print(f"Error reading pipe: {e}")
+    except Exception:
+        pass
     finally:
         try:
             pipe.close()

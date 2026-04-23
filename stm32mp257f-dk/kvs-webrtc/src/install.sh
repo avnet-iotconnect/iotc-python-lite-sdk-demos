@@ -5,22 +5,25 @@
 
 export PIP_ROOT_USER_ACTION=ignore
 
-# cffi has no armv7l wheel on PyPI and requires a C compiler to build from source.
+# cffi has no aarch64 wheel on PyPI and requires a C compiler to build from source.
 # The OpenSTLinux Yocto image does not include GCC, so install via apt instead.
 apt-get install -y python3-cffi
 
-# numpy 2.x dropped armv7l wheels, causing pip to download a 20+ MB source tarball
+# numpy 2.x dropped aarch64 wheels, causing pip to download a large source tarball
 # that exceeds /tmp space. Install the Yocto apt package instead.
 apt-get install -y python3-numpy
 
-# av (PyAV) has no armv7l wheel on PyPI, no FFmpeg dev headers in the OpenSTLinux
+# av (PyAV) has no aarch64 wheel on PyPI, no FFmpeg dev headers in the OpenSTLinux
 # apt feed, and no C compiler on the board — so it cannot be built from source.
-# Download the pre-built armhf package from Ubuntu 24.04, which ships FFmpeg 6.1.x
+# Download the pre-built arm64 package from Ubuntu 24.04, which ships FFmpeg 6.1.x
 # matching this board's libavcodec60/libavformat60/etc. (6.1.3). Extract the Python
 # module files and register a dist-info record so pip treats av as already installed
 # and does not attempt to rebuild it when resolving aiortc's dependencies.
-echo "Installing av (PyAV) from Ubuntu 24.04 armhf package..."
-UBUNTU_AV_DEB="python3-av_11.0.0-4build1_armhf.deb"
+# Ubuntu 24.04 .deb packages use zstd compression; the board's dpkg-deb does not
+# support zstd, so we install zstd and extract manually with ar + zstd + tar.
+echo "Installing av (PyAV) from Ubuntu 24.04 arm64 package..."
+apt-get install -y zstd libavdevice60
+UBUNTU_AV_DEB="python3-av_11.0.0-4build1_arm64.deb"
 UBUNTU_AV_URL="http://ports.ubuntu.com/ubuntu-ports/pool/universe/p/python-av/${UBUNTU_AV_DEB}"
 wget -q --show-progress -O "/tmp/${UBUNTU_AV_DEB}" "${UBUNTU_AV_URL}"
 mkdir -p /tmp/av-deb-extract

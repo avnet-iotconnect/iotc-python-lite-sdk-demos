@@ -19,6 +19,13 @@ This starter increases model compute versus simpler demos by using:
 
 It is intended as a baseline scaffold before replacing with a trained model path.
 
+## Prebuilt HLS Output
+
+The compiled HLS output artifacts are available for download from S3:
+
+- [tinyml_complex.RISCV.src](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/tinyml_complex.RISCV.src)
+- [tinyml_complex.src](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/tinyml_complex.src)
+
 ## Build
 
 From this folder inside the reference design tree:

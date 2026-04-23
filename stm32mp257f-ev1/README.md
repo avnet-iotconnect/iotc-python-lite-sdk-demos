@@ -10,7 +10,8 @@
 5. [Onboard Device](#5-onboard-device)
 6. [Using the Demo](#6-using-the-demo)
 7. [Troubleshooting](#7-troubleshooting)
-8. [Resources](#8-resources)
+8. [Going Further: Expansion Demos](#8-going-further-expansion-demos)
+9. [Resources](#9-resources)
 
 # 1. Introduction
 
@@ -141,7 +142,14 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 To return the board to an out-of-box state, refer to the [FLASHING.md](FLASHING.md) guide.
 
-# 8. Resources
+# 8. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
+
+* **[KVS PutMedia Video Streaming](kvs-putmedia/README.md)**: Stream live video from a connected USB camera to AWS Kinesis Video Streams (KVS) and view it through the /IOTCONNECT dashboard. Video is stored as fragments on AWS, making it suitable for security camera and recording use cases (5–15 second latency).
+* **[KVS WebRTC Live Video](kvs-webrtc/README.md)**: Stream live video directly from the board to your browser via WebRTC, brokered through a KVS signaling channel. Delivers sub-second latency for real-time monitoring. Video is not stored — it is only viewable while actively streaming.
+
+# 9. Resources
 * Explore connecting the STM32MP257F-EV1 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/stm32mp257f-ev1/)
 * [Purchase the STM32MP257F-EV1](https://www.newark.com/stmicroelectronics/stm32mp257f-ev1/eval-brd-arm-cortex-a35-m33-m0/dp/13AM6530)
 * [More /IOTCONNECT ST Guides](https://avnet-iotconnect.github.io/partners/st/)

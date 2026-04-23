@@ -42,7 +42,7 @@ After the board powers up successfully, a pink screen with the Tria logo should 
 > on the screen.
 
 ## 2. Download Demo Zip Archive
-Download the zip archive containing the necessary demo and template files [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/raw/refs/heads/main/tria-vision-ai-kit-6490/vision-ai/QCS6490-Vision-AI-Demo.zip).
+Download the zip archive containing the necessary demo and template files [here](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/QCS6490-Vision-AI-Demo.zip).
 
 Unzip the archive and inside is a folder called `QCS6490-Vision-AI-Demo` which contains the Vision-AI demo files as well as these two /IOTCONNECT template files:
 

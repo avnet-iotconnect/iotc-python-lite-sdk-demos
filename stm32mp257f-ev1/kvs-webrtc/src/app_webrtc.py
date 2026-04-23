@@ -1,6 +1,7 @@
 import asyncio
 import json
 import queue
+import threading
 import traceback
 from base64 import b64decode, b64encode
 
@@ -16,6 +17,8 @@ from botocore.credentials import Credentials
 from botocore.session import Session
 
 webrtc_client: 'KinesisVideoClient | None' = None
+_webrtc_loop: asyncio.AbstractEventLoop | None = None
+_stop_event: threading.Event = threading.Event()
 
 
 class FrameQueueVideoTrack(MediaStreamTrack):
@@ -29,8 +32,15 @@ class FrameQueueVideoTrack(MediaStreamTrack):
     async def recv(self):
         try:
             loop = asyncio.get_event_loop()
-            frame_array = await loop.run_in_executor(None, self._queue.get)
-            frame = av.VideoFrame.from_ndarray(frame_array, format='rgb24')
+            while True:
+                try:
+                    frame_array = await loop.run_in_executor(
+                        None, lambda: self._queue.get(timeout=0.5)
+                    )
+                    break
+                except queue.Empty:
+                    continue
+            frame = av.VideoFrame.from_ndarray(frame_array, format='yuv420p')
             frame.pts = self._timestamp
             frame.time_base = '1/30'
             self._timestamp += 1
@@ -47,6 +57,7 @@ class KinesisVideoClient:
         self.channel_arn = channel_arn
         self.credentials = credentials
         self.video_track = FrameQueueVideoTrack(frame_queue)
+        self._websocket = None
         if self.credentials:
             self.kinesisvideo = boto3.client('kinesisvideo',
                                              region_name=self.region,
@@ -206,21 +217,34 @@ class KinesisVideoClient:
         self.get_signaling_channel_endpoint()
         wss_url = self.create_wss_url()
 
-        while True:
-            try:
-                async with websockets.connect(wss_url) as websocket:
-                    print('Signaling Server Connected!')
-                    async for message in websocket:
-                        msg_type, payload, client_id = self.decode_msg(message)
-                        if msg_type == 'SDP_OFFER':
-                            await self.handle_sdp_offer(payload, client_id, websocket)
-                        elif msg_type == 'ICE_CANDIDATE':
-                            await self.handle_ice_candidate(payload, client_id)
-            except websockets.ConnectionClosed:
-                print('Connection closed, reconnecting...')
-                self.get_signaling_channel_endpoint()
-                wss_url = self.create_wss_url()
-                continue
+        try:
+            while not _stop_event.is_set():
+                try:
+                    async with websockets.connect(wss_url) as websocket:
+                        self._websocket = websocket
+                        print('Signaling Server Connected!')
+                        async for message in websocket:
+                            if _stop_event.is_set():
+                                return
+                            msg_type, payload, client_id = self.decode_msg(message)
+                            if msg_type == 'SDP_OFFER':
+                                await self.handle_sdp_offer(payload, client_id, websocket)
+                            elif msg_type == 'ICE_CANDIDATE':
+                                await self.handle_ice_candidate(payload, client_id)
+                except websockets.ConnectionClosed:
+                    if _stop_event.is_set():
+                        return
+                    print('Connection closed, reconnecting...')
+                    self.get_signaling_channel_endpoint()
+                    wss_url = self.create_wss_url()
+                    continue
+                finally:
+                    self._websocket = None
+        except asyncio.CancelledError:
+            pass
+        finally:
+            self.PCMap.clear()
+            self.DCMap.clear()
 
     def refresh_credentials(self, access_key_id, secret_access_key, session_token):
         self.credentials = {
@@ -237,8 +261,34 @@ class KinesisVideoClient:
         )
 
 
+def stop_webrtc():
+    """Signal the WebRTC signaling loop to exit and close the active websocket."""
+    global _webrtc_loop
+    _stop_event.set()
+    loop = _webrtc_loop
+    if loop is None or loop.is_closed():
+        return
+
+    async def _do_stop():
+        # Close the websocket to immediately break out of the async-for receive loop.
+        client = webrtc_client
+        if client is not None and client._websocket is not None:
+            try:
+                await client._websocket.close()
+            except Exception:
+                pass
+        # Also cancel any remaining aiortc tasks (ICE, DTLS, encoder) so they
+        # don't linger after signaling_client() returns.
+        tasks = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
+        for t in tasks:
+            t.cancel()
+
+    asyncio.run_coroutine_threadsafe(_do_stop(), loop)
+
+
 def start_webrtc(region, channel_arn, access_key_id, secret_access_key, session_token, frame_queue):
-    global webrtc_client
+    global webrtc_client, _webrtc_loop
+    _stop_event.clear()
     try:
         assert all([region, channel_arn, access_key_id, secret_access_key])
 
@@ -256,7 +306,22 @@ def start_webrtc(region, channel_arn, access_key_id, secret_access_key, session_
             frame_queue=frame_queue
         )
 
-        asyncio.run(webrtc_client.signaling_client())
+        loop = asyncio.new_event_loop()
+        _webrtc_loop = loop
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(webrtc_client.signaling_client())
+        except asyncio.CancelledError:
+            pass
+        finally:
+            # Drain any remaining aiortc tasks before closing the loop.
+            pending = asyncio.all_tasks(loop)
+            for task in pending:
+                task.cancel()
+            if pending:
+                loop.run_until_complete(asyncio.gather(*pending, return_exceptions=True))
+            loop.close()
+            _webrtc_loop = None
     except Exception:
         print("WebRTC thread crashed:")
         traceback.print_exc()

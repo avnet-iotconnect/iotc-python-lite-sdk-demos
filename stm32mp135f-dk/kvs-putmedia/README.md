@@ -9,7 +9,7 @@ Upgrades the /IOTCONNECT Starter Demo on the STM32MP135F-DK to the AWS Kinesis V
 
 This demo streams live video from a USB camera through the STM32MP135F-DK to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK libraries are pre-built and bundled in the package — no on-device compilation is required.
 
-The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package set does not include a software H264 encoder. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The default resolution is 320×240 at 15 fps to stay within the Cortex-A7's encoding budget.
+The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package set does not include a software H264 encoder. This demo bundles a cross-compiled GStreamer x264 plugin (`libgstx264.so`) alongside the KVS SDK libraries so that the board can perform software H264 encoding without any on-device compilation. The default resolution is 960×720 at 15 fps to stay within the Cortex-A7's encoding budget.
 
 ## 2. Set Up Hardware and Template
 
@@ -19,7 +19,7 @@ The STM32MP135F-DK has no hardware H264 encoder, and the Yocto GStreamer package
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if the onboard camera interface is also present.
 
 > [!IMPORTANT]
-> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device **must be created in /IOTCONNECT with the `plitekvs` template** — the AWS backend will not register a device for KVS if it was originally created with the `plitedemo` template and later switched. If your device was created with `plitedemo`, create a new device using `plitekvs`.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
 
 ## 3. Deploy and Run
 
@@ -29,7 +29,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp135f-dk/kvs-putmedia/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp135f-dk/kvs-putmedia/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```

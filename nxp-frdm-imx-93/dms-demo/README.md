@@ -42,7 +42,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-93/dms-demo/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
@@ -77,7 +77,7 @@ The demo detects a variety of facial attributes and interprets driver attentiven
 </details>
 
 > [!TIP]
-> Additional context on the demo is available in the [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf).
+> Additional context on the demo is available in the [Webinar Slides](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf).
 
 ## 6. Customize and Rebuild (Optional)
 

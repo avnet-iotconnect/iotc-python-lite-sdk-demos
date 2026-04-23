@@ -8,11 +8,16 @@ import subprocess
 import signal
 import os
 import urllib.request
+import warnings
 import requests
 import threading
 import queue
 import traceback
 from typing import Optional
+
+# google-crc32c falls back to a pure-Python implementation on this platform and
+# always emits a RuntimeWarning about it. Suppress it to avoid confusing users.
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="google_crc32c")
 
 import numpy as np
 import app_webrtc
@@ -106,18 +111,21 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     video_framerate = camera_options.get("video", {}).get("framerate", 30)
 
     verbose = camera_options.get("verbose", False)
-    verbose_flag = "-v " if verbose else ""
+    verbose_flag = "-v " if verbose else "-q "
 
-    # GStreamer pipeline: capture raw RGB frames from USB camera and write to stdout.
-    # For WebRTC, hardware H264 encoding (v4l2slh264enc) is not used — aiortc handles
-    # encoding on the Python side. We let v4l2src negotiate its native format, convert
-    # to RGB, and pipe raw frames to the frame reader thread.
-    # Adjust camera_options for a different resolution or framerate if needed.
+    # GStreamer pipeline: capture frames from USB camera and write raw I420 to stdout.
+    # I420 (YUV420 planar) is used instead of RGB because its plane strides (width for Y,
+    # width/2 for U/V) are always aligned to any hardware boundary — no padding is ever
+    # added. RGB at 640px (stride=1920) can acquire hardware-alignment padding on the
+    # STM32MP2's M2M video path (e.g. 2048-byte rows), which shifts frame data and
+    # causes the right-edge wrap artifact seen in the stream.
+    # videoscale ensures the output is exactly the requested dimensions regardless of
+    # the camera's native resolution.
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
         f"v4l2src device={device_port} do-timestamp=true ! "
-        f"videoconvert ! "
-        f"video/x-raw,format=RGB,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
+        f"videoconvert ! videoscale ! "
+        f"video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
         f"fdsink fd=1"
     )
 
@@ -134,7 +142,7 @@ def start_capture_process() -> Optional[subprocess.Popen]:
             text=False
         )
 
-        # Start thread to read raw RGB frames from stdout and feed into _frame_queue
+        # Start thread to read raw I420 frames from stdout and feed into _frame_queue
         threading.Thread(
             target=_frame_reader,
             args=(_stream_process, video_width, video_height),
@@ -173,8 +181,8 @@ def start_capture_process() -> Optional[subprocess.Popen]:
 
 
 def _frame_reader(proc: subprocess.Popen, width: int, height: int):
-    """Read raw RGB frames from the GStreamer fdsink subprocess and enqueue them."""
-    frame_size = width * height * 3
+    """Read raw I420 frames from the GStreamer fdsink subprocess and enqueue them."""
+    frame_size = width * height * 3 // 2  # I420: Y plane + U/V half-size planes
     while True:
         data = b''
         while len(data) < frame_size:
@@ -185,7 +193,7 @@ def _frame_reader(proc: subprocess.Popen, width: int, height: int):
             if not chunk:
                 return
             data += chunk
-        frame = np.frombuffer(data, dtype=np.uint8).reshape((height, width, 3)).copy()
+        frame = np.frombuffer(data, dtype=np.uint8).reshape((height * 3 // 2, width)).copy()
         try:
             _frame_queue.put_nowait(frame)
         except queue.Full:
@@ -198,8 +206,8 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
             if verbose:
                 decoded = line.decode(errors='replace').rstrip()
                 print(f"{decoded}")
-    except Exception as e:
-        print(f"Error reading pipe: {e}")
+    except Exception:
+        pass
     finally:
         try:
             pipe.close()
@@ -208,7 +216,7 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
 
 
 def stop_video_stream() -> bool:
-    global _stream_process
+    global _stream_process, _webrtc_thread
 
     if sys.platform not in ('linux', 'linux2'):
         print("Stopping GStreamer is only supported on Linux")
@@ -223,10 +231,17 @@ def stop_video_stream() -> bool:
         os.killpg(os.getpgid(_stream_process.pid), signal.SIGTERM)
         _stream_process = None
         print("Capture pipeline stopped")
-        return True
     except Exception as e:
         print(f"Error stopping capture pipeline: {e}")
         return False
+
+    app_webrtc.stop_webrtc()
+    if _webrtc_thread is not None and _webrtc_thread.is_alive():
+        _webrtc_thread.join(timeout=5.0)
+        if not _webrtc_thread.is_alive():
+            _webrtc_thread = None
+
+    return True
 
 
 def is_streaming() -> bool:
@@ -452,7 +467,12 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nShutting down...")
         if is_streaming():
-            print("Stopping capture pipeline...")
             stop_video_stream()
+        else:
+            # GStreamer already stopped; WebRTC thread may still be running
+            # (e.g. blocked in pc.close() after a stop command was issued)
+            app_webrtc.stop_webrtc()
+            if _webrtc_thread is not None and _webrtc_thread.is_alive():
+                _webrtc_thread.join(timeout=10.0)
         client.disconnect()
         print("Shutdown complete.")

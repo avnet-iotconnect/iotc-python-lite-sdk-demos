@@ -11,7 +11,8 @@
 6. [Using the Demo](#6-using-the-demo)
 7. [EIQ Vision AI Driver Monitoring System Demo](#7-eiq-vision-ai-driver-monitoring-system-demo)
 8. [Troubleshooting](#8-troubleshooting)
-9. [Resources](#9-resources)
+9. [Going Further: Expansion Demos](#9-going-further-expansion-demos)
+10. [Resources](#10-resources)
 
 # 1. Introduction
 
@@ -124,9 +125,19 @@ to [this guide](./dms-demo/README.md).
 
 To return the board to an out-of-box state, refer to the [flashing](FLASHING.md) guide.
 
-# 9. Resources
+# 9. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
+
+* **[EIQ Vision AI Driver Monitoring System (DMS) Demo](dms-demo/README.md)**: Upgrades the starter demo to a real-time driver monitoring system powered by NXP's eIQ machine learning toolkit, detecting drowsiness and distraction events and reporting alerts to /IOTCONNECT.
+* **[EIQ DMS + Face Recognition Demo](dms_plus_face_recog-demo/AI_model_setup.md)**: Extends the DMS demo with facial recognition to identify known drivers and apply per-driver alert rules or sensitivity adjustments.
+* **[File Upload Demo](file-upload-demo/README.md)**: Upgrades the starter demo to capture media from a connected camera and upload files directly to AWS S3, demonstrating cloud file storage integration with /IOTCONNECT.
+* **[KVS PutMedia Video Streaming](kvs-putmedia/README.md)**: Stream live video from a connected USB camera to AWS Kinesis Video Streams (KVS) and view it through the /IOTCONNECT dashboard. Video is stored as fragments on AWS, making it suitable for security camera and recording use cases (5–15 second latency).
+* **[KVS WebRTC Live Video Streaming](kvs-webrtc/README.md)**: Stream live video from a connected USB camera directly to your browser via AWS Kinesis Video Streams (KVS) WebRTC. Delivers sub-second latency with no stored footage — ideal for real-time monitoring.
+
+# 10. Resources
 * Explore connecting the NXP FRDM i.MX 93 through the AWS Greengrass Lite SDK [QuickStart](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/blob/main/nxp-frdm-imx-93/)
-* [Webinar Slides](Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf) | [Webinar QuickStart](dms-demo/WEBINAR_QUICKSTART.md)
+* [Webinar Slides](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf) | [Webinar QuickStart](dms-demo/WEBINAR_QUICKSTART.md)
 * [Purchase the FRDM i.MX 93 Board](https://www.newark.com/nxp/frdm-imx93/dev-brd-64bit-arm-cortex-a55-m33/dp/20AM9538)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

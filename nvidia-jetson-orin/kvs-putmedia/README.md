@@ -17,7 +17,7 @@ This demo streams live video from a USB camera through the Jetson Orin to AWS Ki
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app auto-detects the first available video device.
 
 > [!IMPORTANT]
-> This demo requires the `putmedia` template (available [here](putmedia-template.json)). If your device was created in /IOTCONNECT with the `plitedemo` template, change it to `putmedia` now via the edit icon next to the **Template** field on your device's page. If it was originally onboarded with `plitedemo`, the AWS backend may not register it for KVS — in that case, create a new device using the `putmedia` template.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
 
 ## 3. Deploy and Run
 
@@ -27,7 +27,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nvidia-jetson-orin/kvs-putmedia/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nvidia-jetson-orin/kvs-putmedia/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 sudo bash ./install.sh
 ```

@@ -26,7 +26,7 @@ Scaling batch size is the most effective way to see hardware gain with this mode
 The quickstart programmed the board with the stock Microchip reference design. This step replaces it with a demo-specific FPGA image that includes the Simple Neural Network accelerator in the FPGA fabric, which is required for `hw` mode inference.
 
 1. Open FlashPro Express.
-2. Download the Simple Neural Network Accelerator FPGA job file [here](assets/fpga-job/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
+2. Download the Simple Neural Network Accelerator FPGA job file [here](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (right-click, "save as").
 3. Create/open project with `MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`.
 4. Click `RUN` to program board.
 5. Power-cycle board after programming.
@@ -57,7 +57,7 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 ### Download package on board
 
 ```bash
-wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/package.tar.gz
+wget -O /opt/demo/package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/package.tar.gz
 ```
 
 ### Install and run

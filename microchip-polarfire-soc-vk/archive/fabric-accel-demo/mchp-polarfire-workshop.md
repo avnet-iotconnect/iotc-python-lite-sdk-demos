@@ -19,9 +19,7 @@ This document captures the full, reproducible steps to create and run the FIC0-o
 
 ## FPGA programming file (.job)
 
-Use the prebuilt AXI4 stream demo .job in this repo:
-
-`microchip-polarfire-soc-dk/fpga-assets/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job`
+Download the `.job` file from S3: [MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job)
 
 Program it with FlashPro Express:
 
@@ -149,4 +147,4 @@ Options:
 - `fabric-accel-demo/app.py`
 - `fabric-accel-demo/README.md`
 - `microchip-polarfire-soc-dk/FPGA-ACCEL-WORKSHOP.md`
-- `microchip-polarfire-soc-dk/fpga-assets/AXI4_STREAM_DEMO_2025_07/.../MPFS_Video_KIT_AXI4_STREAM_DEMO_2025_07.job`
+- [MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/MPFS_VIDEO_KIT_TSN_DESIGN_2025_03.job) (S3)

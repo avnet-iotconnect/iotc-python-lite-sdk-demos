@@ -29,8 +29,15 @@ class FrameQueueVideoTrack(MediaStreamTrack):
     async def recv(self):
         try:
             loop = asyncio.get_event_loop()
-            frame_array = await loop.run_in_executor(None, self._queue.get)
-            frame = av.VideoFrame.from_ndarray(frame_array, format='rgb24')
+            while True:
+                try:
+                    frame_array = await loop.run_in_executor(
+                        None, lambda: self._queue.get(timeout=0.5)
+                    )
+                    break
+                except queue.Empty:
+                    continue
+            frame = av.VideoFrame.from_ndarray(frame_array, format='yuv420p')
             frame.pts = self._timestamp
             frame.time_base = '1/30'
             self._timestamp += 1

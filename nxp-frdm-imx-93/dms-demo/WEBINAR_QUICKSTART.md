@@ -159,7 +159,7 @@ The Driver Safety Monitor demo solution will look for a variety of facial attrib
 To return the board to an out-of-box state, refer to the [flashing](../FLASHING.md) guide.
 
 # 12. Resources
-* [Webinar Slides](../Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
+* [Webinar Slides](https://s3.us-east-1.amazonaws.com/avnetpublicaccess/large-repo-files/Avnet-NXP-iMX93-EdgeAI-Webinar-Feb2025.pdf)
 * [Purchase the FRDM i.MX 93 Board](https://export.farnell.com/nxp/frdm-imx93/frdm-development-board-for-i-mx/dp/4626785)
 * [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)

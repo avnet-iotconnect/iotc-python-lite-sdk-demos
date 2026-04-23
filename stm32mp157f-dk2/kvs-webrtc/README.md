@@ -11,7 +11,7 @@ This demo streams live video from a USB camera through the STM32MP157F-DK2 to a 
 
 Unlike the KVS PutMedia demo, WebRTC is a peer-to-peer protocol — the video is delivered directly between the device and the viewer with very low latency. No pre-built KVS C++ SDK libraries need to be installed; all WebRTC signaling and media encoding is handled in Python by `aiortc` and `boto3`.
 
-The default capture resolution is 640×480 at 15 fps to stay within the Cortex-A7's CPU budget alongside the software encoding performed by aiortc.
+The default capture resolution is 320×240 at 15 fps to stay within the Cortex-A7's CPU budget alongside the software encoding performed by aiortc.
 
 ## 2. Set Up Hardware and Template
 
@@ -21,7 +21,7 @@ The default capture resolution is 640×480 at 15 fps to stay within the Cortex-A
 > Verify the camera is detected by running `ls /dev/video*` on the device. The app automatically identifies USB cameras by inspecting the hardware path of each video device, so it picks the correct one even if the onboard camera interface is also present.
 
 > [!IMPORTANT]
-> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device **must be created in /IOTCONNECT with the `plitekvs` template** — the AWS backend provisions a KVS WebRTC signaling channel for `webrtc` devices and a KVS stream for `putmedia` devices, and these cannot be switched after device creation. If your device was created with `plitedemo` or `putmedia`, create a new device using `plitekvs`.
+> This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
 
 ## 3. Deploy and Run
 
@@ -31,7 +31,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp157f-dk2/kvs-webrtc/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp157f-dk2/kvs-webrtc/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
