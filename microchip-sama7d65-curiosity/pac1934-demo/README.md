@@ -36,9 +36,6 @@ No additional cables or peripherals are needed. The PAC1934 is already wired on 
 
 <img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
-> [!NOTE]
-> Template codes are limited to 10 characters on /IOTCONNECT.
-
 The template defines telemetry attributes for all four channels (voltage, current, power per channel) and two commands: `set-interval` and `file-download`.
 
 ## 4. Deploy and Run

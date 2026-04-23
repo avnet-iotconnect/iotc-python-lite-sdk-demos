@@ -92,9 +92,6 @@ arecord -l
 
 <img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
-> [!NOTE]
-> Template codes are limited to 10 characters on /IOTCONNECT.
-
 The template exposes game state, bankroll, current command outcome, audio/model metadata, threshold, and telemetry interval. Template commands include both game actions (`deal`, `hit`, `stand`, `double`, `reset`, `bet-up`, `bet-down`, `safe-bet`) and runtime controls (`listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`, `file-download`).
 
 ## 5. Deploy and Run

@@ -26,9 +26,6 @@ arecord -l
 
 <img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
-> [!NOTE]
-> Template codes are limited to 10 characters on /IOTCONNECT.
-
 The template exposes telemetry for the latest inference, accepted detections, threshold, active heartbeat interval, and audio device. The template commands are `listen-start`, `listen-stop`, `set-threshold`, `set-interval`, and `file-download`.
 
 ## 3. Deploy and Run
