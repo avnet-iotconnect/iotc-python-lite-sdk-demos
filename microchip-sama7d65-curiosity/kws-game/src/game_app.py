@@ -36,7 +36,7 @@ from kws_engine import KeywordSpotter, KwsSettings
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_MODEL_DIR = Path("/opt/demo/models") if Path("/opt/demo/models").is_dir() else BASE_DIR / "models"
 MODEL_DIR = Path(os.getenv("KWS_MODEL_DIR", str(DEFAULT_MODEL_DIR)))
-DEFAULT_CONFIG_DIR = Path("/root/blackJack-config") if Path("/root/blackJack-config").is_dir() else Path(os.getcwd())
+DEFAULT_CONFIG_DIR = Path(os.getcwd())
 CONFIG_DIR = Path(os.getenv("KWS_CONFIG_DIR", str(DEFAULT_CONFIG_DIR)))
 HOST = os.getenv("KWS_GAME_HOST", "0.0.0.0")
 PORT = int(os.getenv("KWS_GAME_PORT", "8080"))
