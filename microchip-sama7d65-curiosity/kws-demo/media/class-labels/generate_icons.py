@@ -3,7 +3,6 @@ from __future__ import annotations
 import math
 import json
 from pathlib import Path
-from typing import Callable
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
