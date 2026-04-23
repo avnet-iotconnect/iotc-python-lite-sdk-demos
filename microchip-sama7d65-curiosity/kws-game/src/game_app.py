@@ -26,6 +26,7 @@ try:
 
     SDK_IMPORT_ERROR = ""
 except Exception as exc:  # pragma: no cover - import depends on target image
+    DeviceConfigError = Exception
     Callbacks = Client = DeviceConfig = DeviceConfigError = C2dCommand = C2dOta = C2dAck = None  # type: ignore[assignment]
     SDK_VERSION = "unavailable"
     SDK_IMPORT_ERROR = str(exc)
