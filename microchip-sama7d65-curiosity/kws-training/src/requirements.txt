@@ -1,0 +1,5 @@
+Flask
+boto3
+requests
+paho-mqtt
+iotconnect-sdk-lite

@@ -1,0 +1,40 @@
+#!/bin/sh
+set -eu
+
+/root/stop-kws-apps.sh >/dev/null 2>&1 || true
+
+cd /root/kws-training/src
+
+export AWS_REGION="${AWS_REGION:-us-east-1}"
+export KWS_ARECORD_DEVICE="${KWS_ARECORD_DEVICE:-plughw:0,0}"
+export KWS_TRAINING_PORT="${KWS_TRAINING_PORT:-8091}"
+export KWS_IOTC_CONFIG_JSON=/root/mcpkws1-config/iotcDeviceConfig.json
+export KWS_IOTC_DEVICE_CERT=/root/mcpkws1-config/device-cert.pem
+export KWS_IOTC_DEVICE_KEY=/root/mcpkws1-config/device-pkey.pem
+export KWS_TRAINING_OUTPUT_BUCKET="${KWS_TRAINING_OUTPUT_BUCKET:-iotc-761303338807-model-1775928760254}"
+export KWS_SAGEMAKER_ROLE_ARN="${KWS_SAGEMAKER_ROLE_ARN:-arn:aws:iam::761303338807:role/sagemaker-execution-role-761303338807}"
+export KWS_SAGEMAKER_IMAGE_URI="${KWS_SAGEMAKER_IMAGE_URI:-761303338807.dkr.ecr.us-east-1.amazonaws.com/kws-training-trainer:20260414-215521}"
+export KWS_TRAINING_PIPELINE_IMAGE_URI="${KWS_TRAINING_PIPELINE_IMAGE_URI:-761303338807.dkr.ecr.us-east-1.amazonaws.com/kws-training-converter:20260414-215535}"
+export KWS_TRAINING_STATE_MACHINE_ARN="${KWS_TRAINING_STATE_MACHINE_ARN:-arn:aws:states:us-east-1:761303338807:stateMachine:conv-1775928760254}"
+export KWS_TRAINING_AUTO_CONVERT_AFTER_TRAIN="${KWS_TRAINING_AUTO_CONVERT_AFTER_TRAIN:-1}"
+export KWS_TRAINING_PIPELINE_OUTPUT_PREFIX="${KWS_TRAINING_PIPELINE_OUTPUT_PREFIX:-kws-training/converted}"
+export KWS_TRAINING_DEFAULT_LABELS="${KWS_TRAINING_DEFAULT_LABELS:-deal,double,hit,reset,stand}"
+export KWS_SAGEMAKER_TRAIN_EPOCHS="${KWS_SAGEMAKER_TRAIN_EPOCHS:-30}"
+export KWS_SAGEMAKER_TRAIN_BATCH_SIZE="${KWS_SAGEMAKER_TRAIN_BATCH_SIZE:-32}"
+export KWS_SAGEMAKER_TRAIN_LEARNING_RATE="${KWS_SAGEMAKER_TRAIN_LEARNING_RATE:-0.0007}"
+export KWS_TRAIN_PRETRAIN_ENABLED="${KWS_TRAIN_PRETRAIN_ENABLED:-1}"
+export KWS_TRAIN_PRETRAIN_REQUIRED="${KWS_TRAIN_PRETRAIN_REQUIRED:-0}"
+export KWS_TRAIN_PRETRAIN_SOURCE="${KWS_TRAIN_PRETRAIN_SOURCE:-http://download.tensorflow.org/data/speech_commands_v0.02.tar.gz}"
+export KWS_TRAIN_PRETRAIN_EPOCHS="${KWS_TRAIN_PRETRAIN_EPOCHS:-6}"
+export KWS_TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL="${KWS_TRAIN_PRETRAIN_MAX_SAMPLES_PER_LABEL:-1800}"
+export KWS_TRAIN_PRETRAIN_VALIDATION_SPLIT="${KWS_TRAIN_PRETRAIN_VALIDATION_SPLIT:-0.1}"
+export KWS_TRAIN_PRETRAIN_LEARNING_RATE="${KWS_TRAIN_PRETRAIN_LEARNING_RATE:-0.001}"
+export KWS_TRAIN_PRETRAIN_WORDS="${KWS_TRAIN_PRETRAIN_WORDS:-yes,no,up,down,left,right,on,off,stop,go}"
+export KWS_TRAIN_MUSAN_SOURCE="${KWS_TRAIN_MUSAN_SOURCE:-https://www.openslr.org/resources/17/musan.tar.gz}"
+export KWS_TRAIN_MUSAN_MAX_CLIPS="${KWS_TRAIN_MUSAN_MAX_CLIPS:-128}"
+
+echo "Starting kws-training in foreground as mcpKWS1"
+echo "Open http://<board-ip>:${KWS_TRAINING_PORT}"
+echo "Stop with Ctrl+C"
+
+exec /usr/bin/python3 -u ./training_app.py

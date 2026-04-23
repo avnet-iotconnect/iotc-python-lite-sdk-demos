@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice Blackjack</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="spotlights"></div>
+  <main class="shell">
+    <div class="layout">
+      <div class="game-stage">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">SAMA7D65 Casino Demo</p>
+            <h1>Voice Blackjack</h1>
+            <p class="lead">A familiar table game that works with latency. Set your bet, say <strong>deal</strong> to start, then use <strong>hit</strong>, <strong>stand</strong>, <strong>double</strong>, and <strong>reset</strong> for the table actions.</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><span>Bankroll</span><strong id="bankroll">500</strong></div>
+            <div class="stat"><span>Best</span><strong id="best-bankroll">500</strong></div>
+            <div class="stat"><span>Bet</span><strong id="bet">25</strong></div>
+            <div class="stat"><span>Hand</span><strong id="hand-number">0</strong></div>
+          </div>
+        </section>
+
+        <section class="table-card">
+          <div class="table-top">
+            <div class="status-pill" id="mode">betting</div>
+            <div class="flash" id="flash-text">Set your bet, then say DEAL</div>
+          </div>
+
+          <div class="table-layout">
+            <div class="felt-wrap">
+              <div class="felt">
+                <div class="chip-rack">
+                  <div class="stack-group">
+                    <div class="chip-stack chip-stack-gold" id="stack-bet" aria-hidden="true"></div>
+                    <div class="chip chip-gold" id="chip-bet">25</div>
+                    <span class="stack-label">Bet</span>
+                  </div>
+                  <div class="stack-group">
+                    <div class="chip-stack chip-stack-emerald" id="stack-bankroll" aria-hidden="true"></div>
+                    <div class="chip chip-emerald" id="chip-bankroll">500</div>
+                    <span class="stack-label">Bankroll</span>
+                  </div>
+                  <div class="stack-group">
+                    <div class="chip-stack chip-stack-rose" id="stack-best" aria-hidden="true"></div>
+                    <div class="chip chip-rose" id="chip-best">500</div>
+                    <span class="stack-label">Best</span>
+                  </div>
+                </div>
+
+                <section class="seat dealer">
+                  <div class="seat-head">
+                    <h2>Dealer</h2>
+                    <strong id="dealer-total">0</strong>
+                  </div>
+                  <div class="cards" id="dealer-cards"></div>
+                </section>
+
+                <div class="result-banner" id="round-result">Set your bet, then say DEAL</div>
+
+                <section class="seat player">
+                  <div class="seat-head">
+                    <h2>Player</h2>
+                    <strong id="player-total">0</strong>
+                  </div>
+                  <div class="cards" id="player-cards"></div>
+                </section>
+              </div>
+            </div>
+
+            <aside class="table-sidebar">
+              <section class="panel meta-panel">
+                <h2>Table Session</h2>
+                <div class="meta">
+                  <span id="audio-device">audio</span>
+                  <span id="model-name">model</span>
+                  <span id="model-package">package</span>
+                  <span id="cloud-status">cloud</span>
+                </div>
+              </section>
+
+              <section class="panel">
+                <h2>Table Controls</h2>
+                <div class="command-grid">
+                  <button data-command="deal">Deal</button>
+                  <button data-command="hit">Hit</button>
+                  <button data-command="stand">Stand</button>
+                  <button data-command="double">Double</button>
+                  <button data-command="bet-up">Bet +25</button>
+                  <button data-command="bet-down">Bet -25</button>
+                  <button data-command="safe-bet">Safe Bet</button>
+                  <button data-command="reset">Reset</button>
+                </div>
+              </section>
+
+              <section class="panel">
+                <h2>Last Command</h2>
+                <div class="callout">
+                  <strong id="last-command">waiting</strong>
+                  <span id="last-confidence">0.000</span>
+                </div>
+                <div class="legend">
+                  <div><span class="dot win"></span> Win / Blackjack</div>
+                  <div><span class="dot push"></span> Push</div>
+                  <div><span class="dot lose"></span> Loss</div>
+                </div>
+                <h2 class="subhead">Table Notes</h2>
+                <div class="feed" id="events"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </div>
+
+      <aside class="voice-overlay" aria-label="Voice command cheat sheet">
+        <div class="voice-overlay-head">
+          <span class="voice-kicker">Say These</span>
+          <strong>Voice Commands</strong>
+        </div>
+        <div class="voice-command-list">
+          <div><span>DEAL</span><small>Deal / next hand</small></div>
+          <div><span>HIT</span><small>Take a card</small></div>
+          <div><span>STAND</span><small>Hold the hand</small></div>
+          <div><span>DOUBLE</span><small>Double down</small></div>
+          <div><span>RESET</span><small>Reset table</small></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "package_name": "deal-double-hit-reset-model.zip",
+  "display_name": "deal, double, hit, reset, stand",
+  "installed_model_name": "model.tflite",
+  "labels_file": "labels.txt",
+  "model_architecture": "ds-cnn-mfcc"
+}
