@@ -130,11 +130,12 @@ cd /opt/demo && python3 -m zipfile -e kws-demo-package.zip . && bash ./install.s
 
 **Option B — OTA via /IOTCONNECT platform:**
 1. In the **Device** page, select **Firmware** on the bottom toolbar.
-2. Create a new firmware using the `sama7d6Kws` template.
-3. Upload a `.zip` from [packages/](./packages/).
-4. Publish the firmware draft and create an OTA update targeting your device.
+2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `sama7d6Kws` template, set version numbers (e.g., `0`, `0`), browse to `kws-demo-package.zip`, and click **Save**.
+3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
+4. Click the publish icon (black square with arrow) under **Actions**.
+5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.
 
-The running app will receive the package, extract it, execute `install.sh`, and restart automatically.
+Shortly after, the running `app.py` will receive the package, extract it, execute `install.sh`, and restart automatically.
 
 ## 8. Environment Overrides
 
