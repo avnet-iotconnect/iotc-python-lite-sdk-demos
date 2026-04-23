@@ -497,8 +497,8 @@ class IotConnectGameBridge:
             try:
                 self.send_telemetry(reason="shutdown")
                 self.client.disconnect()
-            except Exception:
-                pass
+            except Exception as exc:
+                print(f"IotConnectGameBridge.stop: ignoring shutdown exception: {exc}")
 
     def ensure_connected(self):
         if self.client is None:
