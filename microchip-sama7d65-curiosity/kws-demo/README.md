@@ -22,10 +22,12 @@ The bundled model is Arm's quantized `DS-CNN Small` Speech Commands model. The d
 arecord -l
 ```
 
-3. Create your device in /IOTCONNECT with [kws-template.json](./kws-template.json).
+3. Import the [kws-template.json](./kws-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7d6Kws`.
+
+<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" />
 
 > [!NOTE]
-> The template code is `sama7d6Kws`. Template codes are limited to 10 characters on /IOTCONNECT.
+> Template codes are limited to 10 characters on /IOTCONNECT.
 
 The template exposes telemetry for the latest inference, accepted detections, threshold, active heartbeat interval, and audio device. The template commands are `listen-start`, `listen-stop`, `set-threshold`, `set-interval`, and `file-download`.
 

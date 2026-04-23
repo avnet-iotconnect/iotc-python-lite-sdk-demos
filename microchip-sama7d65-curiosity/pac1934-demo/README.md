@@ -32,12 +32,12 @@ No additional cables or peripherals are needed. The PAC1934 is already wired on 
 
 ## 3. Change Device Template
 
-Create your device in /IOTCONNECT using the provided template:
+1. Import the [pac1934-template.json](./pac1934-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7dPac`.
 
-1. Import [pac1934-template.json](./pac1934-template.json) into your /IOTCONNECT account.
+<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" />
 
 > [!NOTE]
-> The template code is `sama7dPac`. Template codes are limited to 10 characters on /IOTCONNECT.
+> Template codes are limited to 10 characters on /IOTCONNECT.
 
 The template defines telemetry attributes for all four channels (voltage, current, power per channel) and two commands: `set-interval` and `file-download`.
 

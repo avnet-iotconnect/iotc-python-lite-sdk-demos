@@ -88,10 +88,12 @@ http://<board-ip>:8080
 arecord -l
 ```
 
-3. Create your device in /IOTCONNECT with [kws-game-template.json](./kws-game-template.json).
+3. Import the [kws-game-template.json](./kws-game-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7d6Bj`.
+
+<img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" />
 
 > [!NOTE]
-> The template code is `sama7d6Bj`. Template codes are limited to 10 characters on /IOTCONNECT.
+> Template codes are limited to 10 characters on /IOTCONNECT.
 
 The template exposes game state, bankroll, current command outcome, audio/model metadata, threshold, and telemetry interval. Template commands include both game actions (`deal`, `hit`, `stand`, `double`, `reset`, `bet-up`, `bet-down`, `safe-bet`) and runtime controls (`listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`, `file-download`).
 
