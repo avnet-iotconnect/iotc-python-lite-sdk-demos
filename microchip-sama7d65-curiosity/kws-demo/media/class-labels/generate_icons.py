@@ -138,7 +138,6 @@ def draw_arrow(draw: ImageDraw.ImageDraw, direction: str, accent: tuple[int, int
     cx, cy = icon_center()
     shaft_len = 34
     head = 12
-    width = 9
     if direction == "up":
         points = [(cx, cy - shaft_len), (cx + head, cy - shaft_len + head), (cx + 4, cy - shaft_len + head),
                   (cx + 4, cy + shaft_len / 2), (cx - 4, cy + shaft_len / 2), (cx - 4, cy - shaft_len + head),
