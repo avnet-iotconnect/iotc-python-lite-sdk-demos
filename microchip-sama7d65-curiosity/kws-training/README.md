@@ -108,7 +108,7 @@ The board-side training flow is designed to be driven from the browser. These sn
 ## Repository Layout
 
 ```text
-kws training/
+kws-training/
   README.md
   docs/
     ARCHITECTURE.md

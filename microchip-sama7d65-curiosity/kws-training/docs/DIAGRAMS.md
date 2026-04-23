@@ -1,6 +1,6 @@
 # Diagrams
 
-These diagrams describe the full `kws training` system in Mermaid format so they stay editable in the repository.
+These diagrams describe the full `kws-training` system in Mermaid format so they stay editable in the repository.
 
 If you want a rendered image instead of editable Mermaid, use the SVG below.
 
@@ -79,7 +79,7 @@ flowchart TD
     AWS5 --> IoTC1["Import kws-training-template.json into /IOTCONNECT"]
     IoTC1 --> IoTC2["Create training device"]
     IoTC2 --> IoTC3["Download device config + cert + key"]
-    IoTC3 --> Board1["Copy kws training folder to board"]
+    IoTC3 --> Board1["Copy kws-training folder to board"]
     Board1 --> Board2["Place device files on board"]
     Board2 --> Board3["Run src/install.sh"]
     Board3 --> Board4["Set runtime environment variables"]

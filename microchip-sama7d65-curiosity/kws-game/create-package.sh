@@ -4,12 +4,11 @@ set -e
 
 SRC_DIR="./src"
 ARCHIVE_NAME="package.zip"
-STAGING_DIR="/tmp/sama7d65-kws-package"
+STAGING_DIR="/tmp/sama7d65-kws-game-package"
 PACKAGES_DIR="./packages"
 
 rm -rf "$STAGING_DIR"
 mkdir -p "$STAGING_DIR"
-
 cp -r "$SRC_DIR"/. "$STAGING_DIR/"
 find "$STAGING_DIR" -type d -name "__pycache__" -exec rm -rf {} +
 find "$STAGING_DIR" -type f -name "*.pyc" -delete
@@ -28,9 +27,9 @@ with zipfile.ZipFile(archive_path, mode="w", compression=zipfile.ZIP_DEFLATED) a
         archive.write(path, arcname=path.relative_to(staging_dir).as_posix())
 PY
 
-cp "./$ARCHIVE_NAME" ../../../../common/
+cp "./$ARCHIVE_NAME" ../../common/
 mkdir -p "$PACKAGES_DIR"
-cp "./$ARCHIVE_NAME" "$PACKAGES_DIR/kws-demo-package.zip"
+cp "./$ARCHIVE_NAME" "$PACKAGES_DIR/kws-game-package.zip"
 
 rm -rf "$STAGING_DIR"
 

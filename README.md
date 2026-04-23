@@ -49,10 +49,28 @@ to your device.
 
 Within the [common](./common) directory is a ```starter-demo``` directory with instructions on how to do this.
 
-Some devices also include directories for pre-built expansion demos such as
-the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo) for the NXP FRDM i.MX 93. Inside of
-the directories for those demos you will find instructions on how to use a software package to deliver and install the
-pre-built demo.
+Some devices also include directories for pre-built expansion demos. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo. The available expansion demos are described in the sections below.
+
+# Keyword Spotting Demo
+
+The Keyword Spotting demo captures one-second audio clips from a USB microphone, runs a TensorFlow Lite DS-CNN speech-command classifier on-device, and publishes the top prediction and confidence score to /IOTCONNECT in real time. Ready-made model packages let you swap in different Arm ML Zoo models via OTA without redeploying the app.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-demo/README.md)
+
+# Voice Blackjack (KWS Game)
+
+The Voice Blackjack demo runs a browser-hosted blackjack game on the board using the same USB microphone keyword spotting pipeline as the Keyword Spotting Demo. Voice commands (`deal`, `hit`, `stand`, `double`, `reset`) control gameplay, while game state and inference results are streamed as telemetry to /IOTCONNECT. Cloud commands let operators trigger game actions and update runtime settings remotely.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-game/README.md)
+
+# PAC1934 Power Monitoring Demo
+
+The PAC1934 demo reads voltage, current, and power measurements from the on-board Microchip PAC1934 four-channel DC power monitor IC over I2C and publishes them to /IOTCONNECT. No additional hardware is required — the PAC1934 is already wired to the board's internal power rails. Four app variants are included for monitoring all channels or individual subsets.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/pac1934-demo/README.md)
 
 ## Licensing
 

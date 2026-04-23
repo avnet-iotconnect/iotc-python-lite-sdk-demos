@@ -45,7 +45,7 @@ Store them in stable paths, for example:
 
 ## 3. Copy The Application To The Board
 
-Copy the full `kws training/` folder to a stable location on the board. Example:
+Copy the full `kws-training/` folder to a stable location on the board. Example:
 
 ```text
 /opt/kws-training
