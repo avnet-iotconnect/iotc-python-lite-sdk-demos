@@ -121,7 +121,6 @@ def add_label(image: Image.Image, label: str, accent: tuple[int, int, int, int])
     display = label.strip("_").upper() if label.startswith("_") else label.upper()
     bbox = draw.textbbox((0, 0), display, font=FONT_LABEL)
     text_w = bbox[2] - bbox[0]
-    text_h = bbox[3] - bbox[1]
     draw.text(((SIZE - text_w) / 2, LABEL_TOP + 8 - bbox[1]), display, font=FONT_LABEL, fill=TEXT)
 
     meta = "VOICE"
