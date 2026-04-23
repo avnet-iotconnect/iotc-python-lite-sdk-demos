@@ -179,7 +179,6 @@ def draw_speaker(draw: ImageDraw.ImageDraw, accent: tuple[int, int, int, int], m
 
 
 def draw_question(draw: ImageDraw.ImageDraw, accent: tuple[int, int, int, int]) -> None:
-    bubble = [(36, 42), (108, 42), (108, 84), (78, 84), (64, 96), (62, 84), (36, 84)]
     draw.rounded_rectangle((36, 42, 108, 84), radius=16, outline=accent, width=6)
     draw.polygon([(70, 84), (84, 84), (66, 96)], fill=accent)
     draw.text((57, 34), "?", font=FONT_QUESTION, fill=TEXT)
