@@ -57,7 +57,6 @@ def gradient_tile() -> Image.Image:
 
     vignette = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     vdraw = ImageDraw.Draw(vignette)
-    center = SIZE / 2.0
     for i in range(56):
         alpha = int(65 * (i / 55))
         inset = i
