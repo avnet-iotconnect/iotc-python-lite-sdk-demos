@@ -27,9 +27,10 @@ if python_module_available numpy; then
   echo "NumPy import: OK"
 else
   echo "WARNING: NumPy is not installed."
-  echo "Attempting a best-effort pip install."
-  if python3 -m pip install numpy; then
+  if python3 -m pip install --only-binary=:all: numpy; then
     echo "Installed NumPy from pip."
+  elif opkg install python3-numpy 2>/dev/null; then
+    echo "Installed NumPy via opkg."
   else
     echo "WARNING: Unable to install NumPy automatically."
     echo "Install a compatible wheel or pre-provision NumPy if this target image does not bundle it."
@@ -39,8 +40,10 @@ fi
 if python_module_available tflite_runtime; then
   echo "TensorFlow Lite interpreter import: OK (tflite_runtime)"
 else
-  if python3 -m pip install tflite-runtime; then
+  if python3 -m pip install --only-binary=:all: tflite-runtime; then
     echo "Installed tflite-runtime from pip."
+  elif opkg install python3-tflite-runtime 2>/dev/null; then
+    echo "Installed tflite-runtime via opkg."
   else
     echo "WARNING: Unable to install tflite-runtime from pip."
     echo "The app can still run if a compatible TensorFlow Lite interpreter is already present."
@@ -57,12 +60,16 @@ fi
 mkdir -p /opt/demo/models
 
 if [ -d "./models" ]; then
-  cp -f ./models/* /opt/demo/models/
-  if [ -f "/opt/demo/models/model.tflite" ] && [ ! -f "/opt/demo/models/ds_cnn_s_quantized.tflite" ]; then
-    cp -f /opt/demo/models/model.tflite /opt/demo/models/ds_cnn_s_quantized.tflite
-  fi
-  if [ -f "/opt/demo/models/ds_cnn_s_quantized.tflite" ] && [ ! -f "/opt/demo/models/model.tflite" ]; then
-    cp -f /opt/demo/models/ds_cnn_s_quantized.tflite /opt/demo/models/model.tflite
+  SRC_MODELS=$(realpath "./models" 2>/dev/null || echo "")
+  DST_MODELS=$(realpath "/opt/demo/models" 2>/dev/null || echo "none")
+  if [ -n "$SRC_MODELS" ] && [ "$SRC_MODELS" != "$DST_MODELS" ]; then
+    cp -f ./models/* /opt/demo/models/
+    if [ -f "/opt/demo/models/model.tflite" ] && [ ! -f "/opt/demo/models/ds_cnn_s_quantized.tflite" ]; then
+      cp -f /opt/demo/models/model.tflite /opt/demo/models/ds_cnn_s_quantized.tflite
+    fi
+    if [ -f "/opt/demo/models/ds_cnn_s_quantized.tflite" ] && [ ! -f "/opt/demo/models/model.tflite" ]; then
+      cp -f /opt/demo/models/ds_cnn_s_quantized.tflite /opt/demo/models/model.tflite
+    fi
   fi
   echo "Installed model assets into /opt/demo/models"
 fi

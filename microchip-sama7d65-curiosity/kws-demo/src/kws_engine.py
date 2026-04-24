@@ -24,7 +24,10 @@ except ImportError:
 
         Interpreter = tf.lite.Interpreter
     except ImportError:
-        Interpreter = None
+        try:
+            from tflite_numpy_interpreter import Interpreter  # type: ignore
+        except ImportError:
+            Interpreter = None
 
 
 SPECIAL_LABELS = {"_silence_", "_unknown_"}

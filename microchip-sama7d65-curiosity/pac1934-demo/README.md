@@ -21,18 +21,23 @@ This demo reads these measurements over I2C from the Linux userspace and sends t
 ## 2. Set Up Hardware
 
 > [!IMPORTANT]
-> Jumpers **J6** and **J7** must be set to the **MPU selection** position (pins **2-3** closed) so that the SAMA7D65 MPU can access the PAC1934 over I2C. This is the **opposite** of the default setting described in the Microchip application note, which uses pins 1-2 for the external Windows GUI tool.
+> Jumpers **J6** and **J7** must be set to the **MPU selection** position (pins **2-3** closed) so that the SAMA7D65 MPU can access the PAC1934 over I2C. This is the **opposite** of the default setting described in the Microchip application note, which uses pins 1-2 for the external Windows GUI tool. Refer to the image below for the correct jumper positions.
 >
 > - **J6**: Close pins **2-3** (MPU I2C)
 > - **J7**: Close pins **2-3** (MPU I2C)
 >
 > If pins 1-2 are closed instead, the PAC1934 I2C bus is routed to the external USB connector (J5) and the MPU will not be able to communicate with it.
 
+<img src="../media/jumpers.png" alt="J6 and J7 jumper positions for MPU I2C access" width="350" />
+
+> [!NOTE]
+> The board must be rebooted after changing the jumper positions for the change to take effect.
+
 No additional cables or peripherals are needed. The PAC1934 is already wired on the board. Complete the same physical connections as the quickstart guide (USB-C power, Ethernet, SD card, serial adapter).
 
 ## 3. Change Device Template
 
-1. Import the [pac1934-template.json](./pac1934-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7dPac`.
+Import the [pac1934-template.json](./pac1934-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7dPac`.
 
 <img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
