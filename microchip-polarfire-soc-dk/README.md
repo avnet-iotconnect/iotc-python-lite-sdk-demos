@@ -43,7 +43,7 @@ replicated in other environments.
 * High Quality SanDisk UHS-1 Class 10 A1/A2 Micro-SD card
 
 > [!IMPORTANT]
-> The PolarFire SoC Discovery Kit requires a **High Quality, name brand UHS-1 Class 10 A1/A2 Micro-SD card**. No-name brands or leesser-specs will 
+> The PolarFire SoC Discovery Kit requires a **High Quality, name brand UHS-1 Class 10 A1/A2 Micro-SD card**. No-name brands or lesser-specs will 
 > not work properly with this board.
 
 ## Software
