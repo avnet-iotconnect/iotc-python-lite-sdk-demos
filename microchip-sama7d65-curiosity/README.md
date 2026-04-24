@@ -51,7 +51,7 @@ replicated in other environments.
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
 * Flash Yocto Image to SD Card:
-    1. [Click here](https://developerhelp.microchip.com/xwiki/bin/view/applications/linux4sam/Boards/sama7d65curosity/#HDemoarchives)
+    1. [Click here](https://developerhelp.microchip.com/xwiki/bin/view/applications/linux4sam/Boards/sama7d65curiosity/)
        to get to the page to download the latest image for the SAMA7D65.
     2. Download the image (link may have updated name that slightly differs from screenshot):
 
