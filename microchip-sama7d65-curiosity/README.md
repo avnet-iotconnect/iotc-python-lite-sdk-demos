@@ -148,12 +148,17 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Resources
+# 7. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
+
+* **[PAC1934 Power Monitoring Demo](./pac1934-demo/README.md)**: Reads voltage, current, and power measurements from the on-board PAC1934 four-channel DC power monitor IC over I2C and publishes them to /IOTCONNECT. No additional hardware required.
+* **[Keyword Spotting Demo](./kws-demo/README.md)**: Captures one-second audio clips from a USB microphone, runs a TensorFlow Lite DS-CNN speech-command classifier on-device, and publishes the top prediction and confidence score to /IOTCONNECT in real time.
+* **[Voice Blackjack (KWS Game)](./kws-game/README.md)**: Runs a browser-hosted blackjack game on the board using the same USB microphone keyword spotting pipeline. Voice commands control gameplay while game state and inference results are streamed as telemetry to /IOTCONNECT.
+
+# 8. Resources
 
 * [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853)
-* [PAC1934 Power Monitoring Demo](./pac1934-demo/README.md)
-* [Keyword Spotting Demo for USB Microphone Input](./kws-demo/README.md)
-* [Voice Blackjack (KWS Game)](./kws-game/README.md)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
