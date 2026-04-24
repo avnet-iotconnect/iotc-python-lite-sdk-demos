@@ -1,0 +1,7 @@
+_silence_
+_unknown_
+deal
+double
+hit
+reset
+stand

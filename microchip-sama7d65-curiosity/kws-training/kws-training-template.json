@@ -1,0 +1,278 @@
+{
+    "code": "kwstrainer",
+    "name": "KWS Training",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "sdk_version",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "audio_device",
+            "displayName": "audio_device",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "upload_mode",
+            "displayName": "upload_mode",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "upload_ready",
+            "displayName": "upload_ready",
+            "type": "BOOLEAN",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "upload_status",
+            "displayName": "upload_status",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "iotc_file_topic",
+            "displayName": "iotc_file_topic",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "iotc_bucket",
+            "displayName": "iotc_bucket",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "label_count",
+            "displayName": "label_count",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "clip_count",
+            "displayName": "clip_count",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "recording",
+            "displayName": "recording",
+            "type": "BOOLEAN",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "current_label",
+            "displayName": "current_label",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_capture_at",
+            "displayName": "last_capture_at",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "capture_clip_seconds",
+            "displayName": "capture_clip_seconds",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_archive_name",
+            "displayName": "last_archive_name",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_archive_s3_uri",
+            "displayName": "last_archive_s3_uri",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_manifest_s3_uri",
+            "displayName": "last_manifest_s3_uri",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_training_job",
+            "displayName": "last_training_job",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_training_output",
+            "displayName": "last_training_output",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_conversion_job",
+            "displayName": "last_conversion_job",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_conversion_output",
+            "displayName": "last_conversion_output",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "sagemaker_ready",
+            "displayName": "sagemaker_ready",
+            "type": "BOOLEAN",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_error",
+            "displayName": "last_error",
+            "type": "STRING",
+            "description": "",
+            "unit": "",
+            "attributeColor": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "refresh-state",
+            "command": "refresh-state",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-upload-mode",
+            "command": "set-upload-mode",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-audio-device",
+            "command": "set-audio-device",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "set-clip-seconds",
+            "command": "set-clip-seconds",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "upload-dataset",
+            "command": "upload-dataset",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "start-training",
+            "command": "start-training",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "restart-app",
+            "command": "restart-app",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "8FFDYM0",
+    "capability": "0",
+    "enableCSR": "false",
+    "c2dOnDemand": 0,
+    "properties": {
+        "description": "Board-hosted KWS dataset capture and retraining helper with IoTConnect file support.",
+        "dataFrequency": "60",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}
