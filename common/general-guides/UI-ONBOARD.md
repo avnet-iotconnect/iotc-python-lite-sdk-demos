@@ -29,7 +29,7 @@ Follow these steps to onboard your device into /IOTCONNECT via the online user i
 
 <img src="../media/templates-button.png">
 
-4. Right-click and then click "save link as" on [this link to the default device template](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/common/templates/plitedemo-template.json)
+4. Right-click and then click "save link as" on [this link to the default device template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json)
    to download the raw template file.
 
 5. Back in the /IOTCONNECT browser tab, click on the "Create Template" button in the top-right of the screen.
