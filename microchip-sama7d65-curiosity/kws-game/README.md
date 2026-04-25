@@ -102,7 +102,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-sama7d65-curiosity/kws-game/packages/kws-game-package.zip
+wget -O kws-game-package.zip https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-sama7d65-curiosity/kws-game/packages/kws-game-package.zip
 python3 -m zipfile -e kws-game-package.zip .
 bash ./install.sh
 ```

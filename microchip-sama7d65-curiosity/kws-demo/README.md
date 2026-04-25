@@ -36,7 +36,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-sama7d65-curiosity/kws-demo/packages/kws-demo-package.zip
+wget -O kws-demo-package.zip https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-sama7d65-curiosity/kws-demo/packages/kws-demo-package.zip
 python3 -m zipfile -e kws-demo-package.zip .
 bash ./install.sh
 ```
