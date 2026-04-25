@@ -26,27 +26,46 @@ fi
 if python_module_available numpy; then
   echo "NumPy import: OK"
 else
-  echo "WARNING: NumPy is not installed."
-  if python3 -m pip install --only-binary=:all: numpy; then
-    echo "Installed NumPy from pip."
-  elif opkg install python3-numpy 2>/dev/null; then
-    echo "Installed NumPy via opkg."
+  echo "NumPy not found — installing from bundled package..."
+  if [ -f "./numpy-bundle.tar.gz" ]; then
+    tar -xzf ./numpy-bundle.tar.gz -C /
+    ldconfig 2>/dev/null || true
+    if python_module_available numpy; then
+      echo "Installed NumPy from bundled package."
+    else
+      echo "WARNING: NumPy bundled install failed. Trying pip and opkg..."
+      if python3 -m pip install --only-binary=:all: numpy; then
+        echo "Installed NumPy from pip."
+      elif opkg install python3-numpy 2>/dev/null; then
+        echo "Installed NumPy via opkg."
+      else
+        echo "WARNING: Unable to install NumPy automatically."
+        echo "Install a compatible wheel or pre-provision NumPy if this target image does not bundle it."
+      fi
+    fi
   else
-    echo "WARNING: Unable to install NumPy automatically."
-    echo "Install a compatible wheel or pre-provision NumPy if this target image does not bundle it."
+    echo "WARNING: numpy-bundle.tar.gz not found."
+    if python3 -m pip install --only-binary=:all: numpy; then
+      echo "Installed NumPy from pip."
+    elif opkg install python3-numpy 2>/dev/null; then
+      echo "Installed NumPy via opkg."
+    else
+      echo "WARNING: Unable to install NumPy automatically."
+    fi
   fi
 fi
 
 if python_module_available tflite_runtime; then
   echo "TensorFlow Lite interpreter import: OK (tflite_runtime)"
 else
-  if python3 -m pip install --only-binary=:all: tflite-runtime; then
-    echo "Installed tflite-runtime from pip."
-  elif opkg install python3-tflite-runtime 2>/dev/null; then
+  if opkg install python3-tflite-runtime 2>/dev/null; then
     echo "Installed tflite-runtime via opkg."
   else
-    echo "WARNING: Unable to install tflite-runtime from pip."
-    echo "The app can still run if a compatible TensorFlow Lite interpreter is already present."
+    echo "NOTE: tflite-runtime is not available for this platform via pip or opkg."
+    echo "      The demo will use the bundled numpy-based TFLite interpreter instead."
+    if python3 -m pip install --only-binary=:all: flatbuffers; then
+      echo "Installed flatbuffers (required by numpy TFLite interpreter)."
+    fi
   fi
 fi
 
@@ -89,8 +108,12 @@ except Exception:
         import tensorflow as tf
         _ = tf.lite.Interpreter
         print("TensorFlow Lite interpreter import: OK (tensorflow)")
-    except Exception as exc:
-        print(f"TensorFlow Lite interpreter import: NOT AVAILABLE ({exc})")
+    except Exception:
+        try:
+            from tflite_numpy_interpreter import Interpreter
+            print("TensorFlow Lite interpreter import: OK (numpy fallback)")
+        except Exception as exc:
+            print(f"TensorFlow Lite interpreter import: NOT AVAILABLE ({exc})")
 PY
 
 echo "Installation complete."
