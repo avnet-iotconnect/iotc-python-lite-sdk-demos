@@ -6,8 +6,6 @@ OpenCV, while the Renesas DRP-AI hardware accelerator demos (YOLO-based object
 detection) can be launched and controlled from the cloud via C2D commands and display
 their results on the connected HDMI monitor.
 
----
-
 ## Architecture
 
 ```
@@ -110,8 +108,6 @@ dashboard can show a status badge (e.g. "waiting for calibration"). The
 between the current reading and the learned center — useful for triggering
 recalibration alerts.
 
----
-
 ## Prerequisites
 
 Complete the [board setup and onboarding steps](../README.md) first.
@@ -131,8 +127,6 @@ To verify:
 ```bash
 ls /home/weston/tvm_q08/object_counter
 ```
-
----
 
 ## Setup
 
@@ -170,8 +164,6 @@ bash create-package.sh
 Host `package.tar.gz` on a web server, then send a `file-download` command from
 /IOTCONNECT with the URL as the parameter.
 
----
-
 ## Run
 
 ```bash
@@ -181,8 +173,6 @@ python3 app.py
 
 The app connects to /IOTCONNECT and begins sending telemetry immediately. CV inference
 and DRP-AI demos are started via cloud commands.
-
----
 
 ## Telemetry
 
@@ -211,8 +201,6 @@ and DRP-AI demos are started via cloud commands.
 | `drpai_demo_active` | BOOLEAN | DRP-AI hardware demo running on HDMI |
 | `drpai_demo_name` | STRING | Active DRP-AI demo name |
 
----
-
 ## C2D Commands
 
 | Command | Parameter | Description |
@@ -232,8 +220,6 @@ and DRP-AI demos are started via cloud commands.
 4. Send **`stop_drpai`** → demo stops, display cleared
 5. Send **`stop_detection`** → CV inference halts, counts return to zero
 
----
-
 ## Notes
 
 - The DRP-AI C++ demo and Python CV inference can run simultaneously. The DRP-AI
@@ -244,8 +230,6 @@ and DRP-AI demos are started via cloud commands.
   running). The app auto-detects the active Wayland socket.
 - Both the CV inference and DRP-AI demo are automatically stopped when an OTA
   update is applied so the application can restart cleanly.
-
----
 
 ## Troubleshooting
 

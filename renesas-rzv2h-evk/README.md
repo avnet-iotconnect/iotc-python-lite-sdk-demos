@@ -1,5 +1,4 @@
 # Renesas RZ/V2H EVK Quickstart
-
 [Purchase the Renesas RZ/V2H EVK](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk)
 
 1. [Introduction](#1-introduction)
@@ -11,8 +10,6 @@
 7. [Going Further: AI Demo](#7-going-further-ai-demo)
 8. [Resources](#8-resources)
 
----
-
 # 1. Introduction
 
 This guide walks through connecting the Renesas RZ/V2H Evaluation Kit (EVK) to the Avnet /IOTCONNECT platform,
@@ -23,8 +20,6 @@ The RZ/V2H EVK features Renesas' dedicated **DRP-AI** (Dynamically Reconfigurabl
 accelerator, which runs deep-learning inference workloads at low power. This demo wraps the pre-built AI
 application binaries from the Renesas AI SDK, streams their results to /IOTCONNECT, and adds real-time
 system performance monitoring alongside cloud-controllable AI demo management.
-
----
 
 # 2. Requirements
 
@@ -45,8 +40,6 @@ system performance monitoring alongside cloud-controllable AI demo management.
 * Serial terminal application: [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
 * Renesas RZ/V2H AI SDK — [download here](https://www.renesas.com/en/software-tool/rzv2h-ai-software-development-kit)
 * An [/IOTCONNECT account](https://www.iotconnect.io/)
-
----
 
 # 3. Hardware Setup
 
@@ -72,8 +65,6 @@ v4l2-ctl --list-devices
 
 You should see your USB camera listed under `/dev/video0`.
 
----
-
 # 4. Device Setup
 
 Log in as `root` via SSH or serial console, then run these one-time setup commands:
@@ -94,8 +85,6 @@ mkdir -p /opt/demo && cd /opt/demo
 > The RZ/V2H runs Yocto Linux. Use `dnf` (not `apt`) for system packages.
 > Python packages install system-wide as root — no virtualenv is needed.
 
----
-
 # 5. Onboard Device
 
 Onboard your device into /IOTCONNECT by following the
@@ -111,8 +100,6 @@ Place the three credential files in `/opt/demo`:
 * `iotcDeviceConfig.json`
 * `device-cert.pem`
 * `device-pkey.pem`
-
----
 
 # 6. Using the Demo
 
@@ -136,23 +123,18 @@ This sends the following telemetry to /IOTCONNECT every 10 seconds:
 
 View the telemetry under the **Live Data** tab for your device in /IOTCONNECT.
 
----
-
 # 7. Going Further: AI Demo
 
 Head to the **[AI Demo Guide](ai-demo/README.md)** for the advanced AI inference demo.
 
 This demo runs Python-based computer-vision inference on the USB camera, launches and controls any of the 14 Renesas AI SDK DRP-AI demos on the HDMI display via C2D commands, and streams detection counts, inference timing, and system performance metrics to /IOTCONNECT in real time.
 
----
-
 # 8. Resources
 
-| Resource | Link |
-|----------|------|
-| RZ/V2H AI SDK | https://www.renesas.com/en/software-tool/rzv2h-ai-software-development-kit |
-| RZ/V2H Getting Started | https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html |
-| AI Applications GitHub | https://github.com/renesas-rz/rzv_ai_sdk |
-| /IOTCONNECT Overview | https://www.iotconnect.io/ |
-| /IOTCONNECT Knowledgebase | https://help.iotconnect.io/ |
-| Renesas RZ GitHub | https://github.com/renesas-rz |
+* [Purchase the Renesas RZ/V2H EVK](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk)
+* [Renesas RZ/V2H AI SDK](https://www.renesas.com/en/software-tool/rzv2h-ai-software-development-kit)
+* [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html)
+* [Renesas AI Applications GitHub](https://github.com/renesas-rz/rzv_ai_sdk)
+* [Renesas RZ GitHub](https://github.com/renesas-rz)
+* [/IOTCONNECT Overview](https://www.iotconnect.io/)
+* [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
