@@ -82,6 +82,9 @@ http://<board-ip>:8080
 ## 4. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
+
+   > **Microphone requirements:** For best performance, use a USB UAC (USB Audio Class) condenser microphone with a built-in pre-amp. Set the microphone's volume knob to between 50% and 75% — higher settings can cause clipping. A USB audio dongle with an analog mic jack will work but typically produces a weaker signal. [This microphone](https://www.amazon.com/dp/B06XCKGLTP) has been tested and works well with this demo; users are encouraged to purchase it or a similar USB UAC condenser mic.
+
 2. Confirm the microphone is visible to ALSA:
 
 ```bash
