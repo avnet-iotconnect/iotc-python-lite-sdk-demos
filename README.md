@@ -20,6 +20,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [NXP GoldBox 3 Vehicle Networking Development Platform](nxp-s32g-vnp-gldbox3) - ([Purchase Link](https://www.newark.com/nxp/s32g-vnp-gldbox/ref-design-board-vehicle-n-w-processor/dp/37AJ9124))
 * [Raspberry Pi](raspberry-pi) - ([Purchase Link](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346))
 * [Renesas RZ/G3E Evaluation Board Kit](renesas-rzg3e-evk) - ([Purchase Link](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397))
+* [Renesas RZ/V2H EVK](renesas-rzv2h-evk) - ([Purchase Link](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk))
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp135f-dk/discovery-kit-32bit-arm-cortex/dp/68AK9977))
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-board-32bit-arm-cortex/dp/14AJ2731))
 * [ST STM32MP215F-DK Discovery Kit](stm32mp215f-dk) - ([Purchase Link](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp215f-dk/evolve-151041109/))
@@ -42,25 +43,126 @@ and set up basic /IOTCONNECT onboarding for your device.
 To explore setting up AWS Greengrass Lite on some of these same devices and deploying Python demos through pre-built or custom
 components, check out the [/IOTCONNECT Python Greengrass Demos repo](https://github.com/avnet-iotconnect/iotc-python-greengrass-demos/tree/main).
 
-# Further Customization
+# Going Further with Expansion Demos
 
 If you want to modify or add onto the basic /IOTCONNECT starter application, you can do so by sending a software package
 to your device.
 
 Within the [common](./common) directory is a ```starter-demo``` directory with instructions on how to do this.
 
-Some devices also include directories for pre-built expansion demos such as
-the [EIQ Vision AI Driver Monitoring System (DMS) Demo](nxp-frdm-imx-93/dms-demo) for the NXP FRDM i.MX 93. Inside of
-the directories for those demos you will find instructions on how to use a software package to deliver and install the
-pre-built demo.
+Some devices also include directories for pre-built expansion demos. Inside of the directories for those demos you will find instructions on how to use a software package to deliver and install the pre-built demo. The available expansion demos are described in the sections below.
 
-# AWS Kinesis Video Streams (KVS)
+## EIQ Vision AI Driver Monitoring System (DMS)
+
+The EIQ DMS demo uses the NXP eIQ Vision AI stack to analyze a live camera feed for driver safety indicators. It detects facial attributes such as eye state, head pose, and drowsiness, and streams the results to /IOTCONNECT in real time. An HDMI display can optionally be connected to view the annotated video feed with AI overlay directly on the board.
+
+**Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/dms-demo/README.md)
+* [Tria MaaXBoard OSM93](tria-maaxboard-osm93/dms-demo/README.md)
+
+## X-LINUX-AI Object Detection
+
+The X-LINUX-AI vision demo runs an on-device object detection model using ST's X-LINUX-AI software stack. It recognizes 80 common object categories from a connected USB camera and streams detected object names with confidence percentages to /IOTCONNECT approximately once per second.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/ai-vision/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/ai-vision/README.md)
+
+## MKBOXPRO BLE Sensor Pack
+
+The MKBOXPRO demo streams live BLE sensor telemetry from a SensorTile.box PRO (MKBOXPRO) sensor pack to /IOTCONNECT. The SensorTile.box PRO connects wirelessly to the host board over Bluetooth Low Energy and provides multi-axis motion, environmental, and audio sensor data, all visible in real time on the /IOTCONNECT platform's Live Data tab.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/mkboxpro-demo/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/mkboxpro-demo/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/mkboxpro-demo/README.md)
+
+## PROTEUS Sensor Pack
+
+The PROTEUS demo streams environmental sensor telemetry from a PROTEUS sensor pack to /IOTCONNECT. The PROTEUS pack provides temperature, humidity, pressure, and other environmental readings that appear in real time under the Live Data tab of your device in the /IOTCONNECT platform.
+
+**Supported on:**
+* [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/proteus-standard-demo/README.md)
+* [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/proteus-standard-demo/README.md)
+* [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/proteus-standard-demo/README.md)
+
+## File Upload Demo
+
+The file upload demo captures still pictures and fixed-length video clips from a USB camera, stores them locally on the board, and uploads the completed media files to the device's S3-backed /IOTCONNECT file-support bucket via the SDK. On-demand picture capture and rolling video clip recording are both triggered through /IOTCONNECT commands.
+
+**Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/file-upload-demo/README.md)
+
+## FPGA ML Acceleration (Microchip PolarFire SoC)
+
+These demos leverage the FPGA fabric on Microchip PolarFire SoC boards to accelerate machine learning inference on waveform classification tasks. Each demo compares software vs. FPGA-hardware performance by running the same inference in both modes and reporting timing and prediction telemetry to /IOTCONNECT. Three demos are available with increasing model complexity:
+
+### Template Correlation Classifier
+
+A deterministic classifier with no neural network or training step. Classification works by correlating 256-sample input waveforms against hand-crafted reference templates using dot products. Because the algorithm is lightweight, this demo establishes a clear performance baseline before introducing learned models.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-template-correlation-classifier/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track1-iotc-ml-classifier/README.md)
+
+### Simple Neural Network Accelerator
+
+Introduces a compact fixed-point neural network in FPGA fabric (256 inputs → 12-node hidden layer → 6 classes, int8/int32 arithmetic). Hardware speedup over software is modest at small batch sizes but increases with larger batches, making it a focused demonstration of the neural network acceleration pipeline.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-simple-nn-accelerator/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track2-iotc-ml-nn-accelerator/README.md)
+
+### Complex Neural Network Accelerator
+
+The deepest model in the series — two hidden layers (~11K trained weights) with a batch-aware FPGA interface using DMA transfers. Hardware acceleration advantage is most measurable and consistent here, especially at moderate to large batch sizes.
+
+**Supported on:**
+* [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-complex-nn-accelerator/README.md)
+* [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/README.md)
+
+## Renesas DRP-AI Inference Demo
+
+The DRP-AI Inference demo integrates with the Renesas RZ/V2H EVK's on-board DRP-AI hardware accelerator to run AI inference at the edge. Python OpenCV-based face and body detection runs on the USB camera, while any of 14 pre-built Renesas AI SDK demos can be launched and controlled from the cloud via C2D commands. Detection counts, inference timing, and system performance metrics stream to /IOTCONNECT in real time.
+
+**Supported on:**
+* [Renesas RZ/V2H EVK](renesas-rzv2h-evk/ai-demo/README.md)
+
+## Tria Vision AI Demo
+
+The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.
+
+**Supported on:**
+* [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/vision-ai/README.md)
+
+## Keyword Spotting Demo
+
+The Keyword Spotting demo captures one-second audio clips from a USB microphone, runs a TensorFlow Lite DS-CNN speech-command classifier on-device, and publishes the top prediction and confidence score to /IOTCONNECT in real time. Ready-made model packages let you swap in different Arm ML Zoo models via OTA without redeploying the app.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-demo/README.md)
+
+## Voice Blackjack (KWS Game)
+
+The Voice Blackjack demo runs a browser-hosted blackjack game on the board using the same USB microphone keyword spotting pipeline as the Keyword Spotting Demo. Voice commands (`deal`, `hit`, `stand`, `double`, `reset`) control gameplay, while game state and inference results are streamed as telemetry to /IOTCONNECT. Cloud commands let operators trigger game actions and update runtime settings remotely.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-game/README.md)
+
+## PAC1934 Power Monitoring Demo
+
+The PAC1934 demo reads voltage, current, and power measurements from the on-board Microchip PAC1934 four-channel DC power monitor IC over I2C and publishes them to /IOTCONNECT. No additional hardware is required — the PAC1934 is already wired to the board's internal power rails. Four app variants are included for monitoring all channels or individual subsets.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/pac1934-demo/README.md)
+
+## AWS Kinesis Video Streams (KVS)
 
 [AWS Kinesis Video Streams (KVS)](https://aws.amazon.com/kinesis/video-streams/) is an AWS service for streaming video from devices to the cloud. The /IOTCONNECT platform integrates with KVS to enable live and recorded video directly from your device's dashboard. KVS expansion demos are available for a subset of the boards in this repository and are delivered as OTA software packages that patch on top of the basic /IOTCONNECT starter demo.
 
 There are two types of KVS streaming, each suited to different use cases:
 
-## KVS PutMedia
+### KVS PutMedia
 
 PutMedia streams video from the device to a KVS stream where it is stored and can be played back through the /IOTCONNECT dashboard. Because video is stored as fragments on AWS before playback begins, there is typically 5–15 seconds of end-to-end latency, but the footage is retained and can be reviewed after the fact. PutMedia is well-suited for security camera and recording use cases.
 
@@ -73,11 +175,12 @@ PutMedia streams video from the device to a KVS stream where it is stored and ca
 * [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1/kvs-putmedia/README.md)
 * [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/kvs-putmedia/README.md)
 
-## KVS WebRTC
+### KVS WebRTC
 
 WebRTC establishes a direct peer-to-peer connection between the device and the viewer's browser, brokered through a KVS signaling channel. This delivers sub-second latency, making it suitable for real-time monitoring. Unlike PutMedia, WebRTC video is not stored — it is only viewable while actively streaming.
 
 **Supported on:**
+* [NXP FRDM-IMX93](nxp-frdm-imx-93/kvs-webrtc/README.md)
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-webrtc/README.md)
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-webrtc/README.md)
 * [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-webrtc/README.md)

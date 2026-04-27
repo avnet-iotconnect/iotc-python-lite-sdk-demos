@@ -85,21 +85,27 @@ def on_command(msg: C2dCommand):
     print('Received command', msg.command_name, msg.command_args, msg.ack_id)
     if msg.command_name == 'file-download':
         if len(msg.command_args) == 1:
-            status_message = 'Downloading %s to device' % msg.command_args[0]
-            response = requests.get(msg.command_args[0])
-            if response.status_code == 200:
-                with open('package.tar.gz', 'wb') as f:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        f.write(chunk)
-                print('File downloaded successfully and saved to package.tar.gz')
-            else:
-                print(f'Failed to download the file. Status code: {response.status_code}')
-            client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, status_message)
-            print(status_message)
-            extract_and_run_tar_gz('package.tar.gz')
-            print('Download command successful. Will restart the application...')
-            sys.stdout.flush()
-            os.execv(sys.executable, [sys.executable, __file__] + sys.argv[1:])
+            url = msg.command_args[0]
+            try:
+                response = requests.get(url, timeout=30)
+                if response.status_code == 200:
+                    with open('package.tar.gz', 'wb') as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, f'Downloaded {url}')
+                    print('File downloaded successfully')
+                    extract_and_run_tar_gz('package.tar.gz')
+                    print('OTA package applied. Restarting...')
+                    sys.stdout.flush()
+                    os.execv(sys.executable, [sys.executable, __file__] + sys.argv[1:])
+                else:
+                    status = f'Download failed: HTTP {response.status_code}'
+                    print(status)
+                    client.send_command_ack(msg, C2dAck.CMD_FAILED, status)
+            except Exception as e:
+                status = f'Download error: {e}'
+                print(status)
+                client.send_command_ack(msg, C2dAck.CMD_FAILED, status)
         else:
             client.send_command_ack(msg, C2dAck.CMD_FAILED, 'Expected 1 argument')
     else:

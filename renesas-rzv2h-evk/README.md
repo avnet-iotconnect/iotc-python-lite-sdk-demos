@@ -1,6 +1,6 @@
 # Renesas RZ/V2H EVK Quickstart
 
-[Renesas RZ/V2H EVK Product Page](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk)
+[Purchase the Renesas RZ/V2H EVK](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk)
 
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -8,7 +8,7 @@
 4. [Device Setup](#4-device-setup)
 5. [Onboard Device](#5-onboard-device)
 6. [Using the Demo](#6-using-the-demo)
-7. [AI Inference Demo](#7-ai-inference-demo)
+7. [Going Further: AI Demo](#7-going-further-ai-demo)
 8. [Resources](#8-resources)
 
 ---
@@ -50,7 +50,7 @@ system performance monitoring alongside cloud-controllable AI demo management.
 
 # 3. Hardware Setup
 
-Follow the [Complete Setup Guide](../RZV2H_EVK_Setup_Guide.md) (sections 1–5) to:
+Follow the [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html) to:
 
 1. Flash the RZ/V2H Yocto SD card image using `bmaptool`
 2. Set DSW1 DIP switches for eSD boot (DSW1[4]=ON, DSW1[5]=OFF)
@@ -138,48 +138,11 @@ View the telemetry under the **Live Data** tab for your device in /IOTCONNECT.
 
 ---
 
-# 7. AI Inference Demo
+# 7. Going Further: AI Demo
 
-Head over to the **[AI Demo Guide](ai-demo/README.md)** to enable the cloud-controlled AI inference demo.
+Head to the **[AI Demo Guide](ai-demo/README.md)** for the advanced AI inference demo.
 
-This advanced demo:
-- Runs Python-based computer-vision inference on the USB camera
-- Launches and controls the Renesas **DRP-AI** object-counter demos on the HDMI display via C2D commands
-- Reports detection counts, inference timing, and system performance metrics to /IOTCONNECT
-
-### Supported DRP-AI Demos (HDMI display output)
-
-All 14 demos from the Renesas RZ/V2H AI SDK are supported. See the
-[AI demo README](ai-demo/README.md) for the full matrix and telemetry mapping.
-Highlights:
-
-| Param | Demo | Category |
-|-------|------|----------|
-| `coco` / `animal` / `vehicle` | Q08 Object Counter | Detection (80 / animals / vehicles) |
-| `meter` | Q13 Analog Meter Reader | Dual-model meter reading |
-| `footfall` | Q01 Footfall Counter | People tracking |
-| `face_auth` | Q02 Face Authentication | Face recognition |
-| `parking` | Q03 Smart Parking | Parking slot monitoring |
-| `fish_class` | Q04 Fish Classification | Species classification |
-| `activity` | Q05 Suspicious Activity | Violence detection |
-| `expiry` | Q06 Expiry Date Detection | OCR |
-| `plant` | Q07 Plant Disease | Leaf classification |
-| `crack` | Q09 Crack Segmentation | Infrastructure monitoring |
-| `suspicious` | Q10 Suspicious Person | Detection |
-| `fish_det` | Q11 Fish Detection | Detection |
-| `yoga` | Q12 Yoga Pose | Keypoint + pose classifier |
-| `r01` | R01 Object Detection | Generic COCO detection |
-
-### C2D Commands
-
-| Command | Parameter | Description |
-|---------|-----------|-------------|
-| `start_detection` | — | Start Python CV inference on USB camera |
-| `stop_detection` | — | Stop Python CV inference |
-| `launch_drpai` | see matrix above (14 options) | Launch any DRP-AI demo on HDMI display |
-| `stop_drpai` | — | Stop DRP-AI demo |
-| `set_confidence` | `0.0`–`1.0` | Adjust detection confidence threshold |
-| `file-download` | URL | OTA update — download and apply a new package |
+This demo runs Python-based computer-vision inference on the USB camera, launches and controls any of the 14 Renesas AI SDK DRP-AI demos on the HDMI display via C2D commands, and streams detection counts, inference timing, and system performance metrics to /IOTCONNECT in real time.
 
 ---
 
