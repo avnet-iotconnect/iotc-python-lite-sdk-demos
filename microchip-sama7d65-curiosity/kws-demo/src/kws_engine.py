@@ -51,7 +51,7 @@ class KwsSettings:
     upper_frequency_hz: float = 4000.0
     threshold: float = 0.80
     cooldown_secs: float = 2.0
-    min_signal_rms: float = 0.012
+    min_signal_rms: float = 0.003
     arecord_device: Optional[str] = None
 
 

@@ -318,7 +318,7 @@ def make_spotter() -> KeywordSpotter:
             labels_path=resolve_labels_path(model_dir),
             threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.80")),
             cooldown_secs=float(os.getenv("KWS_COOLDOWN_SECS", "2.0")),
-            min_signal_rms=float(os.getenv("KWS_MIN_SIGNAL_RMS", "0.012")),
+            min_signal_rms=float(os.getenv("KWS_MIN_SIGNAL_RMS", "0.003")),
             arecord_device=os.getenv("KWS_ARECORD_DEVICE") or None,
         )
     )
