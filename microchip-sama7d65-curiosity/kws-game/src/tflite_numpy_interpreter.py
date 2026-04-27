@@ -94,8 +94,9 @@ class Interpreter:
                 zps = np.array([q.ZeroPoint(j) for j in range(q.ZeroPointLength())], dtype=np.int32)
                 scale = float(scales[0]) if len(scales) == 1 else scales
                 zp = int(zps[0]) if len(zps) == 1 else zps
+                quant_dim = int(q.QuantizedDimension()) if len(scales) > 1 else 0
             else:
-                scale, zp = 1.0, 0
+                scale, zp, quant_dim = 1.0, 0, 0
 
             self._tensor_meta[i] = {
                 "index": i,
@@ -104,6 +105,7 @@ class Interpreter:
                 "scale": scale,
                 "zero_point": zp,
                 "quantization": (scale, zp),
+                "quantized_dimension": quant_dim,
             }
 
         # Load constant tensors (weights / biases) from flatbuffer buffers
@@ -178,10 +180,12 @@ class Interpreter:
             scale = info["scale"]
             zp = info["zero_point"]
             if isinstance(scale, np.ndarray):
-                # Per-channel: broadcast over first axis (output channels)
+                # Per-channel: broadcast along the quantized dimension
                 ndim = t.ndim
-                shape = (len(scale),) + (1,) * (ndim - 1)
-                return (t.astype(np.float32) - zp.astype(np.float32).reshape(shape)) * scale.reshape(shape)
+                quant_dim = info.get("quantized_dimension", 0)
+                bcast_shape = [1] * ndim
+                bcast_shape[quant_dim] = len(scale)
+                return (t.astype(np.float32) - zp.astype(np.float32).reshape(bcast_shape)) * scale.reshape(bcast_shape)
             return (t.astype(np.float32) - float(zp)) * float(scale)
         return t.astype(np.float32)
 
