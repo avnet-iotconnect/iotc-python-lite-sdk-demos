@@ -92,7 +92,7 @@ Onboard your device into /IOTCONNECT by following the
 
 When prompted for a device template, import the template JSON from whichever demo you are running:
 
-* **Starter Demo**: `starter-demo/rzv2h-starter-template.json`
+* **System Monitor Demo**: `system-monitor-demo/rzv2h-system-monitor-template.json`
 * **AI Demo**: `ai-demo/rzv2h-ai-template.json`
 
 Place the three credential files in `/opt/demo`:
@@ -103,23 +103,23 @@ Place the three credential files in `/opt/demo`:
 
 # 6. Using the Demo
 
-Navigate to `/opt/demo` and run the starter demo:
+Deploy and run the System Monitor Demo:
 
 ```bash
 cd /opt/demo
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/renesas-rzv2h-evk/system-monitor-demo/package.tar.gz
+tar -xzf package.tar.gz --overwrite
+bash ./install.sh
+```
+
+Then run:
+
+```bash
 python3 app.py
 ```
 
-This sends the following telemetry to /IOTCONNECT every 10 seconds:
-
-| Attribute | Description |
-|-----------|-------------|
-| `sdk_version` | IoTConnect SDK version |
-| `cpu_percent` | Overall CPU utilisation (%) |
-| `memory_percent` | RAM usage (%) |
-| `cpu_temp_0_c` | CPU core cluster 0 temperature (°C) |
-| `cpu_temp_1_c` | CPU core cluster 1 temperature (°C) |
-| `random` | Random integer (connectivity check) |
+> [!NOTE]
+> Always make sure you are in the `/opt/demo` directory before running the demo. You can move to this directory with the command: `cd /opt/demo`
 
 View the telemetry under the **Live Data** tab for your device in /IOTCONNECT.
 

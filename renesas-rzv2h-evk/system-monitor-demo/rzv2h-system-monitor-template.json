@@ -1,6 +1,6 @@
 {
-    "code": "rzv2hSTART",
-    "name": "rzv2h-starter",
+    "code": "rzv2hSYSMON",
+    "name": "rzv2h-system-monitor",
     "authType": 2,
     "attributes": [
         {
@@ -63,7 +63,7 @@
     ],
     "messageVersion": "2.1",
     "properties": {
-        "description": "Renesas RZ/V2H EVK Starter Demo",
+        "description": "Renesas RZ/V2H EVK System Monitor Demo",
         "dataFrequency": "10",
         "fileSupport": true,
         "certRenewalDay": 0,
