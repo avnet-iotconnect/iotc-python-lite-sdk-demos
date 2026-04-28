@@ -64,12 +64,13 @@ fields populate.
 
 ### Full Demo Matrix
 
-Every demo from the Renesas RZ/V2H AI SDK is wired in. The `launch_drpai` command
-parameter maps to the table below. Per-frame results flow through
-`/tmp/drpai_<demo>_results.json` (atomic rename writes). Demos marked "UI-only"
-don't emit structured inference JSON (mouse-driven calibration / enrollment);
-they still report `drpai_demo_active` and `drpai_demo_name` so you know when
-they're running.
+13 V2H-supported demos from the Renesas RZ/V2H AI SDK are wired in (Q03 Smart
+Parking ships V2L-only weights and is intentionally not included). The
+`launch_drpai` command parameter maps to the table below. Per-frame results
+flow through `/tmp/drpai_<demo>_results.json` (atomic-rename writes). Demos
+marked "UI-only" don't emit structured inference JSON (mouse-driven
+calibration/enrollment) — they still report `drpai_demo_active` and
+`drpai_demo_name` so you know when they're running.
 
 | Param | Demo | Kind | Output fields in telemetry |
 |-------|------|------|-------|
@@ -77,7 +78,6 @@ they're running.
 | `meter` | Q13 Analog Meter Reader | meter | `meter_value`, `meter_min/max`, `meter_page`, `meter_yolox_ms`, `meter_unet_ms` |
 | `footfall` | Q01 Footfall Counter | detector | `drpai_total` |
 | `face_auth` | Q02 Face Authentication | ui_only | process state only |
-| `parking` | Q03 Smart Parking | ui_only | process state only |
 | `fish_class` | Q04 Fish Classification | classifier | `drpai_primary_class`, `drpai_primary_confidence` |
 | `activity` | Q05 Suspicious Activity | activity | `drpai_primary_class` (violence/non_violence), `drpai_primary_confidence` |
 | `expiry` | Q06 Expiry Date Detection | ui_only | process state only |
@@ -207,7 +207,7 @@ and DRP-AI demos are started via cloud commands.
 |---------|-----------|-------------|
 | `start_detection` | — | Start Python face/person detection on USB camera |
 | `stop_detection` | — | Stop Python detection |
-| `launch_drpai` | see demo matrix below | Launch any of 14 DRP-AI demos on HDMI display |
+| `launch_drpai` | see demo matrix below | Launch any of 13 DRP-AI demos on HDMI display |
 | `stop_drpai` | — | Stop DRP-AI demo |
 | `set_confidence` | `0.0`–`1.0` | Adjust detection sensitivity |
 | `file-download` | URL | Download and apply OTA update package |
@@ -231,11 +231,57 @@ and DRP-AI demos are started via cloud commands.
 - Both the CV inference and DRP-AI demo are automatically stopped when an OTA
   update is applied so the application can restart cleanly.
 
+---
+
+## Multi-Camera Operation
+
+With **two USB cameras** plugged into different USB controllers on the EVK, the
+DRP-AI demo and the Python CV inference can run **in parallel** on separate
+cameras. The Renesas C++ binaries hardcode `/dev/video0`, so the rule is:
+
+- Lower-numbered USB port → DRP-AI camera (`/dev/video0`)
+- Other USB port → Python CV camera (`/dev/video2` or higher)
+
+The Python app auto-picks the second camera when DRP-AI is running. Telemetry
+will report both inference streams simultaneously: DRP-AI fields from camera 1
+and `face_count` / `person_count` from camera 2.
+
+If only one camera is connected, `start_detection` is refused while
+`launch_drpai` is active (and vice versa) — the camera can't be shared.
+
+Verify both cameras are detected:
+
+```bash
+ssh root@<board-ip> 'for d in /sys/class/video4linux/video*; do
+  dev=$(basename $d); usb=$(readlink -f $d/device | sed "s|/video4linux.*||")
+  printf "%-15s %s\n" "/dev/$dev" "$usb"
+done | awk "!seen[\$2]++"'
+```
+
+You should see one line per physical camera. Each Logitech-style cam consumes
+4 video nodes but the helper collapses them.
+
+## Display Requirement
+
+**An HDMI monitor capable of 1920×1080 is required.** The Renesas demos render
+to a fixed 1480×1080 (Q13) or 1500×1080 (Q08) canvas. Smaller panels (the
+small touch displays advertising 1024×600 or 1024×768 native modes) cause GTK3
+clients to fail with `Gdk-Message: Error 71 (Protocol error)` — the buffer
+they request is larger than the compositor accepts.
+
+Weston also does not re-probe the output when you swap monitors at runtime
+(`Detected a monitor change... not bothering to do anything about it.` in its
+log). After switching displays, **reboot the board** so Weston negotiates the
+new EDID cleanly at boot.
+
 ## Troubleshooting
 
 | Problem | Resolution |
 |---------|------------|
-| `launch_drpai` returns "Failed" | Verify `/home/weston/tvm_q08/object_counter` exists and HDMI monitor is connected |
-| DRP-AI demo exits immediately | Ensure Wayland/Weston is running (`ps aux | grep weston`) |
-| No camera frames in CV | Check `v4l2-ctl --list-devices`; USB camera must be on `/dev/video0` |
+| `launch_drpai` returns "Failed" | Verify the demo binary exists in its `exe_v2h` folder and HDMI monitor is connected |
+| DRP-AI demo exits immediately | Ensure Wayland/Weston is running (`ps aux \| grep weston`) |
+| `Failed to load dynamic shared library .../deploy.so` | The model weights for that demo aren't on the SD card. Run `./build-and-deploy.sh <ip> <demo>` to auto-download from Renesas GitHub releases |
+| `Gdk-Message: Error 71 (Protocol error)` | Display is too small (need 1920×1080) or you swapped monitors without rebooting |
+| No camera frames in CV | Check `v4l2-ctl --list-devices`; verify both USB ports if running multi-camera |
+| `start_detection` refused: "Camera in use" | Either plug in a second camera, or send `stop_drpai` first |
 | `ModuleNotFoundError: system_monitor` | Ensure `system_monitor.py` is in the same directory as `app.py` |

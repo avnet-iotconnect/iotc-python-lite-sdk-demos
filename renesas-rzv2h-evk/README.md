@@ -127,7 +127,9 @@ View the telemetry under the **Live Data** tab for your device in /IOTCONNECT.
 
 Head to the **[AI Demo Guide](ai-demo/README.md)** for the advanced AI inference demo.
 
-This demo runs Python-based computer-vision inference on the USB camera, launches and controls any of the 14 Renesas AI SDK DRP-AI demos on the HDMI display via C2D commands, and streams detection counts, inference timing, and system performance metrics to /IOTCONNECT in real time.
+This demo runs Python-based computer-vision inference on a USB camera, launches and controls any of the 13 V2H-supported Renesas DRP-AI demos on the HDMI display via C2D commands, and streams detection counts, inference timing, and system performance metrics to /IOTCONNECT in real time. With two USB cameras connected, the Python CV loop and a DRP-AI demo run in parallel on separate cameras.
+
+Q03 Smart Parking is RZ/V2L-only (Renesas does not ship a V2H model weight) and is intentionally not included. See the [AI Demo Guide](ai-demo/README.md) for the full demo matrix, multi-camera setup, display requirements, and telemetry field mapping.
 
 # 8. Resources
 

@@ -275,7 +275,7 @@
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false,
-            "description": "Launch DRP-AI demo. Param: coco | animal | vehicle | meter | footfall | face_auth | parking | fish_class | activity | expiry | plant | crack | suspicious | fish_det | yoga | r01"
+            "description": "Launch DRP-AI demo. Param: coco | animal | vehicle | meter | footfall | face_auth | fish_class | activity | expiry | plant | crack | suspicious | fish_det | yoga | r01"
         },
         {
             "name": "stop_drpai",

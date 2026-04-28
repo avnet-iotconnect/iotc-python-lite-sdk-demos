@@ -77,13 +77,7 @@ DRPAI_DEMOS = {
         'name': 'Q02 Face Authentication',
         'results_file': '', 'kind': 'ui_only',
     },
-    # Q03 — Smart Parking (user-drawn slots; telemetry = process state only)
-    'parking': {
-        'dir': '/home/weston/Q03_smart_parking/exe_v2h',
-        'cmd': './parkinglot_detection', 'args': ['USB'],
-        'name': 'Q03 Smart Parking',
-        'results_file': '', 'kind': 'ui_only',
-    },
+    # Q03 Smart Parking is RZ/V2L-only — Renesas does not ship a V2H deploy.so.
     # Q04 — Fish Classification
     'fish_class': {
         'dir': '/home/weston/Q04_fish_classification/exe_v2h',
@@ -213,10 +207,12 @@ def _drain_pipe(label: str, pipe):
 def start_drpai_demo(mode: str) -> bool:
     global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file
 
-    # The USB camera cannot be shared between processes. If Python CV inference
-    # is running, stop it automatically so the DRP-AI binary can claim the device.
-    if _cv_active:
-        print('Stopping Python CV inference to free the camera for DRP-AI demo...')
+    # DRP-AI hardcodes /dev/video0. If Python CV is currently using video0
+    # (only-one-camera setup), stop it so DRP-AI can claim the device. With
+    # two cameras connected, CV is using a non-video0 device and can keep
+    # running in parallel.
+    if _cv_active and len(_detect_usb_cameras()) <= 1:
+        print('Single-camera setup: stopping Python CV to free the camera for DRP-AI...')
         stop_cv_inference()
 
     with _drpai_lock:
@@ -361,17 +357,62 @@ def read_drpai_results(results_file: str = '') -> Optional[dict]:
 
 # ─── Python CV inference (Haar cascade — no downloads required) ───────────────
 
-def _detect_usb_camera() -> str:
-    """Return the first USB camera device node found in sysfs."""
+def _detect_usb_cameras() -> list:
+    """Return a list of /dev/videoN — one per distinct USB camera.
+
+    A multi-node camera (e.g. Logitech BRIO exposes video0..video3) only
+    contributes the lowest video node, so callers see one entry per physical
+    device. Result is ordered by the underlying USB sysfs path so cameras keep
+    a stable identity across runs as long as the cabling doesn't change.
+    """
+    cameras = {}
     try:
         for dev in sorted(d for d in os.listdir('/dev') if d.startswith('video')):
             sysfs = f'/sys/class/video4linux/{dev}'
-            if os.path.exists(sysfs) and 'usb' in os.path.realpath(sysfs):
-                return f'/dev/{dev}'
+            if not os.path.exists(sysfs):
+                continue
+            real = os.path.realpath(sysfs)
+            if 'usb' not in real:
+                continue
+            usb_root = real.split('/video4linux/')[0]
+            if usb_root not in cameras:
+                cameras[usb_root] = f'/dev/{dev}'
     except Exception:
         pass
+    return list(cameras.values())
+
+
+def _detect_usb_camera() -> str:
+    """Return the first USB camera (legacy — kept for compatibility)."""
+    cams = _detect_usb_cameras()
+    if cams:
+        return cams[0]
     print('WARNING: No USB camera found in sysfs; falling back to /dev/video0')
     return '/dev/video0'
+
+
+# DRP-AI C++ binaries hardcode /dev/video0 in their GStreamer pipeline. When
+# multiple cameras are connected, Python CV picks one that DRP-AI is not using
+# so the two demos can run in parallel.
+_DRPAI_HARDCODED_CAMERA = '/dev/video0'
+
+
+def _pick_cv_camera() -> Optional[str]:
+    """Choose a USB camera for the Python CV loop.
+
+    Prefers a camera the DRP-AI binary is not using. Returns None if no
+    USB cameras are available, or if only one camera exists and DRP-AI
+    has it.
+    """
+    cams = _detect_usb_cameras()
+    if not cams:
+        return None
+    if is_drpai_running():
+        for cam in cams:
+            if cam != _DRPAI_HARDCODED_CAMERA:
+                return cam
+        return None  # only one camera and DRP-AI owns it
+    return cams[0]
 
 
 _HAAR_DIR = '/usr/share/opencv4/haarcascades'
@@ -408,7 +449,7 @@ def _cv_inference_loop():
     if body_cascade.empty():
         print('WARNING: Could not load body Haar cascade')
 
-    device = _detect_usb_camera()
+    device = _pick_cv_camera() or _detect_usb_camera()
     print(f'CV inference: opening camera {device}')
     cap = cv2.VideoCapture(device)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, _CV_FRAME_WIDTH)
@@ -497,16 +538,22 @@ def _cv_inference_loop():
 
 
 def start_cv_inference() -> tuple:
-    """Start Python CV inference. Returns (ok, message)."""
+    """Start Python CV inference. Returns (ok, message).
+
+    If a DRP-AI demo is already running, this picks a different USB camera
+    (DRP-AI hardcodes /dev/video0). Refused only if every connected camera
+    is already in use.
+    """
     global _cv_active, _cv_thread
     if _cv_active:
         return False, 'CV inference already running'
-    if is_drpai_running():
-        return False, 'Camera in use by DRP-AI demo. Send stop_drpai first.'
+    chosen = _pick_cv_camera()
+    if chosen is None:
+        return False, 'No spare USB camera available (DRP-AI is using the only one).'
     _cv_active = True
     _cv_thread = threading.Thread(target=_cv_inference_loop, daemon=True)
     _cv_thread.start()
-    return True, 'CV inference started'
+    return True, f'CV inference started on {chosen}'
 
 
 def stop_cv_inference() -> tuple:

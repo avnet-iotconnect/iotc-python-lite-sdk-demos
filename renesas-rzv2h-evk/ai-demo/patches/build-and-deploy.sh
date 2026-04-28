@@ -60,7 +60,7 @@ DEMO_TABLE=(
     "q13|Q13_analog_meter_reader|analog_reader|analog_meter_reader-iotconnect.patch|/home/weston/Q13_analog_meter_reader/exe_v2h|https://github.com/renesas-rz/rzv_ai_sdk/releases/download/v6.20/Q13_analog_meter_reader_deploy_tvm_v2h-v251.so|Q13_analog_meter_reader/exe_v2h/yolox_model/deploy.so"
     "q01|Q01_footfall_counter|object_tracker|footfall_counter-iotconnect.patch|/home/weston/Q01_footfall_counter/exe_v2h|https://github.com/renesas-rz/rzv_ai_sdk/releases/download/v6.20/Q01_footfall_counter_deploy_tvm_v2h-v251.so|Q01_footfall_counter/exe_v2h/d-yolov3/deploy.so"
     "q02|Q02_face_authentication|face_recognition||/home/weston/Q02_face_authentication/exe_v2h||"
-    "q03|Q03_smart_parking|parkinglot_detection||/home/weston/Q03_smart_parking/exe_v2h|https://github.com/renesas-rz/rzv_ai_sdk/releases/download/v6.20/Q03_smart_parking_deploy_tvm_v2h-v251.so|Q03_smart_parking/exe_v2h/tinyyolov2_onnx/deploy.so"
+    # Q03 Smart Parking is RZ/V2L-only — no V2H deploy.so exists in the v6.20 release.
     "q04|Q04_fish_classification|fish_classification|fish_classification-iotconnect.patch|/home/weston/Q04_fish_classification/exe_v2h||"
     "q05|Q05_suspicious_activity|suspicious_activity|suspicious_activity-iotconnect.patch|/home/weston/Q05_suspicious_activity/exe_v2h||"
     "q06|Q06_expiry_date_detection|date_extraction||/home/weston/Q06_expiry_date_detection/exe_v2h|https://github.com/renesas-rz/rzv_ai_sdk/releases/download/v6.20/Q06_expiry_date_detection_deploy_tvm_v2h-v251.so|Q06_expiry_date_detection/exe_v2h/expiry_yolov3_onnx/deploy.so"
