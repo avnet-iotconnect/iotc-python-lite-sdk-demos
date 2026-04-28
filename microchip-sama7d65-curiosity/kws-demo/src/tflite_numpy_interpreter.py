@@ -1,7 +1,8 @@
 """Pure-numpy TFLite interpreter fallback.
 
-Supports a fixed subset of quantised ops:
-  RESHAPE, CONV_2D, DEPTHWISE_CONV_2D, AVERAGE_POOL_2D,
+Supports a fixed subset of ops:
+  SHAPE, STRIDED_SLICE, PACK, RESHAPE, MEAN,
+  CONV_2D, DEPTHWISE_CONV_2D, AVERAGE_POOL_2D,
   FULLY_CONNECTED, SOFTMAX
 
 Intended for platforms where tflite-runtime is unavailable.
@@ -153,9 +154,23 @@ class Interpreter:
 
     def invoke(self) -> None:
         for op_name, ins, outs, opts in self._ops:
-            if op_name == "RESHAPE":
-                out_shape = self._tensor_meta[outs[0]]["shape"]
-                self._tensor_data[outs[0]] = self._tensor_data[ins[0]].reshape(out_shape)
+            if op_name == "SHAPE":
+                data = self._tensor_data[ins[0]]
+                self._tensor_data[outs[0]] = np.array(data.shape, dtype=np.int32)
+            elif op_name == "STRIDED_SLICE":
+                self._exec_strided_slice(ins, outs[0], opts)
+            elif op_name == "PACK":
+                axis = opts.get("axis", 0)
+                inputs = [self._tensor_data[i] for i in ins]
+                self._tensor_data[outs[0]] = np.stack(inputs, axis=axis)
+            elif op_name == "RESHAPE":
+                if len(ins) > 1 and ins[1] >= 0 and self._tensor_data.get(ins[1]) is not None:
+                    new_shape = list(self._tensor_data[ins[1]].flatten().astype(np.int32))
+                else:
+                    new_shape = self._tensor_meta[outs[0]]["shape"]
+                self._tensor_data[outs[0]] = self._tensor_data[ins[0]].reshape(new_shape)
+            elif op_name == "MEAN":
+                self._exec_mean(ins, outs[0], opts)
             elif op_name == "CONV_2D":
                 self._exec_conv2d(ins, outs[0], opts)
             elif op_name == "DEPTHWISE_CONV_2D":
@@ -251,11 +266,61 @@ class Interpreter:
             o.Init(raw.Bytes, raw.Pos)
             opts = {"beta": o.Beta()}
 
+        elif builtin_code == BuiltinOperator.STRIDED_SLICE:
+            from tflite.StridedSliceOptions import StridedSliceOptions
+            o = StridedSliceOptions()
+            o.Init(raw.Bytes, raw.Pos)
+            opts = {
+                "begin_mask": o.BeginMask(), "end_mask": o.EndMask(),
+                "ellipsis_mask": o.EllipsisMask(), "new_axis_mask": o.NewAxisMask(),
+                "shrink_axis_mask": o.ShrinkAxisMask(),
+            }
+
+        elif builtin_code == BuiltinOperator.PACK:
+            from tflite.PackOptions import PackOptions
+            o = PackOptions()
+            o.Init(raw.Bytes, raw.Pos)
+            opts = {"values_count": o.ValuesCount(), "axis": o.Axis()}
+
+        elif builtin_code == BuiltinOperator.MEAN:
+            from tflite.ReducerOptions import ReducerOptions
+            o = ReducerOptions()
+            o.Init(raw.Bytes, raw.Pos)
+            opts = {"keep_dims": o.KeepDims()}
+
         return opts
 
     # ------------------------------------------------------------------
     # Op implementations
     # ------------------------------------------------------------------
+
+    def _exec_strided_slice(self, ins: list[int], out_idx: int, opts: dict) -> None:
+        data = self._tensor_data[ins[0]]
+        begin = list(self._tensor_data[ins[1]].flatten().astype(np.int32))
+        end = list(self._tensor_data[ins[2]].flatten().astype(np.int32))
+        strides = list(self._tensor_data[ins[3]].flatten().astype(np.int32))
+        begin_mask = opts.get("begin_mask", 0)
+        end_mask = opts.get("end_mask", 0)
+        shrink_axis_mask = opts.get("shrink_axis_mask", 0)
+
+        index_expr = []
+        for dim in range(data.ndim):
+            if (shrink_axis_mask >> dim) & 1:
+                b = 0 if (begin_mask >> dim) & 1 else (begin[dim] if dim < len(begin) else 0)
+                index_expr.append(int(b))
+            else:
+                b = 0 if (begin_mask >> dim) & 1 else (begin[dim] if dim < len(begin) else 0)
+                e = data.shape[dim] if (end_mask >> dim) & 1 else (end[dim] if dim < len(end) else data.shape[dim])
+                s = strides[dim] if dim < len(strides) else 1
+                index_expr.append(slice(b, e, s))
+        self._tensor_data[out_idx] = data[tuple(index_expr)]
+
+    def _exec_mean(self, ins: list[int], out_idx: int, opts: dict) -> None:
+        inp_f = self._dequantize(ins[0])
+        axes = tuple(self._tensor_data[ins[1]].flatten().astype(np.int32).tolist())
+        keep_dims = opts.get("keep_dims", False)
+        result = np.mean(inp_f, axis=axes, keepdims=keep_dims).astype(np.float32)
+        self._tensor_data[out_idx] = self._requantize(result, out_idx)
 
     def _exec_conv2d(self, ins: list[int], out_idx: int, opts: dict) -> None:
         inp_f = self._dequantize(ins[0])       # [B, H, W, C_in]
