@@ -1,16 +1,23 @@
 # Voice Blackjack (KWS Game)
 
-Upgrades the /IOTCONNECT Starter Demo on the Microchip SAMA7D65-Curiosity Kit to a voice-controlled blackjack game served from the board's browser UI and connected to /IOTCONNECT for telemetry and cloud commands.
+Upgrades the /IOTCONNECT Starter Demo on the Microchip SAMA7D65-Curiosity Kit to a voice-controlled blackjack game
+served from the board's browser UI and connected to /IOTCONNECT for telemetry and cloud commands.
 
 > [!IMPORTANT]
-> Complete the [/IOTCONNECT quickstart guide for the Microchip SAMA7D65-Curiosity Kit](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-sama7d65-curiosity/README.md) before proceeding.
+> Complete
+> the [/IOTCONNECT quickstart guide for the Microchip SAMA7D65-Curiosity Kit](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/microchip-sama7d65-curiosity/README.md)
+> before proceeding.
 
-> [!IMPORTANT]
-> This demo uses the same USB microphone and keyword spotting pipeline as the [Keyword Spotting Demo](../kws-demo/README.md). The two demos cannot run at the same time — this game replaces the basic KWS demo on the device.
+> [!NOTE]
+> This demo uses the same USB microphone and keyword spotting pipeline as
+> the [Keyword Spotting Demo](../kws-demo/README.md). The two demos cannot run at the same time — this game replaces the
+> basic KWS demo on the device.
 
 ## 1. Introduction
 
-Voice Blackjack runs a blackjack game locally on the board, exposes a browser UI over the board's local network, and uses a TensorFlow Lite keyword spotter to accept voice commands from a USB microphone. Game state, bankroll, and inference results are published as telemetry to /IOTCONNECT and can also be controlled via cloud commands.
+Voice Blackjack runs a blackjack game locally on the board, exposes a browser UI over the board's local network, and
+uses a TensorFlow Lite keyword spotter to accept voice commands from a USB microphone. Game state, bankroll, and
+inference results are published as telemetry to /IOTCONNECT and can also be controlled via cloud commands.
 
 The recognized voice commands are: `deal`, `hit`, `stand`, `double`, `reset`
 
@@ -57,33 +64,16 @@ Bet control uses on-screen buttons, arrow keys, or `F` for a safe default bet.
   </tr>
 </table>
 
-## 3. Import the Optional Dashboard
-
-If you want the same /IOTCONNECT dashboard layout used during this demo, import the packaged dashboard export:
-
-- [Microchip_Blackjack_Dash_dashboard_export.json](./dashboards/Microchip_Blackjack_Dash_dashboard_export.json)
-
-Import flow:
-
-1. Create the game template and device first (follow the steps in section 4 below).
-2. In /IOTCONNECT, open **Dashboards**.
-3. Choose the dashboard import option and upload `Microchip_Blackjack_Dash_dashboard_export.json`.
-4. Open the imported dashboard and edit the embedded game widget URL so it points at your board:
-
-```text
-http://<board-ip>:8080
-```
-
-5. If your device unique ID is not `blackJack`, rebind the widgets to your actual device after import.
-
-> [!NOTE]
-> The export was captured from a working `blackJack` device, so some widget bindings may still reference that device identity when first imported.
-
-## 4. Set Up Hardware and Template
+## 3. Set Up Hardware and Template
 
 1. Plug a USB microphone into one of the board's USB host ports.
 
-   > **Microphone requirements:** For best performance, use a USB UAC (USB Audio Class) condenser microphone with a built-in pre-amp. Set the microphone's volume knob to between 50% and 75% — higher settings can cause clipping. A USB audio dongle with an analog mic jack will work but typically produces a weaker signal. [This microphone](https://www.amazon.com/dp/B06XCKGLTP) has been tested and works well with this demo; users are encouraged to purchase it or a similar USB UAC condenser mic.
+> [!NOTE]
+> **Microphone requirements:** For best performance, use a USB UAC (USB Audio Class) condenser microphone with a
+> built-in pre-amp. Set the microphone's volume knob to between 50% and 75% — higher settings can cause clipping. A USB
+> audio dongle with an analog mic jack will work but typically produces a weaker
+> signal. [This microphone](https://www.amazon.com/dp/B06XCKGLTP) has been tested and works well with this demo; users
+> are encouraged to purchase it or a similar USB UAC condenser mic.
 
 2. Confirm the microphone is visible to ALSA:
 
@@ -91,11 +81,31 @@ http://<board-ip>:8080
 arecord -l
 ```
 
-3. Import the [kws-game-template.json](./kws-game-template.json) device template to /IOTCONNECT and in your device's page, set the template to `sama7d6Bj`.
+3. Import the [kws-game-template.json](./kws-game-template.json) device template to /IOTCONNECT and in your device's
+   page, set the template to `sama7d6Bj`.
 
 <img src="../media/new-template.png" alt="Setting the device template in /IOTCONNECT" width="400" />
 
-The template exposes game state, bankroll, current command outcome, audio/model metadata, threshold, and telemetry interval. Template commands include both game actions (`deal`, `hit`, `stand`, `double`, `reset`, `bet-up`, `bet-down`, `safe-bet`) and runtime controls (`listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`, `file-download`).
+The template exposes game state, bankroll, current command outcome, audio/model metadata, threshold, and telemetry
+interval. Template commands include both game actions (`deal`, `hit`, `stand`, `double`, `reset`, `bet-up`, `bet-down`,
+`safe-bet`) and runtime controls (`listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`,
+`file-download`).
+
+## 4. Import the /IOTCONNECT Dashboard
+
+1. Download the pre-made /IOTCONNECT dashboard template: [Microchip_Blackjack_Dash_dashboard_export.json](./dashboards/Microchip_Blackjack_Dash_dashboard_export.json)
+2. In /IOTCONNECT, click on **Create Dashboard** at the top of the page.
+3. Click on "Import Dashboard" and then upload `Microchip_Blackjack_Dash_dashboard_export.json`.
+4. Select the `sama7d6Bj` device template.
+5. Select your device unique ID for the device.
+4. Give your dashboard a name of your choosing.
+5. Click "Save"
+
+```text
+http://<board-ip>:8080
+```
+
+5. If your device unique ID is not `blackJack`, rebind the widgets to your actual device after import.
 
 ## 5. Deploy and Run
 
@@ -125,21 +135,22 @@ http://<board-ip>:8080
 
 ## 6. Telemetry
 
-The game sends telemetry on startup, on a 60-second heartbeat, after an accepted voice detection, and after a cloud or local control action.
+The game sends telemetry on startup, on a 60-second heartbeat, after an accepted voice detection, and after a cloud or
+local control action.
 
-| Field | Description |
-|---|---|
-| `game_mode` | Current game state (`betting`, `player_turn`, `round_over`) |
-| `bankroll` | Current chip total |
-| `best_bankroll` | Highest bankroll reached this session |
-| `bet` | Current bet amount |
-| `hand_number` | Hands played this session |
-| `player_total` / `dealer_total` | Current hand totals |
-| `round_result` | Outcome of the last completed hand |
-| `last_command` / `last_command_confidence` | Most recent voice or cloud command and its confidence |
-| `audio_device` | ALSA capture device in use |
-| `model_name` / `model_package` / `model_sha256` | Active model metadata |
-| `detection_threshold` / `telemetry_interval` | Current runtime settings |
+| Field                                           | Description                                                 |
+|-------------------------------------------------|-------------------------------------------------------------|
+| `game_mode`                                     | Current game state (`betting`, `player_turn`, `round_over`) |
+| `bankroll`                                      | Current chip total                                          |
+| `best_bankroll`                                 | Highest bankroll reached this session                       |
+| `bet`                                           | Current bet amount                                          |
+| `hand_number`                                   | Hands played this session                                   |
+| `player_total` / `dealer_total`                 | Current hand totals                                         |
+| `round_result`                                  | Outcome of the last completed hand                          |
+| `last_command` / `last_command_confidence`      | Most recent voice or cloud command and its confidence       |
+| `audio_device`                                  | ALSA capture device in use                                  |
+| `model_name` / `model_package` / `model_sha256` | Active model metadata                                       |
+| `detection_threshold` / `telemetry_interval`    | Current runtime settings                                    |
 
 ## 7. Commands
 
@@ -149,16 +160,16 @@ The game sends telemetry on startup, on a 60-second heartbeat, after an accepted
 
 ## 8. Keyboard Fallback
 
-| Key | Action |
-|---|---|
-| `Enter` or `Space` | `deal` |
-| `H` | `hit` |
-| `S` | `stand` |
-| `D` | `double` |
-| `Arrow Up` / `Arrow Right` | `bet-up` |
+| Key                         | Action     |
+|-----------------------------|------------|
+| `Enter` or `Space`          | `deal`     |
+| `H`                         | `hit`      |
+| `S`                         | `stand`    |
+| `D`                         | `double`   |
+| `Arrow Up` / `Arrow Right`  | `bet-up`   |
 | `Arrow Down` / `Arrow Left` | `bet-down` |
-| `F` | `safe-bet` |
-| `Esc` | `reset` |
+| `F`                         | `safe-bet` |
+| `Esc`                       | `reset`    |
 
 ## 9. Customize and Rebuild (Optional)
 
@@ -170,7 +181,9 @@ bash ./create-package.sh
 
 This regenerates `package.zip`, `packages/kws-game-package.zip`, and `../../common/package.zip`.
 
-To deliver the updated package, use scp or OTA via /IOTCONNECT (see the [kws-demo Customize and Rebuild section](../kws-demo/README.md#7-customize-and-rebuild-optional) for the general OTA steps, substituting the `sama7d6Bj` template and the kws-game package file).
+To deliver the updated package, use scp or OTA via /IOTCONNECT (see
+the [kws-demo Customize and Rebuild section](../kws-demo/README.md#7-customize-and-rebuild-optional) for the general OTA
+steps, substituting the `sama7d6Bj` template and the kws-game package file).
 
 ## 10. Environment Overrides
 
@@ -185,4 +198,6 @@ export KWS_CONFIG_DIR=/opt/demo
 export KWS_GAME_PORT=8080
 ```
 
-`KWS_CONFIG_DIR` points the app at the directory containing `iotcDeviceConfig.json`, `device-cert.pem`, and `device-pkey.pem`. Defaults to the current working directory. `KWS_GAME_PORT` sets the Flask server port (default `8080`).
+`KWS_CONFIG_DIR` points the app at the directory containing `iotcDeviceConfig.json`, `device-cert.pem`, and
+`device-pkey.pem`. Defaults to the current working directory. `KWS_GAME_PORT` sets the Flask server port (default
+`8080`).
