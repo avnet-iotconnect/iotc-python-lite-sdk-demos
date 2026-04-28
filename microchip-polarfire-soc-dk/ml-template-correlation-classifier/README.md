@@ -37,7 +37,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/microchip-polarfire-ml-template.json).
+2. Click [microchip-polarfire-ml-template.json](microchip-polarfire-ml-template.json) to open the template on GitHub, then click the download button to save it, and import the downloaded file.
 3. Save.
 
 ### Switch Device to New Template
@@ -49,7 +49,7 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 
 ### Import Dashboard
 
-1. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-template-correlation-classifier/mchp-classifier-dashboard.json).
+1. Click [mchp-classifier-dashboard.json](mchp-classifier-dashboard.json) to open the dashboard template on GitHub, then click the download button to save it.
 2. Open /IOTCONNECT and go to **Dashboard** then click **Import Dashboard** and upload the JSON file.
 3. Save the imported dashboard and map it to the correct device/template.
 
