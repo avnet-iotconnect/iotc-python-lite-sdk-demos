@@ -10,18 +10,14 @@
 
 # 1. Introduction
 
-This guide provides step-by-step instructions to set up the **Microchip SAMA7D65-Curiosity Kit hardware** and integrate
-it
-with **/IOTCONNECT**, Avnet's robust IoT platform. The SAMA7D65-Curiosity Kit hardware platform provides flexible options
-for IoT
-application development, enabling secure device onboarding, telemetry collection, and over-the-air (OTA) updates.
+This guide provides step-by-step instructions to set up the **Microchip SAMA7D65-Curiosity Kit hardware** and integrate it with **/IOTCONNECT**, Avnet's robust IoT platform. The SAMA7D65-Curiosity Kit hardware platform provides flexible options for IoT application development, enabling secure device onboarding, telemetry collection, and over-the-air (OTA) updates.
 
 <table>
   <tr>
-    <td><img src=".//media/sama7d65-product.png" width="6000"></td>
-    <td>The SAMA7D65-Curiosity Kit is a development board for evaluating  and prototyping with Microchip SAMA7D65 microprocessor (MPU).  
-The SAMA7D65 MPU is a high-performance  ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz.  The board allows 
-evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and 
+    <td><img src="./media/sama7d65-product.png" width="400"></td>
+    <td>The SAMA7D65-Curiosity Kit is a development board for evaluating and prototyping with the Microchip SAMA7D65 microprocessor (MPU).
+The SAMA7D65 MPU is a high-performance ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz. The board allows
+evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and
 LVDS w/ 2D graphics, dual Gigabit Ethernet w/ TSN and CAN-FD.</td>
   </tr>
 </table>
