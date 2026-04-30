@@ -137,6 +137,10 @@ cd /opt/demo
 python3 game_app.py
 ```
 
+After the program begins, the dashboard will look like this:
+
+<img src="../media/blackjack.png"/>
+
 ## 6. Playing the Game
 
 ### Game Flow
