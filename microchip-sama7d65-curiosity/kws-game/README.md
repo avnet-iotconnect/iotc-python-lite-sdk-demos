@@ -94,18 +94,26 @@ interval. Template commands include both game actions (`deal`, `hit`, `stand`, `
 ## 4. Import the /IOTCONNECT Dashboard
 
 1. Download the pre-made /IOTCONNECT dashboard template: [Microchip_Blackjack_Dash_dashboard_export.json](./dashboards/Microchip_Blackjack_Dash_dashboard_export.json)
-2. In /IOTCONNECT, click on **Create Dashboard** at the top of the page.
-3. Click on "Import Dashboard" and then upload `Microchip_Blackjack_Dash_dashboard_export.json`.
-4. Select the `sama7d6Bj` device template.
-5. Select your device unique ID for the device.
-4. Give your dashboard a name of your choosing.
-5. Click "Save"
+2. On line 72 of the template file, change `192.168.10.155` to be the IP address of your Microchip SAMA7D65 Curiosity Kit.
+   
+> [!TIP]
+> You can find the IP address of your board by executing the command `ip a` in the terminal and then under the `eth0` interface
+> find the `192.168.XXX.XXX` number. That is your board's IP address.
 
-```text
-http://<board-ip>:8080
-```
+3. In /IOTCONNECT, click on **Create Dashboard** at the top of the page.
+4. Click on "Import Dashboard" and then upload `Microchip_Blackjack_Dash_dashboard_export.json`.
+5. Select the `sama7d6Bj` device template.
+6. Select your device unique ID for the device.
+7. Give your dashboard a name of your choosing.
+8. Click "Save"
+9. After the dashboard widgets load, zoom out until you can comfortably view most of dashboard on your monitor.
 
-5. If your device unique ID is not `blackJack`, rebind the widgets to your actual device after import.
+> [!NOTE]
+> The large widget on the right side of the dashboard will be populated with the blackjack web server
+> once the program has been started. Until then it will look blank.
+
+10. OPTIONAL: While the default layout is recommended, you can move the widgets around your dashboard by clicking-and-dragging them across the screen. 
+11. Click the "Save" button at the top of the screen to leave edit mode and view the live dashboard.
 
 ## 5. Deploy and Run
 
@@ -122,15 +130,11 @@ bash ./install.sh
 
 ### Run
 
+After the installation is complete, execute this to start the program:
+
 ```bash
 cd /opt/demo
 python3 game_app.py
-```
-
-Then open a browser on your local network to:
-
-```
-http://<board-ip>:8080
 ```
 
 ## 6. Playing the Game
