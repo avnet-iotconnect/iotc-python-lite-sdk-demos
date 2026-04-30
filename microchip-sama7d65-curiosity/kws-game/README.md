@@ -15,7 +15,7 @@ served from the board's browser UI and connected to /IOTCONNECT for telemetry an
 
 ## 1. Introduction
 
-Voice Blackjack runs a blackjack game locally on the board, exposes a browser UI over the board's local network, and
+This demo runs a blackjack game locally on the board, exposes a browser UI over the board's local network, and
 uses a TensorFlow Lite keyword spotter to accept voice commands from a USB microphone. Game state, bankroll, and
 inference results are published as telemetry to /IOTCONNECT and can also be controlled via cloud commands.
 
