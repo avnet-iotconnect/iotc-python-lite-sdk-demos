@@ -156,7 +156,12 @@ Now that you have completed the basic quickstart, you can install a specialized 
 * **[Keyword Spotting Demo](./kws-demo/README.md)**: Captures one-second audio clips from a USB microphone, runs a TensorFlow Lite DS-CNN speech-command classifier on-device, and publishes the top prediction and confidence score to /IOTCONNECT in real time.
 * **[Voice Blackjack (KWS Game)](./kws-game/README.md)**: Runs a browser-hosted blackjack game on the board using the same USB microphone keyword spotting pipeline. Voice commands control gameplay while game state and inference results are streamed as telemetry to /IOTCONNECT.
 
-<img src=".//media/blackjack-0.png" width="1000"> <img src=".//media/blackjack-1.png" width="1000">
+<table>
+  <tr>
+    <td width="50%"><img src="./media/blackjack-0.png" width="100%" /></td>
+    <td width="50%"><img src="./media/blackjack-1.png" width="100%" /></td>
+  </tr>
+</table>
 
 # 8. Resources
 
