@@ -169,6 +169,13 @@ To change the threshold, set the `KWS_DETECTION_THRESHOLD` environment variable 
 KWS_DETECTION_THRESHOLD=0.20 python3 game_app.py
 ```
 
+### Web Server UI Backup Controls
+
+If your board is struggling to accept your voice commands evn after adjustment of the threshold, microphone pre-amp volume, and tone of voice, 
+you can still progress the game via the "TABLE CONTROLS" buttons in the web server widget of the dashboard.
+
+<img src="../media/table-controls.png" width="400" />
+
 ## 7. Telemetry
 
 The game sends telemetry on startup, on a 60-second heartbeat, after an accepted voice detection, and after a cloud or
@@ -194,20 +201,7 @@ local control action.
 
 **Runtime controls:** `listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`, `file-download`
 
-## 9. Keyboard Fallback
-
-| Key                         | Action     |
-|-----------------------------|------------|
-| `Enter` or `Space`          | `deal`     |
-| `H`                         | `hit`      |
-| `S`                         | `stand`    |
-| `D`                         | `double`   |
-| `Arrow Up` / `Arrow Right`  | `bet-up`   |
-| `Arrow Down` / `Arrow Left` | `bet-down` |
-| `F`                         | `safe-bet` |
-| `Esc`                       | `reset`    |
-
-## 10. Customize and Rebuild (Optional)
+## 9. Customize and Rebuild (Optional)
 
 To modify the demo before deploying, edit files in `src/` and then rebuild:
 
@@ -221,7 +215,7 @@ To deliver the updated package, use scp or OTA via /IOTCONNECT (see
 the [kws-demo Customize and Rebuild section](../kws-demo/README.md#7-customize-and-rebuild-optional) for the general OTA
 steps, substituting the `sama7d6Bj` template and the kws-game package file).
 
-## 11. Environment Overrides
+## 10. Environment Overrides
 
 ```bash
 export KWS_AUTOSTART=1
