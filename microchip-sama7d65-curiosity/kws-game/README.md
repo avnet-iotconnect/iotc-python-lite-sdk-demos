@@ -139,7 +139,7 @@ http://<board-ip>:8080
 
 The game starts in **betting** mode with a $500 bankroll and a $25 default bet.
 
-1. **Set your bet** using the on-screen **Bet +25**, **Bet -25**, or **Safe Bet** buttons, the keyboard arrow keys, or `F` for a safe $25 bet.
+1. **Set your bet** using the on-screen **Bet +25**, **Bet -25**, or **Safe Bet** buttons, the keyboard arrow keys, or `F` for a safe $25 bet. If you are happy with the current bet, you can skip this step and proceed directly to dealing.
 2. Say **"deal"** to start the hand. Your cards and the dealer's cards are dealt.
 3. During your turn, choose one of:
    - Say **"hit"** to take another card.
