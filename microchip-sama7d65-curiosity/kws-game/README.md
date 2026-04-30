@@ -159,7 +159,7 @@ The keyword spotter assigns a confidence score (0–1) to each recognized word. 
 - If this happens frequently, it is a sign that the threshold should be lowered to better match your voice and microphone.
 - The right threshold varies from user to user depending on how closely your voice matches the training data and the characteristics of your microphone. Values between **0.15** and **0.50** are typical.
 
-To change the threshold, set the `KWS_DETECTION_THRESHOLD` environment variable before running:
+To change the threshold, set the `KWS_DETECTION_THRESHOLD` environment variable when you execute the app script:
 
 ```bash
 KWS_DETECTION_THRESHOLD=0.20 python3 game_app.py
