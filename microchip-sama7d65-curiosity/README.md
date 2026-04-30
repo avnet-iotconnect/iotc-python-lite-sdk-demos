@@ -14,7 +14,7 @@ This guide provides step-by-step instructions to set up the **Microchip SAMA7D65
 
 <table>
   <tr>
-    <td><img src="./media/sama7d65-product.png" width="400"></td>
+    <td><img src="./media/sama7d65-product.png" width="4000"></td>
     <td>The SAMA7D65-Curiosity Kit is a development board for evaluating and prototyping with the Microchip SAMA7D65 microprocessor (MPU).
 The SAMA7D65 MPU is a high-performance ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz. The board allows
 evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and
