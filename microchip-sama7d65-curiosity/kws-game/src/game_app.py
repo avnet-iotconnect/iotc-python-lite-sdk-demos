@@ -192,7 +192,7 @@ class VoiceBlackjack:
             KwsSettings(
                 model_path=model_path,
                 labels_path=MODEL_DIR / "labels.txt",
-                threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.80")),
+                threshold=float(os.getenv("KWS_DETECTION_THRESHOLD", "0.25")),
                 cooldown_secs=float(os.getenv("KWS_COOLDOWN_SECS", "1.2")),
                 arecord_device=os.getenv("KWS_ARECORD_DEVICE") or None,
             )

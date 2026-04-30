@@ -133,7 +133,39 @@ Then open a browser on your local network to:
 http://<board-ip>:8080
 ```
 
-## 6. Telemetry
+## 6. Playing the Game
+
+### Game Flow
+
+The game starts in **betting** mode with a $500 bankroll and a $25 default bet.
+
+1. **Set your bet** using the on-screen **Bet +25**, **Bet -25**, or **Safe Bet** buttons, the keyboard arrow keys, or `F` for a safe $25 bet.
+2. Say **"deal"** to start the hand. Your cards and the dealer's cards are dealt.
+3. During your turn, choose one of:
+   - Say **"hit"** to take another card.
+   - Say **"stand"** to hold your hand and let the dealer play.
+   - Say **"double"** to double your bet, receive exactly one more card, and stand (only available when your bankroll covers the doubled bet).
+4. The dealer draws until reaching 17 or higher. The result is shown on screen and sent to /IOTCONNECT as telemetry.
+5. Say **"deal"** again to start the next hand.
+6. Say **"reset"** at any time to clear the current hand and return to the betting screen.
+
+### Detection Threshold
+
+The keyword spotter assigns a confidence score (0–1) to each recognized word. A command is only accepted if its score meets or exceeds the **detection threshold**. The default threshold is **0.25**.
+
+**Tuning guidance:**
+
+- If the **Last Command** section of the UI shows the word you said but no action was taken, the score was below the threshold. Try saying the word again more clearly.
+- If this happens frequently, it is a sign that the threshold should be lowered to better match your voice and microphone.
+- The right threshold varies from user to user depending on how closely your voice matches the training data and the characteristics of your microphone. Values between **0.15** and **0.50** are typical.
+
+To change the threshold, set the `KWS_DETECTION_THRESHOLD` environment variable before running:
+
+```bash
+KWS_DETECTION_THRESHOLD=0.20 python3 game_app.py
+```
+
+## 7. Telemetry
 
 The game sends telemetry on startup, on a 60-second heartbeat, after an accepted voice detection, and after a cloud or
 local control action.
@@ -152,13 +184,13 @@ local control action.
 | `model_name` / `model_package` / `model_sha256` | Active model metadata                                       |
 | `detection_threshold` / `telemetry_interval`    | Current runtime settings                                    |
 
-## 7. Commands
+## 8. Commands
 
 **Game actions:** `deal`, `hit`, `stand`, `double`, `reset`, `bet-up`, `bet-down`, `safe-bet`
 
 **Runtime controls:** `listen-start`, `listen-stop`, `set-threshold`, `set-interval`, `refresh-state`, `file-download`
 
-## 8. Keyboard Fallback
+## 9. Keyboard Fallback
 
 | Key                         | Action     |
 |-----------------------------|------------|
@@ -171,7 +203,7 @@ local control action.
 | `F`                         | `safe-bet` |
 | `Esc`                       | `reset`    |
 
-## 9. Customize and Rebuild (Optional)
+## 10. Customize and Rebuild (Optional)
 
 To modify the demo before deploying, edit files in `src/` and then rebuild:
 
@@ -185,11 +217,11 @@ To deliver the updated package, use scp or OTA via /IOTCONNECT (see
 the [kws-demo Customize and Rebuild section](../kws-demo/README.md#7-customize-and-rebuild-optional) for the general OTA
 steps, substituting the `sama7d6Bj` template and the kws-game package file).
 
-## 10. Environment Overrides
+## 11. Environment Overrides
 
 ```bash
 export KWS_AUTOSTART=1
-export KWS_DETECTION_THRESHOLD=0.80
+export KWS_DETECTION_THRESHOLD=0.25
 export KWS_COOLDOWN_SECS=1.2
 export KWS_GAME_TELEMETRY_SECS=60
 export KWS_ARECORD_DEVICE=plughw:0,0
