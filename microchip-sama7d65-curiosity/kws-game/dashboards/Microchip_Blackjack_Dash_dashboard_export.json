@@ -13,8 +13,8 @@
                 "titleAlign": "",
                 "contents": {
                     "option": {
-                        "imageUpload": "true",
-                        "imageUrl": "false",
+                        "imageUpload": "false",
+                        "imageUrl": "true",
                         "imageDevice": "false",
                         "imageTelemetry": "false",
                         "key": "option",
@@ -29,10 +29,11 @@
                         "key": "url"
                     },
                     "device": {
-                        "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
+                        "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
                         "deviceName": "blackJack",
                         "imageurl": "",
-                        "key": "device"
+                        "key": "device",
+                        "deviceUniqueId": "testsam"
                     },
                     "telemetry": {
                         "deviceGuid": "",
@@ -69,11 +70,11 @@
                 "titleAlign": "center",
                 "contents": {
                     "embedded": {
-                        "link": "http://192.168.68.57:8081",
+                        "link": "http://192.168.10.155:8080",
                         "refresh": "",
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": "",
                         "key": "embedded"
@@ -136,8 +137,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -424,8 +425,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -712,8 +713,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -1000,8 +1001,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -1288,8 +1289,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -1576,8 +1577,8 @@
                     },
                     "live": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -1880,8 +1881,8 @@
                 "contents": {
                     "liveChart": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -2018,8 +2019,8 @@
                 "contents": {
                     "gauge": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
@@ -2178,119 +2179,119 @@
                 "contents": {
                     "combo": {
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
                                     "attributeName": "bankroll",
                                     "displayName": "bankroll",
                                     "checked": "false",
                                     "dataType": "INTEGER",
-                                    "attributeLatestValue": "400",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "400"
+                                    "attributeValue": "500"
                                 },
                                 {
-                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
                                     "attributeName": "best_bankroll",
                                     "displayName": "best_bankroll",
                                     "checked": "false",
                                     "dataType": "INTEGER",
                                     "attributeLatestValue": "500",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
                                     "attributeValue": "500"
                                 },
                                 {
-                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
                                     "attributeName": "bet",
                                     "displayName": "bet",
                                     "checked": "false",
                                     "dataType": "INTEGER",
                                     "attributeLatestValue": "25",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
                                     "attributeValue": "25"
                                 },
                                 {
-                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
                                     "attributeName": "hand_number",
                                     "displayName": "hand_number",
                                     "checked": "false",
                                     "dataType": "INTEGER",
-                                    "attributeLatestValue": "9",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "9"
+                                    "attributeValue": "0"
                                 },
                                 {
-                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
                                     "attributeName": "player_total",
                                     "displayName": "player_total",
                                     "checked": "false",
                                     "dataType": "INTEGER",
                                     "attributeLatestValue": "0",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
                                     "attributeValue": "0"
                                 },
                                 {
-                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
                                     "attributeName": "dealer_total",
                                     "displayName": "dealer_total",
                                     "checked": "false",
                                     "dataType": "INTEGER",
                                     "attributeLatestValue": "0",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
                                     "attributeValue": "0"
                                 },
                                 {
-                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
                                     "attributeName": "last_command_confidence",
                                     "displayName": "last_command_confidence",
                                     "checked": "false",
                                     "dataType": "DECIMAL",
-                                    "attributeLatestValue": "0.947317",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "0.947317"
+                                    "attributeValue": "0"
                                 },
                                 {
-                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
                                     "attributeName": "detection_threshold",
                                     "displayName": "detection_threshold",
                                     "checked": "false",
                                     "dataType": "DECIMAL",
-                                    "attributeLatestValue": "0.8",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "attributeLatestValue": "0.25",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
-                                    "attributeValue": "0.8"
+                                    "attributeValue": "0.25"
                                 },
                                 {
-                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
                                     "attributeName": "telemetry_interval",
                                     "displayName": "telemetry_interval",
                                     "checked": "false",
                                     "dataType": "DECIMAL",
                                     "attributeLatestValue": "60",
-                                    "deviceUpdatedDate": "2026-04-16T19:44:28.833Z",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
                                     "gatewayUpdatedDate": "NA",
                                     "attributeValue": "60"
                                 }
                             ]
                         },
                         "lineAttributes": {
-                            "lineAttributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                            "lineAttributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
                             "lineAttributeName": "dealer_total",
                             "lineAttributeColor": "#d0021b"
                         },
                         "barAttributes": {
-                            "barAttributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                            "barAttributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
                             "barAttributeName": "player_total",
                             "barAttributeColor": "#4a90e2"
                         },
@@ -2359,139 +2360,139 @@
                         "showHeader": "false",
                         "showDate": "false",
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
                                     "attributeName": "sdk_version",
                                     "displayName": "sdk_version",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
                                     "attributeName": "listening",
                                     "displayName": "listening",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
                                     "attributeName": "game_mode",
                                     "displayName": "game_mode",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
                                     "attributeName": "bankroll",
                                     "displayName": "bankroll",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
                                     "attributeName": "best_bankroll",
                                     "displayName": "best_bankroll",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
                                     "attributeName": "bet",
                                     "displayName": "bet",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
                                     "attributeName": "hand_number",
                                     "displayName": "hand_number",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
                                     "attributeName": "player_total",
                                     "displayName": "player_total",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
                                     "attributeName": "dealer_total",
                                     "displayName": "dealer_total",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
                                     "attributeName": "dealer_bust",
                                     "displayName": "dealer_bust",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
                                     "attributeName": "double_available",
                                     "displayName": "double_available",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
                                     "attributeName": "round_result",
                                     "displayName": "round_result",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
                                     "attributeName": "last_command",
                                     "displayName": "last_command",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
                                     "attributeName": "last_command_confidence",
                                     "displayName": "last_command_confidence",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
                                     "attributeName": "last_command_detected",
                                     "displayName": "last_command_detected",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
                                     "attributeName": "audio_device",
                                     "displayName": "audio_device",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
                                     "attributeName": "model_name",
                                     "displayName": "model_name",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
                                     "attributeName": "model_package",
                                     "displayName": "model_package",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
                                     "attributeName": "model_sha256",
                                     "displayName": "model_sha256",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
                                     "attributeName": "detection_threshold",
                                     "displayName": "detection_threshold",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
                                     "attributeName": "telemetry_interval",
                                     "displayName": "telemetry_interval",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
                                     "attributeName": "last_error",
                                     "displayName": "last_error",
                                     "checked": "true"
@@ -2529,139 +2530,139 @@
                         "showHeader": "false",
                         "showDate": "false",
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
                                     "attributeName": "sdk_version",
                                     "displayName": "sdk_version",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
                                     "attributeName": "listening",
                                     "displayName": "listening",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
                                     "attributeName": "game_mode",
                                     "displayName": "game_mode",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
                                     "attributeName": "bankroll",
                                     "displayName": "bankroll",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
                                     "attributeName": "best_bankroll",
                                     "displayName": "best_bankroll",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
                                     "attributeName": "bet",
                                     "displayName": "bet",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
                                     "attributeName": "hand_number",
                                     "displayName": "hand_number",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
                                     "attributeName": "player_total",
                                     "displayName": "player_total",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
                                     "attributeName": "dealer_total",
                                     "displayName": "dealer_total",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
                                     "attributeName": "dealer_bust",
                                     "displayName": "dealer_bust",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
                                     "attributeName": "double_available",
                                     "displayName": "double_available",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
                                     "attributeName": "round_result",
                                     "displayName": "round_result",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
                                     "attributeName": "last_command",
                                     "displayName": "last_command",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
                                     "attributeName": "last_command_confidence",
                                     "displayName": "last_command_confidence",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
                                     "attributeName": "last_command_detected",
                                     "displayName": "last_command_detected",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
                                     "attributeName": "audio_device",
                                     "displayName": "audio_device",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
                                     "attributeName": "model_name",
                                     "displayName": "model_name",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
                                     "attributeName": "model_package",
                                     "displayName": "model_package",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
                                     "attributeName": "model_sha256",
                                     "displayName": "model_sha256",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
                                     "attributeName": "detection_threshold",
                                     "displayName": "detection_threshold",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
                                     "attributeName": "telemetry_interval",
                                     "displayName": "telemetry_interval",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
                                     "attributeName": "last_error",
                                     "displayName": "last_error",
                                     "checked": "false"
@@ -2699,139 +2700,139 @@
                         "showHeader": "false",
                         "showDate": "false",
                         "device": {
-                            "deviceGuid": "C3D26F5D-75CA-4B7A-BA3F-08DFC255CB23",
-                            "deviceUniqueId": "blackJack"
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
                         },
                         "attributes": {
                             "attribute": [
                                 {
-                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
                                     "attributeName": "sdk_version",
                                     "displayName": "sdk_version",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
                                     "attributeName": "listening",
                                     "displayName": "listening",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
                                     "attributeName": "game_mode",
                                     "displayName": "game_mode",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
                                     "attributeName": "bankroll",
                                     "displayName": "bankroll",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
                                     "attributeName": "best_bankroll",
                                     "displayName": "best_bankroll",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
                                     "attributeName": "bet",
                                     "displayName": "bet",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
                                     "attributeName": "hand_number",
                                     "displayName": "hand_number",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
                                     "attributeName": "player_total",
                                     "displayName": "player_total",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
                                     "attributeName": "dealer_total",
                                     "displayName": "dealer_total",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
                                     "attributeName": "dealer_bust",
                                     "displayName": "dealer_bust",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
                                     "attributeName": "double_available",
                                     "displayName": "double_available",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
                                     "attributeName": "round_result",
                                     "displayName": "round_result",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
                                     "attributeName": "last_command",
                                     "displayName": "last_command",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
                                     "attributeName": "last_command_confidence",
                                     "displayName": "last_command_confidence",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
                                     "attributeName": "last_command_detected",
                                     "displayName": "last_command_detected",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
                                     "attributeName": "audio_device",
                                     "displayName": "audio_device",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
                                     "attributeName": "model_name",
                                     "displayName": "model_name",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
                                     "attributeName": "model_package",
                                     "displayName": "model_package",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
                                     "attributeName": "model_sha256",
                                     "displayName": "model_sha256",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
                                     "attributeName": "detection_threshold",
                                     "displayName": "detection_threshold",
                                     "checked": "false"
                                 },
                                 {
-                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
                                     "attributeName": "telemetry_interval",
                                     "displayName": "telemetry_interval",
                                     "checked": "true"
                                 },
                                 {
-                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
                                     "attributeName": "last_error",
                                     "displayName": "last_error",
                                     "checked": "false"
