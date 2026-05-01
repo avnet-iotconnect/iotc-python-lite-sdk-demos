@@ -51,7 +51,7 @@ replicated in other environments.
        to get to the page to download the latest image for the SAMA7D65.
     2. Download the image (link may have updated name that slightly differs from screenshot):
 
-    <img src=".//media/image-download.png" alt="Yocto Image Download"/>
+    <img src=".//media/new-image-download.png" alt="Yocto Image Download"/>
 
     3. Follow the "Create a SD card with the demo" section of the instructions to flash the image to an SD card.
 

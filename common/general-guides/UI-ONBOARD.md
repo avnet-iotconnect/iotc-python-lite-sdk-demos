@@ -20,17 +20,16 @@ Follow these steps to onboard your device into /IOTCONNECT via the online user i
 
 <img src="../media/console.iotconnect.io-url.png">
 
-2. In the blue toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
+2. In the toolbar on the left edge of the page, hover over the "processor" icon and then in the resulting dropdown
    select "Device".
 
 <img src="../media/device-page.png">
 
-3. Now in the resulting Device page, click on the "Templates" tab of the blue toolbar at the bottom of the screen.
+3. Now in the resulting Device page, click on the "Templates" tab of the toolbar at the bottom of the screen.
 
 <img src="../media/templates-button.png">
 
-4. Right-click and then click "save link as" on [this link to the default device template](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json)
-   to download the raw template file.
+4. Click [here](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/common/templates/plitedemo-template.json) to navigate to and then download the default `plitedemo` /IOTCONNECT device template file.
 
 5. Back in the /IOTCONNECT browser tab, click on the "Create Template" button in the top-right of the screen.
 
@@ -42,7 +41,7 @@ Follow these steps to onboard your device into /IOTCONNECT via the online user i
 
 7. Select your downloaded copy of the plitedemo template from sub-step 4 and then click "save".
 
-8. Click on the "Devices" tab of the blue toolbar at the bottom of the screen.
+8. Click on the "Devices" tab of the toolbar at the bottom of the screen.
 
 <img src="../media/devices-button.png">
 
