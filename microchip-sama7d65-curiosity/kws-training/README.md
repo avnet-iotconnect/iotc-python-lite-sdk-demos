@@ -29,14 +29,14 @@ The board-side training flow is designed to be driven from the browser. These sn
 <table>
   <tr>
     <td width="50%">
-      <img src="../media/kws-trainer-step1a.jpg" alt="KWS Training Studio collection plan panel" />
-      <br />
-      <sub>Collection Plan helps balance command clips, <code>_unknown_</code>, and <code>_background_noise_</code> before retraining.</sub>
-    </td>
-    <td width="50%">
       <img src="../media/kws-trainer-step1and2.jpg" alt="KWS Training Studio capture and upload panels" />
       <br />
       <sub>Step 1 captures clips into label folders. Step 2 packages the dataset, uploads it, and launches board-driven training.</sub>
+    </td>
+    <td width="50%">
+      <img src="../media/kws-trainer-step1a.jpg" alt="KWS Training Studio collection plan panel" />
+      <br />
+      <sub>Collection Plan helps balance command clips, <code>_unknown_</code>, and <code>_background_noise_</code> before retraining.</sub>
     </td>
   </tr>
   <tr>
