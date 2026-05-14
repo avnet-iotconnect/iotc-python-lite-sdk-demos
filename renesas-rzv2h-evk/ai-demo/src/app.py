@@ -254,6 +254,7 @@ def start_drpai_demo(mode: str) -> bool:
             try:
                 os.remove(stale)
             except FileNotFoundError:
+                # Expected when no stale results file exists for this demo mode.
                 pass
             except Exception:
                 pass
