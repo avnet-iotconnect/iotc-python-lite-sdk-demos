@@ -217,7 +217,7 @@ def start_drpai_demo(mode: str) -> bool:
         cv_needs_restart = len(_detect_usb_cameras()) > 1
         print('Stopping Python CV to free /dev/video0 for DRP-AI...')
         stop_cv_inference()
-        time.sleep(1.5)  # give the V4L2 device time to fully release
+        time.sleep(4.0)  # allow Weston to fully process waylandsink surface cleanup
 
     started = False
     with _drpai_lock:
@@ -483,6 +483,24 @@ def _cv_inference_loop():
         _cv_active = False
         return
 
+    # Open a GStreamer appsrc→waylandsink writer so annotated frames appear on
+    # the HDMI display. Fails silently if Wayland is not accessible.
+    writer = None
+    try:
+        writer = cv2.VideoWriter(
+            'appsrc ! videoconvert ! waylandsink sync=false',
+            cv2.CAP_GSTREAMER, 0, _CV_FRAME_FPS,
+            (_CV_FRAME_WIDTH, _CV_FRAME_HEIGHT), True,
+        )
+        if not writer.isOpened():
+            print('WARNING: waylandsink failed to open — display disabled')
+            writer = None
+        else:
+            print('Display output: Wayland surface on HDMI')
+    except Exception as e:
+        print(f'WARNING: could not initialise display pipeline: {e}')
+        writer = None
+
     print('CV inference loop started')
 
     while _cv_active:
@@ -515,9 +533,31 @@ def _cv_inference_loop():
                 'total_detections': face_count + body_count,
             }
 
+        if writer is not None:
+            for (x, y, w, h) in faces:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                cv2.putText(frame, 'face', (x, max(15, y - 6)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+            for (x, y, w, h) in bodies:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
+                cv2.putText(frame, 'person', (x, max(15, y - 6)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+            hud = f'IoTConnect CV | faces:{face_count} persons:{body_count} infer:{inf_ms}ms'
+            cv2.rectangle(frame, (0, 0), (_CV_FRAME_WIDTH, 26), (0, 0, 0), -1)
+            cv2.putText(frame, hud, (8, 18),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+            writer.write(frame)
+
         # Throttle to ~5 fps to leave CPU headroom for IoTConnect + DRP-AI
         time.sleep(0.2)
 
+    # Brief pause before releasing the Wayland surface so the compositor can
+    # flush the last committed frame before we disconnect.
+    if writer is not None:
+        time.sleep(0.5)
+        _t = threading.Thread(target=writer.release, daemon=True)
+        _t.start()
+        _t.join(timeout=3.0)
     cap.release()
     _cv_device = ''
     print('CV inference loop stopped')
