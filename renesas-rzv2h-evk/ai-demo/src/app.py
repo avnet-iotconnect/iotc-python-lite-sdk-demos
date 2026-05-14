@@ -153,6 +153,7 @@ _drpai_lock = threading.Lock()
 
 _cv_active = False
 _cv_thread: Optional[threading.Thread] = None
+_cv_device: str = ''  # camera node the CV thread actually opened
 _cv_result = {
     'face_count': 0,
     'person_count': 0,
@@ -207,12 +208,11 @@ def _drain_pipe(label: str, pipe):
 def start_drpai_demo(mode: str) -> bool:
     global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file
 
-    # DRP-AI hardcodes /dev/video0. If Python CV is currently using video0
-    # (only-one-camera setup), stop it so DRP-AI can claim the device. With
-    # two cameras connected, CV is using a non-video0 device and can keep
+    # DRP-AI hardcodes /dev/video0. Stop CV only if it is actually holding
+    # video0; if CV is on a different device (two-camera setup) it can keep
     # running in parallel.
-    if _cv_active and len(_detect_usb_cameras()) <= 1:
-        print('Single-camera setup: stopping Python CV to free the camera for DRP-AI...')
+    if _cv_active and (_cv_device == _DRPAI_HARDCODED_CAMERA or _cv_device == ''):
+        print('Stopping Python CV to free /dev/video0 for DRP-AI...')
         stop_cv_inference()
         time.sleep(1.5)  # give the V4L2 device time to fully release
 
@@ -444,7 +444,7 @@ _CV_FRAME_FPS = 15
 
 
 def _cv_inference_loop():
-    global _cv_active, _cv_result
+    global _cv_active, _cv_result, _cv_device
 
     face_cascade_path = _haar_path('haarcascade_frontalface_default.xml')
     body_cascade_path = _haar_path('haarcascade_fullbody.xml')
@@ -458,6 +458,7 @@ def _cv_inference_loop():
         print('WARNING: Could not load body Haar cascade')
 
     device = _pick_cv_camera() or _detect_usb_camera()
+    _cv_device = device
     print(f'CV inference: opening camera {device}')
     cap = cv2.VideoCapture(device)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, _CV_FRAME_WIDTH)
@@ -542,6 +543,7 @@ def _cv_inference_loop():
     if writer is not None:
         writer.release()
     cap.release()
+    _cv_device = ''
     print('CV inference loop stopped')
 
 

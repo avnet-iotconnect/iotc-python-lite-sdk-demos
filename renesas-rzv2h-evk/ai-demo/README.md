@@ -71,7 +71,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/renesas-rzv2h-evk/ai-demo/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/renesas-rzv2h-evk/ai-demo/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
