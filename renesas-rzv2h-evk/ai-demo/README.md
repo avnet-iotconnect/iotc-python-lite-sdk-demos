@@ -12,16 +12,25 @@ display.
 
 ## 1. Introduction
 
-Python OpenCV Haar cascade inference runs on the USB camera for face and full-body person detection on the A55 CPU
-cores. Separately, any of the Renesas DRP-AI hardware demos can be launched via a C2D command — the `object_counter` binary
-runs YOLOv3 on the DRP-AI accelerator and renders bounding boxes and object counts on the HDMI display. Both can run
-simultaneously since they use independent hardware.
+This demo has two independent inference paths:
+
+- **Python CV** (`start_detection`): face and full-body person detection via OpenCV Haar cascades, running on the A55 CPU cores.
+- **DRP-AI demo** (`launch_drpai`): any of the Renesas AI SDK hardware demos, running on the dedicated DRP-AI accelerator and rendering output on the HDMI display.
+
+**Camera and USB port behaviour:**
+
+The board has 3 USB-A ports. With a keyboard and mouse connected for initial setup, only one port remains for a camera.
+
+- **1 camera connected**: the two demos share the camera and cannot run simultaneously. Sending `launch_drpai` automatically stops Python CV first; sending `start_detection` after `stop_drpai` re-enables it.
+- **2 cameras connected**: both demos run simultaneously — the DRP-AI binary always claims `/dev/video0` and Python CV picks the other. To reach this configuration with a keyboard and mouse already connected, unplug either the keyboard or mouse to free a USB port for the second camera.
+
+Only one DRP-AI demo can run at a time, so two cameras is the maximum useful configuration.
 
 ## 2. Prerequisites
 
 **Additional hardware required:**
 
-- USB camera supporting YUYV 640×480 @ 30fps (e.g. Logitech BRIO, C920)
+- USB camera supporting YUYV 640×480 @ 30fps (e.g. Logitech BRIO, C920) — see camera behaviour above
 - HDMI monitor connected with Weston running (required to launch DRP-AI demos)
 
 **AI SDK binaries on the board.** The `object_counter` binary and model weights must be present at `/home/weston/tvm_q08/`. 
@@ -67,13 +76,12 @@ tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
 
-### Run
+## 5. Using the Demo
 
 ```bash
+cd /opt/demo
 python3 app.py
 ```
-
-## 5. Using the Demo
 
 The app connects to /IOTCONNECT and begins sending telemetry immediately. CV inference and DRP-AI demos are started via
 cloud commands.

@@ -214,6 +214,7 @@ def start_drpai_demo(mode: str) -> bool:
     if _cv_active and len(_detect_usb_cameras()) <= 1:
         print('Single-camera setup: stopping Python CV to free the camera for DRP-AI...')
         stop_cv_inference()
+        time.sleep(1.5)  # give the V4L2 device time to fully release
 
     with _drpai_lock:
         if _drpai_proc is not None and _drpai_proc.poll() is None:
@@ -360,10 +361,11 @@ def read_drpai_results(results_file: str = '') -> Optional[dict]:
 def _detect_usb_cameras() -> list:
     """Return a list of /dev/videoN — one per distinct USB camera.
 
-    A multi-node camera (e.g. Logitech BRIO exposes video0..video3) only
-    contributes the lowest video node, so callers see one entry per physical
-    device. Result is ordered by the underlying USB sysfs path so cameras keep
-    a stable identity across runs as long as the cabling doesn't change.
+    A multi-node camera (e.g. Logitech C920 exposes video0 + video1 via
+    separate USB interface nodes like 1-1:1.0 and 1-1:1.1) only contributes
+    the lowest video node, so callers see one entry per physical device.
+    Result is ordered by the USB sysfs path so cameras keep a stable identity
+    across runs as long as the cabling doesn't change.
     """
     cameras = {}
     try:
@@ -374,7 +376,13 @@ def _detect_usb_cameras() -> list:
             real = os.path.realpath(sysfs)
             if 'usb' not in real:
                 continue
-            usb_root = real.split('/video4linux/')[0]
+            usb_iface = real.split('/video4linux/')[0]
+            # Deduplicate at the USB *device* level, not the interface level.
+            # A USB interface path ends in "N-N:N.N"; its parent is the device
+            # path "N-N". Both nodes from the same physical camera must map to
+            # the same key or we incorrectly count one camera as two.
+            last = os.path.basename(usb_iface)
+            usb_root = os.path.dirname(usb_iface) if ':' in last else usb_iface
             if usb_root not in cameras:
                 cameras[usb_root] = f'/dev/{dev}'
     except Exception:
