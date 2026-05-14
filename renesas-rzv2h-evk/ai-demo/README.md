@@ -1,8 +1,7 @@
 # RZ/V2H EVK — AI Inference Expansion Demo
 
 Upgrades the /IOTCONNECT Starter Demo on the Renesas RZ/V2H EVK to a full AI inference demo — Python computer-vision
-face
-and person detection on a USB camera, plus cloud-launched DRP-AI hardware-accelerated demos rendered on the HDMI
+face and person detection on a USB camera, plus cloud-launched DRP-AI hardware-accelerated demos rendered on the HDMI
 display.
 
 > [!IMPORTANT]
