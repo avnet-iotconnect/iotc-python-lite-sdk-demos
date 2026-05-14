@@ -1,0 +1,34 @@
+diff --git a/Q05_suspicious_activity/src/main.cpp b/Q05_suspicious_activity/src/main.cpp
+index d274ab8..b956673 100755
+--- a/Q05_suspicious_activity/src/main.cpp
++++ b/Q05_suspicious_activity/src/main.cpp
+@@ -937,8 +937,28 @@ int8_t R_Main_Process()
+             low_pre_val << std::fixed << std::setprecision(1) << val;
+             std::string val_low_pre = low_pre_val.str();
+ 
+-            cv::putText(bgra_image, "Value : " + val_low_pre, value_postion, 
++            cv::putText(bgra_image, "Value : " + val_low_pre, value_postion,
+                     cv::FONT_HERSHEY_SIMPLEX, font_size, WHITE, font_weight);
++            /* IoTConnect: write activity classification + timing to /tmp */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_q05_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    float _total_ai = cnn_ai_time + mlp_ai_time;
++                    _iotc_out << "{\"ai_time_ms\":" << _total_ai
++                              << ",\"cnn_ai_ms\":" << cnn_ai_time
++                              << ",\"mlp_ai_ms\":" << mlp_ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"primary_class\":\"" << result << "\""
++                              << ",\"primary_confidence\":" << val
++                              << ",\"threshold\":" << threshold
++                              << ",\"is_violence\":" << ((result == violence) ? "true" : "false")
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q05_results.json.tmp", "/tmp/drpai_q05_results.json");
++                }
++            }
+             cv::cvtColor(bgra_image, bgra_image, cv::COLOR_BGR2BGRA);
+             /*Update Wayland*/
+             wayland.commit(bgra_image.data, NULL);

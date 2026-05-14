@@ -1,0 +1,316 @@
+{
+    "code": "rzv2hAI2",
+    "name": "rzv2hAI2",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IoTConnect SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_percent",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "Overall CPU utilisation (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_percent",
+            "displayName": "Memory Usage",
+            "type": "DECIMAL",
+            "description": "RAM usage (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_used_mb",
+            "displayName": "Memory Used",
+            "type": "DECIMAL",
+            "description": "Used RAM in MB",
+            "unit": "MB",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "cpu_temp_0_c",
+            "displayName": "CPU Temp 0",
+            "type": "DECIMAL",
+            "description": "Cortex-A55 cluster temperature (°C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "cpu_temp_1_c",
+            "displayName": "CPU Temp 1",
+            "type": "DECIMAL",
+            "description": "Cortex-A76 cluster temperature (°C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_present",
+            "displayName": "DRP-AI Present",
+            "type": "BOOLEAN",
+            "description": "DRP-AI hardware accelerator device node accessible",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cv_active",
+            "displayName": "CV Inference Active",
+            "type": "BOOLEAN",
+            "description": "Python OpenCV inference is running",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "face_count",
+            "displayName": "Faces Detected",
+            "type": "INTEGER",
+            "description": "Number of faces detected in the current camera frame",
+            "unit": "",
+            "aggregateTypes": ["avg", "max", "sum"]
+        },
+        {
+            "name": "person_count",
+            "displayName": "Persons Detected",
+            "type": "INTEGER",
+            "description": "Number of full-body persons detected in the current camera frame",
+            "unit": "",
+            "aggregateTypes": ["avg", "max", "sum"]
+        },
+        {
+            "name": "total_detections",
+            "displayName": "Total Detections",
+            "type": "INTEGER",
+            "description": "Total detection count (faces + persons) per frame",
+            "unit": "",
+            "aggregateTypes": ["avg", "max", "sum"]
+        },
+        {
+            "name": "inference_time_ms",
+            "displayName": "Inference Time",
+            "type": "DECIMAL",
+            "description": "Python CV inference time per frame (milliseconds)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_demo_active",
+            "displayName": "DRP-AI Demo Active",
+            "type": "BOOLEAN",
+            "description": "Renesas DRP-AI hardware demo is running on HDMI display",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "drpai_demo_name",
+            "displayName": "DRP-AI Demo",
+            "type": "STRING",
+            "description": "Name of the currently active DRP-AI demo",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "drpai_total",
+            "displayName": "DRP-AI Total Objects",
+            "type": "INTEGER",
+            "description": "Total objects detected by DRP-AI in the current frame",
+            "unit": "",
+            "aggregateTypes": ["avg", "max", "sum"]
+        },
+        {
+            "name": "drpai_person_count",
+            "displayName": "DRP-AI Persons",
+            "type": "INTEGER",
+            "description": "Persons detected by DRP-AI in the current frame (COCO mode only)",
+            "unit": "",
+            "aggregateTypes": ["avg", "max", "sum"]
+        },
+        {
+            "name": "drpai_inference_time_ms",
+            "displayName": "DRP-AI Inference Time",
+            "type": "DECIMAL",
+            "description": "DRP-AI hardware inference time per frame (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_pre_time_ms",
+            "displayName": "DRP-AI Pre-process Time",
+            "type": "DECIMAL",
+            "description": "DRP-AI pre-processing time per frame (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_post_time_ms",
+            "displayName": "DRP-AI Post-process Time",
+            "type": "DECIMAL",
+            "description": "DRP-AI post-processing time per frame (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_counts",
+            "displayName": "DRP-AI Class Counts",
+            "type": "STRING",
+            "description": "Per-class detection counts from DRP-AI (JSON object)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "drpai_primary_class",
+            "displayName": "DRP-AI Primary Class",
+            "type": "STRING",
+            "description": "Top-1 predicted class/label (classifiers, detectors, pose)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "drpai_primary_confidence",
+            "displayName": "DRP-AI Primary Confidence",
+            "type": "DECIMAL",
+            "description": "Top-1 prediction confidence (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "drpai_demo_kind",
+            "displayName": "DRP-AI Demo Kind",
+            "type": "STRING",
+            "description": "Kind of DRP-AI demo currently running (object_counter | meter)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "meter_value",
+            "displayName": "Meter Reading",
+            "type": "DECIMAL",
+            "description": "Analog gauge reading from Q13 (scaled to configured min/max)",
+            "unit": "",
+            "aggregateTypes": ["avg", "min", "max"]
+        },
+        {
+            "name": "meter_min",
+            "displayName": "Meter Min",
+            "type": "INTEGER",
+            "description": "Meter scale minimum (set during Q13 calibration)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "meter_max",
+            "displayName": "Meter Max",
+            "type": "INTEGER",
+            "description": "Meter scale maximum (set during Q13 calibration)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "meter_page",
+            "displayName": "Meter State",
+            "type": "INTEGER",
+            "description": "Q13 UI page: 1=idle, 2=locating, 3=calibrating, 4=ready, 5=live reading",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "meter_calibration_warning",
+            "displayName": "Meter Calibration Warning",
+            "type": "BOOLEAN",
+            "description": "Q13 detected high deviation; recalibration recommended",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "meter_yolox_ms",
+            "displayName": "Meter YOLOX Time",
+            "type": "DECIMAL",
+            "description": "Q13 YOLOX meter-locator inference time per frame (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "meter_unet_ms",
+            "displayName": "Meter U-Net Time",
+            "type": "DECIMAL",
+            "description": "Q13 U-Net needle-segmentation inference time per frame (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "random",
+            "displayName": "Random",
+            "type": "INTEGER",
+            "description": "Random integer for connectivity heartbeat",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "start_detection",
+            "command": "start_detection",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Start Python OpenCV face and person detection on USB camera"
+        },
+        {
+            "name": "stop_detection",
+            "command": "stop_detection",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Stop Python OpenCV detection"
+        },
+        {
+            "name": "launch_drpai",
+            "command": "launch_drpai",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Launch DRP-AI demo. Param: coco | animal | vehicle | meter | footfall | face_auth | fish_class | activity | expiry | plant | crack | suspicious | fish_det | yoga | r01"
+        },
+        {
+            "name": "stop_drpai",
+            "command": "stop_drpai",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Stop the DRP-AI hardware demo"
+        },
+        {
+            "name": "set_confidence",
+            "command": "set_confidence",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Set detection confidence threshold. Parameter: float 0.0–1.0"
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Download and apply an OTA update package from a URL"
+        }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "Renesas RZ/V2H EVK AI Inference Demo",
+        "dataFrequency": "10",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

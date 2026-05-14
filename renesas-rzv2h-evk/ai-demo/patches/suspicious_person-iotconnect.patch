@@ -1,0 +1,26 @@
+diff --git a/Q10_suspicious_person_detection/src/main.cpp b/Q10_suspicious_person_detection/src/main.cpp
+index 255e0de..f25b1e6 100755
+--- a/Q10_suspicious_person_detection/src/main.cpp
++++ b/Q10_suspicious_person_detection/src/main.cpp
+@@ -941,6 +941,21 @@ int8_t R_Main_Process()
+                 cv::putText(bgra_image, res, cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 20, text_height), cv::FONT_HERSHEY_DUPLEX, font_size, cv::Scalar(255, 255, 255), font_weight);
+                 text_height += 30;
+             }
++            /* IoTConnect: write detection count + timing to /tmp */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_q10_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"total_time_ms\":" << total_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"total\":" << results.size()
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q10_results.json.tmp", "/tmp/drpai_q10_results.json");
++                }
++            }
+             cv::cvtColor(bgra_image, bgra_image, cv::COLOR_BGR2BGRA);
+             wayland.commit(bgra_image.data, NULL);
+             results.clear();

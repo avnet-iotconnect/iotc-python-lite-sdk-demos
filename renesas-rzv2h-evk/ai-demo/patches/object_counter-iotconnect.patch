@@ -1,0 +1,34 @@
+--- a/Q08_object_counter/src/main.cpp
++++ b/Q08_object_counter/src/main.cpp
+@@ -1028,6 +1028,31 @@
+                 total_count += (int)it->second;
+                 items++;
+             }
++            /* IoTConnect: write detection results to /tmp for external telemetry
++             * consumers (see ai-demo/src/app.py). Written every frame — /tmp is
++             * tmpfs on this Yocto image so there is no flash wear. Atomic rename
++             * ensures Python never reads a half-written file.
++             */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"total\":" << total_count
++                              << ",\"counts\":{";
++                    bool _iotc_first = true;
++                    for (std::map<std::string, int>::iterator _it = detection_count.begin(); _it != detection_count.end(); ++_it) {
++                        if (!_iotc_first) _iotc_out << ",";
++                        _iotc_out << "\"" << _it->first << "\":" << _it->second;
++                        _iotc_first = false;
++                    }
++                    _iotc_out << "}}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_results.json.tmp", "/tmp/drpai_results.json");
++                }
++            }
+             cv::putText(bgra_image, "Total Objects:  " + std::to_string(total_count), cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 20, 150),
+                         cv::FONT_HERSHEY_DUPLEX, font_size, cv::Scalar(255, 255, 255), font_weight);
+             cv::cvtColor(bgra_image, bgra_image, cv::COLOR_BGR2BGRA);

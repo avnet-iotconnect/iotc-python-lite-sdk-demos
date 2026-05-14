@@ -20,6 +20,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [NXP GoldBox 3 Vehicle Networking Development Platform](nxp-s32g-vnp-gldbox3) - ([Purchase Link](https://www.newark.com/nxp/s32g-vnp-gldbox/ref-design-board-vehicle-n-w-processor/dp/37AJ9124))
 * [Raspberry Pi](raspberry-pi) - ([Purchase Link](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346))
 * [Renesas RZ/G3E Evaluation Board Kit](renesas-rzg3e-evk) - ([Purchase Link](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397))
+* [Renesas RZ/V2H EVK](renesas-rzv2h-evk) - ([Purchase Link](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk))
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp135f-dk/discovery-kit-32bit-arm-cortex/dp/68AK9977))
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2) - ([Purchase Link](https://www.newark.com/stmicroelectronics/stm32mp157f-dk2/discovery-board-32bit-arm-cortex/dp/14AJ2731))
 * [ST STM32MP215F-DK Discovery Kit](stm32mp215f-dk) - ([Purchase Link](https://www.avnet.com/americas/product/stmicroelectronics/stm32mp215f-dk/evolve-151041109/))
@@ -119,6 +120,13 @@ The deepest model in the series — two hidden layers (~11K trained weights) wit
 **Supported on:**
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk/ml-complex-nn-accelerator/README.md)
 * [Microchip PolarFire SoC Video Kit](microchip-polarfire-soc-vk/track3-iotc-ml-complex-accelerator/README.md)
+
+## Renesas DRP-AI Inference Demo
+
+The DRP-AI Inference demo integrates with the Renesas RZ/V2H EVK's on-board DRP-AI hardware accelerator to run AI inference at the edge. Python OpenCV-based face and body detection runs on the USB camera, while any of 14 pre-built Renesas AI SDK demos can be launched and controlled from the cloud via C2D commands. Detection counts, inference timing, and system performance metrics stream to /IOTCONNECT in real time.
+
+**Supported on:**
+* [Renesas RZ/V2H EVK](renesas-rzv2h-evk/ai-demo/README.md)
 
 ## Tria Vision AI Demo
 

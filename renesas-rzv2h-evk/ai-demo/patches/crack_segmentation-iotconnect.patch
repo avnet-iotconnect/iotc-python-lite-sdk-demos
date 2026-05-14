@@ -1,0 +1,32 @@
+diff --git a/Q09_crack_segmentation/src/crack_segmentation.cpp b/Q09_crack_segmentation/src/crack_segmentation.cpp
+index 49180f7..6f0213d 100755
+--- a/Q09_crack_segmentation/src/crack_segmentation.cpp
++++ b/Q09_crack_segmentation/src/crack_segmentation.cpp
+@@ -608,10 +608,25 @@ void capture_frame(std::string cap_pipeline,std::string input_source)
+             return;
+         }
+         else
+-        {   
+-            /* run inference with respect to captured frame */         
++        {
++            /* run inference with respect to captured frame */
+             g_fn_frame = run_inference(g_frame);
+             cv::cvtColor(g_fn_frame, g_fn_frame, cv::COLOR_BGR2BGRA);
++            /* IoTConnect: write timing to /tmp (crack coverage would need
++             * mask-area analysis; timing-only for now). */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_q09_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"total_time_ms\":" << total_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q09_results.json.tmp", "/tmp/drpai_q09_results.json");
++                }
++            }
+             /* check for image mode*/
+             if(g_image_mode == true)
+                 return;

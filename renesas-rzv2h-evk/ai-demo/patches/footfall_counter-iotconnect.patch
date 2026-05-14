@@ -1,0 +1,28 @@
+diff --git a/Q01_footfall_counter/src/main.cpp b/Q01_footfall_counter/src/main.cpp
+index fa1b0b5..7a06a43 100644
+--- a/Q01_footfall_counter/src/main.cpp
++++ b/Q01_footfall_counter/src/main.cpp
+@@ -1171,7 +1171,23 @@ int8_t R_Main_Process()
+             {
+                 cv::putText(bgra_image, bbox[i].name, cv::Point(DISP_IMAGE_OUTPUT_WIDTH + 30, (320 + (i * 30))), cv::FONT_HERSHEY_SIMPLEX, font_size, cv::Scalar(255, 255, 255), font_weight, cv::LINE_AA);
+             }
++            size_t _iotc_bbox_count = bbox.size();
+             mtx.unlock();
++            /* IoTConnect: write detection count + timing to /tmp */
++            {
++                std::ofstream _iotc_out("/tmp/drpai_q01_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"ai_time_ms\":" << ai_time
++                              << ",\"pre_time_ms\":" << pre_time
++                              << ",\"post_time_ms\":" << post_time
++                              << ",\"total_time_ms\":" << total_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << ",\"total\":" << _iotc_bbox_count
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/drpai_q01_results.json.tmp", "/tmp/drpai_q01_results.json");
++                }
++            }
+             cv::cvtColor(bgra_image,bgra_image,cv::COLOR_BGR2BGRA);
+             cv::imshow("Object Tracker", bgra_image);
+             cv::waitKey(1);

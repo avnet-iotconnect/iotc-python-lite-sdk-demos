@@ -1,0 +1,35 @@
+--- a/Q13_analog_meter_reader/src/main.cpp
++++ b/Q13_analog_meter_reader/src/main.cpp
+@@ -1749,6 +1749,32 @@
+                 default:
+                     break;
+             }
++            /* IoTConnect: write meter-reader state to /tmp every frame. Atomic
++             * rename so Python never reads a half-written file. Page codes:
++             *   1 = waiting to start, 2 = locating meter (YOLOX only),
++             *   3 = calibrating (user clicks min/max), 4 = ready,
++             *   5 = live reading (YOLOX + U-Net + angle calc).
++             */
++            {
++                std::ofstream _iotc_out("/tmp/q13_results.json.tmp", std::ios::trunc);
++                if (_iotc_out.is_open()) {
++                    _iotc_out << "{\"page\":" << page
++                              << ",\"meter_value\":" << meter_value
++                              << ",\"meter_min\":" << meter_min
++                              << ",\"meter_max\":" << meter_max
++                              << ",\"high_deviation\":" << (high_deviation ? "true" : "false")
++                              << ",\"yolox_ai_ms\":" << yolox_ai_time
++                              << ",\"yolox_pre_ms\":" << yolox_pre_time
++                              << ",\"yolox_post_ms\":" << yolox_post_time
++                              << ",\"unet_ai_ms\":" << unet_ai_time
++                              << ",\"unet_pre_ms\":" << unet_pre_time
++                              << ",\"unet_post_ms\":" << unet_post_time
++                              << ",\"timestamp\":" << time(NULL)
++                              << "}";
++                    _iotc_out.close();
++                    std::rename("/tmp/q13_results.json.tmp", "/tmp/q13_results.json");
++                }
++            }
+             cv::waitKey(1);
+             img_obj_ready.store(0);
+         }
