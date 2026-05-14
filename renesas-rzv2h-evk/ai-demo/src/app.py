@@ -210,12 +210,16 @@ def start_drpai_demo(mode: str) -> bool:
 
     # DRP-AI hardcodes /dev/video0. Stop CV only if it is actually holding
     # video0; if CV is on a different device (two-camera setup) it can keep
-    # running in parallel.
+    # running in parallel. If a second camera exists, restart CV on it after
+    # DRP-AI has claimed video0.
+    cv_needs_restart = False
     if _cv_active and (_cv_device == _DRPAI_HARDCODED_CAMERA or _cv_device == ''):
+        cv_needs_restart = len(_detect_usb_cameras()) > 1
         print('Stopping Python CV to free /dev/video0 for DRP-AI...')
         stop_cv_inference()
         time.sleep(1.5)  # give the V4L2 device time to fully release
 
+    started = False
     with _drpai_lock:
         if _drpai_proc is not None and _drpai_proc.poll() is None:
             print(f'DRP-AI demo already running ({_drpai_name}). Stop it first.')
@@ -270,7 +274,7 @@ def start_drpai_demo(mode: str) -> bool:
                 return False
 
             print(f'DRP-AI demo started successfully.')
-            return True
+            started = True
         except Exception as e:
             print(f'Error starting DRP-AI demo: {e}')
             _drpai_proc = None
@@ -278,6 +282,14 @@ def start_drpai_demo(mode: str) -> bool:
             _drpai_kind = ''
             _drpai_results_file = ''
             return False
+
+    # Two-camera setup: DRP-AI owns video0, restart CV on the second camera
+    if started and cv_needs_restart:
+        print('Two-camera setup: restarting Python CV on second camera...')
+        ok, status = start_cv_inference()
+        print(status)
+
+    return started
 
 
 def stop_drpai_demo() -> bool:
@@ -471,37 +483,6 @@ def _cv_inference_loop():
         _cv_active = False
         return
 
-    # Open a GStreamer appsrc→waylandsink writer so annotated frames appear on
-    # the HDMI display. Fails silently (display disabled) if the Wayland socket
-    # is not accessible — inference + telemetry still run headlessly.
-    # Note: OpenCV's isOpened() can return True even when the GStreamer pipeline
-    # failed to start (known false-positive). We do a test write to confirm.
-    writer = None
-    try:
-        _writer_candidate = cv2.VideoWriter(
-            'appsrc ! videoconvert ! waylandsink sync=false',
-            cv2.CAP_GSTREAMER, 0, _CV_FRAME_FPS,
-            (_CV_FRAME_WIDTH, _CV_FRAME_HEIGHT), True,
-        )
-        if not _writer_candidate.isOpened():
-            print('WARNING: waylandsink pipeline failed to open — display disabled')
-            _writer_candidate.release()
-        else:
-            import numpy as _np
-            _test = _np.zeros((_CV_FRAME_HEIGHT, _CV_FRAME_WIDTH, 3), dtype=_np.uint8)
-            _writer_candidate.write(_test)
-            # Give GStreamer a moment to propagate any startup error
-            time.sleep(0.15)
-            if _writer_candidate.isOpened():
-                writer = _writer_candidate
-                print('Display output: Wayland surface on HDMI')
-            else:
-                print('WARNING: waylandsink pipeline failed after test write — display disabled')
-                _writer_candidate.release()
-    except Exception as e:
-        print(f'WARNING: could not initialise display pipeline: {e}')
-        writer = None
-
     print('CV inference loop started')
 
     while _cv_active:
@@ -534,29 +515,9 @@ def _cv_inference_loop():
                 'total_detections': face_count + body_count,
             }
 
-        if writer is not None:
-            # Draw detections + HUD onto the frame then push to the display
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                cv2.putText(frame, 'face', (x, max(15, y - 6)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-            for (x, y, w, h) in bodies:
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
-                cv2.putText(frame, 'person', (x, max(15, y - 6)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
-            hud = f'IoTConnect CV | faces:{face_count} persons:{body_count} infer:{inf_ms}ms'
-            cv2.rectangle(frame, (0, 0), (_CV_FRAME_WIDTH, 26), (0, 0, 0), -1)
-            cv2.putText(frame, hud, (8, 18),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            writer.write(frame)
-
         # Throttle to ~5 fps to leave CPU headroom for IoTConnect + DRP-AI
         time.sleep(0.2)
 
-    if writer is not None:
-        _t = threading.Thread(target=writer.release, daemon=True)
-        _t.start()
-        _t.join(timeout=2.0)
     cap.release()
     _cv_device = ''
     print('CV inference loop stopped')
