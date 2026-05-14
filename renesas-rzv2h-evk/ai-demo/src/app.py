@@ -163,6 +163,7 @@ _cv_result = {
 }
 _cv_lock = threading.Lock()
 _cv_confidence = 0.5  # kept for future DNN model upgrade path
+_cv_display_active: bool = True  # CV loop renders to HDMI; False when DRP-AI has display priority
 
 
 # ─── Wayland environment detection ────────────────────────────────────────────
@@ -206,18 +207,19 @@ def _drain_pipe(label: str, pipe):
 
 
 def start_drpai_demo(mode: str) -> bool:
-    global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file
+    global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file, _cv_display_active
 
-    # DRP-AI hardcodes /dev/video0. Stop CV only if it is actually holding
-    # video0; if CV is on a different device (two-camera setup) it can keep
-    # running in parallel. If a second camera exists, restart CV on it after
-    # DRP-AI has claimed video0.
     cv_needs_restart = False
     if _cv_active and (_cv_device == _DRPAI_HARDCODED_CAMERA or _cv_device == ''):
+        # CV is on video0 — must stop it so DRP-AI can open the camera
         cv_needs_restart = len(_detect_usb_cameras()) > 1
         print('Stopping Python CV to free /dev/video0 for DRP-AI...')
         stop_cv_inference()
         time.sleep(4.0)  # allow Weston to fully process waylandsink surface cleanup
+    elif _cv_active:
+        # CV is on a different camera — keep inference running but take its display
+        print('DRP-AI taking HDMI display (CV continues inference on second camera)...')
+        _cv_display_active = False
 
     started = False
     with _drpai_lock:
@@ -283,17 +285,19 @@ def start_drpai_demo(mode: str) -> bool:
             _drpai_results_file = ''
             return False
 
-    # Two-camera setup: DRP-AI owns video0, restart CV on the second camera
-    if started and cv_needs_restart:
-        print('Two-camera setup: restarting Python CV on second camera...')
-        ok, status = start_cv_inference()
-        print(status)
+    if started:
+        _cv_display_active = False  # DRP-AI has display priority
+        if cv_needs_restart:
+            # CV was on video0 — restart on second camera (inference only, no display)
+            print('Two-camera setup: restarting Python CV on second camera (inference only)...')
+            ok, status = start_cv_inference()
+            print(status)
 
     return started
 
 
 def stop_drpai_demo() -> bool:
-    global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file
+    global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file, _cv_display_active
     with _drpai_lock:
         if _drpai_proc is None:
             print('No DRP-AI demo is running.')
@@ -317,6 +321,7 @@ def stop_drpai_demo() -> bool:
                 pass
             except Exception:
                 pass
+        _cv_display_active = True  # CV can reclaim HDMI display
         print('DRP-AI demo stopped.')
         return True
 
@@ -456,6 +461,32 @@ _CV_FRAME_HEIGHT = 480
 _CV_FRAME_FPS = 15
 
 
+def _open_cv_writer():
+    """Try to open a waylandsink GStreamer writer for HDMI display. Returns writer or None."""
+    try:
+        w = cv2.VideoWriter(
+            'appsrc ! videoconvert ! waylandsink sync=false',
+            cv2.CAP_GSTREAMER, 0, _CV_FRAME_FPS,
+            (_CV_FRAME_WIDTH, _CV_FRAME_HEIGHT), True,
+        )
+        if w.isOpened():
+            print('Display output: Wayland surface on HDMI')
+            return w
+        w.release()
+        print('WARNING: waylandsink failed to open — display disabled')
+    except Exception as e:
+        print(f'WARNING: could not initialise display pipeline: {e}')
+    return None
+
+
+def _release_cv_writer(w):
+    """Release a waylandsink writer with a brief pause so Weston can flush the surface."""
+    time.sleep(0.5)
+    _t = threading.Thread(target=w.release, daemon=True)
+    _t.start()
+    _t.join(timeout=3.0)
+
+
 def _cv_inference_loop():
     global _cv_active, _cv_result, _cv_device
 
@@ -483,27 +514,22 @@ def _cv_inference_loop():
         _cv_active = False
         return
 
-    # Open a GStreamer appsrc→waylandsink writer so annotated frames appear on
-    # the HDMI display. Fails silently if Wayland is not accessible.
-    writer = None
-    try:
-        writer = cv2.VideoWriter(
-            'appsrc ! videoconvert ! waylandsink sync=false',
-            cv2.CAP_GSTREAMER, 0, _CV_FRAME_FPS,
-            (_CV_FRAME_WIDTH, _CV_FRAME_HEIGHT), True,
-        )
-        if not writer.isOpened():
-            print('WARNING: waylandsink failed to open — display disabled')
-            writer = None
-        else:
-            print('Display output: Wayland surface on HDMI')
-    except Exception as e:
-        print(f'WARNING: could not initialise display pipeline: {e}')
-        writer = None
+    writer = _open_cv_writer() if _cv_display_active else None
+    _last_display_active = _cv_display_active
 
     print('CV inference loop started')
 
     while _cv_active:
+        # Sync display surface with _cv_display_active flag (set by DRP-AI start/stop)
+        now_want = _cv_display_active
+        if now_want != _last_display_active:
+            _last_display_active = now_want
+            if now_want:
+                writer = _open_cv_writer()
+            elif writer is not None:
+                _release_cv_writer(writer)
+                writer = None
+
         ret, frame = cap.read()
         if not ret:
             time.sleep(0.05)
@@ -551,13 +577,8 @@ def _cv_inference_loop():
         # Throttle to ~5 fps to leave CPU headroom for IoTConnect + DRP-AI
         time.sleep(0.2)
 
-    # Brief pause before releasing the Wayland surface so the compositor can
-    # flush the last committed frame before we disconnect.
     if writer is not None:
-        time.sleep(0.5)
-        _t = threading.Thread(target=writer.release, daemon=True)
-        _t.start()
-        _t.join(timeout=3.0)
+        _release_cv_writer(writer)
     cap.release()
     _cv_device = ''
     print('CV inference loop stopped')
@@ -627,6 +648,9 @@ def on_command(msg: C2dCommand):
     print(f'Received command: {msg.command_name} args={msg.command_args}')
 
     if msg.command_name == 'start_detection':
+        if is_drpai_running():
+            print('start_detection: CV takes display priority — stopping DRP-AI first...')
+            stop_drpai_demo()
         ok, status = start_cv_inference()
         client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK if ok else C2dAck.CMD_FAILED, status)
         print(status)
