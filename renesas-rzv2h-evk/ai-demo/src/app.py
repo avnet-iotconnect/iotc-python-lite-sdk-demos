@@ -201,8 +201,8 @@ def _drain_pipe(label: str, pipe):
     finally:
         try:
             pipe.close()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f'[DRPAI:{label}] warning: failed to close pipe: {e}')
 
 
 def start_drpai_demo(mode: str) -> bool:
