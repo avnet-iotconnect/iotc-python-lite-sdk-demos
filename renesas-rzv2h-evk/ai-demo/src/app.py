@@ -248,6 +248,7 @@ def start_drpai_demo(mode: str) -> bool:
                 cmd,
                 cwd=cfg['dir'],
                 env=env,
+                stdin=subprocess.DEVNULL,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 preexec_fn=os.setsid,
@@ -473,18 +474,30 @@ def _cv_inference_loop():
     # Open a GStreamer appsrc→waylandsink writer so annotated frames appear on
     # the HDMI display. Fails silently (display disabled) if the Wayland socket
     # is not accessible — inference + telemetry still run headlessly.
+    # Note: OpenCV's isOpened() can return True even when the GStreamer pipeline
+    # failed to start (known false-positive). We do a test write to confirm.
     writer = None
     try:
-        writer = cv2.VideoWriter(
+        _writer_candidate = cv2.VideoWriter(
             'appsrc ! videoconvert ! waylandsink sync=false',
             cv2.CAP_GSTREAMER, 0, _CV_FRAME_FPS,
             (_CV_FRAME_WIDTH, _CV_FRAME_HEIGHT), True,
         )
-        if not writer.isOpened():
+        if not _writer_candidate.isOpened():
             print('WARNING: waylandsink pipeline failed to open — display disabled')
-            writer = None
+            _writer_candidate.release()
         else:
-            print('Display output: Wayland surface on HDMI')
+            import numpy as _np
+            _test = _np.zeros((_CV_FRAME_HEIGHT, _CV_FRAME_WIDTH, 3), dtype=_np.uint8)
+            _writer_candidate.write(_test)
+            # Give GStreamer a moment to propagate any startup error
+            time.sleep(0.15)
+            if _writer_candidate.isOpened():
+                writer = _writer_candidate
+                print('Display output: Wayland surface on HDMI')
+            else:
+                print('WARNING: waylandsink pipeline failed after test write — display disabled')
+                _writer_candidate.release()
     except Exception as e:
         print(f'WARNING: could not initialise display pipeline: {e}')
         writer = None
@@ -541,7 +554,9 @@ def _cv_inference_loop():
         time.sleep(0.2)
 
     if writer is not None:
-        writer.release()
+        _t = threading.Thread(target=writer.release, daemon=True)
+        _t.start()
+        _t.join(timeout=2.0)
     cap.release()
     _cv_device = ''
     print('CV inference loop stopped')
