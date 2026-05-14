@@ -335,6 +335,7 @@ def stop_drpai_demo() -> bool:
             try:
                 os.remove(results_file)
             except FileNotFoundError:
+                # Results file may already be gone (e.g., prior cleanup/race); safe to ignore.
                 pass
             except Exception:
                 pass
