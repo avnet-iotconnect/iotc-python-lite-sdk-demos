@@ -1,0 +1,2859 @@
+{
+    "ddType": 2,
+    "items": [
+        {
+            "widgetGuid": "A8CB394D-15B1-42C9-94FC-AD7BDC599E2A",
+            "widgetProperties": {
+                "i": "Image",
+                "background": "#000000",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "",
+                "titleAlign": "",
+                "contents": {
+                    "option": {
+                        "imageUpload": "false",
+                        "imageUrl": "true",
+                        "imageDevice": "false",
+                        "imageTelemetry": "false",
+                        "key": "option",
+                        "position": "center"
+                    },
+                    "upload": {
+                        "imageurl": "",
+                        "key": "upload"
+                    },
+                    "url": {
+                        "imageurl": "https://saleshosted.z13.web.core.windows.net/demo/mcp/pm/microchip-banner7.png",
+                        "key": "url"
+                    },
+                    "device": {
+                        "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                        "deviceName": "blackJack",
+                        "imageurl": "",
+                        "key": "device",
+                        "deviceUniqueId": "testsam"
+                    },
+                    "telemetry": {
+                        "deviceGuid": "",
+                        "deviceName": "",
+                        "imageurl": "",
+                        "key": "telemetry"
+                    },
+                    "classification": {
+                        "showClassification": "false",
+                        "key": "classification"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "0",
+                "w": "59",
+                "h": "6",
+                "i": "Image",
+                "minW": "5",
+                "minH": "5",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "E1C837D5-D575-44AB-8D1D-EEFBB3DF5940",
+            "widgetProperties": {
+                "i": "Embedded",
+                "background": "#000000",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "10",
+                "title": "embedded",
+                "titleAlign": "center",
+                "contents": {
+                    "embedded": {
+                        "link": "http://192.168.10.155:8080",
+                        "refresh": "",
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": "",
+                        "key": "embedded"
+                    }
+                }
+            },
+            "properties": {
+                "x": "59",
+                "y": "0",
+                "w": "57",
+                "h": "51",
+                "i": "Embedded",
+                "minW": "15",
+                "minH": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F66A9747-6C71-40E5-8639-9F53233494D2",
+            "widgetProperties": {
+                "i": "Label",
+                "background": "#1c355e",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "GAME STATUS",
+                "titleAlign": "",
+                "contents": ""
+            },
+            "properties": {
+                "x": "0",
+                "y": "6",
+                "w": "59",
+                "h": "2",
+                "i": "Label",
+                "minW": "6",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Game Mode",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "game_mode",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "game_mode",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "8",
+                "w": "10",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Current Bet",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "bet",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "bet",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "true",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "10",
+                "y": "8",
+                "w": "8",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Hand #",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "hand_number",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "hand_number",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "true",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "18",
+                "y": "8",
+                "w": "8",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Round Result",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "round_result",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "round_result",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "26",
+                "y": "8",
+                "w": "16",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Listening",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "listening",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "listening",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "true",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "42",
+                "y": "8",
+                "w": "8",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+            "widgetProperties": {
+                "i": "Live",
+                "background": "#eeeeee",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Last Command",
+                "titleAlign": "",
+                "contents": {
+                    "attributeValue": {
+                        "attributeName": "last_command",
+                        "key": "attributeValue"
+                    },
+                    "attributeTime": {
+                        "attributeName": "last_command",
+                        "key": "attributeTime"
+                    },
+                    "live": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "909CC759-B6BE-40FC-899C-1895E3B9AAD0",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "1.1.0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.1.0"
+                                },
+                                {
+                                    "attributeGuid": "2717CDB7-6F80-4AB2-AE94-4651FB73F910",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "True",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "True"
+                                },
+                                {
+                                    "attributeGuid": "F7655E92-4BB1-4ED3-97C2-6C53A2FBDBD7",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "betting",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "betting"
+                                },
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "85E60FD8-689D-4AAF-925D-08AF55B2A9EF",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "9CC7A909-5C6E-4423-9B7A-86A620F02FB2",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "C604E721-CFF2-44C7-8D2A-B49D9080FEC0",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "Set your bet, then say DEAL",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "Set your bet, then say DEAL"
+                                },
+                                {
+                                    "attributeGuid": "23E3DD2E-68E0-4106-B7FE-B8353BE236B0",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "true",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "_unknown_",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "_unknown_"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "1.45332",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "1.45332"
+                                },
+                                {
+                                    "attributeGuid": "361D070F-8619-4D09-9F31-50D8C50ED0A4",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false",
+                                    "dataType": "BOOLEAN",
+                                    "attributeLatestValue": "False",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "False"
+                                },
+                                {
+                                    "attributeGuid": "7826FD46-DC40-46BB-8949-B8F693D2AA98",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "plughw:0,0",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "plughw:0,0"
+                                },
+                                {
+                                    "attributeGuid": "2B76D090-9BD3-4CF2-84A5-93A45A9A7A15",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "model.tflite",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "model.tflite"
+                                },
+                                {
+                                    "attributeGuid": "41599B01-6C44-4BBD-9468-B76DC7886374",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "deal-double-hit-reset-model.zip",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "deal-double-hit-reset-model.zip"
+                                },
+                                {
+                                    "attributeGuid": "3048D240-D856-41EB-A9B6-FF079ED89D1F",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0e0a2681c9a66ccbe31baf1935416d847eebf01beecbb547c3a25bc5d8c5b8c6"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                },
+                                {
+                                    "attributeGuid": "CDC6338D-EA1C-4E94-B827-C89CBE996A7D",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false",
+                                    "dataType": "STRING",
+                                    "attributeLatestValue": "",
+                                    "deviceUpdatedDate": "2026-04-16T21:56:29.297Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "NA"
+                                }
+                            ]
+                        },
+                        "rules": "",
+                        "attrType": "1",
+                        "key": "live"
+                    }
+                }
+            },
+            "properties": {
+                "x": "50",
+                "y": "8",
+                "w": "9",
+                "h": "4",
+                "i": "Live",
+                "minW": "7",
+                "minH": "4",
+                "maxH": "4",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F66A9747-6C71-40E5-8639-9F53233494D2",
+            "widgetProperties": {
+                "i": "Label",
+                "background": "#da291c",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "ANALYTICS",
+                "titleAlign": "",
+                "contents": ""
+            },
+            "properties": {
+                "x": "0",
+                "y": "12",
+                "w": "59",
+                "h": "2",
+                "i": "Label",
+                "minW": "6",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "8BF5A2DF-51FA-479B-B5D8-8413DC425CFF",
+            "widgetProperties": {
+                "i": "LiveLineChart",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Bankroll Trend",
+                "titleAlign": "",
+                "contents": {
+                    "liveChart": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "true",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "400",
+                                    "attributeColor": "#7ed321",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "400",
+                                    "showColorPicker": "false"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "true",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "9",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "9"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.969192",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.969192"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T19:33:26.310Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                }
+                            ]
+                        },
+                        "attrType": "1",
+                        "key": "liveChart",
+                        "recentEndPoints": "49"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "14",
+                "w": "24",
+                "h": "14",
+                "i": "LiveLineChart",
+                "minW": "15",
+                "minH": "15",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+            "widgetProperties": {
+                "i": "gauge",
+                "background": "#000000",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Voice Confidence",
+                "titleAlign": "",
+                "contents": {
+                    "gauge": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "453F9FD8-B7B5-4CBA-A989-EC9FB355B653",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "400",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "400"
+                                },
+                                {
+                                    "attributeGuid": "11E701AA-5388-4CDD-A246-D7BE0AB21CCB",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "D75AC197-541B-4212-8128-7F75747FE5CE",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "019190AA-43C5-478F-AE86-FDCA858539C8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "9",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "9"
+                                },
+                                {
+                                    "attributeGuid": "04FE0FB7-15CE-4B2B-8826-399AD0BC7824",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "3D794CF7-04CF-4B01-A9C4-81271EBBE09F",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "5A345744-14D1-4761-9FAC-24EE7D9FBC8A",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "true",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.968196",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.968196"
+                                },
+                                {
+                                    "attributeGuid": "D4829949-1EAD-4F20-8123-AF553428C02B",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.8",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.8"
+                                },
+                                {
+                                    "attributeGuid": "1D0A556B-10C8-41B7-8F98-9C384EA13A66",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-16T19:37:27.527Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                }
+                            ]
+                        },
+                        "minValue": "0.5",
+                        "maxValue": "1",
+                        "version": "2.0",
+                        "zones": [
+                            {
+                                "zoneColor": "#9b9b9b",
+                                "zoneName": "low",
+                                "upToValue": ".8",
+                                "showColorPicker": "false"
+                            },
+                            {
+                                "zoneName": "med",
+                                "zoneColor": "#f8e71c",
+                                "upToValue": ".94",
+                                "showColorPicker": "false"
+                            },
+                            {
+                                "zoneName": "high",
+                                "zoneColor": "#7ed321",
+                                "upToValue": "1",
+                                "showColorPicker": "false"
+                            }
+                        ],
+                        "attrType": "1",
+                        "key": "gauge"
+                    }
+                }
+            },
+            "properties": {
+                "x": "24",
+                "y": "14",
+                "w": "14",
+                "h": "14",
+                "i": "gauge",
+                "minW": "10",
+                "minH": "9",
+                "maxH": "15",
+                "maxW": "16",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "1C12305F-91F5-4DEE-9DF2-ED542C06313E",
+            "widgetProperties": {
+                "i": "combo",
+                "background": "#fff",
+                "fontColor": "#000000",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Player vs Dealer",
+                "titleAlign": "",
+                "contents": {
+                    "combo": {
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "500",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "500"
+                                },
+                                {
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "25",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "25"
+                                },
+                                {
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false",
+                                    "dataType": "INTEGER",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0"
+                                },
+                                {
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "0.25",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "0.25"
+                                },
+                                {
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false",
+                                    "dataType": "DECIMAL",
+                                    "attributeLatestValue": "60",
+                                    "deviceUpdatedDate": "2026-04-30T06:42:57.767Z",
+                                    "gatewayUpdatedDate": "NA",
+                                    "attributeValue": "60"
+                                }
+                            ]
+                        },
+                        "lineAttributes": {
+                            "lineAttributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
+                            "lineAttributeName": "dealer_total",
+                            "lineAttributeColor": "#d0021b"
+                        },
+                        "barAttributes": {
+                            "barAttributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
+                            "barAttributeName": "player_total",
+                            "barAttributeColor": "#4a90e2"
+                        },
+                        "lineColor": "#00cc00",
+                        "barColor": "#00cc00",
+                        "barCount": "10",
+                        "attrType": "1",
+                        "lineAttributeGuid": "",
+                        "lineAttributeName": "",
+                        "lineAttributeColor": "",
+                        "barAttributeGuid": "",
+                        "barAttributeName": "",
+                        "barAttributeColor": "",
+                        "key": "combo",
+                        "recentEndPoints": "10"
+                    }
+                }
+            },
+            "properties": {
+                "x": "38",
+                "y": "14",
+                "w": "21",
+                "h": "14",
+                "i": "combo",
+                "minW": "16",
+                "minH": "12",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "F66A9747-6C71-40E5-8639-9F53233494D2",
+            "widgetProperties": {
+                "i": "Label",
+                "background": "#2e7d32",
+                "fontColor": "#ffffff",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "26",
+                "title": "TELEMETRY DATA",
+                "titleAlign": "",
+                "contents": ""
+            },
+            "properties": {
+                "x": "0",
+                "y": "28",
+                "w": "59",
+                "h": "2",
+                "i": "Label",
+                "minW": "6",
+                "minH": "2",
+                "maxH": "2",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A0326788-ACC8-4C4C-8243-98112CAEB98B",
+            "widgetProperties": {
+                "i": "Telemetry",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Voice Recognition",
+                "titleAlign": "",
+                "contents": {
+                    "telemetry": {
+                        "showHeader": "false",
+                        "showDate": "false",
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "true"
+                                }
+                            ]
+                        },
+                        "attrType": "1",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "0",
+                "y": "30",
+                "w": "20",
+                "h": "12",
+                "i": "Telemetry",
+                "minW": "15",
+                "minH": "6",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A0326788-ACC8-4C4C-8243-98112CAEB98B",
+            "widgetProperties": {
+                "i": "Telemetry",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Game State",
+                "titleAlign": "",
+                "contents": {
+                    "telemetry": {
+                        "showHeader": "false",
+                        "showDate": "false",
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false"
+                                }
+                            ]
+                        },
+                        "attrType": "1",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "20",
+                "y": "30",
+                "w": "20",
+                "h": "12",
+                "i": "Telemetry",
+                "minW": "15",
+                "minH": "6",
+                "isStatic": "false"
+            }
+        },
+        {
+            "widgetGuid": "A0326788-ACC8-4C4C-8243-98112CAEB98B",
+            "widgetProperties": {
+                "i": "Telemetry",
+                "background": "#fff",
+                "fontColor": "#343434",
+                "fontFamily": "Proxima Nova",
+                "fontSize": "25",
+                "title": "Software & Model",
+                "titleAlign": "",
+                "contents": {
+                    "telemetry": {
+                        "showHeader": "false",
+                        "showDate": "false",
+                        "device": {
+                            "deviceGuid": "C7BE4155-92EB-4BA4-A160-DD4E38C08590",
+                            "deviceUniqueId": "testsam"
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "attributeGuid": "539893BD-3E09-4B95-9BC6-A714AC60A257",
+                                    "attributeName": "sdk_version",
+                                    "displayName": "sdk_version",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "C8D4A5CA-5141-44F9-8BD6-B48ED76FF9A1",
+                                    "attributeName": "listening",
+                                    "displayName": "listening",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "E107BA4C-1CCA-4F7B-A5EB-E07D31071A71",
+                                    "attributeName": "game_mode",
+                                    "displayName": "game_mode",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "BB2A9C54-3772-4ADE-A1E1-555F5BC824A5",
+                                    "attributeName": "bankroll",
+                                    "displayName": "bankroll",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "50082AD6-138D-479A-B657-2711F0F40838",
+                                    "attributeName": "best_bankroll",
+                                    "displayName": "best_bankroll",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "27E491AD-1260-4E53-99B9-EB0BFD2F3822",
+                                    "attributeName": "bet",
+                                    "displayName": "bet",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "A72DD0DB-C704-4363-B3FA-A94AC5BC92B8",
+                                    "attributeName": "hand_number",
+                                    "displayName": "hand_number",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "AE25349D-7F68-4F04-8199-2EF55B59BBC5",
+                                    "attributeName": "player_total",
+                                    "displayName": "player_total",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "FD540373-6443-458B-BE89-3E39A4AC4ED8",
+                                    "attributeName": "dealer_total",
+                                    "displayName": "dealer_total",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "264365AD-6094-457F-8DDD-A1150826EF8B",
+                                    "attributeName": "dealer_bust",
+                                    "displayName": "dealer_bust",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "985D77BB-DA93-4A99-BB7D-65FB2929AB28",
+                                    "attributeName": "double_available",
+                                    "displayName": "double_available",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "4AB2FF92-AD64-45E9-9C7D-9C566DDB7F6F",
+                                    "attributeName": "round_result",
+                                    "displayName": "round_result",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C1490F04-5400-46A5-9C81-B9056E31CF92",
+                                    "attributeName": "last_command",
+                                    "displayName": "last_command",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "57A86DE8-1589-4F7E-9A3F-06FF656AE19D",
+                                    "attributeName": "last_command_confidence",
+                                    "displayName": "last_command_confidence",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "37D75DA1-5ED5-4954-8FF9-B7A310915DB0",
+                                    "attributeName": "last_command_detected",
+                                    "displayName": "last_command_detected",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "4F0B0F47-30C7-4D1D-B04B-2178F8AFBBCA",
+                                    "attributeName": "audio_device",
+                                    "displayName": "audio_device",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "F9299EBC-A33A-4318-B18C-B4549FC889D6",
+                                    "attributeName": "model_name",
+                                    "displayName": "model_name",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "17364230-FCBC-4F9D-8B40-BCD5643D4D92",
+                                    "attributeName": "model_package",
+                                    "displayName": "model_package",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "61365556-050A-47EA-AD34-7A8365A9D6BF",
+                                    "attributeName": "model_sha256",
+                                    "displayName": "model_sha256",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "08971068-6F67-4CE4-BA98-DD3E32DA1C06",
+                                    "attributeName": "detection_threshold",
+                                    "displayName": "detection_threshold",
+                                    "checked": "false"
+                                },
+                                {
+                                    "attributeGuid": "C93C41D3-78D3-4E81-B9DB-E767786590A1",
+                                    "attributeName": "telemetry_interval",
+                                    "displayName": "telemetry_interval",
+                                    "checked": "true"
+                                },
+                                {
+                                    "attributeGuid": "1478112D-2A71-4AC4-BFBC-064BB118DE44",
+                                    "attributeName": "last_error",
+                                    "displayName": "last_error",
+                                    "checked": "false"
+                                }
+                            ]
+                        },
+                        "attrType": "1",
+                        "key": "telemetry"
+                    }
+                }
+            },
+            "properties": {
+                "x": "40",
+                "y": "30",
+                "w": "19",
+                "h": "12",
+                "i": "Telemetry",
+                "minW": "15",
+                "minH": "6",
+                "isStatic": "false"
+            }
+        }
+    ]
+}

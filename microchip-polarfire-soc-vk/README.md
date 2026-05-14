@@ -148,7 +148,7 @@ cd /opt/demo && python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 8. Deploying Additional Demos
+# 8. Going Further: Expansion Demos
 
 Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 

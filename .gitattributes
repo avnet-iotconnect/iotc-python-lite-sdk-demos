@@ -10,3 +10,12 @@
 *.yaml text eol=lf
 *.json text eol=lf
 *.md text eol=lf
+
+# Hide Verilog files from stats
+*.v linguist-detectable=false
+*.vh linguist-detectable=false
+*.sv linguist-detectable=false
+*.svh linguist-detectable=false
+
+# Ensure Python is detected
+*.py linguist-detectable=true

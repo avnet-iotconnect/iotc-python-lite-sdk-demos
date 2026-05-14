@@ -125,7 +125,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 7. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
 
 * **[EIQ Vision AI Driver Monitoring System (DMS) Demo](dms-demo/README.md)**: Upgrades the starter demo to a real-time driver monitoring system powered by NXP's eIQ machine learning toolkit, detecting drowsiness and distraction events and reporting alerts to /IOTCONNECT.
 

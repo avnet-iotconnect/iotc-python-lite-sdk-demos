@@ -146,8 +146,10 @@ process, refer to the "Populate the target and boot the image" [page on the STM3
 
 # 8. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. The following expansion demos are available for this board:
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
 
+* **[MKBOXPRO BLE Sensor Pack Demo](mkboxpro-demo/README.md)**: Connects the ST MKBOXPRO Bluetooth sensor pack to the board and streams its environmental and motion sensor data as telemetry to /IOTCONNECT.
+* **[PROTEUS Sensor Pack Demo](proteus-standard-demo/README.md)**: Connects the ST PROTEUS Bluetooth sensor pack to the board and streams its environmental and motion sensor data as telemetry to /IOTCONNECT.
 * **[KVS PutMedia Video Streaming](kvs-putmedia/README.md)**: Stream live video from a connected USB camera to AWS Kinesis Video Streams (KVS) and view it through the /IOTCONNECT dashboard. Video is stored as fragments on AWS, making it suitable for security camera and recording use cases (5–15 second latency).
 * **[KVS WebRTC Live Video](kvs-webrtc/README.md)**: Stream live video directly from the board to your browser via WebRTC, brokered through a KVS signaling channel. Delivers sub-second latency for real-time monitoring. Video is not stored — it is only viewable while actively streaming.
 

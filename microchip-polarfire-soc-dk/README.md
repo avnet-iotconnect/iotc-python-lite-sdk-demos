@@ -43,15 +43,15 @@ replicated in other environments.
 * High Quality SanDisk UHS-1 Class 10 A1/A2 Micro-SD card
 
 > [!IMPORTANT]
-> The PolarFire SoC Discovery Kit requires a **High Quality, name brand UHS-1 Class 10 A1/A2 Micro-SD card**. Other brands or specs will 
+> The PolarFire SoC Discovery Kit requires a **High Quality, name brand UHS-1 Class 10 A1/A2 Micro-SD card**. No-name brands or lesser-specs will 
 > not work properly with this board.
 
 ## Software
 
-* A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
+1. A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
-* An SD-Card flashing utility such as [Balena Etcher](https://etcher.balena.io/)
-* Latest Microchip "Programming and Debug" package for your OS [from this page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab). Click the "Software Download Archive" to find the download link. Do NOT download the Libero SoC Design Suite.
+2. An SD-Card flashing utility such as [Balena Etcher](https://etcher.balena.io/)
+3. Microchip FlashPro Express with is part of the "Programming and Debug" package [on this Microchip page](https://www.microchip.com/en-us/products/fpgas-and-plds/fpga-and-soc-design-tools/programming-and-debug/lab).  Click the "Software Download Archive" to find the download link for v2024.2. Do **NOT** download the whole Libero SoC Design Suite.
 
 
 # 3. Hardware Setup
@@ -72,8 +72,6 @@ Using the above image as reference, make the following connections:
 ## Update FPGA
 1. Download the latest pre-built programming file (MPFS_DISCOVERY_KIT_XXXX_XX.zip) from [here](https://github.com/polarfire-soc/polarfire-soc-discovery-kit-reference-design/releases)
 and then extract the package and locate the **.job** file. 
-> [!NOTE]
-> You will need to create a free Microchip account to access the downloadable file.
 2. Ensure that the board is connected to your PC via the USB-C cable, as instructed in the Hardware Setup.
 3. Open FlashPro Express, and click  **New Job Project**
 4. For the "Import FlashPro Express job file", click **Browse...** and select the downloaded `MPFS_DISCOVERY_KIT_XXXX_XX.job` file just extracted.
@@ -145,7 +143,7 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Going Further: Expansion Demos
 
-Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA software package. Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. Three demos are available that each utilize a different inference approach implemented in the FPGA fabric, progressing from a simple hand-crafted classifier up to a trained multi-layer neural network with batch processing.
 
 - [Template Correlation Classifier](ml-template-correlation-classifier/):  
 Classifies by dot-product correlation against three hand-crafted waveform templates. No neural network, no training required.

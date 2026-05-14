@@ -36,7 +36,7 @@ The quickstart programmed the board with the stock Microchip reference design. T
 ### Import Device Template
 
 1. In `/IOTCONNECT`, go to `Devices` -> `Device` -> `Templates` -> `Create Template` -> `Import`.
-2. Download and import the device template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/microchip-polarfire-ml-template.json). (right-click and "save link as")
+2. Click [microchip-polarfire-ml-template.json](microchip-polarfire-ml-template.json) to open the template on GitHub, then click the download button to save it, and import the downloaded file.
 3. Save.
 
 ### Switch Device to New Template
@@ -49,7 +49,7 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 ### Import Dashboard
 
 1. Open /IOTCONNECT and go to **Dashboard**.
-2. Download dashboard template [here](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/mchp-simple-nn-dashboard.json) (right-click and "save link as"), then click **Import Dashboard** and upload the JSON file.
+2. Click [mchp-simple-nn-dashboard.json](mchp-simple-nn-dashboard.json) to open the dashboard template on GitHub, then click the download button to save it. Click **Import Dashboard** and upload the downloaded file.
 3. Save the imported dashboard and map it to the correct device/template.
 
 ## 4. Deploy and Run
@@ -57,7 +57,7 @@ Upgrading from the basic quickstart demo to this demo requires a template change
 ### Download package on board
 
 ```bash
-wget -P /opt/demo https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/package.tar.gz
+wget -O /opt/demo/package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/microchip-polarfire-soc-dk/ml-simple-nn-accelerator/package.tar.gz
 ```
 
 ### Install and run

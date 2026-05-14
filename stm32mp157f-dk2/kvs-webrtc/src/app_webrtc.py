@@ -37,7 +37,7 @@ class FrameQueueVideoTrack(MediaStreamTrack):
                     break
                 except queue.Empty:
                     continue
-            frame = av.VideoFrame.from_ndarray(frame_array, format='rgb24')
+            frame = av.VideoFrame.from_ndarray(frame_array, format='yuv420p')
             frame.pts = self._timestamp
             frame.time_base = '1/30'
             self._timestamp += 1

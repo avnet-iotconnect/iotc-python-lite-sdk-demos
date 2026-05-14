@@ -15,7 +15,7 @@ The `AIMP1` template must be present in your /IOTCONNECT instance before install
 
 1. Log into [awspoc.iotconnect.io](https://awspoc.iotconnect.io) and go to **Devices → Templates**.
 2. If `AIMP1` is already listed, skip to step 5.
-3. Right-click [this link](https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/refs/heads/main/stm32mp135f-dk/ai-vision/AIMP1-template.json) and choose **Save link as** to download the template file.
+3. Click [AIMP1-template.json](AIMP1-template.json) to open the template on GitHub, then click the download button to save it.
 4. Click **Create Template** (top-right), then **Import**, browse to the downloaded file, and click **Save**.
 5. Navigate to your device's page, click the edit icon next to the **Template** field, select `AIMP1`, and save.
 
@@ -38,7 +38,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp135f-dk/ai-vision/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/stm32mp135f-dk/ai-vision/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```

@@ -118,16 +118,15 @@ def start_capture_process() -> Optional[subprocess.Popen]:
     verbose = camera_options.get("verbose", False)
     verbose_flag = "-v " if verbose else "-q "
 
-    # GStreamer pipeline: capture raw RGB frames from the USB camera and write to
-    # stdout. For WebRTC, hardware H264 encoding is not used — aiortc handles
-    # encoding on the Python side. v4l2src captures the USB camera's native format
-    # (YUY2 at 640x480), videoconvert converts it to RGB, and fdsink writes raw
-    # frame data to stdout for the frame reader thread.
+    # GStreamer pipeline: capture raw I420 frames from the USB camera and write to
+    # stdout. I420 is used instead of RGB to avoid hardware row-stride padding that
+    # causes a horizontal wrap artifact. I420's Y-plane stride equals width exactly.
+    # videoscale ensures the output is exactly the requested dimensions.
     gst_command = (
         f"gst-launch-1.0 {verbose_flag}"
         f"v4l2src device={device_port} do-timestamp=true ! "
-        f"videoconvert ! "
-        f"video/x-raw,format=RGB,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
+        f"videoconvert ! videoscale ! "
+        f"video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
         f"fdsink fd=1"
     )
 
@@ -144,7 +143,7 @@ def start_capture_process() -> Optional[subprocess.Popen]:
             text=False
         )
 
-        # Start thread to read raw RGB frames from stdout and feed into _frame_queue
+        # Start thread to read raw I420 frames from stdout and feed into _frame_queue
         threading.Thread(
             target=_frame_reader,
             args=(_stream_process, video_width, video_height),
@@ -182,8 +181,8 @@ def start_capture_process() -> Optional[subprocess.Popen]:
 
 
 def _frame_reader(proc: subprocess.Popen, width: int, height: int):
-    """Read raw RGB frames from the GStreamer fdsink subprocess and enqueue them."""
-    frame_size = width * height * 3
+    """Read raw I420 frames from the GStreamer fdsink subprocess and enqueue them."""
+    frame_size = width * height * 3 // 2  # I420: Y plane + U/V half-size planes
     while True:
         data = b''
         while len(data) < frame_size:
@@ -194,7 +193,7 @@ def _frame_reader(proc: subprocess.Popen, width: int, height: int):
             if not chunk:
                 return
             data += chunk
-        frame = np.frombuffer(data, dtype=np.uint8).reshape((height, width, 3)).copy()
+        frame = np.frombuffer(data, dtype=np.uint8).reshape((height * 3 // 2, width)).copy()
         try:
             _frame_queue.put_nowait(frame)
         except queue.Full:
@@ -207,8 +206,8 @@ def _pipe_reader(prefix: str, pipe, verbose: bool = False):
             if verbose:
                 decoded = line.decode(errors='replace').rstrip()
                 print(f"{decoded}")
-    except Exception as e:
-        print(f"Error reading pipe: {e}")
+    except Exception:
+        pass
     finally:
         try:
             pipe.close()

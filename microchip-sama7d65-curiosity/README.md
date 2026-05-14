@@ -10,18 +10,14 @@
 
 # 1. Introduction
 
-This guide provides step-by-step instructions to set up the **Microchip SAMA7D65-Curiosity Kit hardware** and integrate
-it
-with **/IOTCONNECT**, Avnet's robust IoT platform. The SAMA7D65-Curiosity Kit hardware platform provides flexible options
-for IoT
-application development, enabling secure device onboarding, telemetry collection, and over-the-air (OTA) updates.
+This guide provides step-by-step instructions to set up the **Microchip SAMA7D65-Curiosity Kit hardware** and integrate it with **/IOTCONNECT**, Avnet's robust IoT platform. The SAMA7D65-Curiosity Kit hardware platform provides flexible options for IoT application development, enabling secure device onboarding, telemetry collection, and over-the-air (OTA) updates.
 
 <table>
   <tr>
-    <td><img src=".//media/sama7d65-product.png" width="6000"></td>
-    <td>The SAMA7D65-Curiosity Kit is a development board for evaluating  and prototyping with Microchip SAMA7D65 microprocessor (MPU).  
-The SAMA7D65 MPU is a high-performance  ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz.  The board allows 
-evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and 
+    <td><img src="./media/sama7d65-product.png" width="4000"></td>
+    <td>The SAMA7D65-Curiosity Kit is a development board for evaluating and prototyping with the Microchip SAMA7D65 microprocessor (MPU).
+The SAMA7D65 MPU is a high-performance ARM Cortex-A7 CPU-based embedded MPU running up to 1GHz. The board allows
+evaluation of powerful peripherals for connectivity, audio and user interface applications, including MIPI-DSI and
 LVDS w/ 2D graphics, dual Gigabit Ethernet w/ TSN and CAN-FD.</td>
   </tr>
 </table>
@@ -51,11 +47,11 @@ replicated in other environments.
 * A serial terminal such as [TeraTerm](https://github.com/TeraTermProject/teraterm/releases)
   or [PuTTY](https://www.putty.org/)
 * Flash Yocto Image to SD Card:
-    1. [Click here](https://developerhelp.microchip.com/xwiki/bin/view/applications/linux4sam/Boards/sama7d65curosity/#HDemoarchives)
+    1. [Click here](https://developerhelp.microchip.com/xwiki/bin/view/applications/linux4sam/Boards/sama7d65curiosity/)
        to get to the page to download the latest image for the SAMA7D65.
     2. Download the image (link may have updated name that slightly differs from screenshot):
 
-    <img src=".//media/image-download.png" alt="Yocto Image Download"/>
+    <img src=".//media/new-image-download.png" alt="Yocto Image Download"/>
 
     3. Follow the "Create a SD card with the demo" section of the instructions to flash the image to an SD card.
 
@@ -109,7 +105,7 @@ sudo opkg update
 ```
 
 ```
-python3 -m pip install iotconnect-sdk-lite requests
+python3 -m pip install --break-system-packages iotconnect-sdk-lite requests
 ```
 
 6. Then run these commands to create and move into a directory for your demo files:
@@ -148,7 +144,22 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Resources
+# 7. Going Further: Expansion Demos
+
+Now that you have completed the basic quickstart, you can install a specialized expansion demo on top of it using a software package. The following expansion demos are available for this board:
+
+* **[PAC1934 Power Monitoring Demo](./pac1934-demo/README.md)**: Reads voltage, current, and power measurements from the on-board PAC1934 four-channel DC power monitor IC over I2C and publishes them to /IOTCONNECT. No additional hardware required.
+* **[Keyword Spotting Demo](./kws-demo/README.md)**: Captures one-second audio clips from a USB microphone, runs a TensorFlow Lite DS-CNN speech-command classifier on-device, and publishes the top prediction and confidence score to /IOTCONNECT in real time.
+* **[Voice Blackjack (KWS Game)](./kws-game/README.md)**: Runs a browser-hosted blackjack game on the board using the same USB microphone keyword spotting pipeline. Voice commands control gameplay while game state and inference results are streamed as telemetry to /IOTCONNECT.
+
+<table>
+  <tr>
+    <td width="50%"><img src="./media/blackjack-0.png" width="100%" /></td>
+    <td width="50%"><img src="./media/blackjack-1.png" width="100%" /></td>
+  </tr>
+</table>
+
+# 8. Resources
 
 * [Purchase the Microchip EV63J76A (SAMA7D65 Curiosity Kit)](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853)
 * [More /IOTCONNECT Microchip Guides](https://avnet-iotconnect.github.io/partners/microchip/)
