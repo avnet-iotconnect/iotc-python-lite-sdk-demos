@@ -20,7 +20,6 @@ import signal
 import os
 import json
 import threading
-import queue
 import urllib.request
 import requests
 import traceback
