@@ -22,7 +22,6 @@ import json
 import threading
 import urllib.request
 import requests
-import traceback
 from typing import Optional
 
 import cv2
