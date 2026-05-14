@@ -182,8 +182,8 @@ def _find_wayland_env() -> dict:
                     'WAYLAND_DISPLAY': 'wayland-1',
                     'XDG_RUNTIME_DIR': f'/run/user/{uid}',
                 }
-    except Exception:
-        pass
+    except Exception as e:
+        print(f'[WARN] Failed to detect Wayland environment: {e}')
     return {}
 
 
