@@ -256,8 +256,8 @@ def start_drpai_demo(mode: str) -> bool:
             except FileNotFoundError:
                 # Expected when no stale results file exists for this demo mode.
                 pass
-            except Exception:
-                pass
+            except Exception as e:
+                print(f'Warning: failed to remove stale results file {stale}: {e}')
 
         if not _wayland_env:
             print('WARNING: Could not locate Wayland socket. DRP-AI demo may fail to display.')
