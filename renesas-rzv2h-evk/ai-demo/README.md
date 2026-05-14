@@ -1,218 +1,122 @@
-# RZ/V2H EVK — AI Inference Demo
+# RZ/V2H EVK — AI Inference Expansion Demo
 
-This demo connects the Renesas RZ/V2H EVK to /IOTCONNECT with full AI inference
-integration: real-time face and person detection runs on the USB camera via Python
-OpenCV, while the Renesas DRP-AI hardware accelerator demos (YOLO-based object
-detection) can be launched and controlled from the cloud via C2D commands and display
-their results on the connected HDMI monitor.
+Upgrades the /IOTCONNECT Starter Demo on the Renesas RZ/V2H EVK to a full AI inference demo — Python computer-vision
+face
+and person detection on a USB camera, plus cloud-launched DRP-AI hardware-accelerated demos rendered on the HDMI
+display.
 
-## Architecture
+> [!IMPORTANT]
+> Complete
+> the [/IOTCONNECT quickstart guide for the RZ/V2H EVK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/renesas-rzv2h-evk/README.md)
+> before proceeding.
 
-```
-                    /IOTCONNECT
-                         │
-              C2D commands│ Telemetry
-                         │
-                    [app.py]
-                   /        \
-     [system_monitor.py]  [OpenCV Haar Cascade]
-       CPU / Memory           USB Camera
-       Temperature            Face + Person Detection
-       DRP-AI status          Inference timing
-                         \
-                    [DRP-AI C++ Binary] ─── HDMI Display
-                    (object_counter)
-                    COCO / Animal / Vehicle
-```
+## 1. Introduction
 
-### Python CV Inference (no additional downloads needed)
-Uses OpenCV's built-in Haar cascade classifiers — **haarcascade_frontalface_default.xml**
-(faces) and **haarcascade_fullbody.xml** (full-body persons). These ship with every
-OpenCV installation and run on the A55 CPU cores at ~5 fps, leaving the DRP-AI
-hardware free for the C++ demo.
+Python OpenCV Haar cascade inference runs on the USB camera for face and full-body person detection on the A55 CPU
+cores. Separately, any of the Renesas DRP-AI hardware demos can be launched via a C2D command — the `object_counter` binary
+runs YOLOv3 on the DRP-AI accelerator and renders bounding boxes and object counts on the HDMI display. Both can run
+simultaneously since they use independent hardware.
 
-### DRP-AI Hardware Demos
-The Renesas AI SDK `object_counter` binary is launched as a managed subprocess via
-C2D command. It uses the DRP-AI accelerator to run YOLOv3 inference at full speed
-and renders bounding boxes and object counts on the HDMI display. Three modes are
-available: COCO (80 classes), Animal, and Vehicle.
+## 2. Prerequisites
 
-### DRP-AI Inference Telemetry (requires patched binary)
-The stock `object_counter` binary only renders results to the HDMI display — it
-has no way to export them. To surface real DRP-AI detection counts and timing in
-IoTConnect telemetry, rebuild `object_counter` with the patch in
-[`patches/object_counter-iotconnect.patch`](patches/object_counter-iotconnect.patch).
+**Additional hardware required:**
 
-The patch adds ~25 lines that write per-frame results to
-`/tmp/drpai_results.json` (tmpfs, atomic rename). Python reads this file every
-telemetry tick and forwards the values under the `drpai_*` attributes.
+- USB camera supporting YUYV 640×480 @ 30fps (e.g. Logitech BRIO, C920)
+- HDMI monitor connected with Weston running (required to launch DRP-AI demos)
 
-Build and deploy any patched demo — the script auto-applies the patch if
-needed, auto-downloads missing model weights from Renesas' GitHub releases,
-and scp's the built binary and weights to the right folder on the board.
+**AI SDK binaries on the board.** The `object_counter` binary and model weights must be present at `/home/weston/tvm_q08/`. 
+Deploy them from your host PC using a sparse clone of the Renesas AI SDK GitHub repo:
 
 ```bash
-cd renesas-rzv2h-evk/ai-demo/patches
-./build-and-deploy.sh 192.168.68.66 q08              # build + deploy Q08
-./build-and-deploy.sh 192.168.68.66 q13 q12 r01      # multiple at once
-./build-and-deploy.sh 192.168.68.66 all              # every demo
+git clone --depth 1 --filter=blob:none --sparse https://github.com/renesas-rz/rzv_ai_sdk.git ~/ai_sdk_work/ai_sdk_setup/rzv_ai_sdk
+cd ~/ai_sdk_work/ai_sdk_setup/rzv_ai_sdk
+git sparse-checkout set Q08_object_counter/exe_v2h
+ssh root@<board-ip> "mkdir -p /home/weston/tvm_q08"
+scp -r Q08_object_counter/exe_v2h/* root@<board-ip>:/home/weston/tvm_q08/
 ```
 
-Without the patches, the `drpai_*` / `meter_*` telemetry fields stay at zero
-when the DRP-AI demo is running — only CPU / memory / temperature / Python-CV
-fields populate.
-
-### Full Demo Matrix
-
-13 V2H-supported demos from the Renesas RZ/V2H AI SDK are wired in (Q03 Smart
-Parking ships V2L-only weights and is intentionally not included). The
-`launch_drpai` command parameter maps to the table below. Per-frame results
-flow through `/tmp/drpai_<demo>_results.json` (atomic-rename writes). Demos
-marked "UI-only" don't emit structured inference JSON (mouse-driven
-calibration/enrollment) — they still report `drpai_demo_active` and
-`drpai_demo_name` so you know when they're running.
-
-| Param | Demo | Kind | Output fields in telemetry |
-|-------|------|------|-------|
-| `coco` / `animal` / `vehicle` | Q08 Object Counter | detector | `drpai_total`, `drpai_person_count`, `drpai_counts` |
-| `meter` | Q13 Analog Meter Reader | meter | `meter_value`, `meter_min/max`, `meter_page`, `meter_yolox_ms`, `meter_unet_ms` |
-| `footfall` | Q01 Footfall Counter | detector | `drpai_total` |
-| `face_auth` | Q02 Face Authentication | ui_only | process state only |
-| `fish_class` | Q04 Fish Classification | classifier | `drpai_primary_class`, `drpai_primary_confidence` |
-| `activity` | Q05 Suspicious Activity | activity | `drpai_primary_class` (violence/non_violence), `drpai_primary_confidence` |
-| `expiry` | Q06 Expiry Date Detection | ui_only | process state only |
-| `plant` | Q07 Plant Disease Classification | classifier | `drpai_primary_class`, `drpai_primary_confidence` |
-| `crack` | Q09 Crack Segmentation | segmentation | timing only (`drpai_inference_time_ms`) |
-| `suspicious` | Q10 Suspicious Person Detection | detector | `drpai_total` |
-| `fish_det` | Q11 Fish Detection | detector | `drpai_total` |
-| `yoga` | Q12 Yoga Pose Estimation | pose | `drpai_primary_class` (pose name), `drpai_primary_confidence` |
-| `r01` | R01 Generic Object Detection | detector | `drpai_total`, `drpai_primary_class`, `drpai_primary_confidence` |
-
-All demos report the shared timing fields: `drpai_inference_time_ms`,
-`drpai_pre_time_ms`, `drpai_post_time_ms`, plus `drpai_demo_kind` so dashboards
-can style widgets conditionally on the active demo type.
-
-### Q13 Analog Meter Reader (dual-model)
-Q13 uses two models pipelined on the DRP-AI: YOLOX locates the gauge in the
-frame, then U-Net segments the needle. A classical angle-calculation step
-converts the needle position into a scalar reading. The demo is stateful:
-
-1. **Page 1** — position camera, click Start
-2. **Page 2** — YOLOX locates the meter; user confirms
-3. **Page 3** — user clicks min/max values on the gauge to calibrate
-4. **Page 5** — live reading; `meter_value` streams to IoTConnect
-
-The telemetry `meter_page` attribute tracks which step the demo is on so your
-dashboard can show a status badge (e.g. "waiting for calibration"). The
-`meter_calibration_warning` boolean goes `true` when Q13 detects high deviation
-between the current reading and the learned center — useful for triggering
-recalibration alerts.
-
-## Prerequisites
-
-Complete the [board setup and onboarding steps](../README.md) first.
-
-The following must already be set up on the board (from the AI SDK guide):
-
-```
-/home/weston/tvm_q08/
-├── object_counter       ← DRP-AI demo binary
-├── coco/                ← COCO model and labels
-├── animal/              ← Animal model and labels
-└── vehicle/             ← Vehicle model and labels
-```
-
-To verify:
+To verify on the board:
 
 ```bash
 ls /home/weston/tvm_q08/object_counter
 ```
 
-## Setup
+## 3. Change Device Template
 
-### 1. Import the device template
+Before installing, change your device's template to `rzv2hAI2` in the /IOTCONNECT online platform:
 
-In /IOTCONNECT, import `rzv2h-ai-template.json` as the device template.
+1. Open your /IOTCONNECT instance and navigate to your device's page.
+2. Locate the **Template** field and click the edit icon.
+3. Select the `rzv2hAI2` template from the drop-down and save.
 
-### 2. Place credential files
+> [!TIP]
+> If the `rzv2hAI2` template is not yet present in your /IOTCONNECT instance, import it
+> from [rzv2h-ai-template.json](rzv2h-ai-template.json)
+> via **Templates → Create Template → Import**.
 
-Copy your device credentials to `/opt/demo` on the board:
+## 4. Deploy and Run
 
-```bash
-mkdir -p /opt/demo && cd /opt/demo
-# Copy iotcDeviceConfig.json, device-cert.pem, device-pkey.pem here
-```
+### Download and Install
 
-### 3. Deploy the demo files
-
-**Option A — Copy source files directly (SSH)**
-
-```bash
-scp renesas-rzv2h-evk/ai-demo/src/* root@<board-ip>:/opt/demo/
-ssh root@<board-ip> "cd /opt/demo && bash install.sh && rm install.sh"
-```
-
-**Option B — OTA package**
-
-Build the package on your host:
-
-```bash
-cd renesas-rzv2h-evk/ai-demo
-bash create-package.sh
-```
-
-Host `package.tar.gz` on a web server, then send a `file-download` command from
-/IOTCONNECT with the URL as the parameter.
-
-## Run
+On the board, run:
 
 ```bash
 cd /opt/demo
+wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/renesas-rzv2h-evk/ai-demo/package.tar.gz
+tar -xzf package.tar.gz --overwrite
+bash ./install.sh
+```
+
+### Run
+
+```bash
 python3 app.py
 ```
 
-The app connects to /IOTCONNECT and begins sending telemetry immediately. CV inference
-and DRP-AI demos are started via cloud commands.
+## 5. Using the Demo
 
-## Telemetry
+The app connects to /IOTCONNECT and begins sending telemetry immediately. CV inference and DRP-AI demos are started via
+cloud commands.
 
-### System Performance
+### Telemetry
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `cpu_percent` | DECIMAL | CPU utilisation (%) |
-| `memory_percent` | DECIMAL | RAM usage (%) |
-| `memory_used_mb` | DECIMAL | Used RAM (MB) |
-| `cpu_temp_0_c` | DECIMAL | Cortex-A55 cluster temperature (°C) |
-| `cpu_temp_1_c` | DECIMAL | Cortex-A76 cluster temperature (°C) |
-| `drpai_present` | BOOLEAN | DRP-AI device node accessible (`/dev/drpai0`) |
-| `sdk_version` | STRING | IoTConnect SDK version |
-| `random` | INTEGER | Connectivity heartbeat |
+**System Performance**
 
-### AI Inference
+| Attribute        | Type    | Description                                   |
+|------------------|---------|-----------------------------------------------|
+| `cpu_percent`    | DECIMAL | CPU utilisation (%)                           |
+| `memory_percent` | DECIMAL | RAM usage (%)                                 |
+| `memory_used_mb` | DECIMAL | Used RAM (MB)                                 |
+| `cpu_temp_0_c`   | DECIMAL | Cortex-A55 cluster temperature (°C)           |
+| `cpu_temp_1_c`   | DECIMAL | Cortex-A76 cluster temperature (°C)           |
+| `drpai_present`  | BOOLEAN | DRP-AI device node accessible (`/dev/drpai0`) |
+| `sdk_version`    | STRING  | IoTConnect SDK version                        |
+| `random`         | INTEGER | Connectivity heartbeat                        |
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `cv_active` | BOOLEAN | Python OpenCV inference running |
-| `face_count` | INTEGER | Faces detected in current frame |
-| `person_count` | INTEGER | Full-body persons detected |
-| `total_detections` | INTEGER | faces + persons per frame |
+**AI Inference**
+
+| Attribute           | Type    | Description                          |
+|---------------------|---------|--------------------------------------|
+| `cv_active`         | BOOLEAN | Python OpenCV inference running      |
+| `face_count`        | INTEGER | Faces detected in current frame      |
+| `person_count`      | INTEGER | Full-body persons detected           |
+| `total_detections`  | INTEGER | Faces + persons per frame            |
 | `inference_time_ms` | DECIMAL | Python inference time per frame (ms) |
 | `drpai_demo_active` | BOOLEAN | DRP-AI hardware demo running on HDMI |
-| `drpai_demo_name` | STRING | Active DRP-AI demo name |
+| `drpai_demo_name`   | STRING  | Active DRP-AI demo name              |
 
-## C2D Commands
+### Commands
 
-| Command | Parameter | Description |
-|---------|-----------|-------------|
-| `start_detection` | — | Start Python face/person detection on USB camera |
-| `stop_detection` | — | Stop Python detection |
-| `launch_drpai` | see demo matrix below | Launch any of 13 DRP-AI demos on HDMI display |
-| `stop_drpai` | — | Stop DRP-AI demo |
-| `set_confidence` | `0.0`–`1.0` | Adjust detection sensitivity |
-| `file-download` | URL | Download and apply OTA update package |
+| Command           | Parameter                                   | Description                                      |
+|-------------------|---------------------------------------------|--------------------------------------------------|
+| `start_detection` | —                                           | Start Python face/person detection on USB camera |
+| `stop_detection`  | —                                           | Stop Python detection                            |
+| `launch_drpai`    | see [Full Demo Matrix](#6-full-demo-matrix) | Launch any DRP-AI demo on HDMI display           |
+| `stop_drpai`      | —                                           | Stop DRP-AI demo                                 |
+| `set_confidence`  | `0.0`–`1.0`                                 | Adjust detection sensitivity                     |
+| `file-download`   | URL                                         | Download and apply OTA update package            |
 
-### Example workflow
+### Example Workflow
 
 1. Send **`start_detection`** → face/person counts appear in telemetry
 2. Send **`launch_drpai`** with parameter `coco` → object detection starts on HDMI
@@ -220,68 +124,71 @@ and DRP-AI demos are started via cloud commands.
 4. Send **`stop_drpai`** → demo stops, display cleared
 5. Send **`stop_detection`** → CV inference halts, counts return to zero
 
-## Notes
+## 6. Full Demo Matrix
 
-- The DRP-AI C++ demo and Python CV inference can run simultaneously. The DRP-AI
-  binary uses its dedicated hardware accelerator; Python CV uses the A55 CPU cores.
-- Haar cascade inference typically runs at 20–100ms per frame depending on frame
-  content, leaving plenty of CPU for other tasks.
-- The DRP-AI demo **requires a Wayland display** (HDMI monitor connected and weston
-  running). The app auto-detects the active Wayland socket.
-- Both the CV inference and DRP-AI demo are automatically stopped when an OTA
-  update is applied so the application can restart cleanly.
+Every demo from the Renesas RZ/V2H AI SDK is supported. The `launch_drpai` command parameter maps to the table below.
+Per-frame results flow through `/tmp/drpai_<demo>_results.json` (atomic rename writes). Demos marked "ui_only" require
+mouse interaction on the HDMI display and do not emit structured inference JSON — they still report `drpai_demo_active`
+and `drpai_demo_name`.
 
----
+| Parameter                     | Demo                             | Kind         | Telemetry output fields                                                         |
+|-------------------------------|----------------------------------|--------------|---------------------------------------------------------------------------------|
+| `coco` / `animal` / `vehicle` | Q08 Object Counter               | detector     | `drpai_total`, `drpai_person_count`, `drpai_counts`                             |
+| `meter`                       | Q13 Analog Meter Reader          | meter        | `meter_value`, `meter_min/max`, `meter_page`, `meter_yolox_ms`, `meter_unet_ms` |
+| `footfall`                    | Q01 Footfall Counter             | detector     | `drpai_total`                                                                   |
+| `face_auth`                   | Q02 Face Authentication          | ui_only      | process state only                                                              |
+| `parking`                     | Q03 Smart Parking                | ui_only      | process state only                                                              |
+| `fish_class`                  | Q04 Fish Classification          | classifier   | `drpai_primary_class`, `drpai_primary_confidence`                               |
+| `activity`                    | Q05 Suspicious Activity          | activity     | `drpai_primary_class` (violence/non_violence), `drpai_primary_confidence`       |
+| `expiry`                      | Q06 Expiry Date Detection        | ui_only      | process state only                                                              |
+| `plant`                       | Q07 Plant Disease Classification | classifier   | `drpai_primary_class`, `drpai_primary_confidence`                               |
+| `crack`                       | Q09 Crack Segmentation           | segmentation | timing only (`drpai_inference_time_ms`)                                         |
+| `suspicious`                  | Q10 Suspicious Person Detection  | detector     | `drpai_total`                                                                   |
+| `fish_det`                    | Q11 Fish Detection               | detector     | `drpai_total`                                                                   |
+| `yoga`                        | Q12 Yoga Pose Estimation         | pose         | `drpai_primary_class` (pose name), `drpai_primary_confidence`                   |
+| `r01`                         | R01 Generic Object Detection     | detector     | `drpai_total`, `drpai_primary_class`, `drpai_primary_confidence`                |
 
-## Multi-Camera Operation
+All demos also report `drpai_inference_time_ms`, `drpai_pre_time_ms`, `drpai_post_time_ms`, and `drpai_demo_kind`.
 
-With **two USB cameras** plugged into different USB controllers on the EVK, the
-DRP-AI demo and the Python CV inference can run **in parallel** on separate
-cameras. The Renesas C++ binaries hardcode `/dev/video0`, so the rule is:
+### Q13 Analog Meter Reader
 
-- Lower-numbered USB port → DRP-AI camera (`/dev/video0`)
-- Other USB port → Python CV camera (`/dev/video2` or higher)
+Q13 pipelines two DRP-AI models: YOLOX locates the gauge in the frame, then U-Net segments the needle. A classical
+angle-calculation step converts the needle position to a scalar reading. The demo is stateful:
 
-The Python app auto-picks the second camera when DRP-AI is running. Telemetry
-will report both inference streams simultaneously: DRP-AI fields from camera 1
-and `face_count` / `person_count` from camera 2.
+1. **Page 1** — position camera, click Start
+2. **Page 2** — YOLOX locates the meter; user confirms
+3. **Page 3** — user clicks min/max values on the gauge to calibrate
+4. **Page 5** — live reading; `meter_value` streams to /IOTCONNECT
 
-If only one camera is connected, `start_detection` is refused while
-`launch_drpai` is active (and vice versa) — the camera can't be shared.
+The `meter_page` attribute tracks the current step. `meter_calibration_warning` goes `true` when Q13 detects high
+deviation between the current reading and the learned center.
 
-Verify both cameras are detected:
+## 7. DRP-AI Inference Telemetry (Optional)
+
+The stock `object_counter` binary only renders results to the HDMI display and exports nothing. To surface DRP-AI
+detection counts and timing in telemetry, rebuild the binary with the patch in [
+`patches/object_counter-iotconnect.patch`](patches/object_counter-iotconnect.patch).
+
+The patch adds writes to `/tmp/drpai_results.json` (tmpfs, atomic rename) each frame. The app reads this file every
+telemetry tick and forwards the values under the `drpai_*` attributes.
+
+Use `build-and-deploy.sh` from the `patches/` directory:
 
 ```bash
-ssh root@<board-ip> 'for d in /sys/class/video4linux/video*; do
-  dev=$(basename $d); usb=$(readlink -f $d/device | sed "s|/video4linux.*||")
-  printf "%-15s %s\n" "/dev/$dev" "$usb"
-done | awk "!seen[\$2]++"'
+cd renesas-rzv2h-evk/ai-demo/patches
+./build-and-deploy.sh 192.168.68.66 q08              # build + deploy Q08
+./build-and-deploy.sh 192.168.68.66 q13 q12 r01      # multiple demos
+./build-and-deploy.sh 192.168.68.66 all               # every demo
 ```
 
-You should see one line per physical camera. Each Logitech-style cam consumes
-4 video nodes but the helper collapses them.
+Without the patches, the `drpai_*` / `meter_*` telemetry fields stay at zero when a DRP-AI demo is running — only
+CPU/memory/temperature/Python-CV fields populate.
 
-## Display Requirement
+## 8. Troubleshooting
 
-**An HDMI monitor capable of 1920×1080 is required.** The Renesas demos render
-to a fixed 1480×1080 (Q13) or 1500×1080 (Q08) canvas. Smaller panels (the
-small touch displays advertising 1024×600 or 1024×768 native modes) cause GTK3
-clients to fail with `Gdk-Message: Error 71 (Protocol error)` — the buffer
-they request is larger than the compositor accepts.
-
-Weston also does not re-probe the output when you swap monitors at runtime
-(`Detected a monitor change... not bothering to do anything about it.` in its
-log). After switching displays, **reboot the board** so Weston negotiates the
-new EDID cleanly at boot.
-
-## Troubleshooting
-
-| Problem | Resolution |
-|---------|------------|
-| `launch_drpai` returns "Failed" | Verify the demo binary exists in its `exe_v2h` folder and HDMI monitor is connected |
-| DRP-AI demo exits immediately | Ensure Wayland/Weston is running (`ps aux \| grep weston`) |
-| `Failed to load dynamic shared library .../deploy.so` | The model weights for that demo aren't on the SD card. Run `./build-and-deploy.sh <ip> <demo>` to auto-download from Renesas GitHub releases |
-| `Gdk-Message: Error 71 (Protocol error)` | Display is too small (need 1920×1080) or you swapped monitors without rebooting |
-| No camera frames in CV | Check `v4l2-ctl --list-devices`; verify both USB ports if running multi-camera |
-| `start_detection` refused: "Camera in use" | Either plug in a second camera, or send `stop_drpai` first |
-| `ModuleNotFoundError: system_monitor` | Ensure `system_monitor.py` is in the same directory as `app.py` |
+| Problem                               | Resolution                                                                        |
+|---------------------------------------|-----------------------------------------------------------------------------------|
+| `launch_drpai` returns "Failed"       | Verify `/home/weston/tvm_q08/object_counter` exists and HDMI monitor is connected |
+| DRP-AI demo exits immediately         | Ensure Wayland/Weston is running (`ps aux                                         | grep weston`) |
+| No camera frames in CV                | Check `v4l2-ctl --list-devices`; USB camera must be on `/dev/video0`              |
+| `ModuleNotFoundError: system_monitor` | Ensure `system_monitor.py` is in the same directory as `app.py`                   |

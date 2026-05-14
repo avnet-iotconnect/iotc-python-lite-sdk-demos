@@ -1,13 +1,17 @@
-# System Monitor Demo
+# RZ/V2H EVK — System Monitor Expansion Demo
 
-Upgrades the /IOTCONNECT Starter Demo on the Renesas RZ/V2H EVK to the System Monitor Demo, which streams real-time system performance telemetry: CPU utilisation, RAM usage, and CPU temperatures read directly from the Linux kernel's `/proc` and `/sys` interfaces.
+Upgrades the /IOTCONNECT Starter Demo on the Renesas RZ/V2H EVK to the System Monitor Demo, which streams real-time system 
+performance telemetry: CPU utilisation, RAM usage, and CPU temperatures read directly from the Linux kernel's `/proc` and 
+`/sys` interfaces.
 
 > [!IMPORTANT]
-> Complete the [/IOTCONNECT quickstart guide for the RZ/V2H EVK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/renesas-rzv2h-evk/README.md) before proceeding.
+> Complete the [/IOTCONNECT quickstart guide for the RZ/V2H EVK](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/renesas-rzv2h-evk/README.md) 
+> before proceeding.
 
 ## 1. Introduction
 
-This demo streams live system performance data from the RZ/V2H EVK to /IOTCONNECT every 10 seconds. No additional hardware or packages beyond the IoTConnect SDK are required.
+This demo streams live system performance data from the RZ/V2H EVK to /IOTCONNECT every 10 seconds. No additional 
+hardware or packages beyond the IoTConnect SDK are required.
 
 ## 2. Change Device Template
 
@@ -18,11 +22,10 @@ Before installing, change your device's template to `rzv2h-system-monitor` in th
 3. Select the `rzv2h-system-monitor` template from the drop-down and save.
 
 > [!TIP]
-> If the `rzv2h-system-monitor` template is not yet present in your /IOTCONNECT instance, import it from [rzv2h-system-monitor-template.json](rzv2h-system-monitor-template.json) via **Templates → Create Template → Import**.
+> If the `rzv2h-system-monitor` template is not yet present in your /IOTCONNECT instance, import it from 
+> [rzv2h-system-monitor-template.json](rzv2h-system-monitor-template.json) via **Templates → Create Template → Import**.
 
-## 3. Deploy and Run
-
-### Download and Install
+## 3. Download and Install
 
 On the board, run:
 
@@ -33,13 +36,12 @@ tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
 
-### Run
+## 4. Using the Demo
 
 ```bash
+cd /opt/demo
 python3 app.py
 ```
-
-## 4. Using the Demo
 
 Once running and connected to /IOTCONNECT, telemetry streams to your device's **Live Data** tab every 10 seconds:
 

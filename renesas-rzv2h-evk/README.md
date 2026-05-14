@@ -1,4 +1,5 @@
 # Renesas RZ/V2H EVK Quickstart
+
 [Purchase the Renesas RZ/V2H EVK](https://www.renesas.com/en/design-resources/boards-kits/rz-v2h-evk)
 
 1. [Introduction](#1-introduction)
@@ -7,129 +8,114 @@
 4. [Device Setup](#4-device-setup)
 5. [Onboard Device](#5-onboard-device)
 6. [Using the Demo](#6-using-the-demo)
-7. [Going Further: AI Demo](#7-going-further-ai-demo)
+7. [Going Further: Expansion Demos](#7-going-further-expansion-demos)
 8. [Resources](#8-resources)
 
 # 1. Introduction
 
-This guide walks through connecting the Renesas RZ/V2H Evaluation Kit (EVK) to the Avnet /IOTCONNECT platform,
-demonstrating telemetry collection, cloud-to-device commands, and AI inference reporting via the on-board DRP-AI
-hardware accelerator.
+This guide is designed to walk through the steps to connect the Renesas RZ/V2H EVK to the Avnet /IOTCONNECT platform and
+periodically send general telemetry data.
 
-The RZ/V2H EVK features Renesas' dedicated **DRP-AI** (Dynamically Reconfigurable Processor for AI) hardware
-accelerator, which runs deep-learning inference workloads at low power. This demo wraps the pre-built AI
-application binaries from the Renesas AI SDK, streams their results to /IOTCONNECT, and adds real-time
-system performance monitoring alongside cloud-controllable AI demo management.
+<table>
+  <tr>
+    <td><img src="./media/rzv2h-product.png" width="6000"></td>
+    <td>The RZ/V2H EVK is a high-performance evaluation platform built around Renesas' RZ/V2H SoC, featuring Arm Cortex-A55 and A76 CPU clusters alongside a dedicated **DRP-AI** (Dynamically Reconfigurable Processor for AI) hardware accelerator designed for efficient deep-learning inference at the edge.</td>
+  </tr>
+</table>
 
 # 2. Requirements
 
 ## Hardware
 
-* Renesas RZ/V2H EVK (CPU Board + EXP Board)
-* 100W USB PD power adapter
-* USB Camera supporting YUYV 640×480 @ 30fps (e.g. Logitech BRIO, C920)
-* 16GB+ microSD card (Transcend UHS-I microSD 300S recommended)
+* Renesas RZ/V2H EVK
+* 100W USB PD power
+  adapter ([this model](https://www.amazon.com/USB-C-Laptop-Charger-Charging-ThinkPad-Computer-Compatible/dp/B0BVM6ZPWK/ref=sr_1_3?crid=6PCNFHSB3RGZ&dib=eyJ2IjoiMSJ9.UrOHdPZvVxYtk7X2faa7kfzMpV3kW5xMiZGXxXT0xFBzixXM0w_ksBaBaY_XOIHVL-wEtUAAdItLfbjeMj3sKnnnEmUr1WejO5UvW1te7urFuabkr_YcfvInCQ0C6WyrZHVQY0Qs4wQiQP0LopxHc5KKChRsMh7L5o8HxIn82AQebgLJzuikLN_T206scGMO4-5gL7uQiPO8KSwgoDnd4K-Ki1ysCySRaS14CVdCGvk.2e6NJfr_sSztz1xIYL9LFY4rPA5io5E-D_PB3CYGrDw&dib_tag=se&keywords=100w+usbc+pd+charger+yenyoh&qid=1778724175&sprefix=100w+usbc+pd+charger+yenyo%2Caps%2C172&sr=8-3)
+  is what Avnet's engineer used for testing)
+* 16GB+ microSD card
+* microSD card mounting port (or USB adapter) on host PC
 * HDMI monitor and cable
 * Ethernet cable
-* Micro USB cable (for serial debug console via CN12)
-* (Optional) USB hub, USB keyboard and mouse for on-board terminal
+* USB keyboard and mouse
+* (Optional) USB hub
 
 ## Software
 
 * Linux host PC for flashing the microSD card (Ubuntu 22.04 recommended)
-* Serial terminal application: [TeraTerm](https://github.com/TeraTermProject/teraterm/releases) or [PuTTY](https://www.putty.org/)
-* Renesas RZ/V2H AI SDK — [download here](https://www.renesas.com/en/software-tool/rzv2h-ai-software-development-kit)
-* An [/IOTCONNECT account](https://www.iotconnect.io/)
 
 # 3. Hardware Setup
 
-Follow the [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html) to:
+1. In
+   the [Renesas RZ/V AI SDK Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/7.10/getting_started.html),
+   follow Steps 3 and 4 to download and extract the RZ/V2H version of the AI SDK to your host PC.
 
-1. Flash the RZ/V2H Yocto SD card image using `bmaptool`
-2. Set DSW1 DIP switches for eSD boot (DSW1[4]=ON, DSW1[5]=OFF)
-3. Connect USB camera, HDMI monitor, and Ethernet
-4. Open serial console on CN12 at **115200 baud, 8N1**
-5. Power on the board (SW3 to ON)
+2. In
+   the [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html),
+   follow the eSD Bootloader version of "Step 7: Deploy AI Application":
+    - **Step 7.1** (Setup RZ/V2H EVK) — required: flashes the board OS image to the microSD card.
+    - **Step 7.2** (Deploy Application to the Board) — skip. The [AI Inference expansion demo](./ai-demo) covers deploying the DRP-AI binaries to the running board directly via SSH.
+    - **Step 7.3** (Boot RZ/V2H EVK) — required: inserts the card, sets the boot switches, and powers on the board.
 
-Connect the board to your network via Ethernet and note its IP address:
-
-```
-ip addr show
-```
-
-Verify your USB camera is detected:
-
-```
-v4l2-ctl --list-devices
-```
-
-You should see your USB camera listed under `/dev/video0`.
+   When you reach Step 8 (Run AI Application), stop and return here.
 
 # 4. Device Setup
 
-Log in as `root` via SSH or serial console, then run these one-time setup commands:
+With the board powered on and the HDMI display showing the desktop:
+
+1. Using the connected USB mouse, open a terminal window on the board.
+2. Run this command and note the `inet` IP address under the `end0` interface (typically `192.168.X.X`):
 
 ```bash
-dnf update -y
+ip a
 ```
+
+3. On your host PC, SSH into the board as root (no password required):
+
+```bash
+ssh root@192.168.X.X
+```
+
+4. Run this command to install the necessary /IOTCONNECT packages:
 
 ```bash
 python3 -m pip install iotconnect-sdk-lite requests
 ```
 
+5. Run this command to create and move into a directory for your demo files:
+
 ```bash
 mkdir -p /opt/demo && cd /opt/demo
 ```
 
-> [!NOTE]
-> The RZ/V2H runs Yocto Linux. Use `dnf` (not `apt`) for system packages.
-> Python packages install system-wide as root — no virtualenv is needed.
-
 # 5. Onboard Device
 
-Onboard your device into /IOTCONNECT by following the
-[UI Onboarding Guide](../common/general-guides/UI-ONBOARD.md).
+The next step is to onboard your device into /IOTCONNECT. This will be done via the online /IOTCONNECT user interface.
 
-When prompted for a device template, import the template JSON from whichever demo you are running:
-
-* **System Monitor Demo**: `system-monitor-demo/rzv2h-system-monitor-template.json`
-* **AI Demo**: `ai-demo/rzv2h-ai-template.json`
-
-Place the three credential files in `/opt/demo`:
-
-* `iotcDeviceConfig.json`
-* `device-cert.pem`
-* `device-pkey.pem`
+Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
 # 6. Using the Demo
 
-Deploy and run the System Monitor Demo:
+Run the basic demo with this command:
 
-```bash
-cd /opt/demo
-wget https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/renesas-rzv2h-evk/system-monitor-demo/package.tar.gz
-tar -xzf package.tar.gz --overwrite
-bash ./install.sh
 ```
-
-Then run:
-
-```bash
 python3 app.py
 ```
 
 > [!NOTE]
-> Always make sure you are in the `/opt/demo` directory before running the demo. You can move to this directory with the command: `cd /opt/demo`
+> Always make sure you are in the ```/opt/demo``` directory before running the demo. You can move to this
+> directory with the command: ```cd /opt/demo```
 
-View the telemetry under the **Live Data** tab for your device in /IOTCONNECT.
+View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
-# 7. Going Further: AI Demo
+# 7. Going Further: Expansion Demos
 
-Head to the **[AI Demo Guide](ai-demo/README.md)** for the advanced AI inference demo.
+Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an OTA
+software package. The following expansion demos are available for this board:
 
-This demo runs Python-based computer-vision inference on a USB camera, launches and controls any of the 13 V2H-supported Renesas DRP-AI demos on the HDMI display via C2D commands, and streams detection counts, inference timing, and system performance metrics to /IOTCONNECT in real time. With two USB cameras connected, the Python CV loop and a DRP-AI demo run in parallel on separate cameras.
-
-Q03 Smart Parking is RZ/V2L-only (Renesas does not ship a V2H model weight) and is intentionally not included. See the [AI Demo Guide](ai-demo/README.md) for the full demo matrix, multi-camera setup, display requirements, and telemetry field mapping.
+* **[System Monitor Demo](system-monitor-demo/README.md)**: Upgrades the starter demo to stream real-time system
+  performance telemetry — CPU utilisation, RAM usage, and CPU temperatures — read directly from the Linux kernel.
+* **[AI Inference Demo](ai-demo/README.md)**: Upgrades the starter demo to run Python computer-vision detection on a USB
+  camera, launch any of the Renesas DRP-AI hardware-accelerated demos on an HDMI display via cloud commands, and stream
+  detection counts, inference timing, and system performance metrics to /IOTCONNECT.
 
 # 8. Resources
 
