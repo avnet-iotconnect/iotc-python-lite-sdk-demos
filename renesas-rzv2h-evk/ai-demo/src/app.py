@@ -337,8 +337,8 @@ def stop_drpai_demo() -> bool:
             except FileNotFoundError:
                 # Results file may already be gone (e.g., prior cleanup/race); safe to ignore.
                 pass
-            except Exception:
-                pass
+            except Exception as e:
+                print(f'Warning: failed to remove DRP-AI results file "{results_file}": {e}')
         _cv_display_active = True  # CV can reclaim HDMI display
         print('DRP-AI demo stopped.')
         return True
