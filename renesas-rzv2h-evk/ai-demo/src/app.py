@@ -164,6 +164,7 @@ _cv_result = {
 _cv_lock = threading.Lock()
 _cv_confidence = 0.5  # kept for future DNN model upgrade path
 _cv_display_active: bool = True  # CV loop renders to HDMI; False when DRP-AI has display priority
+_wayland_env: dict = {}  # populated at startup; injected into subprocesses/pipelines on demand
 
 
 # ─── Wayland environment detection ────────────────────────────────────────────
@@ -233,16 +234,22 @@ def start_drpai_demo(mode: str) -> bool:
             return False
 
         # Kill any orphaned DRP-AI binaries left over from a previous app session.
-        # An orphan holds the DRP-AI hardware and/or camera, causing the new
-        # launch to hang at "Main Loop Starts".
+        # Orphans hold the DRP-AI hardware and/or camera AND leave stale Weston
+        # DMA fence state. Send SIGTERM first so the binary can cleanly disconnect
+        # from Wayland, then wait for Weston to process the surface teardown before
+        # launching the new process.
+        orphan_binaries = {os.path.basename(c['cmd']) for c in DRPAI_DEMOS.values()}
         killed_any = False
-        for binary in {os.path.basename(c['cmd']) for c in DRPAI_DEMOS.values()}:
-            r = subprocess.run(['pkill', '-9', '-f', binary], capture_output=True)
+        for binary in orphan_binaries:
+            r = subprocess.run(['pkill', '-TERM', '-f', binary], capture_output=True)
             if r.returncode == 0:
-                print(f'Killed orphaned {binary} process')
+                print(f'Sent SIGTERM to orphaned {binary} — waiting for clean Wayland disconnect...')
                 killed_any = True
         if killed_any:
-            time.sleep(1.0)
+            time.sleep(4.0)  # allow Weston to fully process surface cleanup
+            for binary in orphan_binaries:
+                subprocess.run(['pkill', '-9', '-f', binary], capture_output=True)
+            time.sleep(0.5)
 
         # Clear any stale results from a prior demo before starting
         for stale in {c['results_file'] for c in DRPAI_DEMOS.values()}:
@@ -253,11 +260,10 @@ def start_drpai_demo(mode: str) -> bool:
             except Exception:
                 pass
 
-        wayland_env = _find_wayland_env()
-        if not wayland_env:
+        if not _wayland_env:
             print('WARNING: Could not locate Wayland socket. DRP-AI demo may fail to display.')
 
-        env = {**os.environ, **wayland_env}
+        env = {**os.environ, **_wayland_env}
         cmd = [cfg['cmd']] + cfg['args']
         print(f'Launching DRP-AI demo: {cfg["name"]} in {cfg["dir"]}')
 
@@ -475,6 +481,14 @@ _CV_FRAME_FPS = 15
 
 def _open_cv_writer():
     """Try to open a waylandsink GStreamer writer for HDMI display. Returns writer or None."""
+    # Inject Wayland env into the Python process only for the duration of pipeline
+    # creation so GStreamer's waylandsink can find the compositor. We keep these
+    # vars out of os.environ the rest of the time to avoid conflicting with the
+    # DRP-AI binary's own Wayland/EGL session.
+    _prev = {}
+    for k, v in _wayland_env.items():
+        _prev[k] = os.environ.get(k)
+        os.environ[k] = v
     try:
         w = cv2.VideoWriter(
             'appsrc ! videoconvert ! waylandsink sync=false',
@@ -488,6 +502,12 @@ def _open_cv_writer():
         print('WARNING: waylandsink failed to open — display disabled')
     except Exception as e:
         print(f'WARNING: could not initialise display pipeline: {e}')
+    finally:
+        for k, v in _prev.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
     return None
 
 
@@ -769,16 +789,18 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 if __name__ == '__main__':
-    # Auto-populate WAYLAND_DISPLAY + XDG_RUNTIME_DIR so GStreamer's waylandsink
-    # and the DRP-AI C++ binary can both find the Weston compositor even when
-    # the user launches the app from a plain SSH session.
-    if 'WAYLAND_DISPLAY' not in os.environ or 'XDG_RUNTIME_DIR' not in os.environ:
-        env = _find_wayland_env()
-        if env:
-            os.environ.update(env)
-            print(f'Wayland env auto-detected: XDG_RUNTIME_DIR={env["XDG_RUNTIME_DIR"]}')
-        else:
-            print('WARNING: Wayland socket not found — HDMI display output disabled')
+    # Do NOT set WAYLAND_DISPLAY/XDG_RUNTIME_DIR in the Python process's own
+    # environment. GStreamer (loaded via cv2) initialises its Wayland backend
+    # lazily, but if the vars are in os.environ when a waylandsink pipeline is
+    # first created it will open a persistent wl_display connection that
+    # conflicts with the DRP-AI binary's own Wayland/EGL session.
+    # The vars are injected per-subprocess in start_drpai_demo() and per-pipeline
+    # in _open_cv_writer() only when they are actually needed.
+    _wayland_env = _find_wayland_env()
+    if _wayland_env:
+        print(f'Wayland env detected: XDG_RUNTIME_DIR={_wayland_env["XDG_RUNTIME_DIR"]}')
+    else:
+        print('WARNING: Wayland socket not found — HDMI display output disabled')
 
     try:
         device_config = DeviceConfig.from_iotc_device_config_json_file(
