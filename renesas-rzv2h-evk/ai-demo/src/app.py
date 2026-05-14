@@ -232,6 +232,18 @@ def start_drpai_demo(mode: str) -> bool:
             print(f'Unknown DRP-AI mode: {mode}. Available: {list(DRPAI_DEMOS.keys())}')
             return False
 
+        # Kill any orphaned DRP-AI binaries left over from a previous app session.
+        # An orphan holds the DRP-AI hardware and/or camera, causing the new
+        # launch to hang at "Main Loop Starts".
+        killed_any = False
+        for binary in {os.path.basename(c['cmd']) for c in DRPAI_DEMOS.values()}:
+            r = subprocess.run(['pkill', '-9', '-f', binary], capture_output=True)
+            if r.returncode == 0:
+                print(f'Killed orphaned {binary} process')
+                killed_any = True
+        if killed_any:
+            time.sleep(1.0)
+
         # Clear any stale results from a prior demo before starting
         for stale in {c['results_file'] for c in DRPAI_DEMOS.values()}:
             try:
