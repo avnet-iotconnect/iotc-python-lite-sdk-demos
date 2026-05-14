@@ -196,8 +196,8 @@ def _drain_pipe(label: str, pipe):
             decoded = line.decode(errors='replace').rstrip()
             if decoded:
                 print(f'[DRPAI:{label}] {decoded}')
-    except Exception:
-        pass
+    except Exception as e:
+        print(f'[DRPAI:{label}] pipe drain error: {e}')
     finally:
         try:
             pipe.close()
