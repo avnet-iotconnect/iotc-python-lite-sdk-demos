@@ -419,8 +419,8 @@ def _detect_usb_cameras() -> list:
             usb_root = os.path.dirname(usb_iface) if ':' in last else usb_iface
             if usb_root not in cameras:
                 cameras[usb_root] = f'/dev/{dev}'
-    except Exception:
-        pass
+    except Exception as e:
+        print(f'WARNING: USB camera detection failed: {e}')
     return list(cameras.values())
 
 
