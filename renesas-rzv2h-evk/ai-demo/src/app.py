@@ -648,9 +648,8 @@ def on_command(msg: C2dCommand):
     print(f'Received command: {msg.command_name} args={msg.command_args}')
 
     if msg.command_name == 'start_detection':
-        if is_drpai_running():
-            print('start_detection: CV takes display priority — stopping DRP-AI first...')
-            stop_drpai_demo()
+        global _cv_display_active
+        _cv_display_active = True  # CV takes display; Weston puts its surface on top of DRP-AI
         ok, status = start_cv_inference()
         client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK if ok else C2dAck.CMD_FAILED, status)
         print(status)
