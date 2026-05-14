@@ -19,11 +19,11 @@ Before installing, change your device's template to `rzv2h-system-monitor` in th
 
 1. Open your /IOTCONNECT instance and navigate to your device's page.
 2. Locate the **Template** field and click the edit icon.
-3. Select the `rzv2h-system-monitor` template from the drop-down and save.
+3. Select the `rzv2hSM` template from the drop-down and save.
 
 > [!TIP]
-> If the `rzv2h-system-monitor` template is not yet present in your /IOTCONNECT instance, import it from 
-> [rzv2h-system-monitor-template.json](rzv2h-system-monitor-template.json) via **Templates → Create Template → Import**.
+> If the `rzv2hSM` template is not yet present in your /IOTCONNECT instance, import it from 
+> [rzv2hSM-template.json](rzv2hSM-template.json) via **Templates → Create Template → Import**.
 
 ## 3. Download and Install
 

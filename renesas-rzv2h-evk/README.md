@@ -44,18 +44,41 @@ periodically send general telemetry data.
 
 # 3. Hardware Setup
 
-1. In
-   the [Renesas RZ/V AI SDK Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/7.10/getting_started.html),
+1. In the [Renesas RZ/V AI SDK Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/7.10/getting_started.html),
    follow Steps 3 and 4 to download and extract the RZ/V2H version of the AI SDK to your host PC.
 
-2. In
-   the [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html),
+2. In the [Renesas RZ/V2H Getting Started Guide](https://renesas-rz.github.io/rzv_ai_sdk/latest/getting_started_v2h.html),
    follow the eSD Bootloader version of "Step 7: Deploy AI Application":
     - **Step 7.1** (Setup RZ/V2H EVK) — required: flashes the board OS image to the microSD card.
     - **Step 7.2** (Deploy Application to the Board) — skip. The [AI Inference expansion demo](./ai-demo) covers deploying the DRP-AI binaries to the running board directly via SSH.
     - **Step 7.3** (Boot RZ/V2H EVK) — required: inserts the card, sets the boot switches, and powers on the board.
 
    When you reach Step 8 (Run AI Application), stop and return here.
+
+3. Using this image as reference, make the following connections:
+
+   <img src="./media/hardware-setup.png" width="600">
+
+   1. Connect the top and bottom boards of the device using the included ribbon cable labeled **#1**.
+   2. Connect an Ethernet cable from your LAN (router/switch) to the Ethernet connector labeled **#2**.
+   3. Connect your board to a monitor using an HDMI cable plugged in the bottom board, shown labeled **#3**.
+   4. Ensure that the included Micro-SD card is fully-seated (should click) into the Micro-SD card slot on the board, labeled **#4**.
+   5. Connect your power supply to the USB-C port on the board labeled **#5**.
+
+   > [!NOTE]
+   > The board will not power up yet as you will need to flip some switches in a later step.
+
+   6. Connect a USB mouse and keyboard to the USB 3.0 ports labeled **#6**.
+   7. OPTIONAL: If you plan to expand to use the AI vision demos, you can plug a USB camera into the USB 2.0 port labeled **#7**.
+
+4. With the hardware connections complete,
+
+   <img src="./media/switches.png" width="600">
+
+   1. Toggle SW3 to the ON position (labeled **#1**)
+   2. Toggle SW2 to the ON position (labeled **#2**)
+
+You will see LED activity on the board, the fan will spin up, and you should shortly see the desktop come up on your HDMI monitor.
 
 # 4. Device Setup
 
