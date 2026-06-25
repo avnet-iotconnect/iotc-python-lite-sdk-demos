@@ -35,7 +35,7 @@ body {
 }
 
 .page {
-  width: min(1220px, calc(100vw - 28px));
+  width: min(1480px, calc(100vw - 28px));
   margin: 0 auto;
   padding: 18px 0 28px;
 }
@@ -120,6 +120,11 @@ label span {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
   margin-top: 22px;
+  align-items: start;
+}
+
+.grid.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .bottom {
@@ -128,6 +133,38 @@ label span {
 
 .grid > .card {
   padding: 22px;
+}
+
+.column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+
+.column-stack > .card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.column-stack > .card .folder-list,
+.column-stack > .card .event-list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.column-stack > .card .folder-list::-webkit-scrollbar,
+.column-stack > .card .event-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.column-stack > .card .folder-list::-webkit-scrollbar-thumb,
+.column-stack > .card .event-list::-webkit-scrollbar-thumb {
+  background: rgba(24, 32, 20, 0.18);
+  border-radius: 999px;
 }
 
 .deploy-card {
@@ -519,10 +556,29 @@ button:disabled {
   color: #8a3f1f;
 }
 
+@media (max-width: 1280px) {
+  .grid.grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .column-stack {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+  .column-stack > .card {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
 @media (max-width: 960px) {
   .hero,
-  .grid {
+  .grid,
+  .grid.grid-3 {
     grid-template-columns: 1fr;
+  }
+
+  .column-stack {
+    flex-direction: column;
   }
 
   .collection-grid,

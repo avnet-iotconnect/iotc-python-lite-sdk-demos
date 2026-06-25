@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KWS Training Studio</title>
+  <title>/IOTCONNECT KWS Training Studio</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -12,7 +12,7 @@
     <section class="hero card">
       <div>
         <p class="eyebrow">SAMA7D65 Voice Dataset Builder</p>
-        <h1>KWS Training Studio</h1>
+        <h1>/IOTCONNECT KWS Training Studio</h1>
         <p class="lead">Capture one-second voice clips on the board, grow command folders in-place, then package and push the dataset through the `/IOTCONNECT` upload path when the device template exposes it.</p>
       </div>
       <div class="hero-meta">
@@ -31,7 +31,7 @@
       </div>
     </section>
 
-    <section class="grid">
+    <section class="grid grid-3">
       <section class="card">
         <div class="section-head">
           <div>
@@ -105,11 +105,36 @@
           </div>
         </div>
         <div class="actions">
+          <button id="optimize-btn">Optimize Clips</button>
           <button id="upload-btn">Upload Dataset Archive</button>
           <button class="primary" id="train-btn">Upload And Start Training</button>
         </div>
+        <p class="hint"><strong>Optimize Clips</strong> trims silence and re-pads each clip to one second before training. Originals are backed up under <code>optimized-backups/&lt;timestamp&gt;/</code>. Run only when no recording is active.</p>
         <p class="hint">When `/IOTCONNECT` file upload is configured on the device, the board uploads with its client certificate and publishes a `FILE` event. If that cloud-side config is missing, the app can still fall back to direct S3 when those env vars are set.</p>
       </section>
+
+      <div class="column-stack">
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Dataset</p>
+              <h2>Command Folders</h2>
+            </div>
+          </div>
+          <div class="folder-list" id="label-list"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Activity</p>
+              <h2>Board And AWS Events</h2>
+            </div>
+          </div>
+          <div class="event-list" id="events"></div>
+          <div class="message" id="message">Ready.</div>
+        </section>
+      </div>
     </section>
 
     <section class="card collection-card">
@@ -132,29 +157,6 @@
           <div class="plan-list" id="collection-specials"></div>
         </section>
       </div>
-    </section>
-
-    <section class="grid bottom">
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Dataset</p>
-            <h2>Command Folders</h2>
-          </div>
-        </div>
-        <div class="folder-list" id="label-list"></div>
-      </section>
-
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">Activity</p>
-            <h2>Board And AWS Events</h2>
-          </div>
-        </div>
-        <div class="event-list" id="events"></div>
-        <div class="message" id="message">Ready.</div>
-      </section>
     </section>
 
     <section class="card deploy-card">

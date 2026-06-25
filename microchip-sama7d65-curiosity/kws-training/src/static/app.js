@@ -35,6 +35,7 @@ const installedSourceEl = document.getElementById("installed-source");
 const modelListEl = document.getElementById("model-list");
 const refreshModelsBtn = document.getElementById("refresh-models-btn");
 const installLatestBtn = document.getElementById("install-latest-btn");
+const optimizeBtn = document.getElementById("optimize-btn");
 
 let lastState = null;
 let availableModels = [];
@@ -193,9 +194,22 @@ async function handleRetireLabel(label) {
   }
 }
 
+function isNoisyEvent(event) {
+  if (!event) return false;
+  if (event.title === "IOTCONNECT" && typeof event.detail === "string" && event.detail.startsWith("Sent periodic telemetry")) {
+    return true;
+  }
+  return false;
+}
+
 function renderEvents(events) {
   eventsEl.innerHTML = "";
-  for (const event of events) {
+  const filtered = events.filter((event) => !isNoisyEvent(event));
+  if (!filtered.length) {
+    eventsEl.innerHTML = '<div class="empty">No recent board or AWS events.</div>';
+    return;
+  }
+  for (const event of filtered) {
     const row = document.createElement("article");
     row.className = "event-row";
     row.innerHTML = `<strong>${escapeHtml(event.title)}</strong><span>${escapeHtml(event.detail)}</span><small>${escapeHtml(event.at)}</small>`;
@@ -227,10 +241,20 @@ function renderModels() {
     return;
   }
 
+  const sameNameCount = installedPackage
+    ? availableModels.reduce((acc, m) => acc + (m.package_name === installedPackage ? 1 : 0), 0)
+    : 0;
+
   for (const model of availableModels) {
     const row = document.createElement("article");
     row.className = "model-row";
-    const isInstalled = (installedSource && installedSource === model.s3_uri) || (!!installedPackage && installedPackage === model.package_name);
+    let isInstalled = false;
+    if (installedSource && installedSource === model.s3_uri) {
+      isInstalled = true;
+    } else if (!installedSource && installedPackage && installedPackage === model.package_name && sameNameCount === 1) {
+      // Fallback only when the name is unambiguous; otherwise we can't tell which one
+      isInstalled = true;
+    }
     const installDisabled = modelOpInProgress || isInstalled;
     row.innerHTML = `
       <div class="model-copy">
@@ -372,6 +396,7 @@ function renderState(state) {
   existingLabelEl.disabled = state.recording.active;
   uploadBtn.disabled = state.recording.active || !state.upload.ready;
   trainBtn.disabled = state.recording.active || !state.training.ready || state.training.in_progress;
+  optimizeBtn.disabled = state.recording.active;
   refreshModelsBtn.disabled = modelOpInProgress || !state.deployment.ready;
   installLatestBtn.disabled = modelOpInProgress || !state.deployment.ready || !availableModels.length;
 
@@ -525,12 +550,42 @@ async function handleInstallModel(s3Uri = "", label = "latest model") {
   }
 }
 
+async function handleOptimize() {
+  if (lastState?.recording?.active) {
+    setMessage("Stop the active recording before running Optimize Clips.", true);
+    return;
+  }
+  optimizeBtn.disabled = true;
+  trainBtn.disabled = true;
+  uploadBtn.disabled = true;
+  setMessage("Optimizing clips: trimming silence and re-padding to 1 second...");
+  try {
+    const result = await readJson("/api/dataset/optimize", {});
+    if (!result.ok) {
+      setMessage(result.error || "Unable to optimize clips.", true);
+      return;
+    }
+    const summary = result.result || {};
+    const optimized = summary.optimized_files ?? 0;
+    const unchanged = summary.unchanged_files ?? 0;
+    const skipped = summary.skipped_files ?? 0;
+    const backup = summary.backup_root ? ` Backups: ${summary.backup_root}` : "";
+    setMessage(`Optimize complete: ${optimized} changed, ${unchanged} unchanged, ${skipped} skipped.${backup}`);
+  } catch (error) {
+    setMessage(`Unable to optimize clips: ${error}`, true);
+  } finally {
+    optimizeBtn.disabled = false;
+    await refresh();
+  }
+}
+
 startRecordBtn.addEventListener("click", handleStartCapture);
 stopRecordBtn.addEventListener("click", handleStopCapture);
 uploadBtn.addEventListener("click", () => handleUpload("/api/aws/upload", "Upload"));
 trainBtn.addEventListener("click", () => handleUpload("/api/aws/train", "SageMaker submit"));
 refreshModelsBtn.addEventListener("click", () => loadModels(true));
 installLatestBtn.addEventListener("click", () => handleInstallModel("", "latest converted model"));
+optimizeBtn.addEventListener("click", handleOptimize);
 existingLabelEl.addEventListener("change", syncSelectionPreview);
 newLabelEl.addEventListener("input", syncSelectionPreview);
 
