@@ -44,15 +44,11 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 
 
 def connect_rnwf11_socket(uart: Rnwf11Uart, wifi_cfg: dict, host: str, port: int) -> Rnwf11MqttTransport:
-    """Joins WiFi (if needed) and opens a raw, unencrypted TCP socket on the RNWF11
-    to the MQTT broker. TLS is layered on top of this in Python by paho-mqtt itself --
-    the module has no idea it's carrying a TLS/MQTT session."""
     print('Joining WiFi network "%s" via the RNWF11 module...' % wifi_cfg["ssid"])
     uart.connect_wifi_if_needed(wifi_cfg["ssid"], wifi_cfg["password"], security=wifi_cfg.get("security"))
     print("RNWF11 WiFi module connected.")
 
-    # Resolved over the board's normal Ethernet/DNS -- only the IP address is needed by
-    # the module; all of the actual MQTT/TLS traffic still goes out over WiFi.
+    # module requires a raw IP address; resolve via Ethernet since the module's own DNS is unreliable
     resolved_ip = socket.gethostbyname(host)
     print("Resolved %s -> %s" % (host, resolved_ip))
 
@@ -82,9 +78,7 @@ try:
         )
     )
 
-    # c._identity_data was already populated by Client.__init__ (a plain HTTPS call,
-    # made over the board's Ethernet connection). The SDK doesn't expose it publicly,
-    # but its .host is exactly what we need to dial out to over the WiFi module.
+    # broker hostname is resolved by Client.__init__ over Ethernet; pass it to the WiFi module as a raw IP
     transport = connect_rnwf11_socket(uart, wifi_cfg, c._identity_data.host, MQTT_PORT)
     patch_paho_transport(c.mqtt, transport)
     transport.start()

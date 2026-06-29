@@ -1,17 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (C) 2026 Avnet
-"""
-Bridges the IoTConnect Python Lite SDK's MQTT transport (paho-mqtt) over the
-EV12H55A/RNWF11 WiFi Add-on Board.
-
-The RNWF11 only exposes AT commands over UART -- it does not present itself
-to Linux as a network interface. Rather than reimplement TLS and MQTT on top
-of the module's own AT+TLSC/AT+MQTTC command set, this module gives
-paho-mqtt a real local socket (one end of a socket.socketpair()) and pumps
-raw bytes between that socket and the RNWF11's raw-TCP AT+SOCKWR/AT+SOCKRD
-commands. TLS and MQTT continue to run unmodified in Python, using the
-device certificate/key exactly as the standard (Ethernet) quickstart does.
-"""
+# Bridges paho-mqtt's TCP transport over the EV12H55A/RNWF11 WiFi module's raw AT socket commands.
 
 import re
 import select
@@ -29,17 +18,11 @@ _WRITE_CHUNK_MAX = 512  # conservative chunk size for AT+SOCKWR
 
 
 class Rnwf11Error(Exception):
-    """Raised when the RNWF11 module reports an AT command error or an unexpected response."""
+    """Raised when the RNWF11 module returns an error or an unexpected response."""
 
 
 class Rnwf11Uart:
-    """Low-level synchronous AT-command driver for the RNWF11 'UART to Cloud' WiFi module.
-
-    This class is meant to be used by a single owner at a time. The caller is
-    expected to finish WiFi join and socket open/connect sequentially before
-    handing the (now-connected) socket id off to Rnwf11MqttTransport, which
-    becomes the sole user of this object for the rest of the connection's life.
-    """
+    """Low-level synchronous AT-command driver for the RNWF11 WiFi module."""
 
     def __init__(self, port=DEFAULT_PORT, baud=DEFAULT_BAUD):
         self._ser = serial.Serial(port, baud, timeout=0.05)
@@ -61,7 +44,7 @@ class Rnwf11Uart:
         return False
 
     def _read_line(self, timeout):
-        """Read one non-empty line, stripping stray '>' idle-prompt bytes."""
+        # Strips stray '>' idle-prompt bytes the module emits between commands.
         deadline = time.monotonic() + timeout
         while True:
             idx = self._buf.find(b"\r\n")
@@ -78,7 +61,6 @@ class Rnwf11Uart:
             self._read_more(min(remaining, 0.2))
 
     def _wait_for_marker(self, marker: bytes, timeout):
-        """Consume buffered bytes up to and including a single marker byte (e.g. b'#')."""
         deadline = time.monotonic() + timeout
         while True:
             idx = self._buf.find(marker)
@@ -120,7 +102,6 @@ class Rnwf11Uart:
     # ---- plain command/response (no raw payload involved) ----
 
     def command(self, cmd: str, timeout=5.0) -> list:
-        """Send a plain AT command. Returns any non-event extra lines seen before OK."""
         self._ser.write((cmd + "\r\n").encode())
         lines = []
         deadline = time.monotonic() + timeout
@@ -139,7 +120,6 @@ class Rnwf11Uart:
                 lines.append(line)
 
     def wait_for_event(self, prefixes, timeout=10.0) -> str:
-        """Block until an unsolicited '+EVENT:...' line starting with one of `prefixes` arrives."""
         prefixes = tuple(prefixes)
         deadline = time.monotonic() + timeout
         while True:
@@ -160,7 +140,6 @@ class Rnwf11Uart:
                 self._pending_events.append(line)
 
     def poll_event(self, timeout=0.05):
-        """Non-blocking-ish check for a single buffered unsolicited '+EVENT:...' line, or None."""
         if self._pending_events:
             return self._pending_events.popleft()
         try:
@@ -196,7 +175,6 @@ class Rnwf11Uart:
             return False
 
     def wifi_scan_security(self, ssid: str, timeout=8.0) -> int:
-        """Scan for `ssid` and return its reported security type code."""
         self._ser.write(b"AT+WSCN=0\r\n")
         deadline = time.monotonic() + timeout
         security = None
@@ -217,7 +195,6 @@ class Rnwf11Uart:
         return security
 
     def wifi_connect(self, ssid: str, password: str, security=None, timeout=20.0) -> str:
-        """Join a WiFi network. Returns the IPv4 address obtained, or raises Rnwf11Error."""
         if security is None:
             security = self.wifi_scan_security(ssid)
         self.command('AT+WSTAC=1,"%s"' % ssid)
@@ -272,12 +249,7 @@ class Rnwf11Uart:
 
 
 class Rnwf11MqttTransport:
-    """Pumps bytes between a local socket.socketpair() end and an RNWF11 raw TCP socket.
-
-    Give `local_socket` to paho-mqtt (see patch_paho_transport below) and call
-    start(). From that point on, this object is the sole user of the
-    Rnwf11Uart instance it was constructed with.
-    """
+    """Pumps bytes between a local socketpair() end and an RNWF11 raw TCP socket."""
 
     def __init__(self, uart: Rnwf11Uart, sock_id: int):
         self._uart = uart
@@ -332,16 +304,8 @@ class Rnwf11MqttTransport:
             self._uart.socket_write(self._sock_id, data[offset:offset + _WRITE_CHUNK_MAX])
 
     def _drain_incoming_events(self) -> bool:
-        """Process buffered +SOCKRXT/+SOCKCL notifications. Returns False on remote close.
-
-        +SOCKRXT:<id>,<n> reports the *cumulative* bytes available since the last
-        AT+SOCKRD on this socket -- not new bytes since the previous notification.
-        Several of these can arrive back-to-back as one TCP burst is received, each
-        superseding the last with a larger total. Reading only the first (smallest)
-        value seen would strand the rest, since no further notification is sent for
-        data that's already been flagged once. So: collect everything currently
-        queued, and read exactly the largest total reported, once.
-        """
+        # +SOCKRXT reports cumulative bytes available, not new bytes -- drain all pending
+        # notifications and read the largest value once to avoid stranding data.
         max_n = None
         closed = False
         while True:
@@ -366,11 +330,4 @@ class Rnwf11MqttTransport:
 
 
 def patch_paho_transport(mqtt_client, transport: Rnwf11MqttTransport):
-    """Make an existing paho-mqtt Client use the RNWF11 bridge instead of a real OS socket.
-
-    Call this once, after constructing the iotconnect-sdk-lite Client (so
-    `mqtt_client` is its `.mqtt` attribute) and before calling `.connect()`.
-    Everything else about the SDK -- TLS, MQTT, telemetry, C2D, OTA -- is
-    untouched.
-    """
     mqtt_client._create_socket_connection = lambda: transport.local_socket
