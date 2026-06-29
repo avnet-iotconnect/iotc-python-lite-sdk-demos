@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ *  Device Tree overlay for SAMA7D65-CURIOSITY board
+ *  to enable a UART on mikroBUS1 (J25) for the RNWF11
+ *  "UART to Cloud" WiFi Add-on Board (EV12H55A)
+ *
+ *  mikroBUS1 RX/TX (pins 13/14) are wired to PD9/PD8, which are
+ *  shared between CAN0 and FLEXCOM7. This overlay switches FLEXCOM7
+ *  into USART mode so the pins behave as a standard UART instead.
+ */
+/dts-v1/;
+/plugin/;
+#include "sama7d65-pinfunc.h"
+#include <dt-bindings/mfd/atmel-flexcom.h>
+
+&flx7 {
+	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
+	status = "okay";
+};
+
+&uart7 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart7_default>;
+	status = "okay";
+};
+
+&pioa {
+	pinctrl_uart7_default: uart7-default {
+		pinmux = <PIN_PD8__FLEXCOM7_IO0>,
+			 <PIN_PD9__FLEXCOM7_IO1>;
+		bias-disable;
+	};
+};
