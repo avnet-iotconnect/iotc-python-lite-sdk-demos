@@ -1,7 +1,7 @@
 # WiFi Connectivity Demo (EV12H55A / RNWF11)
 
-Upgrades the /IOTCONNECT Starter Demo on the Microchip SAMA7D65-Curiosity Kit to connect to /IOTCONNECT over the *
-*EV12H55A WiFi Add-on Board** (RNWF11) instead of the board's built-in Ethernet.
+Upgrades the /IOTCONNECT Starter Demo on the Microchip SAMA7D65-Curiosity Kit to connect to /IOTCONNECT over the 
+**EV12H55A WiFi Add-on Board** (RNWF11) instead of the board's built-in Ethernet.
 
 > [!IMPORTANT]
 > Complete the [/IOTCONNECT quickstart guide for the Microchip SAMA7D65-Curiosity Kit](../README.md) before proceeding.
