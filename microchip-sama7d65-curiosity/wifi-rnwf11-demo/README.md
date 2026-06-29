@@ -26,17 +26,21 @@ This demo adds a small transport bridge (`rnwf11_transport.py`) that intercepts 
 
 The SAMA7D65-Curiosity Kit has two mikroBUS sockets (**J25 / mikroBUS1** and **J26 / mikroBUS2**). **Use mikroBUS1** (the socket nearest the Ethernet connectors) — mikroBUS2 is wired to a different UART and will not work with the setup in this guide.
 
-Align the module's pins with the mikroBUS1 socket and press down firmly until fully seated.
+Align the module's pins with the mikroBUS1 socket as shown below (green check) and press down firmly until fully seated.
+
+<img src="./media/wifi-module.png" width="400" />
 
 > [!NOTE]
 > It is easy for one row of pins to sit slightly proud if the module goes in at a slight angle. Verify all 8 pins on both rows are fully inserted before powering on.
 
 ### Step 2: Set the module's power-source jumper
 
-The WiFi module has a 3-pin power-selection header labeled **J5** (on the module itself) that selects whether it draws 3.3V from USB or from the mikroBUS connector. Since we're powering it from the mikroBUS connector, move the jumper cap to the **mikroBUS / board power** position (the two pins closest to the board-edge connector).
+The WiFi module has a 3-pin power-selection header labeled **J5** (on the module itself) that selects whether it draws 3.3V from USB or from the mikroBUS connector. Since we're powering it from the mikroBUS connector, move the jumper cap to the position circled below.
+
+<img src="./media/wifi-jumper.png" width="300" />
 
 > [!WARNING]
-> Modules typically ship with the jumper set for USB power. WiFi connectivity will **silently fail** if the jumper is left in the wrong position. Verify the jumper before continuing, even if you haven't touched it.
+> Modules typically ship with the jumper in the *other* position (set up for USB power), which will **not** work for this setup — WiFi connectivity will silently fail with no obvious error. Check the jumper position against the photo above before continuing, even if you haven't touched it.
 
 ## 4. Enable the WiFi Module UART
 

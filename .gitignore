@@ -4,6 +4,7 @@
 **/__pycache__/
 **/*.pyc
 **/package.tar.gz
+**/wifi_config.json
 
 # Local PolarFire scratch folders (not for public repo)
 microchip-polarfire-soc-dk/New folder/
