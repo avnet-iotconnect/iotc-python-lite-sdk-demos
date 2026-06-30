@@ -128,6 +128,13 @@ The DRP-AI Inference demo integrates with the Renesas RZ/V2H EVK's on-board DRP-
 **Supported on:**
 * [Renesas RZ/V2H EVK](renesas-rzv2h-evk/ai-demo/README.md)
 
+## RZ/V2H System Monitor Demo
+
+The System Monitor demo upgrades the /IOTCONNECT starter application on the RZ/V2H EVK to stream real-time system performance telemetry: CPU utilisation, RAM usage, and CPU temperatures read directly from the Linux kernel's `/proc` and `/sys` interfaces. No additional hardware or packages beyond the IoTConnect SDK are required.
+
+**Supported on:**
+* [Renesas RZ/V2H EVK](renesas-rzv2h-evk/system-monitor-demo/README.md)
+
 ## Tria Vision AI Demo
 
 The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.
@@ -148,6 +155,13 @@ The Voice Blackjack demo runs a browser-hosted blackjack game on the board using
 
 **Supported on:**
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-game/README.md)
+
+## KWS Training Studio
+
+The KWS Training Studio provides a complete retraining pipeline for the on-device keyword spotting model used by the Keyword Spotting Demo and Voice Blackjack. A browser-based Flask UI on the board guides you through recording new voice-command clips, packaging and uploading the dataset to /IOTCONNECT file support, launching a PyTorch training job in Amazon SageMaker, converting the trained weights to a TensorFlow Lite package, and deploying the finished model back to the board — all without leaving the browser.
+
+**Supported on:**
+* [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity/kws-training/README.md)
 
 ## PAC1934 Power Monitoring Demo
 
