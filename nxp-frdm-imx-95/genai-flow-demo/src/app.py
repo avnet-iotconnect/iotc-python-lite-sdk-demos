@@ -76,6 +76,13 @@ DEFAULT_CONFIG = {
     "vlm_timeout_s": 600,
     # V4L2 device of the USB camera used for ask-vlm captures
     "camera_device": "/dev/video52",
+    # Agent (ask-agent): a persistent CPU LLM session routes requests to real
+    # board tools (time, temperature, memory...). Stopped after this idle time.
+    "agent_idle_timeout_s": 900,
+    # llama.cpp integration for larger GGUF models (see set-model)
+    "llama_dir": "/opt/llama",
+    "llama_threads": 6,
+    "llama_max_tokens": 200,
     # Voice assistant (voice-start command): tts speaks replies through the
     # playback device; text just streams them to /IOTCONNECT. Empty device
     # strings let GenAI Flow auto-detect (e.g. a USB webcam mic and the MQS
@@ -121,6 +128,12 @@ telemetry = {
     "llm_gen_time": 0.0,          # total generation time (seconds)
     "llm_tps": 0.0,               # tokens per second
     "llm_token_count": 0,
+    "agent_status": "off",        # off | loading | ready | routing | executing | answering
+    "agent_request": "",          # last natural-language request to the agent
+    "agent_tool": "",             # tool the agent chose
+    "agent_tool_result": "",      # what the tool actually returned
+    "agent_response": "",         # agent's final answer, grounded in the tool result
+    "agent_router": "",           # llm if the model picked the tool, keyword if fallback
     "voice_status": "off",        # off | starting | listening | capturing | answering | error
     "voice_question": "",         # last transcribed spoken question
     "voice_response": "",         # last spoken/streamed answer
@@ -263,12 +276,90 @@ class ProcReader:
             return (time.monotonic(), b"")  # timeout tick
 
 
+# --- llama.cpp integration: run larger GGUF models on the CPU -----------------
+def gguf_model_path(name):
+    return os.path.join(config["llama_dir"], "models", name + ".gguf")
+
+
+def is_gguf_model(name):
+    return os.path.isfile(gguf_model_path(name))
+
+
+def list_gguf_models():
+    return sorted(os.path.splitext(os.path.basename(p))[0]
+                  for p in glob.glob(os.path.join(config["llama_dir"], "models", "*.gguf")))
+
+
+# llama-cli prints e.g. "[ Prompt: 89.4 t/s | Generation: 14.3 t/s ]" after the answer
+_LLAMA_PERF_RE = re.compile(r"\[\s*Prompt:\s*([\d.]+)\s*t/s\s*\|\s*Generation:\s*([\d.]+)\s*t/s\s*\]")
+
+
+def run_llama_prompt(prompt):
+    """Run a prompt through llama.cpp (llama-cli) and update llm_* telemetry."""
+    model = config["model"]
+    cmd = [os.path.join(config["llama_dir"], "src", "build", "bin", "llama-cli"),
+           "-m", gguf_model_path(model),
+           "-p", prompt,
+           "-n", str(config["llama_max_tokens"]),
+           "-t", str(config["llama_threads"]),
+           "--single-turn"]
+    print("Running:", " ".join(cmd))
+    start = time.monotonic()
+    result = subprocess.run(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        timeout=config["prompt_timeout_s"],
+    )
+    total_time = time.monotonic() - start
+    out = result.stdout
+
+    prompt_tps = tps = 0.0
+    m = _LLAMA_PERF_RE.search(out)
+    if m:
+        prompt_tps, tps = float(m.group(1)), float(m.group(2))
+        out = out[:m.start()]
+
+    # The answer sits between the echoed "> <prompt>" line and the perf line
+    if "\n> " in "\n" + out:
+        out = ("\n" + out).split("\n> ", 1)[1]
+        out = out.split("\n", 1)[1] if "\n" in out else ""
+    out = re.sub(r"[\r\x08]", "", out)                       # spinner uses CR/backspace redraws
+    response = out.replace("[end of text]", "").strip()
+    response = re.sub(r"^[|\\/\-\s]+", "", response)          # drop leading spinner residue
+    if not response:
+        raise RuntimeError("No llama.cpp response. Output tail:\n" +
+                           (result.stdout[-1000:] + result.stderr[-500:]))
+
+    tokens = max(1, int(len(response) / 4))  # ~4 chars/token estimate
+    gen_time = round(tokens / tps, 2) if tps else round(total_time, 2)
+    ttft = round((len(prompt) / 4) / prompt_tps, 2) if prompt_tps else 0.0
+    load_time = round(total_time - gen_time - ttft, 2)
+    tps = round(tps, 2)
+
+    with telemetry_lock:
+        telemetry.update({
+            "llm_model": model,
+            "llm_backend": "cpu-llama.cpp",
+            "llm_prompt": prompt[:500],
+            "llm_response": response[:1000],
+            "llm_load_time": load_time,
+            "llm_ttft": ttft,
+            "llm_gen_time": gen_time,
+            "llm_tps": tps,
+            "llm_token_count": tokens,
+        })
+    print("llama.cpp response (%.1fs, %.1f tok/s): %s" % (gen_time, tps, response[:200]))
+    return response
+
+
 def run_llm_prompt(prompt):
     """
     Run a single prompt through eIQ GenAI Flow in keyboard-input / text-output
     mode, measure load time, TTFT, generation time and tokens/sec, and update
     the telemetry dictionary. Returns the response text (or raises).
+    GGUF models (see set-model) are dispatched to llama.cpp instead.
     """
+    if is_gguf_model(config["model"]):
+        return run_llama_prompt(prompt)
     cmd = build_genai_cmd(["-i", "keyb", "-o", "text", "-m", config["model"]])
     print("Running:", " ".join(cmd))
     proc = subprocess.Popen(
@@ -501,6 +592,209 @@ def start_voice(output_mode):
 
 
 # -----------------------------------------------------------------------------
+# AGENT (ask-agent): LLM + real board tools
+# -----------------------------------------------------------------------------
+# A small LLM confidently invents times, dates, and temperatures. The agent
+# fixes that: the LLM only *chooses* a tool, the board *executes* it, and the
+# LLM phrases the final answer from the tool's real output.
+#
+# The agent keeps one persistent GenAI Flow process alive (CPU backend, no
+# RAG), so after the first request each round trip takes seconds instead of
+# reloading the model. The session is reaped after agent_idle_timeout_s.
+import datetime
+
+
+def tool_get_time():
+    now = datetime.datetime.now().astimezone()
+    return "The current date and time is " + now.strftime("%A, %B %d, %Y at %H:%M %Z")
+
+
+def tool_get_temperature():
+    return "The chip temperature is %.1f degrees Celsius" % read_cpu_temp()
+
+
+def tool_get_memory():
+    return "The board is using %.0f MB of its 7936 MB of RAM, and CPU load is %.1f percent" % (
+        read_mem_used_mb(), telemetry["cpu_percent"])
+
+
+def tool_get_uptime():
+    with open("/proc/uptime") as f:
+        s = float(f.read().split()[0])
+    return "The board has been running for %d hours and %d minutes" % (s // 3600, (s % 3600) // 60)
+
+
+def tool_get_ip():
+    return "The board's IP address is " + get_local_ip()
+
+
+AGENT_TOOLS = {
+    "get_time": ("the current time or date", tool_get_time),
+    "get_temperature": ("the chip or board temperature", tool_get_temperature),
+    "get_memory": ("memory usage or CPU load", tool_get_memory),
+    "get_uptime": ("how long the board has been running", tool_get_uptime),
+    "get_ip": ("the board's network or IP address", tool_get_ip),
+}
+
+# Keyword fallback for when the 500M model's tool pick can't be parsed
+_TOOL_KEYWORDS = [
+    (re.compile(r"time|clock|date|day|today", re.I), "get_time"),
+    (re.compile(r"temperature|hot|warm|thermal|cool", re.I), "get_temperature"),
+    (re.compile(r"memory|ram|cpu|load|usage", re.I), "get_memory"),
+    (re.compile(r"uptime|running|how long", re.I), "get_uptime"),
+    (re.compile(r"\bip\b|address|network", re.I), "get_ip"),
+]
+
+
+class PersistentLLM:
+    """A GenAI Flow keyb/text session kept alive for multi-turn use."""
+
+    def __init__(self):
+        self.proc = None
+        self.reader = None
+        self.lock = threading.Lock()
+        self.last_used = 0.0
+
+    def _clean(self, buf):
+        return _ANSI_RE.sub("", buf.decode("utf-8", "replace"))
+
+    def start(self):
+        # Always CPU (41s load vs ~2min NPU compile) and no RAG (the tool
+        # router must see only its own instructions).
+        cmd = [config["python"], "-u", genai_script_path(),
+               "-i", "keyb", "-o", "text", "-m", "danube-500M-q8"]
+        print("Starting agent LLM session:", " ".join(cmd))
+        self.proc = subprocess.Popen(
+            cmd, cwd=config["genai_dir"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            bufsize=0,
+        )
+        self.reader = ProcReader(self.proc)
+        self._read_until_marker(config["prompt_timeout_s"])
+        self.last_used = time.monotonic()
+
+    def _read_until_marker(self, timeout):
+        buf = b""
+        deadline = time.monotonic() + timeout
+        while READY_MARKER not in self._clean(buf):
+            if time.monotonic() > deadline:
+                raise RuntimeError("Agent LLM timed out:\n" + self._clean(buf[-1500:]))
+            ts, data = self.reader.get(timeout=5)
+            if data is None:
+                raise RuntimeError("Agent LLM exited:\n" + self._clean(buf[-1500:]))
+            buf += data
+        return buf
+
+    def alive(self):
+        return self.proc is not None and self.proc.poll() is None
+
+    def ask(self, prompt, timeout=120):
+        with self.lock:
+            if not self.alive():
+                self.start()
+            self.proc.stdin.write((prompt.strip() + "\n").encode())
+            self.proc.stdin.flush()
+            buf = self._read_until_marker(timeout)
+            self.last_used = time.monotonic()
+        raw = buf.decode("utf-8", "replace")
+        tokens = _LLM_TOKEN_CONTENT_RE.findall(raw)
+        answer = "".join(tokens).strip()
+        if not answer:  # fall back to plain text before the marker
+            answer = self._clean(buf).split(READY_MARKER)[0].strip()
+        return answer
+
+    def stop(self):
+        with self.lock:
+            if self.proc:
+                self.proc.terminate()
+                try:
+                    self.proc.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    self.proc.kill()
+                self.proc = None
+
+
+agent_llm = PersistentLLM()
+
+
+def agent_reaper():
+    """Stop the idle agent session to reclaim ~1.8 GB of RAM."""
+    while True:
+        time.sleep(60)
+        if agent_llm.alive() and time.monotonic() - agent_llm.last_used > config["agent_idle_timeout_s"]:
+            if llm_busy.acquire(blocking=False):
+                try:
+                    print("Agent LLM idle - stopping session")
+                    agent_llm.stop()
+                    with telemetry_lock:
+                        telemetry["agent_status"] = "off"
+                finally:
+                    llm_busy.release()
+
+
+threading.Thread(target=agent_reaper, daemon=True).start()
+
+
+def set_agent_status(status):
+    with telemetry_lock:
+        telemetry["agent_status"] = status
+
+
+def run_agent_request(request):
+    """Route a natural-language request to a board tool and answer from its result."""
+    if not agent_llm.alive():
+        set_agent_status("loading")
+    else:
+        set_agent_status("routing")
+
+    # Prompt formats chosen empirically - danube-500M answers simple Q/A framing
+    # reliably but rambles on multi-line instruction menus.
+    router_prompt = "Q: Which tool answers '%s'? Options: %s. A:" % (
+        request, ", ".join(AGENT_TOOLS))
+    reply = agent_llm.ask(router_prompt)
+    set_agent_status("routing")
+
+    # The model often echoes the options list before answering, so the chosen
+    # tool is the LAST one mentioned. A keyword match on the request overrides
+    # a disagreeing LLM pick - tiny models sometimes echo without answering.
+    mentions = [(reply.rfind(name), name) for name in AGENT_TOOLS if name in reply]
+    llm_pick = max(mentions)[1] if mentions else None
+    kw_pick = next((name for pattern, name in _TOOL_KEYWORDS if pattern.search(request)), None)
+
+    if llm_pick and (kw_pick is None or kw_pick == llm_pick):
+        tool_name, router = llm_pick, "llm"
+    elif kw_pick:
+        tool_name, router = kw_pick, ("keyword-override" if llm_pick else "keyword")
+    else:
+        raise RuntimeError("No tool matches this request (LLM said: %s)" % reply[:120])
+
+    set_agent_status("executing")
+    tool_result = AGENT_TOOLS[tool_name][1]()
+    print("Agent tool %s -> %s" % (tool_name, tool_result))
+
+    set_agent_status("answering")
+    answer = agent_llm.ask("%s. Q: %s? A:" % (tool_result, request.rstrip("?")))
+    # Sanity check: the answer must actually reuse the tool's data - if the
+    # small model wandered off, the tool result itself is the better answer.
+    fact_words = {w for w in re.findall(r"[A-Za-z0-9.:]{4,}", tool_result)}
+    answer_words = {w for w in re.findall(r"[A-Za-z0-9.:]{4,}", answer)}
+    if len(fact_words & answer_words) < 2:
+        answer = tool_result
+
+    with telemetry_lock:
+        telemetry.update({
+            "agent_request": request[:500],
+            "agent_tool": tool_name,
+            "agent_tool_result": tool_result[:500],
+            "agent_response": answer[:1000],
+            "agent_router": router,
+        })
+    set_agent_status("ready")
+    print("Agent response (%s via %s): %s" % (tool_name, router, answer[:200]))
+    return answer
+
+
+# -----------------------------------------------------------------------------
 # VISION LANGUAGE MODEL (ask-vlm)
 # -----------------------------------------------------------------------------
 # Perf line printed by the VLM after each answer, e.g.:
@@ -720,6 +1014,32 @@ def on_command(msg: C2dCommand):
                            "LLM generation started - response will arrive as telemetry")
         start_llm_job(lambda: run_llm_prompt(prompt), "generating", "Prompt complete")
 
+    elif msg.command_name == "ask-agent":
+        if len(msg.command_args) < 1:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected a request, e.g. what time is it")
+            return
+        if not genai_installed():
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
+            return
+        if not llm_busy.acquire(blocking=False):
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            return
+        request = " ".join(msg.command_args)
+        note = "" if agent_llm.alive() else " (first request loads the model, ~1 min)"
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                           "Agent working - answer will arrive as telemetry" + note)
+        start_llm_job(lambda: run_agent_request(request), "agent", "Agent request complete")
+
+    elif msg.command_name == "agent-stop":
+        if agent_llm.alive():
+            agent_llm.stop()
+            with telemetry_lock:
+                telemetry["agent_status"] = "off"
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Agent session stopped")
+        else:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Agent session is not running")
+
     elif msg.command_name == "voice-start":
         if not genai_installed():
             c.send_command_ack(msg, C2dAck.CMD_FAILED,
@@ -775,14 +1095,15 @@ def on_command(msg: C2dCommand):
         start_llm_job(lambda: run_benchmark(extra), "benchmarking", "Benchmark complete")
 
     elif msg.command_name == "set-model":
-        if len(msg.command_args) == 1:
+        valid = ["danube-500M-q8", "danube-500M-q4"] + list_gguf_models()
+        if len(msg.command_args) == 1 and msg.command_args[0] in valid:
             config["model"] = msg.command_args[0]
             save_config(config)
             with telemetry_lock:
                 telemetry["llm_model"] = config["model"]
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + config["model"])
         else:
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument, e.g. danube-500M-q8")
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Available models: " + ", ".join(valid))
 
     elif msg.command_name == "set-rag":
         if len(msg.command_args) == 1 and msg.command_args[0] in ("on", "off"):
@@ -880,6 +1201,18 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 # -----------------------------------------------------------------------------
 # MAIN EXECUTION
 # -----------------------------------------------------------------------------
+# Offline test modes - exercise the AI paths without any /IOTCONNECT setup:
+#   python3 app.py --test-agent what time is it
+#   python3 app.py --test-llm what is an npu
+if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm"):
+    question = " ".join(sys.argv[2:]) or "What time is it?"
+    try:
+        answer = run_agent_request(question) if sys.argv[1] == "--test-agent" else run_llm_prompt(question)
+        print("\n=== RESULT ===\n" + answer)
+    finally:
+        agent_llm.stop()
+    sys.exit(0)
+
 try:
     telemetry["board_ip"] = get_local_ip()
     if not genai_installed():

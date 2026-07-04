@@ -88,6 +88,48 @@
             "aggregateTypes": []
         },
         {
+            "name": "agent_status",
+            "type": "STRING",
+            "description": "off | loading | ready | routing | executing | answering",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "agent_request",
+            "type": "STRING",
+            "description": "Last natural-language request to the agent",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "agent_tool",
+            "type": "STRING",
+            "description": "Tool the agent chose (get_time, get_temperature, ...)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "agent_tool_result",
+            "type": "STRING",
+            "description": "Real data returned by the tool",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "agent_response",
+            "type": "STRING",
+            "description": "Agent's final answer, grounded in the tool result",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "agent_router",
+            "type": "STRING",
+            "description": "llm when the model picked the tool itself, keyword if fallback",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "voice_status",
             "type": "STRING",
             "description": "off | starting | listening | capturing | answering | error",
@@ -226,6 +268,20 @@
             "name": "Ask LLM (prompt text)",
             "command": "ask-llm",
             "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Ask Agent (request needing real board data)",
+            "command": "ask-agent",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Stop Agent Session (frees RAM)",
+            "command": "agent-stop",
+            "requiredParam": false,
             "requiredAck": true,
             "isOTACommand": false
         },

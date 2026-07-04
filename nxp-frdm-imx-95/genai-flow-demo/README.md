@@ -134,10 +134,12 @@ to interact with the LLM:
 |---|---|---|
 | `ask-llm` | prompt text, e.g. `What is the capital of France?` | Runs the prompt through the on-device LLM. The command is acknowledged immediately; the response arrives as `llm_response` telemetry along with `llm_ttft`, `llm_gen_time`, `llm_tps`, and `llm_token_count` |
 | `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
+| `ask-agent` | request needing live data, e.g. `what time is it` | Function calling: the LLM picks a real board tool (time, temperature, memory, uptime, IP), the board executes it, and the grounded answer plus the full reasoning chain arrive as `agent_*` telemetry. See [Agent](#10-agent-llm-with-real-board-tools-ask-agent) |
+| `agent-stop` | — | Stops the agent's persistent LLM session (it also auto-stops after 15 idle minutes) |
 | `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
 | `voice-stop` | — | Stops the voice assistant session |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
-| `set-model` | `danube-500M-q8` or `danube-500M-q4` | Selects the LLM used for subsequent commands |
+| `set-model` | `danube-500M-q8`, `danube-500M-q4`, or any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`) | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU |
 | `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
 | `get-ip` | — | Returns the board's local IP address |
 | `file-download` | package URL | Self-update with a new demo package |
@@ -331,18 +333,90 @@ attribute). It applies to `ask-llm`, the voice assistant, and `run-benchmark`. E
 > *"The stock FRDM i.MX 95 demo image only allocates about 11 GB of the 32 GB eMMC to the root filesystem. Expand it
 > with: parted -s /dev/mmcblk0 resizepart 2 100% followed by resize2fs /dev/mmcblk0p2"* — verbatim from the docs.
 
-## 10. Going Further
+## 10. Agent: LLM with Real Board Tools (ask-agent)
 
-* **RAG**: GenAI Flow ships with a retrieval-augmented generation pipeline and a sample document database. Run it
-  standalone with `python3 eiq_genai_flow.py --use-rag`, and see the `rag/README.md` in the NXP repository to build a
-  database from your own PDFs.
-* **Full voice assistant**: with a USB headset connected, try `run-benchmark` with `-i vasr -o tts`, or run GenAI Flow
-  standalone in wake-word/voice mode: `python3 eiq_genai_flow.py -i vasr -o tts -m danube-500M-q8`.
+Ask the plain LLM *"what time is it?"* and it will confidently invent one. The agent fixes that with function
+calling: the LLM only **chooses** a tool, the board **executes** it, and the answer is grounded in the tool's real
+output — a complete plan → act → respond loop running on a small model at the edge.
+
+| Tool | Real data source |
+|---|---|
+| `get_time` | board clock (NTP-synced) |
+| `get_temperature` | SoC thermal zone |
+| `get_memory` | /proc/meminfo + CPU load |
+| `get_uptime` | /proc/uptime |
+| `get_ip` | network stack |
+
+### Use it
+
+Send `ask-agent` with a request that needs live data, e.g. `what time is it`, `how warm is the chip`,
+`how much memory is in use`. Telemetry shows the whole reasoning chain: `agent_tool` (which tool was picked),
+`agent_tool_result` (the real data), `agent_response` (the grounded answer), and `agent_router` — `llm` when the
+model chose the tool itself, `keyword` when the fallback matcher rescued an unparseable pick.
+
+The agent keeps one persistent LLM session alive (CPU backend), so the **first** request takes ~1 minute to load and
+subsequent ones answer in seconds. The session stops itself after 15 idle minutes (configurable via
+`agent_idle_timeout_s`), or immediately with `agent-stop`.
+
+### Test without the cloud
+
+Both the agent and the plain LLM path can be exercised with no /IOTCONNECT connection:
+
+```bash
+cd /opt/demo
+python3 app.py --test-agent what time is it
+python3 app.py --test-llm what is an npu
+```
+
+## 11. Model Ladder: Bigger LLMs via llama.cpp (set-model)
+
+Danube-500M is fast but shallow. [llama.cpp](https://github.com/ggml-org/llama.cpp) lets the same `ask-llm` command
+run **larger open models** on the i.MX 95's CPU — trading speed for answer quality, and previewing what the Kinara
+Ara-2 module will make fast. Any `.gguf` file dropped in `/opt/llama/models/` becomes a valid `set-model` target
+(send an invalid `set-model` to get the list of available models in the failure message).
+
+### One-time setup (on the board)
+
+```bash
+mkdir -p /opt/llama/models && cd /opt/llama
+curl -sL https://codeload.github.com/ggml-org/llama.cpp/tar.gz/refs/heads/master -o llama.tar.gz
+tar -xzf llama.tar.gz && mv llama.cpp-master src
+cd src && cmake -B build -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=OFF -DGGML_NATIVE=ON
+cmake --build build --target llama-cli llama-bench -j6      # ~15 min on the A55s
+
+cd /opt/llama/models
+curl -sL -O "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+curl -sL -O "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q8_0.gguf"
+```
+
+### Use it
+
+From /IOTCONNECT: `set-model qwen2.5-1.5b-instruct-q4_k_m`, then `ask-llm` as usual — `llm_backend` telemetry
+reports `cpu-llama.cpp`, and `llm_tps` / `llm_ttft` come from llama.cpp's own timing instrumentation. Switch back
+anytime with `set-model danube-500M-q8`.
+
+### Measured ladder (FRDM-IMX95, 6 threads)
+
+| Model | Runtime | Tokens/sec | Answer quality (same question set) |
+|---|---|---|---|
+| danube-500M-q8 | GenAI Flow, CPU | 10.9 | Fluent but factually shaky (invented dates, "NPU analyzes the human brain") |
+| danube-500M-q8 | GenAI Flow, Neutron NPU | **13.9** | Same model, fastest path today |
+| qwen2.5-0.5b-instruct-q8_0 | llama.cpp, CPU | 13.9 | Noticeably better facts (correct NPU definition, Everest at 8848 m) at Danube-NPU speed |
+| qwen2.5-1.5b-instruct-q4_k_m | llama.cpp, CPU | 6.5 | Best reasoning of the set — right decade and real details on niche questions — at half the speed |
+
+The takeaway for the Ara-2: the quality you want lives in the bigger rows, and today they cost tokens/sec. A
+discrete NPU moves those rows up the speed column without giving up the quality.
+
+## 12. Going Further
+
+* **Custom RAG content**: swap the FRDM95 chunks in section 9 for your own product documentation.
+* **More agent tools**: add entries to `AGENT_TOOLS` in `app.py` — anything the board can read or do (GPIO, camera,
+  scripts) becomes voice/cloud addressable.
 * **Kinara Ara-2**: NXP's discrete NPU module for accelerating larger LLMs at the edge. Support will be added to this
   demo when the module is available — the config's `backend` field and `set-backend` command are the intended
-  extension point.
+  extension point, and the llama.cpp model ladder (section 11) shows exactly which models it will accelerate.
 
-## 11. Customize and Rebuild (Optional)
+## 13. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
 
