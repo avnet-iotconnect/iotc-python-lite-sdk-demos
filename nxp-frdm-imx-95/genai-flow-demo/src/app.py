@@ -65,7 +65,14 @@ DEFAULT_CONFIG = {
     "prompt_timeout_s": 600,
     # Overall benchmark timeout
     "benchmark_timeout_s": 3600,
-    "telemetry_interval_s": 10
+    "telemetry_interval_s": 10,
+    # Vision Language Model (the vlm submodule of the GenAI Flow repo)
+    "vlm_dir": "/root/vlm",
+    "vlm_model": "smolvlm-256M",   # smolvlm-256M or smolvlm-500M
+    "vlm_precision": "q8",         # q8 or fp32
+    "vlm_timeout_s": 600,
+    # V4L2 device of the USB camera used for ask-vlm captures
+    "camera_device": "/dev/video52"
 }
 
 
@@ -101,6 +108,12 @@ telemetry = {
     "llm_gen_time": 0.0,          # total generation time (seconds)
     "llm_tps": 0.0,               # tokens per second
     "llm_token_count": 0,
+    "vlm_model": "",              # VLM used for the last ask-vlm
+    "vlm_question": "",
+    "vlm_response": "",
+    "vlm_vision_time": 0.0,       # vision encoder time (s)
+    "vlm_ttft": 0.0,              # vision + decoder time to first token (s)
+    "vlm_tps": 0.0,               # decode speed (tokens/sec)
     "bench_ttfa": 0.0,            # benchmark: time to first audio (s)
     "bench_ttft": 0.0,            # benchmark: LLM time to first token (s)
     "bench_tps": 0.0,             # benchmark: LLM tokens per second
@@ -342,6 +355,89 @@ def _harvest_metrics(obj, out, prefix=""):
             out.setdefault("bench_mem_avg", val)
 
 
+# -----------------------------------------------------------------------------
+# VISION LANGUAGE MODEL (ask-vlm)
+# -----------------------------------------------------------------------------
+# Perf line printed by the VLM after each answer, e.g.:
+#   Vision: 3.31s | TTFT: 3.79s (Decoder 0.48s) | Current decode speed: 12.50tok/s
+_VLM_PERF_RE = re.compile(
+    r"Vision:\s*([\d.]+)s\s*\|\s*TTFT:\s*([\d.]+)s.*?([\d.]+)\s*tok/s"
+)
+
+VLM_FRAME_PATH = "/opt/demo/vlm-frame.jpg"
+
+
+def vlm_installed():
+    return os.path.isdir(os.path.join(config["vlm_dir"], "src", "vlm"))
+
+
+def capture_frame():
+    """Grab a single JPEG frame from the USB camera via GStreamer."""
+    if os.path.exists(VLM_FRAME_PATH):
+        os.remove(VLM_FRAME_PATH)
+    subprocess.run(
+        ["gst-launch-1.0", "-q",
+         "v4l2src", "device=%s" % config["camera_device"], "num-buffers=1", "!",
+         "image/jpeg,width=1280,height=720", "!",
+         "filesink", "location=%s" % VLM_FRAME_PATH],
+        check=False, timeout=30,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    if not os.path.isfile(VLM_FRAME_PATH) or os.path.getsize(VLM_FRAME_PATH) == 0:
+        raise RuntimeError("Camera capture failed on %s - is the USB camera connected?"
+                           % config["camera_device"])
+    return VLM_FRAME_PATH
+
+
+def run_vlm(question):
+    """
+    Capture a camera frame and run it through SmolVLM (single-shot -q mode).
+    The VLM answers, prints its perf line, then exits on stdin EOF.
+    """
+    frame = capture_frame()
+    cmd = [config["python"], "-u", "-m", "vlm", "-ng",
+           "-m", config["vlm_model"], "-p", config["vlm_precision"],
+           "-im", frame, "-q", question]
+    print("Running VLM:", " ".join(cmd))
+    result = subprocess.run(
+        cmd, cwd=config["vlm_dir"],
+        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True, timeout=config["vlm_timeout_s"],
+    )
+    out = _ANSI_RE.sub("", result.stdout)
+
+    m = _VLM_PERF_RE.search(out)
+    if not m:
+        raise RuntimeError("No VLM answer captured. Last output:\n" + out[-2000:])
+    vision_t, ttft, tps = (float(x) for x in m.groups())
+
+    # The VLM streams each answer token wrapped in bright-green ANSI (Fore.LIGHTGREEN_EX).
+    # Its log lines and perf line use the same color, so filter those out rather than
+    # relying on output ordering (stdout/stderr interleaving is not deterministic).
+    segments = re.findall(r"\x1b\[92m(.*?)\x1b\[0m", result.stdout, re.S)
+    answer = "".join(
+        s for s in segments
+        if not re.match(r"\s*\d{4}-\d{2}-\d{2}", s)      # log lines
+        and "Loading" not in s and "Loaded" not in s      # startup prints
+        and "Vision:" not in s                            # perf line
+    ).strip()
+    if not answer:
+        # Fallback: plain text between the image line and the perf line
+        answer = out.split("image", 1)[-1].split("Vision:")[0].strip()
+
+    with telemetry_lock:
+        telemetry.update({
+            "vlm_model": config["vlm_model"],
+            "vlm_question": question[:500],
+            "vlm_response": answer[:1000],
+            "vlm_vision_time": vision_t,
+            "vlm_ttft": ttft,
+            "vlm_tps": tps,
+        })
+    print("VLM response (vision %.1fs, %.1f tok/s): %s" % (vision_t, tps, answer[:200]))
+    return answer
+
+
 def harvest_benchmark_reports(newer_than=0):
     """Harvest bench metrics from the most recent benchmark JSON report."""
     metrics = {}
@@ -478,6 +574,19 @@ def on_command(msg: C2dCommand):
                            "LLM generation started - response will arrive as telemetry")
         start_llm_job(lambda: run_llm_prompt(prompt), "generating", "Prompt complete")
 
+    elif msg.command_name == "ask-vlm":
+        if not vlm_installed():
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "VLM not found at %s - see demo README" % config["vlm_dir"])
+            return
+        if not llm_busy.acquire(blocking=False):
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            return
+        question = " ".join(msg.command_args) if msg.command_args else "Describe what you see in this image."
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                           "Capturing camera frame and running VLM - response will arrive as telemetry")
+        start_llm_job(lambda: run_vlm(question), "generating", "VLM question complete")
+
     elif msg.command_name == "run-benchmark":
         if not genai_installed():
             with telemetry_lock:
@@ -574,8 +683,16 @@ def on_ota(msg: C2dOta):
         print("Encountered a download processing error. Not restarting.")
 
 
+# Set whenever the MQTT connection drops. The underlying client can silently
+# re-establish TCP without restoring C2D command subscriptions (observed after
+# a DHCP address change), so the main loop restarts the process for a clean
+# session once any in-flight LLM/VLM work has finished.
+_connection_lost = threading.Event()
+
+
 def on_disconnect(reason: str, disconnected_from_server: bool):
     print("Disconnected%s. Reason: %s" % (" from server" if disconnected_from_server else "", reason))
+    _connection_lost.set()
 
 
 # -----------------------------------------------------------------------------
@@ -616,6 +733,11 @@ try:
             print("Client setup failed (%s). Retrying in 30 seconds..." % e)
             time.sleep(30)
     while True:
+        if _connection_lost.is_set() and llm_busy.acquire(blocking=False):
+            llm_busy.release()
+            print("Connection was lost at some point. Restarting for a clean MQTT session...")
+            exit_and_restart()
+
         if not c.is_connected():
             print("(re)connecting...")
             c.connect()

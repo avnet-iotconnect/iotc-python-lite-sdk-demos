@@ -19,6 +19,8 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 
 * **Prompt the on-device LLM from the cloud** with the `ask-llm` command and see the response and measured performance
   come back as telemetry.
+* **Ask a Vision Language Model about the camera view** with the `ask-vlm` command — a USB webcam frame is captured
+  and answered about by SmolVLM running on the board (see [Vision Language Model](#vision-language-model-ask-vlm)).
 * **Run the official GenAI Flow benchmark** (`run-benchmark`) and publish its metrics (TTFT, tokens/sec, CPU/memory
   averages) to your dashboard.
 * **Switch models and backends** (`set-model`, `set-backend`) to compare CPU vs. eIQ Neutron NPU performance.
@@ -131,6 +133,7 @@ to interact with the LLM:
 | Command | Argument | What it does |
 |---|---|---|
 | `ask-llm` | prompt text, e.g. `What is the capital of France?` | Runs the prompt through the on-device LLM. The command is acknowledged immediately; the response arrives as `llm_response` telemetry along with `llm_ttft`, `llm_gen_time`, `llm_tps`, and `llm_token_count` |
+| `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
 | `set-model` | `danube-500M-q8` or `danube-500M-q4` | Selects the LLM used for subsequent commands |
 | `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
@@ -210,7 +213,38 @@ first response takes ~2 minutes longer while the model is compiled for the NPU (
 * For `run-benchmark`, metrics are harvested from the **official JSON report** written by GenAI Flow's benchmark mode
   and should be treated as the authoritative numbers.
 
-## 7. Going Further
+<a name="vision-language-model-ask-vlm"></a>
+## 7. Vision Language Model (ask-vlm)
+
+The GenAI Flow repository also ships a **VLM submodule** (SmolVLM-256M/500M) that answers natural-language questions
+about images — this demo wires it to a USB camera so you can ask about the live scene from /IOTCONNECT.
+
+### Install
+
+The `vlm` directory sits next to `eiq_genai_flow` in the NXP repository you cloned in section 3:
+
+```bash
+# On your host PC:
+scp -r dm-eiq-genai-flow-demonstrator/vlm root@<board-ip>:/root/
+# On the board:
+cd /root/vlm && ./install.sh
+```
+
+Connect a UVC USB webcam and find its device node with `v4l2-ctl --list-devices` (e.g. a Logitech C920 typically
+appears as `/dev/video52` on this image, among the many i.MX95 ISP nodes). Set `camera_device` in
+`/opt/demo/genai-config.json` if yours differs, along with `vlm_model` (`smolvlm-256M` default, or `smolvlm-500M`)
+and `vlm_precision` (`q8` default, or `fp32`).
+
+### Use
+
+Send the `ask-vlm` command from /IOTCONNECT — with no argument it describes the scene; or ask something specific like
+`Is there a person in the room?`. The app captures a fresh frame via GStreamer, runs the VLM (models download on
+first use), and publishes `vlm_response` plus performance telemetry.
+
+Measured on the FRDM-IMX95 CPU with SmolVLM-256M q8 and a 1280×720 frame: **vision encode ~3.6 s, time to first
+token ~4.1 s, decode ~10–11 tok/s**.
+
+## 8. Going Further
 
 * **RAG**: GenAI Flow ships with a retrieval-augmented generation pipeline and a sample document database. Run it
   standalone with `python3 eiq_genai_flow.py --use-rag`, and see the `rag/README.md` in the NXP repository to build a
@@ -221,7 +255,7 @@ first response takes ~2 minutes longer while the model is compiled for the NPU (
   demo when the module is available — the config's `backend` field and `set-backend` command are the intended
   extension point.
 
-## 8. Customize and Rebuild (Optional)
+## 9. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
 

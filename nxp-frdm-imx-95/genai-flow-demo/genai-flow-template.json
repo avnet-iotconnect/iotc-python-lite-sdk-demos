@@ -81,6 +81,48 @@
             "aggregateTypes": []
         },
         {
+            "name": "vlm_model",
+            "type": "STRING",
+            "description": "VLM used for the last ask-vlm (e.g. smolvlm-256M)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vlm_question",
+            "type": "STRING",
+            "description": "Last question asked about the camera frame",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vlm_response",
+            "type": "STRING",
+            "description": "VLM's answer about the camera frame",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vlm_vision_time",
+            "type": "DECIMAL",
+            "description": "Vision encoder time",
+            "unit": "s",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vlm_ttft",
+            "type": "DECIMAL",
+            "description": "Vision + decoder time to first token",
+            "unit": "s",
+            "aggregateTypes": []
+        },
+        {
+            "name": "vlm_tps",
+            "type": "DECIMAL",
+            "description": "VLM decode speed",
+            "unit": "tok/s",
+            "aggregateTypes": []
+        },
+        {
             "name": "bench_ttfa",
             "type": "DECIMAL",
             "description": "Benchmark: time to first audio",
@@ -149,6 +191,13 @@
             "name": "Ask LLM (prompt text)",
             "command": "ask-llm",
             "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Ask VLM about camera view (optional question)",
+            "command": "ask-vlm",
+            "requiredParam": false,
             "requiredAck": true,
             "isOTACommand": false
         },

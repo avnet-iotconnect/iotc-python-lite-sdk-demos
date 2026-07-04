@@ -36,6 +36,7 @@ modern industrial, IoT, and edge AI applications.
 * (Optional) Ethernet Cable
 * (Optional) WiFi Network SSID and Password
 * (Optional, for the GenAI voice pipeline) USB headset or USB speaker + microphone
+* (Optional, for the ask-vlm vision demo) UVC-compliant USB webcam
 
 ## Software
 
