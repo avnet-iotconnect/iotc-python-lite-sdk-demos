@@ -390,7 +390,7 @@ def voice_session(output_mode):
     global _voice_proc
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", config["model"]])
     if config.get("stt_model"):
-        cmd += ["--stt-model", config["stt_model"]]
+        cmd += ["--stt", config["stt_model"]]
     if config.get("capture_device"):
         cmd += ["--capture-device", config["capture_device"]]
     if output_mode == "tts" and config.get("playback_device"):
@@ -428,7 +428,8 @@ def voice_session(output_mode):
         while not _voice_stop.is_set():
             ts, data = reader.get(timeout=1)
             if data is None:
-                raise RuntimeError("Voice pipeline exited unexpectedly")
+                raise RuntimeError("Voice pipeline exited unexpectedly. Last output:\n"
+                                   + _ANSI_RE.sub("", rawbuf[-2000:].decode("utf-8", "replace")))
             if not data:
                 # Quiet tick: close out the exchange if the answer stopped streaming
                 if question is not None and last_token_t and ts - last_token_t > 3:
