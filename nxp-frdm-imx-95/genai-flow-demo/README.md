@@ -272,6 +272,18 @@ business/UC model) improves wake-word and transcription accuracy; override `capt
 > Speak the wake word, pause, *then* ask — running them together can put "Hey NXP" into the transcription itself.
 > While a voice session is active, `ask-llm`, `ask-vlm`, and `run-benchmark` report busy.
 
+### Tuning
+
+* **Getting cut off mid-question?** GenAI Flow ends speech capture after only 200 ms of silence by default, which
+  truncates questions to their first word or two. Raise it (800 ms works well) in
+  `/root/eiq_genai_flow/adapters/stt/stt_adapter.py`:
+  ```python
+  vad_min_silence_duration_ms: int = 800
+  ```
+  Restart the voice session (`voice-stop` / `voice-start`) to apply.
+* **Latency vs. accuracy**: `stt_model` in `/opt/demo/genai-config.json` selects the transcriber —
+  `moonshine-tiny` (fastest, default), `moonshine-base`, or `whisper-small.en` (most accurate).
+
 ## 9. Going Further
 
 * **RAG**: GenAI Flow ships with a retrieval-augmented generation pipeline and a sample document database. Run it
