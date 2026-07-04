@@ -134,6 +134,8 @@ to interact with the LLM:
 |---|---|---|
 | `ask-llm` | prompt text, e.g. `What is the capital of France?` | Runs the prompt through the on-device LLM. The command is acknowledged immediately; the response arrives as `llm_response` telemetry along with `llm_ttft`, `llm_gen_time`, `llm_tps`, and `llm_token_count` |
 | `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
+| `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
+| `voice-stop` | — | Stops the voice assistant session |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
 | `set-model` | `danube-500M-q8` or `danube-500M-q4` | Selects the LLM used for subsequent commands |
 | `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
@@ -244,7 +246,33 @@ first use), and publishes `vlm_response` plus performance telemetry.
 Measured on the FRDM-IMX95 CPU with SmolVLM-256M q8 and a 1280×720 frame: **vision encode ~3.6 s, time to first
 token ~4.1 s, decode ~10–11 tok/s**.
 
-## 8. Going Further
+## 8. Voice Assistant (voice-start)
+
+The `voice-start` command turns the board into a fully offline voice assistant using GenAI Flow's complete pipeline:
+**"Hey NXP"** wake-word detection (VIT) → speech-to-text (Moonshine) → LLM (Danube, CPU or Neutron NPU per
+`set-backend`) → streaming text-to-speech (VITS), with every exchange published to /IOTCONNECT.
+
+### Audio hardware
+
+GenAI Flow auto-detects audio devices. On a FRDM-IMX95 with a USB webcam this means the webcam's microphone for
+capture and the **MQS 3.5 mm jack** for TTS playback — plug in headphones or a powered speaker to hear the replies
+(or start with `voice-start text` for dashboard-only responses). A USB headset with echo cancellation (e.g. a
+business/UC model) improves wake-word and transcription accuracy; override `capture_device` / `playback_device` in
+`/opt/demo/genai-config.json` to select it (ALSA names from `arecord -l` / `aplay -l`, e.g. `sysdefault:CARD=H570e`).
+
+### Using it
+
+1. Send `voice-start` and wait for `voice_status` to reach `listening` (~1–3 minutes while models load; longer on the
+   Neutron backend due to the NPU compile).
+2. Say **"Hey NXP"**, pause until `voice_status` shows `capturing` (or you hear the earcon), then ask your question.
+3. The answer streams out loud and lands in `voice_question` / `voice_response` / `voice_exchanges` telemetry.
+4. The session re-arms for the next wake word; send `voice-stop` to end it.
+
+> [!TIP]
+> Speak the wake word, pause, *then* ask — running them together can put "Hey NXP" into the transcription itself.
+> While a voice session is active, `ask-llm`, `ask-vlm`, and `run-benchmark` report busy.
+
+## 9. Going Further
 
 * **RAG**: GenAI Flow ships with a retrieval-augmented generation pipeline and a sample document database. Run it
   standalone with `python3 eiq_genai_flow.py --use-rag`, and see the `rag/README.md` in the NXP repository to build a
@@ -255,7 +283,7 @@ token ~4.1 s, decode ~10–11 tok/s**.
   demo when the module is available — the config's `backend` field and `set-backend` command are the intended
   extension point.
 
-## 9. Customize and Rebuild (Optional)
+## 10. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
 

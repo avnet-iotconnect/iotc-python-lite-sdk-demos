@@ -72,7 +72,14 @@ DEFAULT_CONFIG = {
     "vlm_precision": "q8",         # q8 or fp32
     "vlm_timeout_s": 600,
     # V4L2 device of the USB camera used for ask-vlm captures
-    "camera_device": "/dev/video52"
+    "camera_device": "/dev/video52",
+    # Voice assistant (voice-start command): tts speaks replies through the
+    # playback device; text just streams them to /IOTCONNECT. Empty device
+    # strings let GenAI Flow auto-detect (e.g. a USB webcam mic and the MQS
+    # 3.5mm jack on the FRDM-IMX95).
+    "voice_output": "tts",
+    "capture_device": "",
+    "playback_device": ""
 }
 
 
@@ -108,6 +115,10 @@ telemetry = {
     "llm_gen_time": 0.0,          # total generation time (seconds)
     "llm_tps": 0.0,               # tokens per second
     "llm_token_count": 0,
+    "voice_status": "off",        # off | starting | listening | capturing | answering | error
+    "voice_question": "",         # last transcribed spoken question
+    "voice_response": "",         # last spoken/streamed answer
+    "voice_exchanges": 0,         # completed question/answer rounds this session
     "vlm_model": "",              # VLM used for the last ask-vlm
     "vlm_question": "",
     "vlm_response": "",
@@ -356,6 +367,123 @@ def _harvest_metrics(obj, out, prefix=""):
 
 
 # -----------------------------------------------------------------------------
+# VOICE ASSISTANT SESSION (voice-start / voice-stop)
+# -----------------------------------------------------------------------------
+# In vasr mode GenAI Flow waits for the wake word ("Hey NXP"), prints
+# "I'm listening!", transcribes speech as an "ASR: <question>" line, then
+# streams the LLM answer token-by-token (ANSI-wrapped, same as keyb mode).
+_LLM_TOKEN_CONTENT_RE = re.compile(r"\x1b\[32m\x1b\[22m(.*?)\x1b\[0m", re.S)
+
+_voice_stop = threading.Event()
+_voice_proc = None
+
+
+def set_voice_status(status):
+    with telemetry_lock:
+        telemetry["voice_status"] = status
+
+
+def voice_session(output_mode):
+    """Run the wake-word voice pipeline and publish each exchange as telemetry."""
+    global _voice_proc
+    cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", config["model"]])
+    if config.get("capture_device"):
+        cmd += ["--capture-device", config["capture_device"]]
+    if output_mode == "tts" and config.get("playback_device"):
+        cmd += ["--playback-device", config["playback_device"]]
+    print("Starting voice session:", " ".join(cmd))
+    proc = subprocess.Popen(
+        cmd, cwd=config["genai_dir"],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        bufsize=0,
+    )
+    _voice_proc = proc
+    reader = ProcReader(proc)
+
+    linebuf = ""     # ANSI-stripped text pending newline, for event lines
+    rawbuf = b""     # raw bytes since last question, for token extraction
+    question = None
+    last_token_t = None
+
+    def finalize_exchange():
+        nonlocal question, rawbuf, last_token_t
+        if question is None:
+            return
+        tokens = _LLM_TOKEN_CONTENT_RE.findall(rawbuf.decode("utf-8", "replace"))
+        answer = "".join(tokens).strip()
+        with telemetry_lock:
+            telemetry["voice_response"] = answer[:1000]
+            telemetry["voice_exchanges"] += 1
+        print("Voice exchange #%d: Q: %s | A: %s" % (telemetry["voice_exchanges"], question, answer[:200]))
+        question = None
+        rawbuf = b""
+        last_token_t = None
+        set_voice_status("listening")
+
+    try:
+        while not _voice_stop.is_set():
+            ts, data = reader.get(timeout=1)
+            if data is None:
+                raise RuntimeError("Voice pipeline exited unexpectedly")
+            if not data:
+                # Quiet tick: close out the exchange if the answer stopped streaming
+                if question is not None and last_token_t and ts - last_token_t > 3:
+                    finalize_exchange()
+                continue
+            rawbuf += data
+            if question is not None and _LLM_TOKEN_CONTENT_RE.search(data.decode("utf-8", "replace")):
+                last_token_t = ts
+
+            linebuf += _ANSI_RE.sub("", data.decode("utf-8", "replace"))
+            while "\n" in linebuf:
+                line, linebuf = linebuf.split("\n", 1)
+                if "I'm listening!" in line:
+                    set_voice_status("capturing")
+                elif "ASR: No speech detected" in line:
+                    set_voice_status("listening")
+                elif "ASR:" in line:
+                    if question is not None:
+                        finalize_exchange()
+                    question = line.split("ASR:", 1)[1].strip()
+                    rawbuf = b""
+                    with telemetry_lock:
+                        telemetry["voice_question"] = question[:500]
+                    set_voice_status("answering")
+                elif "Speak the wakeword" in line or "LLM used:" in line:
+                    set_voice_status("listening")  # pipeline (fully) initialized
+        finalize_exchange()
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        _voice_proc = None
+
+
+def start_voice(output_mode):
+    """Voice worker wrapper - holds llm_busy for the whole session."""
+    def worker():
+        try:
+            with telemetry_lock:
+                telemetry["genai_status"] = "voice"
+                telemetry["voice_exchanges"] = 0
+            set_voice_status("starting")
+            voice_session(output_mode)
+            set_voice_status("off")
+            with telemetry_lock:
+                telemetry["genai_status"] = "idle"
+        except Exception as e:
+            print("Voice session failed:", e)
+            set_voice_status("error")
+            with telemetry_lock:
+                telemetry["genai_status"] = "error"
+        finally:
+            llm_busy.release()
+    threading.Thread(target=worker, daemon=True).start()
+
+
+# -----------------------------------------------------------------------------
 # VISION LANGUAGE MODEL (ask-vlm)
 # -----------------------------------------------------------------------------
 # Perf line printed by the VLM after each answer, e.g.:
@@ -573,6 +701,32 @@ def on_command(msg: C2dCommand):
         c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                            "LLM generation started - response will arrive as telemetry")
         start_llm_job(lambda: run_llm_prompt(prompt), "generating", "Prompt complete")
+
+    elif msg.command_name == "voice-start":
+        if not genai_installed():
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
+            return
+        if not llm_busy.acquire(blocking=False):
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            return
+        output_mode = msg.command_args[0] if msg.command_args else config["voice_output"]
+        if output_mode not in ("tts", "text"):
+            llm_busy.release()
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected tts or text")
+            return
+        _voice_stop.clear()
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                           "Voice assistant starting (%s output) - say 'Hey NXP' once voice_status is 'listening'"
+                           % output_mode)
+        start_voice(output_mode)
+
+    elif msg.command_name == "voice-stop":
+        if telemetry["voice_status"] in ("off", "error"):
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Voice assistant is not running")
+        else:
+            _voice_stop.set()
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Voice assistant stopping")
 
     elif msg.command_name == "ask-vlm":
         if not vlm_installed():
