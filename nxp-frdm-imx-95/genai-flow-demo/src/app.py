@@ -57,6 +57,9 @@ DEFAULT_CONFIG = {
     "python": "python3",
     # danube-500M-q8 (default) or danube-500M-q4
     "model": "danube-500M-q8",
+    # Ground LLM answers in the on-device RAG database (rag/src/data/rag_database.pkl).
+    # Applies to ask-llm, the voice assistant, and run-benchmark.
+    "use_rag": False,
     # "cpu" or "neutron" (i.MX 95 B0 only). "ara2" reserved for future use.
     "backend": "cpu",
     # Seconds with no LLM output before a response is considered complete
@@ -110,6 +113,7 @@ telemetry = {
     "genai_status": "idle",       # idle | generating | benchmarking | not-installed | error
     "llm_model": config["model"],
     "llm_backend": config["backend"],
+    "llm_rag": "on" if config.get("use_rag") else "off",
     "llm_prompt": "",
     "llm_response": "",
     "llm_load_time": 0.0,         # seconds spent initializing the pipeline
@@ -230,6 +234,8 @@ def build_genai_cmd(extra_args):
     cmd = [config["python"], "-u", genai_script_path()] + extra_args
     if config["backend"] == "neutron":
         cmd.append("--use-neutron")
+    if config.get("use_rag"):
+        cmd.append("--use-rag")
     return cmd
 
 
@@ -315,7 +321,13 @@ def run_llm_prompt(prompt):
         except subprocess.TimeoutExpired:
             proc.kill()
 
-    response = clean(genbuf).split(READY_MARKER)[0].strip()
+    response = clean(genbuf).split(READY_MARKER)[0]
+    # Drop logger lines (timestamps, GStreamer errors, etc.) that can interleave
+    # with the streamed answer, e.g. while a voice session holds the audio device.
+    response = "\n".join(
+        l for l in response.splitlines()
+        if not re.match(r"\s*\d{4}-\d{2}-\d{2}[ T]", l) and "Error:" not in l
+    ).strip()
     if not response:
         raise RuntimeError("No LLM response captured. Last output:\n" + clean(genbuf[-2000:]))
 
@@ -688,6 +700,7 @@ def exit_and_restart():
 def on_command(msg: C2dCommand):
     global c
     print("Received command", msg.command_name, msg.command_args, msg.ack_id)
+    config.update(load_config())  # pick up externally edited genai-config.json
 
     if msg.command_name == "ask-llm":
         if len(msg.command_args) < 1:
@@ -715,7 +728,6 @@ def on_command(msg: C2dCommand):
         if not llm_busy.acquire(blocking=False):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
             return
-        config.update(load_config())  # pick up externally edited genai-config.json
         output_mode = msg.command_args[0] if msg.command_args else config["voice_output"]
         if output_mode not in ("tts", "text"):
             llm_busy.release()
@@ -771,6 +783,16 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + config["model"])
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument, e.g. danube-500M-q8")
+
+    elif msg.command_name == "set-rag":
+        if len(msg.command_args) == 1 and msg.command_args[0] in ("on", "off"):
+            config["use_rag"] = msg.command_args[0] == "on"
+            save_config(config)
+            with telemetry_lock:
+                telemetry["llm_rag"] = msg.command_args[0]
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "RAG " + msg.command_args[0])
+        else:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument: on or off")
 
     elif msg.command_name == "set-backend":
         if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron"):

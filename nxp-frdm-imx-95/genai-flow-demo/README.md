@@ -284,7 +284,54 @@ business/UC model) improves wake-word and transcription accuracy; override `capt
 * **Latency vs. accuracy**: `stt_model` in `/opt/demo/genai-config.json` selects the transcriber —
   `moonshine-tiny` (fastest, default), `moonshine-base`, or `whisper-small.en` (most accurate).
 
-## 9. Going Further
+## 9. RAG: Ground Answers in Your Own Documentation (set-rag)
+
+Small language models hallucinate facts. RAG (Retrieval-Augmented Generation) fixes that by retrieving relevant
+passages from an on-device vector database and injecting them into the prompt — turning the board into an offline
+**"ask the manual"** assistant. This demo ships a knowledge base about the FRDM-IMX95 itself
+([rag-db/FRDM95_hand_made_chunks.json](rag-db/FRDM95_hand_made_chunks.json)), so the board can answer questions about
+its own setup, commands, and measured performance with real numbers instead of inventions.
+
+### Build the database (runs on the board — no PC tooling needed)
+
+NXP's docs describe a PC-based flow (Docling PDF parsing + a GPU chunking model), but hand-made chunk files skip all
+of that, and the embedding step runs fine on the i.MX95 itself (~30 chunks/sec):
+
+```bash
+# On the board:
+cd /root/eiq_genai_flow/rag/src/data
+mkdir -p medical-backup
+mv chunked_files/Medical_*.json medical-backup/           # remove the sample medical content
+cp rag_database.pkl medical-backup/                       # keep a backup
+# copy FRDM95_hand_made_chunks.json (from this repo's rag-db/) into chunked_files/, then:
+cd /root/eiq_genai_flow/rag/src
+echo "User guide for the NXP FRDM i.MX 95 development board." | \
+  python3 -m rag.preprocessing.generate_embeddings -f all
+```
+
+To use your own content, write a chunk file in the same JSON format (groups of short, self-contained factual
+passages) and rebuild — any product manual, datasheet, or procedure text works.
+
+### Calibrate the ambiguity threshold
+
+GenAI Flow's query classifier rejects questions as "ambiguous" when retrieval similarity is below
+`similarity_threshold` (default 0.65) in `/root/eiq_genai_flow/config.py`. With MiniLM embeddings and hand-made
+chunks, correct matches typically score 0.35–0.45, so lower it:
+
+```python
+similarity_threshold: float = 0.35
+```
+
+### Use it
+
+Toggle grounding from /IOTCONNECT with `set-rag on` / `set-rag off` (reflected in the `llm_rag` telemetry
+attribute). It applies to `ask-llm`, the voice assistant, and `run-benchmark`. Example, with RAG on:
+
+> **ask-llm** `How do I expand the root filesystem?` →
+> *"The stock FRDM i.MX 95 demo image only allocates about 11 GB of the 32 GB eMMC to the root filesystem. Expand it
+> with: parted -s /dev/mmcblk0 resizepart 2 100% followed by resize2fs /dev/mmcblk0p2"* — verbatim from the docs.
+
+## 10. Going Further
 
 * **RAG**: GenAI Flow ships with a retrieval-augmented generation pipeline and a sample document database. Run it
   standalone with `python3 eiq_genai_flow.py --use-rag`, and see the `rag/README.md` in the NXP repository to build a
@@ -295,7 +342,7 @@ business/UC model) improves wake-word and transcription accuracy; override `capt
   demo when the module is available — the config's `backend` field and `set-backend` command are the intended
   extension point.
 
-## 10. Customize and Rebuild (Optional)
+## 11. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
 

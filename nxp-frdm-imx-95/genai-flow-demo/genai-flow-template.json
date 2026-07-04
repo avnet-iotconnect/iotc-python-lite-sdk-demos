@@ -32,6 +32,13 @@
             "aggregateTypes": []
         },
         {
+            "name": "llm_rag",
+            "type": "STRING",
+            "description": "on when answers are grounded in the on-device RAG database",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "llm_prompt",
             "type": "STRING",
             "description": "Last prompt sent to the on-device LLM",
@@ -253,6 +260,13 @@
         {
             "name": "Set LLM Model (danube-500M-q8 | danube-500M-q4)",
             "command": "set-model",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Set RAG grounding (on | off)",
+            "command": "set-rag",
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false
