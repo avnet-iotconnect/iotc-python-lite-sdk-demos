@@ -78,6 +78,8 @@ DEFAULT_CONFIG = {
     # strings let GenAI Flow auto-detect (e.g. a USB webcam mic and the MQS
     # 3.5mm jack on the FRDM-IMX95).
     "voice_output": "tts",
+    # moonshine-tiny (fastest), moonshine-base, or whisper-small.en (most accurate)
+    "stt_model": "moonshine-tiny",
     "capture_device": "",
     "playback_device": ""
 }
@@ -387,6 +389,8 @@ def voice_session(output_mode):
     """Run the wake-word voice pipeline and publish each exchange as telemetry."""
     global _voice_proc
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", config["model"]])
+    if config.get("stt_model"):
+        cmd += ["--stt-model", config["stt_model"]]
     if config.get("capture_device"):
         cmd += ["--capture-device", config["capture_device"]]
     if output_mode == "tts" and config.get("playback_device"):
