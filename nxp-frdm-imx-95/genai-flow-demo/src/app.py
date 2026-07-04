@@ -715,6 +715,7 @@ def on_command(msg: C2dCommand):
         if not llm_busy.acquire(blocking=False):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
             return
+        config.update(load_config())  # pick up externally edited genai-config.json
         output_mode = msg.command_args[0] if msg.command_args else config["voice_output"]
         if output_mode not in ("tts", "text"):
             llm_busy.release()
