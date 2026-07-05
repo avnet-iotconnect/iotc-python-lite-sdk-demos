@@ -811,7 +811,18 @@ def vlm_installed():
 
 
 def capture_frame():
-    """Grab a single JPEG frame from the USB camera via GStreamer."""
+    """
+    Grab a single JPEG frame from the USB camera. If camera-server.py is
+    streaming (it owns the device), reuse its shared frame instead.
+    """
+    shared = "/tmp/camera-latest.jpg"
+    try:
+        if time.time() - os.path.getmtime(shared) < 3:
+            import shutil
+            shutil.copyfile(shared, VLM_FRAME_PATH)
+            return VLM_FRAME_PATH
+    except OSError:
+        pass
     if os.path.exists(VLM_FRAME_PATH):
         os.remove(VLM_FRAME_PATH)
     subprocess.run(

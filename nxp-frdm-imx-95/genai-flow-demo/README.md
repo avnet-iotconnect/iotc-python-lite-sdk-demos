@@ -407,7 +407,44 @@ anytime with `set-model danube-500M-q8`.
 The takeaway for the Ara-2: the quality you want lives in the bigger rows, and today they cost tokens/sec. A
 discrete NPU moves those rows up the speed column without giving up the quality.
 
-## 12. Going Further
+## 12. Booth Dashboard and Live Camera
+
+A ready-made /IOTCONNECT dashboard for demos and trade-show booths is included:
+[FRDM_i.MX_95_GenAI_dashboard.json](FRDM_i.MX_95_GenAI_dashboard.json). It shows the board image, live gauges
+(tokens/sec, SoC temperature, CPU), the latest LLM / VLM / voice / agent responses with the agent's full reasoning
+chain, one-click Control widgets (RAG on/off, CPU/NPU backend, "Ask VLM", "Agent: what time is it"), a free-form
+Device Command panel, and an embedded live camera view.
+
+### Import
+
+1. Make sure the `genaiflow` template has **all** attributes (including the `agent_*` set and `llm_rag`) and
+   commands from [genai-flow-template.json](genai-flow-template.json).
+2. In /IOTCONNECT select **Create Dashboard → Import**, choose the JSON file, and map it to the `genaiflow`
+   template and your device.
+3. Widgets can then be rearranged/resized to taste — re-export to save your layout.
+
+### Live camera in the dashboard (Embedded widget)
+
+`camera-server.py` (installed with this demo in `/opt/demo`) streams HTTPS MJPEG from the USB camera:
+
+```bash
+cd /opt/demo && nohup python3 camera-server.py > camera.log 2>&1 &
+```
+
+* Endpoints: `https://<board-ip>:8080/live` (MJPEG stream), `/snapshot` (single JPEG).
+* Edit the dashboard's **Embedded** widget link to your board's IP.
+* The certificate is self-signed: open `https://<board-ip>:8080` once in a browser tab and accept the warning,
+  after which the embedded view renders.
+* The server shares frames with `ask-vlm` (via `/tmp/camera-latest.jpg`), so vision commands keep working while
+  streaming — no camera contention.
+
+> [!TIP]
+> For remote (off-LAN) streaming or recorded footage, the AWS KVS demos from the i.MX93 directory
+> ([kvs-putmedia](../../nxp-frdm-imx-93/kvs-putmedia/README.md) /
+> [kvs-webrtc](../../nxp-frdm-imx-93/kvs-webrtc/README.md)) can be adapted to this board and pair with the
+> dashboard's Video Stream widget — that requires AWS KVS setup on your /IOTCONNECT account.
+
+## 13. Going Further
 
 * **Custom RAG content**: swap the FRDM95 chunks in section 9 for your own product documentation.
 * **More agent tools**: add entries to `AGENT_TOOLS` in `app.py` — anything the board can read or do (GPIO, camera,
@@ -416,7 +453,7 @@ discrete NPU moves those rows up the speed column without giving up the quality.
   demo when the module is available — the config's `backend` field and `set-backend` command are the intended
   extension point, and the llama.cpp model ladder (section 11) shows exactly which models it will accelerate.
 
-## 13. Customize and Rebuild (Optional)
+## 14. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
 
