@@ -91,11 +91,23 @@
             "minValue": "0",
             "maxValue": "20",
             "version": "2.0",
-            "zones": {
-              "zoneColor": "",
-              "zoneName": "",
-              "upToValue": "20"
-            },
+            "zones": [
+              {
+                "zoneName": "slow",
+                "upToValue": "5",
+                "zoneColor": "#d0021b"
+              },
+              {
+                "zoneName": "ok",
+                "upToValue": "10",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "fast",
+                "upToValue": "20",
+                "zoneColor": "#7ed321"
+              }
+            ],
             "attrType": "1"
           }
         }
@@ -145,11 +157,23 @@
             "minValue": "0",
             "maxValue": "100",
             "version": "2.0",
-            "zones": {
-              "zoneColor": "",
-              "zoneName": "",
-              "upToValue": "100"
-            },
+            "zones": [
+              {
+                "zoneName": "cool",
+                "upToValue": "60",
+                "zoneColor": "#7ed321"
+              },
+              {
+                "zoneName": "warm",
+                "upToValue": "80",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "hot",
+                "upToValue": "100",
+                "zoneColor": "#d0021b"
+              }
+            ],
             "attrType": "1"
           }
         }
@@ -199,11 +223,23 @@
             "minValue": "0",
             "maxValue": "100",
             "version": "2.0",
-            "zones": {
-              "zoneColor": "",
-              "zoneName": "",
-              "upToValue": "100"
-            },
+            "zones": [
+              {
+                "zoneName": "idle",
+                "upToValue": "60",
+                "zoneColor": "#7ed321"
+              },
+              {
+                "zoneName": "busy",
+                "upToValue": "85",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "pinned",
+                "upToValue": "100",
+                "zoneColor": "#d0021b"
+              }
+            ],
             "attrType": "1"
           }
         }
@@ -239,28 +275,28 @@
             "attributes": {
               "attribute": [
                 {
-                  "attributeGuid": "genai_status",
+                  "attributeGuid": "13335721-B977-42E1-81B7-318E5629763E",
                   "attributeName": "genai_status"
                 },
                 {
-                  "attributeGuid": "llm_model",
+                  "attributeGuid": "04D7D078-C8FD-42AC-8845-32D67863F369",
                   "attributeName": "llm_model"
                 },
                 {
-                  "attributeGuid": "llm_backend",
+                  "attributeGuid": "F2E43AF7-158A-4F4A-80ED-0CE7D4E60BD7",
                   "attributeName": "llm_backend"
                 },
                 {
-                  "attributeGuid": "llm_rag",
-                  "attributeName": "llm_rag"
-                },
-                {
-                  "attributeGuid": "voice_status",
+                  "attributeGuid": "83BC7023-2670-4578-98FB-5181123BB04E",
                   "attributeName": "voice_status"
                 },
                 {
-                  "attributeGuid": "agent_status",
-                  "attributeName": "agent_status"
+                  "attributeGuid": "E5D26EBB-DF98-4FDF-B001-2B53872E6E99",
+                  "attributeName": "board_ip"
+                },
+                {
+                  "attributeGuid": "73BDAF77-B08E-4338-A26F-06A91F1B5BE0",
+                  "attributeName": "sdk_version"
                 }
               ]
             },
@@ -954,7 +990,7 @@
                   "attributeGuid": "13335721-B977-42E1-81B7-318E5629763E",
                   "attributeName": "genai_status",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -965,7 +1001,7 @@
                   "attributeGuid": "04D7D078-C8FD-42AC-8845-32D67863F369",
                   "attributeName": "llm_model",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -976,7 +1012,7 @@
                   "attributeGuid": "94AB89D2-9F1E-47C9-8B00-2BECCA820025",
                   "attributeName": "llm_tps",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "DECIMAL",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -987,7 +1023,7 @@
                   "attributeGuid": "1EF93632-0393-4C42-8701-01BAAE559B22",
                   "attributeName": "llm_response",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -998,7 +1034,7 @@
                   "attributeGuid": "3F401C80-CD28-4363-BCE9-0664C87DD2DB",
                   "attributeName": "vlm_response",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -1009,7 +1045,7 @@
                   "attributeGuid": "284D1AD2-D461-4B62-AA04-2664531B2B3F",
                   "attributeName": "voice_question",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -1020,7 +1056,7 @@
                   "attributeGuid": "BE32850A-6314-43F4-8426-10859E8065AF",
                   "attributeName": "voice_response",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "STRING",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -1031,7 +1067,7 @@
                   "attributeGuid": "EC9D69DF-D4DB-4F24-AFF2-07BFC9750A9B",
                   "attributeName": "cpu_percent",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "DECIMAL",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -1042,7 +1078,7 @@
                   "attributeGuid": "F4FEEA25-CB05-4782-9CBE-E087865B586C",
                   "attributeName": "cpu_temp",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "DECIMAL",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
@@ -1053,7 +1089,7 @@
                   "attributeGuid": "40476E22-9771-4A79-B512-C9BFD1E5D7DA",
                   "attributeName": "mem_used_mb",
                   "displayName": "",
-                  "checked": "false",
+                  "checked": "true",
                   "dataType": "DECIMAL",
                   "attributeLatestValue": "",
                   "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
