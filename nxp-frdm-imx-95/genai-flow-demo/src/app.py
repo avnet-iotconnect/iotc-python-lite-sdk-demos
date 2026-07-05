@@ -160,6 +160,18 @@ telemetry_lock = threading.Lock()
 llm_busy = threading.Lock()
 
 
+def publish_state():
+    """Write current state for camera-server.py's /responses page (atomic)."""
+    try:
+        with telemetry_lock:
+            snapshot = dict(telemetry)
+        with open("/tmp/genai-state.json.tmp", "w") as f:
+            json.dump(snapshot, f)
+        os.replace("/tmp/genai-state.json.tmp", "/tmp/genai-state.json")
+    except OSError:
+        pass
+
+
 def genai_script_path():
     return os.path.join(config["genai_dir"], "eiq_genai_flow.py")
 
@@ -522,6 +534,7 @@ def voice_session(output_mode):
             telemetry["voice_response"] = answer[:1000]
             telemetry["voice_exchanges"] += 1
         print("Voice exchange #%d: Q: %s | A: %s" % (telemetry["voice_exchanges"], question, answer[:200]))
+        publish_state()
         question = None
         rawbuf = b""
         last_token_t = None
@@ -956,9 +969,11 @@ def start_llm_job(job, name, done_msg):
         try:
             with telemetry_lock:
                 telemetry["genai_status"] = name
+            publish_state()
             job()
             with telemetry_lock:
                 telemetry["genai_status"] = "idle"
+            publish_state()
             print(done_msg)
         except Exception as e:
             print("LLM job failed:", e)
@@ -1276,6 +1291,7 @@ try:
             telemetry["mem_used_mb"] = read_mem_used_mb()
             telemetry["cpu_temp"] = read_cpu_temp()
             c.send_telemetry(dict(telemetry))
+        publish_state()
         time.sleep(config["telemetry_interval_s"])
 
 except DeviceConfigError as dce:

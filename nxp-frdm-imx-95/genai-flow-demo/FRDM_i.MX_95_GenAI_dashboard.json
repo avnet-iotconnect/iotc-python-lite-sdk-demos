@@ -317,278 +317,36 @@
       }
     },
     {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
+      "widgetGuid": "E1C837D5-D575-44AB-8D1D-EEFBB3DF5940",
       "widgetProperties": {
-        "i": "Transformation",
-        "background": "#FFFFFF",
+        "i": "Embedded",
+        "background": "#fff",
         "fontColor": "#343434",
         "fontFamily": "Proxima Nova",
         "fontSize": "18",
-        "title": "LLM Answer (RAG-grounded)",
+        "title": "AI Responses (live from the board)",
         "titleAlign": "",
         "contents": {
-          "Transformation": {
+          "embedded": {
+            "link": "https://192.168.68.80:8080/responses",
+            "refresh": "",
             "device": {
               "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
               "deviceUniqueId": "MCLiMX95b"
             },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "1EF93632-0393-4C42-8701-01BAAE559B22",
-                  "attributeName": "llm_response",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
+            "attributes": "",
+            "key": "embedded"
           }
         }
       },
       "properties": {
         "x": "0",
         "y": "9",
-        "w": "21",
-        "h": "8",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
-        "isStatic": "false"
-      }
-    },
-    {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
-      "widgetProperties": {
-        "i": "Transformation",
-        "background": "#FFFFFF",
-        "fontColor": "#343434",
-        "fontFamily": "Proxima Nova",
-        "fontSize": "18",
-        "title": "VLM: What the Camera Sees",
-        "titleAlign": "",
-        "contents": {
-          "Transformation": {
-            "device": {
-              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
-              "deviceUniqueId": "MCLiMX95b"
-            },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "3F401C80-CD28-4363-BCE9-0664C87DD2DB",
-                  "attributeName": "vlm_response",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
-          }
-        }
-      },
-      "properties": {
-        "x": "21",
-        "y": "9",
-        "w": "21",
-        "h": "8",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
-        "isStatic": "false"
-      }
-    },
-    {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
-      "widgetProperties": {
-        "i": "Transformation",
-        "background": "#B8E986",
-        "fontColor": "#343434",
-        "fontFamily": "Proxima Nova",
-        "fontSize": "18",
-        "title": "Agent Tool",
-        "titleAlign": "",
-        "contents": {
-          "Transformation": {
-            "device": {
-              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
-              "deviceUniqueId": "MCLiMX95b"
-            },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "agent_tool",
-                  "attributeName": "agent_tool",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
-          }
-        }
-      },
-      "properties": {
-        "x": "0",
-        "y": "17",
-        "w": "7",
-        "h": "7",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
-        "isStatic": "false"
-      }
-    },
-    {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
-      "widgetProperties": {
-        "i": "Transformation",
-        "background": "#B8E986",
-        "fontColor": "#343434",
-        "fontFamily": "Proxima Nova",
-        "fontSize": "18",
-        "title": "Agent: Real Board Data",
-        "titleAlign": "",
-        "contents": {
-          "Transformation": {
-            "device": {
-              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
-              "deviceUniqueId": "MCLiMX95b"
-            },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "agent_tool_result",
-                  "attributeName": "agent_tool_result",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
-          }
-        }
-      },
-      "properties": {
-        "x": "7",
-        "y": "17",
-        "w": "14",
-        "h": "7",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
-        "isStatic": "false"
-      }
-    },
-    {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
-      "widgetProperties": {
-        "i": "Transformation",
-        "background": "#FFFFFF",
-        "fontColor": "#343434",
-        "fontFamily": "Proxima Nova",
-        "fontSize": "18",
-        "title": "Voice Heard",
-        "titleAlign": "",
-        "contents": {
-          "Transformation": {
-            "device": {
-              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
-              "deviceUniqueId": "MCLiMX95b"
-            },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "284D1AD2-D461-4B62-AA04-2664531B2B3F",
-                  "attributeName": "voice_question",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
-          }
-        }
-      },
-      "properties": {
-        "x": "21",
-        "y": "17",
-        "w": "10",
-        "h": "7",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
-        "isStatic": "false"
-      }
-    },
-    {
-      "widgetGuid": "6FEFF6B7-15C4-4095-A156-87A1B38D2FF5",
-      "widgetProperties": {
-        "i": "Transformation",
-        "background": "#FFFFFF",
-        "fontColor": "#343434",
-        "fontFamily": "Proxima Nova",
-        "fontSize": "18",
-        "title": "Voice Answer",
-        "titleAlign": "",
-        "contents": {
-          "Transformation": {
-            "device": {
-              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
-              "deviceUniqueId": "MCLiMX95b"
-            },
-            "attributes": {
-              "attribute": [
-                {
-                  "attributeGuid": "BE32850A-6314-43F4-8426-10859E8065AF",
-                  "attributeName": "voice_response",
-                  "displayName": "",
-                  "checked": "true",
-                  "dataType": "STRING",
-                  "attributeLatestValue": "",
-                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
-                  "gatewayUpdatedDate": "NA",
-                  "attributeValue": ""
-                }
-              ]
-            },
-            "attrType": "1"
-          }
-        }
-      },
-      "properties": {
-        "x": "31",
-        "y": "17",
-        "w": "11",
-        "h": "7",
-        "i": "Transformation",
-        "minW": "7",
-        "minH": "4",
+        "w": "42",
+        "h": "13",
+        "i": "Embedded",
+        "minW": "10",
+        "minH": "10",
         "isStatic": "false"
       }
     },
@@ -698,7 +456,7 @@
       },
       "properties": {
         "x": "0",
-        "y": "24",
+        "y": "22",
         "w": "9",
         "h": "6",
         "i": "Control",
@@ -744,7 +502,7 @@
       },
       "properties": {
         "x": "9",
-        "y": "24",
+        "y": "22",
         "w": "9",
         "h": "6",
         "i": "Control",
@@ -790,7 +548,7 @@
       },
       "properties": {
         "x": "18",
-        "y": "24",
+        "y": "22",
         "w": "9",
         "h": "6",
         "i": "Control",
@@ -836,7 +594,7 @@
       },
       "properties": {
         "x": "27",
-        "y": "24",
+        "y": "22",
         "w": "9",
         "h": "6",
         "i": "Control",
@@ -891,7 +649,7 @@
       },
       "properties": {
         "x": "36",
-        "y": "24",
+        "y": "22",
         "w": "7",
         "h": "4",
         "i": "Live",
@@ -908,7 +666,7 @@
         "fontColor": "#343434",
         "fontFamily": "Proxima Nova",
         "fontSize": "18",
-        "title": "Live Camera (board Flask server)",
+        "title": "Live Camera (board web server)",
         "titleAlign": "",
         "contents": {
           "embedded": {
@@ -925,7 +683,7 @@
       },
       "properties": {
         "x": "0",
-        "y": "30",
+        "y": "28",
         "w": "21",
         "h": "15",
         "i": "Embedded",

@@ -68,8 +68,9 @@ def capture_loop():
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
     cap.set(cv2.CAP_PROP_FPS, FPS)
     if not cap.isOpened():
-        print("ERROR: cannot open camera index", idx, flush=True)
-        sys.exit(1)
+        print("WARNING: cannot open camera index %d - /live disabled, /responses still served" % idx,
+              flush=True)
+        return
     print("Camera %d open at %dx%d" % (idx, WIDTH, HEIGHT), flush=True)
     last_shared = 0.0
     while True:
@@ -95,12 +96,79 @@ def capture_loop():
                 pass
 
 
+STATE_PATH = "/tmp/genai-state.json"
+
+RESPONSES_HTML = b"""<!DOCTYPE html>
+<html><head><title>FRDM i.MX 95 - GenAI Responses</title><meta charset="utf-8">
+<style>
+ body{margin:0;padding:14px;background:#10151c;color:#e8edf2;font-family:'Segoe UI',Roboto,sans-serif}
+ .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .card{background:#1a2230;border-radius:10px;padding:12px 16px;border-left:5px solid #4a90d9;min-height:70px}
+ .card h2{margin:0 0 6px;font-size:15px;color:#7fb2e5;text-transform:uppercase;letter-spacing:1px}
+ .q{color:#9aa7b4;font-size:14px;margin:2px 0}
+ .a{font-size:17px;line-height:1.45;margin:4px 0;white-space:pre-wrap}
+ .meta{color:#5d6b7a;font-size:12px;margin-top:6px}
+ .badges{margin-bottom:12px}
+ .badge{display:inline-block;background:#243247;border-radius:14px;padding:4px 14px;margin-right:8px;font-size:14px}
+ .badge b{color:#7ed321}
+ .agent{border-left-color:#7ed321}.vlm{border-left-color:#f5a623}.voice{border-left-color:#bd10e0}
+</style></head><body>
+<div class="badges" id="badges"></div>
+<div class="grid">
+ <div class="card"><h2>LLM Answer</h2><div class="q" id="llm_q"></div><div class="a" id="llm_a"></div><div class="meta" id="llm_m"></div></div>
+ <div class="card vlm"><h2>Vision: What the Camera Sees</h2><div class="q" id="vlm_q"></div><div class="a" id="vlm_a"></div><div class="meta" id="vlm_m"></div></div>
+ <div class="card voice"><h2>Voice Assistant</h2><div class="q" id="v_q"></div><div class="a" id="v_a"></div><div class="meta" id="v_m"></div></div>
+ <div class="card agent"><h2>Agent: Real Board Data</h2><div class="q" id="a_q"></div><div class="a" id="a_a"></div><div class="meta" id="a_m"></div></div>
+</div>
+<script>
+async function tick(){
+ try{
+  const r = await fetch('/state.json', {cache:'no-store'});
+  const s = await r.json();
+  const set = (id, txt) => document.getElementById(id).textContent = txt || '';
+  document.getElementById('badges').innerHTML =
+   `<span class=badge>status <b>${s.genai_status}</b></span>`+
+   `<span class=badge>model <b>${s.llm_model}</b></span>`+
+   `<span class=badge>backend <b>${s.llm_backend}</b></span>`+
+   `<span class=badge>RAG <b>${s.llm_rag}</b></span>`+
+   `<span class=badge>voice <b>${s.voice_status}</b></span>`+
+   `<span class=badge>agent <b>${s.agent_status}</b></span>`;
+  set('llm_q', s.llm_prompt && 'Q: '+s.llm_prompt); set('llm_a', s.llm_response);
+  set('llm_m', s.llm_tps ? `${s.llm_tps} tok/s | TTFT ${s.llm_ttft}s | ${s.llm_token_count} tokens` : '');
+  set('vlm_q', s.vlm_question && 'Q: '+s.vlm_question); set('vlm_a', s.vlm_response);
+  set('vlm_m', s.vlm_tps ? `vision ${s.vlm_vision_time}s | ${s.vlm_tps} tok/s` : '');
+  set('v_q', s.voice_question && 'Heard: '+s.voice_question); set('v_a', s.voice_response);
+  set('v_m', s.voice_exchanges ? `${s.voice_exchanges} exchanges this session` : '');
+  set('a_q', s.agent_request && 'Q: '+s.agent_request); set('a_a', s.agent_response);
+  set('a_m', s.agent_tool ? `tool ${s.agent_tool} -> ${s.agent_tool_result} (router: ${s.agent_router})` : '');
+ }catch(e){}
+}
+tick(); setInterval(tick, 2000);
+</script></body></html>"""
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
+    def _send(self, data, ctype):
+        self.send_response(200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
     def do_GET(self):
-        if self.path.startswith("/live"):
+        if self.path.startswith("/responses"):
+            self._send(RESPONSES_HTML, "text/html")
+        elif self.path.startswith("/state.json"):
+            try:
+                with open(STATE_PATH, "rb") as f:
+                    self._send(f.read(), "application/json")
+            except OSError:
+                self._send(b"{}", "application/json")
+        elif self.path.startswith("/live"):
             self.send_response(200)
             self.send_header("Age", "0")
             self.send_header("Cache-Control", "no-cache, private")
