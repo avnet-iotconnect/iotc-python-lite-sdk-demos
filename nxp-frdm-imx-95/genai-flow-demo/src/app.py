@@ -134,11 +134,12 @@ telemetry = {
     "agent_tool_result": "",      # what the tool actually returned
     "agent_response": "",         # agent's final answer, grounded in the tool result
     "agent_router": "",           # llm if the model picked the tool, keyword if fallback
+    "voice_stt": config.get("stt_model", ""),  # active speech recognizer
     "voice_status": "off",        # off | starting | listening | capturing | answering | error
     "voice_question": "",         # last transcribed spoken question
     "voice_response": "",         # last spoken/streamed answer
     "voice_exchanges": 0,         # completed question/answer rounds this session
-    "vlm_model": "",              # VLM used for the last ask-vlm
+    "vlm_model": "%s (%s)" % (config.get("vlm_model", ""), config.get("vlm_precision", "")),
     "vlm_question": "",
     "vlm_response": "",
     "vlm_vision_time": 0.0,       # vision encoder time (s)
@@ -907,7 +908,7 @@ def run_vlm(question):
 
     with telemetry_lock:
         telemetry.update({
-            "vlm_model": config["vlm_model"],
+            "vlm_model": "%s (%s)" % (config["vlm_model"], config["vlm_precision"]),
             "vlm_question": question[:500],
             "vlm_response": answer[:1000],
             "vlm_vision_time": vision_t,
@@ -1155,6 +1156,8 @@ def on_command(msg: C2dCommand):
         if len(msg.command_args) == 1 and msg.command_args[0] in valid_stt:
             config["stt_model"] = msg.command_args[0]
             save_config(config)
+            with telemetry_lock:
+                telemetry["voice_stt"] = config["stt_model"]
             note = " - voice-stop / voice-start to apply" if telemetry["voice_status"] not in ("off", "error") else ""
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                                "Speech recognizer set to %s%s" % (config["stt_model"], note))

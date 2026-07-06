@@ -130,6 +130,13 @@
             "aggregateTypes": []
         },
         {
+            "name": "voice_stt",
+            "type": "STRING",
+            "description": "Active speech recognizer (moonshine-tiny | moonshine-base | whisper-small.en)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "voice_status",
             "type": "STRING",
             "description": "off | starting | listening | capturing | answering | error",

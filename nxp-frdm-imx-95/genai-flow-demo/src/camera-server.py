@@ -132,6 +132,8 @@ async function tick(){
    `<span class=badge>backend <b>${s.llm_backend}</b></span>`+
    `<span class=badge>RAG <b>${s.llm_rag}</b></span>`+
    `<span class=badge>voice <b>${s.voice_status}</b></span>`+
+   `<span class=badge>stt <b>${s.voice_stt}</b></span>`+
+   `<span class=badge>vlm <b>${s.vlm_model}</b></span>`+
    `<span class=badge>agent <b>${s.agent_status}</b></span>`;
   set('llm_q', s.llm_prompt && 'Q: '+s.llm_prompt); set('llm_a', s.llm_response);
   set('llm_m', s.llm_tps ? `${s.llm_tps} tok/s | TTFT ${s.llm_ttft}s | ${s.llm_token_count} tokens` : '');
