@@ -1028,7 +1028,9 @@ def extract_and_run_tar_gz(targz_filename):
 def exit_and_restart():
     print("")
     sys.stdout.flush()
-    os.execv(sys.executable, [sys.executable, __file__] + [sys.argv[0]])
+    # Keep -u in the restarted command line: unbuffered logs, and process
+    # managers / pkill patterns keep matching the same signature.
+    os.execv(sys.executable, [sys.executable, "-u", __file__])
 
 
 # -----------------------------------------------------------------------------
