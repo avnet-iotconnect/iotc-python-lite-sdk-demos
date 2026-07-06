@@ -350,6 +350,7 @@ output — a complete plan → act → respond loop running on a small model at 
 | `get_memory` | /proc/meminfo + CPU load |
 | `get_uptime` | /proc/uptime |
 | `get_ip` | network stack |
+| `get_usb` | lsusb - live USB device list |
 
 ### Use it
 

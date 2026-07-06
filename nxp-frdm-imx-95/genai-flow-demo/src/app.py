@@ -641,16 +641,28 @@ def tool_get_ip():
     return "The board's IP address is " + get_local_ip()
 
 
+def tool_get_usb():
+    out = subprocess.run(["lsusb"], stdout=subprocess.PIPE, text=True, timeout=10).stdout
+    devices = [re.sub(r"^Bus \d+ Device \d+: ID \S+\s*", "", line).strip()
+               for line in out.splitlines()]
+    devices = [d for d in devices if d and "root hub" not in d.lower()]
+    if not devices:
+        return "No USB devices are plugged in"
+    return "The USB devices plugged in are: " + ", ".join(devices)
+
+
 AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
     "get_memory": ("memory usage or CPU load", tool_get_memory),
     "get_uptime": ("how long the board has been running", tool_get_uptime),
     "get_ip": ("the board's network or IP address", tool_get_ip),
+    "get_usb": ("which USB devices are plugged in", tool_get_usb),
 }
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
 _TOOL_KEYWORDS = [
+    (re.compile(r"usb|plugged|peripheral", re.I), "get_usb"),
     (re.compile(r"time|clock|date|day|today", re.I), "get_time"),
     (re.compile(r"temperature|hot|warm|thermal|cool", re.I), "get_temperature"),
     (re.compile(r"memory|ram|cpu|load|usage", re.I), "get_memory"),
