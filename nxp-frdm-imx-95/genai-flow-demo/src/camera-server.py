@@ -101,7 +101,7 @@ STATE_PATH = "/tmp/genai-state.json"
 RESPONSES_HTML = b"""<!DOCTYPE html>
 <html><head><title>FRDM i.MX 95 - GenAI Responses</title><meta charset="utf-8">
 <style>
- body{margin:0;padding:14px;background:#10151c;color:#e8edf2;font-family:'Segoe UI',Roboto,sans-serif}
+ body{margin:0;padding:48px 14px 14px;background:#10151c;color:#e8edf2;font-family:'Segoe UI',Roboto,sans-serif}
  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
  .card{background:#1a2230;border-radius:10px;padding:12px 16px;border-left:5px solid #4a90d9;min-height:70px}
  .card h2{margin:0 0 6px;font-size:15px;color:#7fb2e5;text-transform:uppercase;letter-spacing:1px}
