@@ -1150,6 +1150,17 @@ def on_command(msg: C2dCommand):
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Available models: " + ", ".join(valid))
 
+    elif msg.command_name == "set-stt":
+        valid_stt = ("moonshine-tiny", "moonshine-base", "whisper-small.en")
+        if len(msg.command_args) == 1 and msg.command_args[0] in valid_stt:
+            config["stt_model"] = msg.command_args[0]
+            save_config(config)
+            note = " - voice-stop / voice-start to apply" if telemetry["voice_status"] not in ("off", "error") else ""
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "Speech recognizer set to %s%s" % (config["stt_model"], note))
+        else:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Options: " + ", ".join(valid_stt))
+
     elif msg.command_name == "set-rag":
         if len(msg.command_args) == 1 and msg.command_args[0] in ("on", "off"):
             config["use_rag"] = msg.command_args[0] == "on"

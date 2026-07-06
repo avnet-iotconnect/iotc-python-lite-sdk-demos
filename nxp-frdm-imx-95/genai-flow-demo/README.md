@@ -142,6 +142,7 @@ to interact with the LLM:
 | `agent-stop` | — | Stops the agent's persistent LLM session (it also auto-stops after 15 idle minutes) |
 | `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
 | `voice-stop` | — | Stops the voice assistant session |
+| `set-stt` | `moonshine-tiny`, `moonshine-base`, or `whisper-small.en` | Selects the voice transcriber (speed vs. accuracy). Applies on the next `voice-start` |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
 | `set-model` | `danube-500M-q8`, `danube-500M-q4`, or any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`) | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU |
 | `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
