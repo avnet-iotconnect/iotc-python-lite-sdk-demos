@@ -8,6 +8,10 @@ temperature) streamed to /IOTCONNECT.
 > [!IMPORTANT]
 > Complete the [/IOTCONNECT quickstart guide for this board](../README.md) before proceeding.
 
+> [!TIP]
+> Demoing this at a booth or customer meeting? Follow the step-by-step [demo flow guide](demo-flow.md) —
+> every feature with expected results, time-to-result, the telemetry to point at, and a failure playbook.
+
 ## 1. Introduction
 
 [eIQ GenAI Flow](https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator) is NXP's modular, end-to-end
