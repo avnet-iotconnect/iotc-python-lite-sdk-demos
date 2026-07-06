@@ -503,6 +503,11 @@ def set_voice_status(status):
 def voice_session(output_mode):
     """Run the wake-word voice pipeline and publish each exchange as telemetry."""
     global _voice_proc
+    # Reap any stale voice pipeline left over from a previous app run - an
+    # orphan holds the ALSA playback device open, silencing the new session.
+    subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i vasr"],
+                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(1)
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", config["model"]])
     if config.get("stt_model"):
         cmd += ["--stt", config["stt_model"]]
