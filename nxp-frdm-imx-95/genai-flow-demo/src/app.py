@@ -84,6 +84,10 @@ DEFAULT_CONFIG = {
     # Local IoTConnect MCP server (iotc-mcp-server) for the agent's cloud
     # tools. Authenticate once with: iotconnect-cli configure
     "mcp_url": "http://127.0.0.1:8000/mcp",
+    # The ONLY C2D command the agent may send to other devices (safety
+    # allowlist). "turn on the lights" -> <led_command> on to the device whose
+    # DUID best matches the request.
+    "led_command": "board-user-led",
     # llama.cpp integration for larger GGUF models (see set-model)
     "llama_dir": "/opt/llama",
     "llama_threads": 6,
@@ -506,6 +510,18 @@ def set_voice_status(status):
         telemetry["voice_status"] = status
 
 
+def _voice_action(question):
+    """Run a spoken action request through the agent (already own llm_busy)."""
+    try:
+        run_agent_request(question)
+        publish_state()
+    except Exception as e:
+        print("Voice action failed:", e)
+        with telemetry_lock:
+            telemetry["agent_response"] = "Action failed: %s" % str(e)[:200]
+        publish_state()
+
+
 def voice_session(output_mode):
     """Run the wake-word voice pipeline and publish each exchange as telemetry."""
     global _voice_proc
@@ -581,6 +597,12 @@ def voice_session(output_mode):
                     with telemetry_lock:
                         telemetry["voice_question"] = question[:500]
                     set_voice_status("answering")
+                    # Voice -> agent bridge: spoken ACTION requests also run
+                    # through the agent (e.g. "turn on the lights"), so the
+                    # command actually executes while the chat LLM replies.
+                    if _TOOL_KEYWORDS[0][0].search(question):
+                        q = question
+                        threading.Thread(target=lambda: _voice_action(q), daemon=True).start()
                 elif "Speak the wakeword" in line or "LLM used:" in line:
                     set_voice_status("listening")  # pipeline (fully) initialized
         finalize_exchange()
@@ -753,6 +775,46 @@ def tool_get_cloud_telemetry():
     return ("The latest telemetry IOTCONNECT received from %s: " % duid) + ", ".join(parts)[:220]
 
 
+def _list_cloud_devices():
+    data = _mcp_json("device_list", {})
+    return data if isinstance(data, list) else \
+        next((v for v in data.values() if isinstance(v, list)), [])
+
+
+def tool_send_device_command(request):
+    """
+    ACTION tool: send the allowlisted LED command to another IoTConnect device.
+    The target is fuzzy-matched from the request (voice transcription never
+    reproduces exact DUIDs, so we score word fragments against device names).
+    """
+    words = [w for w in re.findall(r"[a-z0-9]{3,}", request.lower())
+             if w not in ("turn", "the", "device", "board", "please", "can", "you")]
+    # Large fleets paginate device_list, so search server-side per word
+    candidates = {}
+    for w in words[:4]:
+        try:
+            data = _mcp_json("device_list", {"duid_contains": w})
+        except RuntimeError:
+            raise
+        except Exception:
+            continue
+        devs = data if isinstance(data, list) else \
+            next((v for v in data.values() if isinstance(v, list)), [])
+        for d in devs:
+            duid = str(_first_of(d, "duid", "uniqueId", "name") or "")
+            if duid:
+                candidates[duid] = candidates.get(duid, 0) + 1
+    if not candidates:
+        raise RuntimeError("No device matched %r - try including part of the device name, e.g. 'lights'"
+                           % " ".join(words))
+    best = max(candidates, key=candidates.get)
+
+    arg = "off" if re.search(r"\boff\b", request, re.I) else "on"
+    cmd = config["led_command"]
+    _mcp_call("command_send", {"duid": best, "command_name": cmd, "args": arg})
+    return "Sent command %s %s to device %s through IOTCONNECT" % (cmd, arg, best)
+
+
 AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
@@ -763,10 +825,12 @@ AGENT_TOOLS = {
     "get_cloud_devices": ("the devices in the IOTCONNECT cloud deployment", tool_get_cloud_devices),
     "get_cloud_health": ("whether this device is healthy and active in the cloud", tool_get_cloud_health),
     "get_cloud_telemetry": ("the latest telemetry the cloud received", tool_get_cloud_telemetry),
+    "send_device_command": ("turning a device's LED or light on or off", tool_send_device_command),
 }
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
 _TOOL_KEYWORDS = [
+    (re.compile(r"turn (on|off)|switch (on|off)|\bled\b|light", re.I), "send_device_command"),
     (re.compile(r"deployment|fleet|how many devices|other devices|iotconnect|cloud", re.I), "get_cloud_devices"),
     (re.compile(r"telemetry|last reported|received", re.I), "get_cloud_telemetry"),
     (re.compile(r"health|healthy|online|active", re.I), "get_cloud_health"),
@@ -902,11 +966,15 @@ def run_agent_request(request):
         raise RuntimeError("No tool matches this request (LLM said: %s)" % reply[:120])
 
     set_agent_status("executing")
-    tool_result = AGENT_TOOLS[tool_name][1]()
+    fn = AGENT_TOOLS[tool_name][1]
+    tool_result = fn(request) if fn.__code__.co_argcount else fn()
     print("Agent tool %s -> %s" % (tool_name, tool_result))
 
     set_agent_status("answering")
-    answer = agent_llm.ask("%s. Q: %s? A:" % (tool_result, request.rstrip("?")))
+    if tool_name.startswith("send_"):
+        answer = tool_result  # for actions, the confirmation IS the answer
+    else:
+        answer = agent_llm.ask("%s. Q: %s? A:" % (tool_result, request.rstrip("?")))
     # Sanity check: the answer must actually reuse the tool's data - if the
     # small model wandered off, the tool result itself is the better answer.
     fact_words = {w for w in re.findall(r"[A-Za-z0-9.:]{4,}", tool_result)}
