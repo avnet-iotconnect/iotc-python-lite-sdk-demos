@@ -286,6 +286,13 @@
             "isOTACommand": false
         },
         {
+            "name": "Start Agent Session (pre-warm, ~1 min)",
+            "command": "agent-start",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
             "name": "Stop Agent Session (frees RAM)",
             "command": "agent-stop",
             "requiredParam": false,

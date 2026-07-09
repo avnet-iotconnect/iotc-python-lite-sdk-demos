@@ -1181,13 +1181,40 @@ def on_command(msg: C2dCommand):
                                "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
             return
         if not llm_busy.acquire(blocking=False):
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
             return
         request = " ".join(msg.command_args)
         note = "" if agent_llm.alive() else " (first request loads the model, ~1 min)"
         c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                            "Agent working - answer will arrive as telemetry" + note)
         start_llm_job(lambda: run_agent_request(request), "agent", "Agent request complete")
+
+    elif msg.command_name == "agent-start":
+        if agent_llm.alive():
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Agent session is already loaded")
+            return
+        if not genai_installed():
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
+            return
+        if not llm_busy.acquire(blocking=False):
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
+            return
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                           "Agent loading (~1 min) - agent_status shows ready when warm")
+
+        def preload():
+            try:
+                set_agent_status("loading")
+                agent_llm.start()
+                set_agent_status("ready")
+                print("Agent session pre-loaded")
+            except Exception as e:
+                print("Agent preload failed:", e)
+                set_agent_status("error")
+            finally:
+                llm_busy.release()
+        threading.Thread(target=preload, daemon=True).start()
 
     elif msg.command_name == "agent-stop":
         if agent_llm.alive():
@@ -1204,7 +1231,7 @@ def on_command(msg: C2dCommand):
                                "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
             return
         if not llm_busy.acquire(blocking=False):
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
             return
         output_mode = msg.command_args[0] if msg.command_args else config["voice_output"]
         if output_mode not in ("tts", "text"):
@@ -1230,7 +1257,7 @@ def on_command(msg: C2dCommand):
                                "VLM not found at %s - see demo README" % config["vlm_dir"])
             return
         if not llm_busy.acquire(blocking=False):
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "LLM/VLM is busy with another operation")
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
             return
         question = " ".join(msg.command_args) if msg.command_args else "Describe what you see in this image."
         c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
