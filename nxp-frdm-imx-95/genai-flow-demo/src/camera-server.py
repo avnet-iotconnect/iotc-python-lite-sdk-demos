@@ -16,6 +16,7 @@
 # trust it once: open https://<board-ip>:8080 directly and accept the warning,
 # after which the dashboard's embedded view works.
 
+import glob
 import http.server
 import os
 import re
@@ -39,9 +40,15 @@ WIDTH, HEIGHT, FPS, JPEG_QUALITY = 960, 540, 10, 70
 def camera_index():
     try:
         import json
-        dev = json.load(open(CONFIG_PATH)).get("camera_device", "/dev/video52")
+        dev = json.load(open(CONFIG_PATH)).get("camera_device", "auto")
     except Exception:
-        dev = "/dev/video52"
+        dev = "auto"
+    # V4L2 indexes are not stable across reboots - "auto" resolves the first
+    # USB camera via its persistent udev path.
+    if dev == "auto" or not os.path.exists(dev):
+        links = sorted(glob.glob("/dev/v4l/by-id/usb-*-video-index0"))
+        if links:
+            dev = os.path.realpath(links[0])
     m = re.search(r"(\d+)$", dev)
     return int(m.group(1)) if m else 0
 

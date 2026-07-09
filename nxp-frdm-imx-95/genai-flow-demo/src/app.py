@@ -74,11 +74,16 @@ DEFAULT_CONFIG = {
     "vlm_model": "smolvlm-256M",   # smolvlm-256M or smolvlm-500M
     "vlm_precision": "q8",         # q8 or fp32
     "vlm_timeout_s": 600,
-    # V4L2 device of the USB camera used for ask-vlm captures
-    "camera_device": "/dev/video52",
+    # USB camera for ask-vlm captures: "auto" resolves the first USB camera
+    # via /dev/v4l/by-id (V4L2 indexes are not stable across reboots), or set
+    # an explicit device like /dev/video2
+    "camera_device": "auto",
     # Agent (ask-agent): a persistent CPU LLM session routes requests to real
     # board tools (time, temperature, memory...). Stopped after this idle time.
     "agent_idle_timeout_s": 900,
+    # Local IoTConnect MCP server (iotc-mcp-server) for the agent's cloud
+    # tools. Authenticate once with: iotconnect-cli configure
+    "mcp_url": "http://127.0.0.1:8000/mcp",
     # llama.cpp integration for larger GGUF models (see set-model)
     "llama_dir": "/opt/llama",
     "llama_threads": 6,
@@ -657,6 +662,97 @@ def tool_get_usb():
     return "The USB devices plugged in are: " + ", ".join(devices)
 
 
+# --- IoTConnect cloud tools, served by the local MCP server -------------------
+def _mcp_call(tool, args):
+    """Blocking call to the local iotc-mcp-server (official MCP client)."""
+    import asyncio
+    from mcp import ClientSession
+    from mcp.client.streamable_http import streamablehttp_client
+
+    async def run():
+        async with streamablehttp_client(config["mcp_url"]) as (r, w, _):
+            async with ClientSession(r, w) as s:
+                await s.initialize()
+                res = await asyncio.wait_for(s.call_tool(tool, args), timeout=30)
+                return res.content[0].text if res.content else "{}"
+    return asyncio.run(asyncio.wait_for(run(), timeout=45))
+
+
+def _mcp_json(tool, args):
+    try:
+        text = _mcp_call(tool, args)
+    except Exception as e:
+        raise RuntimeError("IoTConnect MCP server not reachable at %s (%s) - "
+                           "start it with: iotc-mcp-server" % (config["mcp_url"], e))
+    if "Not logged in" in text:
+        raise RuntimeError("IoTConnect MCP is not authenticated - run: iotconnect-cli configure")
+    return json.loads(text)
+
+
+def _own_duid():
+    try:
+        return json.load(open("/opt/demo/iotcDeviceConfig.json"))["uid"]
+    except Exception:
+        return ""
+
+
+def _first_of(d, *keys):
+    for k in keys:
+        if isinstance(d, dict) and d.get(k) not in (None, ""):
+            return d[k]
+    return None
+
+
+def tool_get_cloud_devices():
+    data = _mcp_json("device_list", {})
+    devs = data if isinstance(data, list) else \
+        next((v for v in data.values() if isinstance(v, list)), [])
+    parts = []
+    for d in devs[:6]:
+        name = _first_of(d, "uniqueId", "duid", "uid", "displayName") or "?"
+        state = _first_of(d, "deviceStatus", "status")
+        if state is None and "isActive" in d:
+            state = "active" if d["isActive"] else "inactive"
+        parts.append("%s (%s)" % (name, state) if state else str(name))
+    more = ", and %d more" % (len(devs) - 6) if len(devs) > 6 else ""
+    return "The IOTCONNECT deployment has %d device%s: %s%s" % (
+        len(devs), "" if len(devs) == 1 else "s", ", ".join(parts), more)
+
+
+def tool_get_cloud_health():
+    duid = _own_duid()
+    d = _mcp_json("device_get", {"duid": duid})
+    if isinstance(d, dict) and isinstance(d.get("device"), dict):
+        d = d["device"]
+    state = _first_of(d, "deviceStatus", "status")
+    if state is None and "isActive" in d:
+        state = "active" if d["isActive"] else "inactive"
+    tmpl = _first_of(d, "templateCode", "template", "templateName")
+    bits = ["Device %s is %s in IOTCONNECT" % (duid, state or "registered")]
+    if tmpl:
+        bits.append("using template %s" % tmpl)
+    return ", ".join(bits)
+
+
+def tool_get_cloud_telemetry():
+    duid = _own_duid()
+    data = _mcp_json("telemetry_latest_value", {"duid": duid})
+    rows = data if isinstance(data, list) else \
+        next((v for v in data.values() if isinstance(v, list)), [])
+    interesting = ("cpu_temp", "cpu_percent", "mem_used_mb", "llm_tps", "llm_model", "llm_backend")
+    parts = []
+    for r in rows:
+        key = _first_of(r, "attribute", "attributeName", "key", "name")
+        val = _first_of(r, "value", "attributeValue", "latestValue")
+        if key in interesting and val is not None:
+            parts.append("%s=%s" % (key, val))
+    if not parts:  # fall back to whatever came back
+        parts = ["%s=%s" % (_first_of(r, "attribute", "attributeName", "key", "name"),
+                            _first_of(r, "value", "attributeValue", "latestValue"))
+                 for r in rows[:5]]
+    return ("The latest telemetry IOTCONNECT received from %s: " % duid) + ", ".join(parts)[:220]
+
+
 AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
@@ -664,10 +760,16 @@ AGENT_TOOLS = {
     "get_uptime": ("how long the board has been running", tool_get_uptime),
     "get_ip": ("the board's network or IP address", tool_get_ip),
     "get_usb": ("which USB devices are plugged in", tool_get_usb),
+    "get_cloud_devices": ("the devices in the IOTCONNECT cloud deployment", tool_get_cloud_devices),
+    "get_cloud_health": ("whether this device is healthy and active in the cloud", tool_get_cloud_health),
+    "get_cloud_telemetry": ("the latest telemetry the cloud received", tool_get_cloud_telemetry),
 }
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
 _TOOL_KEYWORDS = [
+    (re.compile(r"deployment|fleet|how many devices|other devices|iotconnect|cloud", re.I), "get_cloud_devices"),
+    (re.compile(r"telemetry|last reported|received", re.I), "get_cloud_telemetry"),
+    (re.compile(r"health|healthy|online|active", re.I), "get_cloud_health"),
     (re.compile(r"usb|plugged|peripheral", re.I), "get_usb"),
     (re.compile(r"time|clock|date|day|today", re.I), "get_time"),
     (re.compile(r"temperature|hot|warm|thermal|cool", re.I), "get_temperature"),
@@ -837,6 +939,16 @@ _VLM_PERF_RE = re.compile(
 VLM_FRAME_PATH = "/opt/demo/vlm-frame.jpg"
 
 
+def camera_device():
+    """Resolve the camera device ('auto' = first USB camera by stable udev path)."""
+    dev = config.get("camera_device", "auto")
+    if dev == "auto" or not os.path.exists(dev):
+        links = sorted(glob.glob("/dev/v4l/by-id/usb-*-video-index0"))
+        if links:
+            return os.path.realpath(links[0])
+    return dev
+
+
 def vlm_installed():
     return os.path.isdir(os.path.join(config["vlm_dir"], "src", "vlm"))
 
@@ -858,7 +970,7 @@ def capture_frame():
         os.remove(VLM_FRAME_PATH)
     subprocess.run(
         ["gst-launch-1.0", "-q",
-         "v4l2src", "device=%s" % config["camera_device"], "num-buffers=1", "!",
+         "v4l2src", "device=%s" % camera_device(), "num-buffers=1", "!",
          "image/jpeg,width=1280,height=720", "!",
          "filesink", "location=%s" % VLM_FRAME_PATH],
         check=False, timeout=30,

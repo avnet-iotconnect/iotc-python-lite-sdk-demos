@@ -180,7 +180,25 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | Panels blank after network change | board got a new IP | update the two Embedded links to `board_ip`'s value |
 | Device offline in /IOTCONNECT | network blip / IP move | app self-restarts its session within ~60 s |
 | Voice cuts questions to one word | VAD silence window reset by a reinstall | see the VAD tuning note in the README (800 ms) |
+| Wake word ignored AND no beep after a reboot or venue move | ALSA card order reshuffles on boot; GStreamer playback lands on a device with no output, and auto-detection can misroute audio | pin devices by name in `/opt/demo/genai-config.json`: `"capture_device": "sysdefault:CARD=C920"`, `"playback_device": "sysdefault:CARD=mqsaudio"`, then `voice-stop` / `voice-start` |
+| Wake word ignored at a new venue | speaking too far from the mic (works at ≥4000 RMS, fails near the ~450 noise floor) | run the mic check below; move the mic to arm's length of the speaker |
 | Nothing responds at all | app died | on the board: `cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &` |
+
+### Venue mic check (run after any board move, before doors open)
+
+With the voice session stopped, this beeps, records 12 s, and prints a level bar per second — say
+"Hey NXP, what time is it" after the beep. You want the speech seconds at **2000+ RMS**; the noise floor is ~450.
+
+```bash
+aplay -D sysdefault:CARD=mqsaudio /root/eiq_genai_flow/assets/ww_earcon.wav
+arecord -D sysdefault:CARD=C920 -f S16_LE -r 16000 -c 1 -d 12 /tmp/mictest.wav
+python3 -c "
+import wave, struct, math
+w = wave.open('/tmp/mictest.wav'); n = w.getnframes()
+d = struct.unpack('%dh' % n, w.readframes(n))
+[print('sec %2d: rms %5.0f %s' % (s, r, '#'*int(r/150))) for s in range(n//16000)
+ for r in [math.sqrt(sum(x*x for x in d[s*16000:(s+1)*16000])/16000)]]"
+```
 
 ## Suggested 4-minute loop per visitor
 
