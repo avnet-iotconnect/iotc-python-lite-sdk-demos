@@ -129,6 +129,12 @@ bash ./install.sh
 python3 app.py
 ```
 
+> [!TIP]
+> For hands-off starts (booth staff, colleagues), copy [board-readme.txt](board-readme.txt) to the board as
+> `/root/readme.txt` — anyone can then `cat readme.txt` and paste the block it prints to start every demo
+> service (app, camera server, MCP server) with a built-in status check.
+
+
 ## 6. Using the Demo
 
 Once running, system telemetry streams to /IOTCONNECT every 10 seconds. Use the **Command** panel on your device page
