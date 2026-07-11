@@ -14,12 +14,12 @@ Same prompt for all six configurations. TTFT = time from prompt to first token, 
 |---|---|---|---|---|---|---|---|
 | Danube-500M | q8 | 496 MB | GenAI Flow, CPU | 44 | 0.74 | 10.1 | The demo default — best Danube answer quality |
 | Danube-500M | q8 | 496 MB | GenAI Flow, **Neutron NPU** | 129 | 0.48 | **13.7** | +35% over q8-CPU; load includes per-launch NPU compile |
-| Danube-500M | q4 | 345 MB | GenAI Flow, CPU | 39 | 0.51 | 14.6 | Faster than q8-NPU on CPU alone; terser, lower-quality answers |
+| Danube-500M | q4 | 345 MB | GenAI Flow, CPU | 39 | 0.51 | 14.6 | Faster than q8-NPU on CPU alone; decent open-chat answers, but **fails RAG** (reproducibly returns canned refusals instead of quoting retrieved text) |
 | Danube-500M | q4 | 345 MB | GenAI Flow, **Neutron NPU** | 147 | **0.31** | **15.9** | Fastest Danube config measured |
 | Qwen2.5-0.5B-Instruct | Q8_0 | 645 MB | llama.cpp, CPU (6 threads) | **5.6** | **0.13** | 12.9 | Danube-NPU-class speed with notably better factuality — and a 23× faster cold start |
 | Qwen2.5-1.5B-Instruct | Q4_K_M | 1.1 GB | llama.cpp, CPU (6 threads) | 7.1 | 0.83 | 5.7 | Best reasoning of the set; the quality-for-speed trade the Ara-2 will erase |
 
-**Ladder takeaways:** quantization buys speed at answer-quality cost (q4 beats q8 everywhere on tok/s);
+**Ladder takeaways:** quantization buys speed at answer-quality cost (q4 beats q8 everywhere on tok/s — but q4 cannot do grounded RAG answers, which is why q8 stays the demo default);
 the NPU adds ~35% to whichever Danube quant it runs; llama.cpp's near-instant loads make the Qwens the
 responsive choice despite CPU-only execution; and parameter count — not tok/s — is what buys reasoning.
 
