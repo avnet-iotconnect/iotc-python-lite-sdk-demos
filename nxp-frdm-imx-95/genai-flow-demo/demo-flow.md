@@ -2,7 +2,7 @@
 
 A complete walk-through for demonstrating every feature, with expected results, time-to-result, and the telemetry
 to point at. All timings were measured on real hardware (FRDM-IMX95, BSP LF6.18.2). Assumes the device is powered,
-on the network, and onboarded.
+on the network, and onboarded. Full specs for every AI model in the demo are in [MODELS.md](MODELS.md).
 
 **The one rule:** the board runs **one AI operation at a time**. `ask-llm`, `ask-vlm`, `ask-agent`, and
 `run-benchmark` will answer "busy" while another is running — and a **voice session holds the engine for its entire
