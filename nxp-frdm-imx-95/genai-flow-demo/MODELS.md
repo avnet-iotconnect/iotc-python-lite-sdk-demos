@@ -65,6 +65,41 @@ on a webcam mic); ~900 RMS at casual seating distance fails against a ~450 noise
 |---|---|---|---|---|
 | **all-MiniLM-L6-v2** (ONNX) | ~22 M, 384-dim | 88 MB | Embeds the knowledge base and queries; retrieval, reranking, and in/out-of-domain classification | Database build: **~30 chunks/s on the A55s** (25-chunk board KB in <1 min). Correct-match query similarity typically **0.35–0.45** with hand-made chunks — hence the 0.65→0.35 classifier threshold change (README §9) |
 
+## Board resources: what fits on a FRDM-IMX95
+
+The board that runs all of the above (measured with the full demo kit installed):
+
+| Resource | Total | Notes |
+|---|---|---|
+| **RAM** | 8 GB LPDDR4X (~7.7 GB usable) | Shared by Linux, the demo services, and every loaded model |
+| **CMA / NPU pool** | ~5.1 GB (960 MB stock + 4 GB Neutron pool) | The 4 GB pool comes from the device-tree overlay (README §6); Neutron LLM inference consumes ~2.5 GB of it while loaded |
+| **eMMC storage** | 32 GB (28 GB rootfs after expansion) | Stock image ships with only an 11 GB partition — expansion is step one (README §2) |
+
+### Disk budget (as installed, measured)
+
+| Component | On disk |
+|---|---|
+| NXP Linux BSP + system | ~6 GB |
+| eIQ GenAI Flow (Danube q8+q4, 3× STT, TTS, wake word, RAG + MiniLM) | 1.6 GB |
+| Python AI stack (torch, transformers, onnxruntime, MCP) | 1.6 GB |
+| llama.cpp build + Qwen 0.5B & 1.5B GGUFs | 2.0 GB |
+| SmolVLM (256M + 500M) | 0.7 GB |
+| Demo app, camera server, RAG database, certs | 13 MB |
+| **Free for more models** | **~16 GB** |
+
+Headroom in practice: a Llama-3.1-8B Q4 GGUF is ~4.7 GB — three more models of that class fit on disk today
+(running them fast is the Ara-2's job, below).
+
+### RAM budget (what can be resident together)
+
+| Combination | Approx. RAM | Fits? |
+|---|---|---|
+| System + demo services (app, camera, MCP) | ~1 GB | baseline |
+| + warm agent session (Danube q8, CPU) | ~2.8 GB | ✅ |
+| + active voice session (Danube + Moonshine + VITS + VIT) | ~5.3–6.8 GB | ✅ — the normal full-demo state |
+| + an `ask-vlm` (transient ~1.7 GB) on top of the above | ~7–8 GB | ⚠️ tight — works, but this is the ceiling |
+| Two Danube NPU sessions simultaneously | — | ❌ CMA contention; the busy-lock exists partly for this |
+
 ## What runs where (at demo time)
 
 | Engine | Model(s) resident | RAM while loaded |
@@ -76,3 +111,35 @@ on a webcam mic); ~900 RMS at casual seating distance fails against a ~450 noise
 
 One AI operation runs at a time (busy-lock), but resident sessions (agent, voice) coexist in RAM — the 8 GB
 board holds an active voice session plus the warm agent with headroom.
+
+## The Kinara Ara-2 plan: where this demo goes next
+
+The Ara-2 is NXP's (Kinara) discrete edge NPU module — ~40 TOPS INT8, delivered as an M.2 card, purpose-built
+for generative AI. This demo was architected for it from day one: the `backend` config field and `set-backend`
+command are the drop-in point (`set-backend ara2`), and every command — `ask-llm`, the voice assistant, the
+agent — keeps working unchanged, just faster and on bigger models.
+
+**Everything below is projection, not measurement** — this table gets replaced with benchmark-suite numbers
+the day the module arrives (the suite in `/root/bench_suite.py` re-runs the whole matrix in one command).
+
+### Where we expect improvement (same models, same demo)
+
+| Today's pain point | Measured today | Expected with Ara-2 |
+|---|---|---|
+| Qwen-1.5B reasoning is slow on CPU | 5.7 tok/s | Interactive speeds (~15–25 tok/s class) — the quality/speed trade disappears |
+| NPU model compile on every launch | 129–147 s load | Precompiled model artifacts — llama.cpp-class load times on accelerated models |
+| Vision encode dominates `ask-vlm` | 4.4 s | Sub-second-class encode; near-instant scene answers |
+| CPU carries everything | 6 cores shared by LLM + STT + TTS + services | LLM/VLM offloaded — A55s free for audio, camera, and cloud |
+
+### What becomes possible (new models, new functions)
+
+* **8B-class LLMs on the board** — Llama-3.1-8B / Qwen-7B Q4 fit on disk today (~16 GB free); Ara-2 makes them
+  *usable*. That means an agent that reliably routes tools and fills arguments without the keyword safety net,
+  RAG synthesis that paraphrases instead of parroting, and genuinely conversational voice.
+* **Bigger vision models** — 2B-class VLMs for fine-grained scene understanding (reading labels, counting
+  objects, describing defects) instead of one-line captions.
+* **Concurrent engines** — LLM on Ara-2, vision on the on-chip Neutron, speech on CPU: the one-AI-at-a-time
+  busy-lock could relax into a true multi-model pipeline (watch the camera *while* holding a voice
+  conversation).
+* **The booth narrative completes** — the model ladder (§ language models) stops being a trade-off chart and
+  becomes a before/after: same board, same demo, add the module, the smart models move to the fast column.
