@@ -15,8 +15,7 @@ duration**. If commands start failing with "busy", send `voice-stop` and check `
 On the board (SSH or serial console, login `root`):
 
 ```bash
-pgrep -f "python3 -u app.py"        || (cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &)
-pgrep -f camera-server              || (cd /opt/demo && nohup python3 camera-server.py > camera.log 2>&1 &)
+cat /root/readme.txt   # section 1 is the paste-to-start block (app + camera + MCP server, with status check)
 ```
 
 In the browser:
@@ -26,11 +25,15 @@ In the browser:
    embedded **AI Responses** panel and **Live Camera** view.
 3. Confirm the status block shows `genai_status: idle` and telemetry timestamps are current (updates every 10 s).
 
-**Pre-warm the models** so no visitor waits through a first-load:
+**Set the starting state** (settings persist across restarts, so make it deliberate): `set-model danube-500M-q8`,
+`set-backend neutron` (the NPU headline on the gauge), **RAG Off** (so beat 3 works), `set-stt moonshine-base`.
+
+**Pre-warm** so no visitor waits through a first-load — order matters (`agent-start` must run **before**
+`voice-start`; voice holds the engine lock):
 
 | Send | Why | Wait |
 |---|---|---|
-| `ask-agent what time is it` | loads the agent's persistent LLM session | ~90 s |
+| `agent-start` | loads the agent's persistent LLM session (`agent_status` → `ready`) | ~1 min |
 | `ask-vlm` (no argument) | exercises camera + SmolVLM | ~45 s |
 | `ask-llm hello` | warms the GenAI Flow path on the current backend | ~1 min (CPU) / ~2.5 min (NPU) |
 
@@ -73,9 +76,10 @@ reliably identifies people, clothing colors, glasses, held objects, and room fea
 This is the smartest beat in the demo. **Requires RAG Off** for part one (the RAG classifier otherwise politely
 declines off-topic questions — itself worth showing, see beat 5).
 
-1. Flip **RAG Grounding → Off**, then send `ask-llm what time is it`.
-   **Expect** (~1 min on CPU / ~2.5 min on NPU — each `ask-llm` reloads the model, see timing table): a confidently
-   **invented** time, e.g. *"The time is 12:00 PM."* Let the visitor laugh.
+1. Flip **RAG Grounding → Off**, `set-model qwen2.5-0.5b-instruct-q8_0`, then `ask-llm what time is it`.
+   **Expect ~15 s** (llama.cpp loads in 5.6 s — this used to be the slowest moment of the flow; on Danube it costs
+   1–2.5 min): a confidently **invented** time. No LLM has a clock; the fancier model just invents more fluently.
+   Let the visitor laugh.
 2. Press **"Agent: What Time Is It?"** (`ask-agent what time is it`).
    **Expect**: first-ever run ~90 s (session load); **pre-warmed: 10–20 s** — the **correct** date and time.
 
@@ -86,15 +90,21 @@ declines off-topic questions — itself worth showing, see beat 5).
 * `agent_router` — `llm` (model picked the tool itself) or `keyword-override` (the safety net caught a bad pick)
 
 **Follow-ups** (each 10–20 s, session stays warm): `ask-agent how warm is the chip` (compare with the temperature
-gauge live!), `ask-agent how much memory is in use`, `ask-agent how long has the board been running`.
+gauge live!), `ask-agent how much memory is in use`, `ask-agent what usb devices are plugged in` (plug something
+in and ask again), and — via the on-board MCP server — `ask-agent how many devices are in my iotconnect deployment`
+(the device querying its own cloud fleet).
 
-## 4. RAG: "ask the manual" (~1–2.5 min per question)
+## 4. RAG: "ask the manual" (~1 min per question)
+
+RAG runs through the Danube/GenAI Flow path only, so switch back first: `set-model danube-500M-q8` — and for
+crowd pacing, `set-backend cpu` (a 44 s load per question instead of the NPU's 129 s compile; save the NPU for
+the ladder beat where the wait *is* the story).
 
 **Do**: flip **RAG Grounding → On**, then `ask-llm How do I expand the root filesystem?`
 
 **Expect**: the answer quotes the board's documentation **verbatim**, including the exact `parted` and `resize2fs`
 commands. Other good questions: *"What baud rate does the serial console use?"* (115200), *"What tokens per second
-does the Neutron NPU achieve?"* (13.9).
+does the Neutron NPU achieve?"* (13.7).
 
 **Point at**: `llm_rag: on`, and the contrast with beat 3's invention — same model, now grounded.
 
@@ -107,13 +117,17 @@ Ask the same question at each rung and watch the **tokens/sec gauge** and answer
 
 | Do | `llm_backend` shows | Expect `llm_tps` | Time to answer | Quality |
 |---|---|---|---|---|
-| `set-backend cpu` → `ask-llm What is an NPU?` | `cpu` | **~10.9** | ~1 min | fluent, shaky facts |
-| `set-backend neutron` → same question | `neutron` | **~13.9** | ~2.5 min (NPU compile dominates) | same words, +27% speed |
-| `set-model qwen2.5-0.5b-instruct-q8_0` → same | `cpu-llama.cpp` | **~14** | **~15–20 s** | correct definition |
-| `set-model qwen2.5-1.5b-instruct-q4_k_m` → same | `cpu-llama.cpp` | **~6.5** | ~30–60 s | best reasoning |
+| `set-backend cpu` → `ask-llm What is an NPU?` | `cpu` | **10.1** | ~1 min | fluent, shaky facts |
+| `set-backend neutron` → same question | `neutron` | **13.7** | ~2.5 min (NPU compile dominates) | same words, +35% speed |
+| `set-model danube-500M-q4` → same (still neutron) | `neutron` | **15.9** | ~2.5–3 min | fastest measured — and audibly terser: quantization's price |
+| `set-model qwen2.5-0.5b-instruct-q8_0` → same | `cpu-llama.cpp` | **12.9** | **~15 s** | correct definition, 5.6 s load |
+| `set-model qwen2.5-1.5b-instruct-q4_k_m` → same | `cpu-llama.cpp` | **5.7** | ~30 s | best reasoning |
 | `set-model danube-500M-q8` | back to GenAI Flow | | | |
 
-**Point at**: `llm_tps`, `llm_ttft` (0.3–0.7 s), `llm_backend` changing, and the answers themselves.
+For short crowd loops run just three rungs — **q8-CPU → qwen-0.5B → qwen-1.5B** (all ≤1 min) — and quote the NPU
+numbers from the gauge history; the full six-rung walk with the compile waits is for engaged engineers.
+
+**Point at**: `llm_tps`, `llm_ttft` (0.13–0.83 s, model-dependent), `llm_backend` changing, and the answers.
 
 **The close**: *"Notice the trade — the smarter model runs at half the speed on CPU. The Kinara Ara-2 module drops
 into this same demo and moves the smart models up the speed column. That's the roadmap, running live."*
@@ -131,7 +145,16 @@ Best with the USB headset (show floors are loud); a powered speaker on the 3.5 m
 4. **RAG applies to voice too**: with RAG On it answers board questions from the docs and politely rejects
    off-topic or garbled audio ("I can't help with that request" — show this, it's a feature). For open chat,
    set RAG Off before `voice-start`.
-5. **`voice-stop` when done** — this is the step people forget, and it blocks every other AI command until sent.
+5. **The showstopper — voice-controlled action**: with the agent pre-warmed (§0), say
+   *"Hey NXP … turn on the lights."* The spoken request routes through the agent, which finds the target device
+   in the IoTConnect fleet by name fragment ("lights" → `e84AIvaLights`) and sends the allowlisted LED command
+   through the on-board MCP server — **a physical LED across the room switches on**. The green Agent card shows
+   the chain: `send_device_command` → *"Sent command board-user-led on to device e84AIvaLights"*. Then:
+   *"Hey NXP … turn **off** the lights."* Requires the MCP server running and authenticated (§0 start block +
+   README §10).
+6. **Transcription accuracy is selectable**: `set-stt whisper-small.en` before `voice-start` for the accuracy-
+   critical version (0.00 % clean-speech WER, +1.2 s per utterance) — `moonshine-base` is the balanced default.
+7. **`voice-stop` when done** — this is the step people forget, and it blocks every other AI command until sent.
 
 ## 7. Optional: the official benchmark (10–30 min — run between crowds)
 
@@ -149,8 +172,10 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | `ask-agent` | ~90 s | **10–20 s** |
 | `ask-llm` (danube, CPU) | ~1 min | ~1 min (reloads each call) |
 | `ask-llm` (danube, NPU) | ~2.5 min | ~2.5 min (NPU compile each call) |
-| `ask-llm` (qwen 0.5B, llama.cpp) | ~15–20 s | ~15–20 s |
-| `ask-llm` (qwen 1.5B, llama.cpp) | ~30–60 s | ~30–60 s |
+| `ask-llm` (danube q4, NPU) | ~2.5–3 min | ~2.5–3 min (fastest tok/s once running: 15.9) |
+| `ask-llm` (qwen 0.5B, llama.cpp) | **~15 s** | ~15 s |
+| `ask-llm` (qwen 1.5B, llama.cpp) | ~30 s | ~30 s |
+| voice LED action ("turn on the lights") | — | 10–20 s to the physical LED |
 | `voice-start` → `listening` | ~2–3 min | — |
 | voice exchange | — | 10–20 s |
 | Dashboard telemetry refresh | every 10 s | AI Responses panel: ~2 s |
@@ -161,13 +186,14 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 |---|---|---|
 | `genai_status` | what the AI engine is doing | `idle` / `generating` / `agent` / `voice` |
 | `llm_tps` | generation speed | 10.1 CPU · 13.7 NPU · 12.9 qwen-0.5B · 5.7 qwen-1.5B ([MODELS.md](MODELS.md)) |
-| `llm_ttft` | responsiveness | 0.3–0.7 s |
+| `llm_ttft` | responsiveness | 0.13–0.83 s (model-dependent; see [MODELS.md](MODELS.md)) |
 | `llm_backend` | where inference runs | `cpu` / `neutron` / `cpu-llama.cpp` |
 | `llm_rag` | grounded or free-wheeling | `on` for doc questions |
 | `agent_router` | did the LLM route correctly | `llm` (itself) / `keyword-override` (safety net) |
 | `vlm_vision_time` | image understanding speed | 3.6–4.5 s |
 | `cpu_temp` | thermal story | ~45 °C idle, ~63 °C under sustained load |
 | `voice_status` | voice session state | `listening` = ready for "Hey NXP" |
+| `voice_stt` | active transcriber | `moonshine-base` (balanced) / `whisper-small.en` (0 % WER) |
 | `board_ip` | where the embedded widgets point | must match Embedded widget links |
 
 ## Failure playbook
@@ -182,6 +208,7 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | Voice cuts questions to one word | VAD silence window reset by a reinstall | see the VAD tuning note in the README (800 ms) |
 | Wake word ignored AND no beep after a reboot or venue move | ALSA card order reshuffles on boot; GStreamer playback lands on a device with no output, and auto-detection can misroute audio | pin devices by name in `/opt/demo/genai-config.json`: `"capture_device": "sysdefault:CARD=C920"`, `"playback_device": "sysdefault:CARD=mqsaudio"`, then `voice-stop` / `voice-start` |
 | Wake word ignored at a new venue | speaking too far from the mic (works at ≥4000 RMS, fails near the ~450 noise floor) | run the mic check below; move the mic to arm's length of the speaker |
+| Status badges show `error` but everything works | last-known value from a past failure (statuses don't auto-clear) | run any successful operation of that engine (e.g. `voice-start`/`voice-stop`) and it resets |
 | Nothing responds at all | app died | on the board: `cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &` |
 
 ### Venue mic check (run after any board move, before doors open)
@@ -202,6 +229,7 @@ d = struct.unpack('%dh' % n, w.readframes(n))
 
 ## Suggested 4-minute loop per visitor
 
-**Vision hook** (they're in the picture, 45 s) → **hallucination A/B** (laugh, then the agent's real answer, 60 s)
-→ **ask the manual** (RAG On, verbatim procedure, 60 s) → **the ladder close** (gauge + Ara-2 roadmap, 60 s).
-Voice is the encore for engaged visitors — budget 3 extra minutes and always `voice-stop` afterward.
+**Vision hook** (they're in the picture, 45 s) → **hallucination A/B** (Qwen invents in 15 s, the agent answers
+truly in 15 more) → **ask the manual** (RAG On, verbatim procedure, ~1 min) → **the ladder close** (gauge + Ara-2
+roadmap). Voice is the encore for engaged visitors — and *"Hey NXP, turn on the lights"* is the exit-wow. Budget
+3 extra minutes for voice and always `voice-stop` afterward.
