@@ -160,7 +160,7 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | Attribute | What it tells the visitor | Healthy value |
 |---|---|---|
 | `genai_status` | what the AI engine is doing | `idle` / `generating` / `agent` / `voice` |
-| `llm_tps` | generation speed | 10.9 CPU · 13.9 NPU · 14 qwen-0.5B · 6.5 qwen-1.5B |
+| `llm_tps` | generation speed | 10.1 CPU · 13.7 NPU · 12.9 qwen-0.5B · 5.7 qwen-1.5B ([MODELS.md](MODELS.md)) |
 | `llm_ttft` | responsiveness | 0.3–0.7 s |
 | `llm_backend` | where inference runs | `cpu` / `neutron` / `cpu-llama.cpp` |
 | `llm_rag` | grounded or free-wheeling | `on` for doc questions |

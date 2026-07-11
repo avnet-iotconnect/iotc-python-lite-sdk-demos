@@ -42,13 +42,14 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 
 ### Measured performance
 
-Measured on a FRDM-IMX95 (BSP LF6.18.2, `danube-500M-q8`, identical 54-token prompt):
+Measured on a FRDM-IMX95 (BSP LF6.18.2, `danube-500M-q8`, identical prompt; load time excluded from
+performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix):
 
 | Metric | CPU (6× Cortex-A55) | eIQ Neutron NPU |
 |---|---|---|
-| Tokens/sec | 10.9 | **13.9** (+27%) |
-| Time to first token | 0.67 s | 0.50 s |
-| Pipeline load time | ~41 s | ~132 s (includes NPU model compile) |
+| Tokens/sec | 10.1 | **13.7** (+35%) |
+| Time to first token | 0.74 s | 0.48 s |
+| Model load (separate) | ~44 s | ~129 s (includes NPU model compile) |
 
 ## 2. Requirements
 
@@ -412,12 +413,15 @@ anytime with `set-model danube-500M-q8`.
 
 ### Measured ladder (FRDM-IMX95, 6 threads)
 
-| Model | Runtime | Tokens/sec | Answer quality (same question set) |
-|---|---|---|---|
-| danube-500M-q8 | GenAI Flow, CPU | 10.9 | Fluent but factually shaky (invented dates, "NPU analyzes the human brain") |
-| danube-500M-q8 | GenAI Flow, Neutron NPU | **13.9** | Same model, fastest path today |
-| qwen2.5-0.5b-instruct-q8_0 | llama.cpp, CPU | 13.9 | Noticeably better facts (correct NPU definition, Everest at 8848 m) at Danube-NPU speed |
-| qwen2.5-1.5b-instruct-q4_k_m | llama.cpp, CPU | 6.5 | Best reasoning of the set — right decade and real details on niche questions — at half the speed |
+| Model | Runtime | Load (s) | Tokens/sec | Answer quality (same question set) |
+|---|---|---|---|---|
+| danube-500M-q8 | GenAI Flow, CPU | 44 | 10.1 | Fluent but factually shaky (invented dates, "NPU analyzes the human brain") |
+| danube-500M-q8 | GenAI Flow, Neutron NPU | 129 | **13.7** | Same model, faster path |
+| danube-500M-q4 | GenAI Flow, Neutron NPU | 147 | **15.9** | Fastest measured; terser, lower-quality answers |
+| qwen2.5-0.5b-instruct-q8_0 | llama.cpp, CPU | **5.6** | 12.9 | Noticeably better facts at Danube-NPU speed, with a 23× faster load |
+| qwen2.5-1.5b-instruct-q4_k_m | llama.cpp, CPU | 7.1 | 5.7 | Best reasoning of the set — right decade and real details on niche questions |
+
+Full matrix, methodology, and the VLM/STT tables: [MODELS.md](MODELS.md).
 
 The takeaway for the Ara-2: the quality you want lives in the bigger rows, and today they cost tokens/sec. A
 discrete NPU moves those rows up the speed column without giving up the quality.
