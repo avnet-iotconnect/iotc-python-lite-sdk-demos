@@ -26,6 +26,7 @@ from typing import Optional
 
 import cv2
 import system_monitor
+import web_stream
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, C2dOta, Callbacks, DeviceConfigError
 from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
@@ -144,6 +145,7 @@ DRPAI_DEMOS = {
 # ─── Global state ─────────────────────────────────────────────────────────────
 client: Client = None
 _drpai_proc: Optional[subprocess.Popen] = None
+_drpai_launching: bool = False  # True while a DRP-AI launch sequence is in progress
 _drpai_name: str = ''
 _drpai_kind: str = ''          # 'object_counter' | 'meter' | ''
 _drpai_results_file: str = ''  # absolute path set when a demo is launched
@@ -206,6 +208,18 @@ def _drain_pipe(label: str, pipe):
 
 
 def start_drpai_demo(mode: str) -> bool:
+    """Launch a DRP-AI demo, holding the camera-busy flag for the whole launch
+    sequence so the raw web camera feeds release /dev/video0 before the binary
+    tries to open it."""
+    global _drpai_launching
+    _drpai_launching = True
+    try:
+        return _start_drpai_demo_impl(mode)
+    finally:
+        _drpai_launching = False
+
+
+def _start_drpai_demo_impl(mode: str) -> bool:
     global _drpai_proc, _drpai_name, _drpai_kind, _drpai_results_file, _cv_display_active
 
     cv_needs_restart = False
@@ -441,6 +455,18 @@ def _detect_usb_camera() -> str:
 _DRPAI_HARDCODED_CAMERA = '/dev/video0'
 
 
+def _camera_busy(dev: str) -> str:
+    """Arbiter for the raw web camera feeds: returns the name of the consumer
+    that currently owns dev (so the feed must not open it), or '' when free."""
+    if (_drpai_launching or is_drpai_running()) and dev == _DRPAI_HARDCODED_CAMERA:
+        return 'DRP-AI demo (see DRP-AI panel)'
+    if _cv_active and _cv_device in (dev, ''):
+        # _cv_device is '' briefly while the CV thread is choosing its camera —
+        # treat every camera as claimed during that window to avoid races.
+        return 'Python CV (see CV panel)'
+    return ''
+
+
 def _pick_cv_camera() -> Optional[str]:
     """Choose a USB camera for the Python CV loop.
 
@@ -536,15 +562,28 @@ def _cv_inference_loop():
     device = _pick_cv_camera() or _detect_usb_camera()
     _cv_device = device
     print(f'CV inference: opening camera {device}')
-    cap = cv2.VideoCapture(device)
+    # The raw web feed releases a camera within a loop iteration of the busy
+    # flag flipping — retry briefly instead of failing on a transient EBUSY.
+    cap = None
+    for _attempt in range(3):
+        cap = cv2.VideoCapture(device)
+        if cap.isOpened():
+            break
+        cap.release()
+        cap = None
+        time.sleep(1.0)
+    if cap is None:
+        print(f'ERROR: Could not open camera {device}')
+        _cv_active = False
+        _cv_device = ''
+        return
+    # MJPG capture — ~1/10th the USB bandwidth of raw YUYV; the RZ/V2H xHCI
+    # drops isochronous transfers (torn frames) when two cameras stream raw.
+    cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, _CV_FRAME_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, _CV_FRAME_HEIGHT)
     cap.set(cv2.CAP_PROP_FPS, _CV_FRAME_FPS)
-
-    if not cap.isOpened():
-        print(f'ERROR: Could not open camera {device}')
-        _cv_active = False
-        return
+    framerate_locked = False  # asserted after first frame; the camera reverts it on stream start
 
     writer = _open_cv_writer() if _cv_display_active else None
     _last_display_active = _cv_display_active
@@ -566,6 +605,10 @@ def _cv_inference_loop():
         if not ret:
             time.sleep(0.05)
             continue
+
+        if not framerate_locked:
+            web_stream._disable_dynamic_framerate(device)
+            framerate_locked = True
 
         t0 = time.time()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -591,7 +634,8 @@ def _cv_inference_loop():
                 'total_detections': face_count + body_count,
             }
 
-        if writer is not None:
+        stream_wanted = web_stream.cv_feed.has_readers
+        if writer is not None or stream_wanted:
             for (x, y, w, h) in faces:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 cv2.putText(frame, 'face', (x, max(15, y - 6)),
@@ -604,7 +648,10 @@ def _cv_inference_loop():
             cv2.rectangle(frame, (0, 0), (_CV_FRAME_WIDTH, 26), (0, 0, 0), -1)
             cv2.putText(frame, hud, (8, 18),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            writer.write(frame)
+            if writer is not None:
+                writer.write(frame)
+            if stream_wanted:
+                web_stream.cv_feed.publish(frame)
 
         # Throttle to ~5 fps to leave CPU headroom for IoTConnect + DRP-AI
         time.sleep(0.2)
@@ -613,6 +660,7 @@ def _cv_inference_loop():
         _release_cv_writer(writer)
     cap.release()
     _cv_device = ''
+    web_stream.cv_feed.publish_text('CV inference stopped', 'send start_detection to resume')
     print('CV inference loop stopped')
 
 
@@ -681,7 +729,10 @@ def on_command(msg: C2dCommand):
 
     if msg.command_name == 'start_detection':
         global _cv_display_active
-        _cv_display_active = True  # CV takes display; Weston puts its surface on top of DRP-AI
+        # Only claim the HDMI display when no DRP-AI demo is showing on it —
+        # two Wayland video surfaces compositing at different rates flicker
+        # badly. The CV feed is always viewable on the web stream (/cv).
+        _cv_display_active = not is_drpai_running()
         ok, status = start_cv_inference()
         client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK if ok else C2dAck.CMD_FAILED, status)
         print(status)
@@ -801,6 +852,18 @@ if __name__ == '__main__':
         print(f'Wayland env detected: XDG_RUNTIME_DIR={_wayland_env["XDG_RUNTIME_DIR"]}')
     else:
         print('WARNING: Wayland socket not found — HDMI display output disabled')
+
+    # Kill any DRP-AI binaries orphaned by a previous app instance — they run
+    # in their own process group (surviving an app restart) and hold the
+    # camera and DRP-AI hardware until removed.
+    for _binary in {os.path.basename(c['cmd']) for c in DRPAI_DEMOS.values()}:
+        subprocess.run(['pkill', '-9', '-f', _binary], capture_output=True)
+
+    # Serve the video feeds over HTTP (MJPEG) so no HDMI monitor is required:
+    # one raw feed per USB camera, the annotated CV feed, and the DRP-AI
+    # desktop capture. The busy arbiter keeps the raw feeds off any camera
+    # that CV inference or a DRP-AI binary currently owns.
+    web_stream.start(_wayland_env, cameras=_detect_usb_cameras(), camera_busy_fn=_camera_busy)
 
     try:
         device_config = DeviceConfig.from_iotc_device_config_json_file(

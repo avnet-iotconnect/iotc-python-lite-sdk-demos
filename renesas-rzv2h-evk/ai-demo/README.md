@@ -85,6 +85,29 @@ python3 app.py
 The app connects to /IOTCONNECT and begins sending telemetry immediately. CV inference and DRP-AI demos are started via
 cloud commands.
 
+### Live Video Feeds (browser, no monitor needed)
+
+The app serves every video source as an MJPEG stream over HTTP — the exact URL is printed at startup:
+
+| Endpoint | Feed |
+|---|---|
+| `http://<board-ip>:8080/` | All feeds on one page |
+| `http://<board-ip>:8080/cam1` | Camera 1 raw (`/dev/video0`) |
+| `http://<board-ip>:8080/cam2` | Camera 2 raw (second camera, if connected) |
+| `http://<board-ip>:8080/cv` | Python CV annotated feed |
+| `http://<board-ip>:8080/drpai` | DRP-AI demo output (Weston desktop capture, ~2 fps) |
+
+Notes:
+
+- Frames are captured and encoded only while a browser is watching a feed — idle cost is zero.
+- A camera can only be streamed by one consumer at a time. Raw feeds automatically yield (showing an
+  "in use" card) while CV inference or a DRP-AI demo owns that camera, and resume when it's released.
+- Raw/CV feeds capture MJPG from the camera — two cameras streaming uncompressed YUYV overloads the
+  RZ/V2H USB controller and produces torn frames.
+- The `/drpai` feed screenshots the Weston desktop, which requires Weston to run with `--debug`
+  (`install.sh` sets this up). The DRP-AI binaries still need a connected HDMI display for Weston
+  itself — a monitor or an HDMI dummy plug.
+
 ### Telemetry
 
 **System Performance**
