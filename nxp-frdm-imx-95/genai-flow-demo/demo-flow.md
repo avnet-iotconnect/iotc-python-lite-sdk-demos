@@ -10,37 +10,75 @@ duration**. If commands start failing with "busy", send `voice-stop` and check `
 
 ---
 
-## 0. Pre-demo checklist (10 minutes before)
+## 0. Cold boot → demo-ready (~10 minutes)
 
-On the board (SSH or serial console, login `root`):
+The full sequence from plugging in the board to every model verified. Model weights live on the eMMC, so
+nothing re-downloads at boot — this is about starting services, setting state, and warming/verifying each
+engine. Times are measured.
+
+### T+0:00 — Power on
+Plug in the board; Linux boots in ~1 minute. Find the IP (router, serial console, or wait for `board_ip`
+telemetry). A static DHCP lease avoids every downstream IP problem.
+
+### T+1:00 — Start the demo services
+SSH or serial in as `root`, then:
 
 ```bash
-cat /root/readme.txt   # section 1 is the paste-to-start block (app + camera + MCP server, with status check)
+cat readme.txt   # section 1 is the paste-to-start block
 ```
 
-In the browser:
+Paste the block: cloud app, camera server, and MCP server start with a status printout (`RUNNING` ×3 + board
+IP, ~15 s). The MCP auth token persists across boots — no re-login needed.
 
-1. Open the /IOTCONNECT dashboard.
-2. Open `https://<board-ip>:8080` in its own tab once and accept the self-signed certificate — this unlocks the
-   embedded **AI Responses** panel and **Live Camera** view.
-3. Confirm the status block shows `genai_status: idle` and telemetry timestamps are current (updates every 10 s).
+### T+2:00 — Browser checks
+1. Device shows online in /IOTCONNECT; telemetry timestamps current (10 s cadence).
+2. Open `https://<board-ip>:8080` once and accept the self-signed cert (new browsers/IPs only) — unlocks the
+   embedded **AI Responses** and **Live Camera** panels.
+3. If the IP changed since the dashboard was built: edit the two Embedded widget links.
 
-**Set the starting state** (settings persist across restarts, so make it deliberate): `set-model danube-500M-q8`,
-`set-backend neutron` (the NPU headline on the gauge), **RAG Off** (so beat 3 works), `set-stt moonshine-base`.
+### T+2:30 — Set the demo state (settings persist, so make them deliberate)
 
-**Pre-warm** so no visitor waits through a first-load — order matters (`agent-start` must run **before**
-`voice-start`; voice holds the engine lock):
-
-| Send | Why | Wait |
+| Send | Value | Why |
 |---|---|---|
-| `agent-start` | loads the agent's persistent LLM session (`agent_status` → `ready`) | ~1 min |
-| `ask-vlm` (no argument) | exercises camera + SmolVLM | ~45 s |
-| `ask-llm hello` | warms the GenAI Flow path on the current backend | ~1 min (CPU) / ~2.5 min (NPU) |
+| `set-model` | `danube-500M-q8` | beats 4–6 need the GenAI Flow path |
+| `set-backend` | `neutron` | the NPU headline on the gauges |
+| `set-rag` | `off` | beat 3 (hallucination) requires it |
+| `set-stt` | `moonshine-base` | the balanced transcriber |
 
-> [!IMPORTANT]
-> If the venue moved the board to a new IP: the app self-heals its cloud connection (~60 s), but the two
-> **Embedded** widget links (`/responses`, `/live`) must be edited to the new address. Pin a static DHCP lease to
-> avoid this entirely. The `board_ip` telemetry attribute always shows the current address.
+### T+3:00 — Warm and verify every model (watch each ready-signal)
+
+Order matters: **`agent-start` before any `voice-start`** (voice holds the engine lock).
+
+| Step | Send | Ready signal | Wait |
+|---|---|---|---|
+| 1 | `agent-start` | `agent_status: ready` | ~1 min |
+| 2 | `ask-vlm` (no argument) | Vision card fills; `vlm_tps` ≈ 9.5 — also proves the camera | ~45 s |
+| 3 | `ask-llm hello` | LLM card fills; `llm_tps` ≈ 13.7, gauges move — proves the NPU path | ~2.5 min |
+| 4 | `ask-agent what time is it` | correct time in the Agent card, ~15 s (session is warm) — proves the agent end-to-end | ~15 s |
+
+Note: `ask-llm` reloads its model on every call by design — step 3 *verifies* the NPU path and populates the
+dashboard; it doesn't make later asks faster. The agent session is the only persistently-warm LLM.
+
+### T+7:00 — Voice smoke test (do this even if voice is only the encore)
+
+1. If the venue is new: run the **mic check** (failure playbook, below) — 30 seconds that prevent an hour of
+   mystery. Speech seconds must hit **2000+ RMS**.
+2. `voice-start` → wait for `voice_status: listening` (~2–3 min) → *"Hey NXP"* … beep … *"what is the wake
+   word?"* → spoken answer lands.
+3. Optional but glorious: *"Hey NXP … turn on the lights"* — verifies agent bridge + MCP + the LED device in
+   one utterance.
+4. **`voice-stop`** — leave the engine free for the demo loop.
+
+### T+10:00 — Demo-ready state
+
+| Telemetry | Should read |
+|---|---|
+| `genai_status` | `idle` |
+| `agent_status` | `ready` |
+| `voice_status` | `off` (start it live per visitor, or leave running if voice-first) |
+| `llm_model` / `llm_backend` / `llm_rag` | `danube-500M-q8` / `neutron` / `off` |
+| `board_ip` | matches the Embedded widget links |
+| Gauges | populated from the warm-up answers, needles in green |
 
 ---
 
