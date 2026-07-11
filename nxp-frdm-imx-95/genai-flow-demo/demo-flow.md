@@ -40,7 +40,7 @@ IP, ~15 s). The MCP auth token persists across boots — no re-login needed.
 
 | Send | Value | Why |
 |---|---|---|
-| `set-model` | `danube-500M-q8` | beats 4–6 need the GenAI Flow path |
+| `set-model` | `danube-500M-q8` | beats 4–6 need the GenAI Flow path — and q8 specifically: the faster q4 reproducibly fails RAG (returns refusals instead of quoting docs; see [MODELS.md](MODELS.md)) |
 | `set-backend` | `neutron` | the NPU headline on the gauges |
 | `set-rag` | `off` | beat 3 (hallucination) requires it |
 | `set-stt` | `moonshine-base` | the balanced transcriber |
@@ -157,7 +157,7 @@ Ask the same question at each rung and watch the **tokens/sec gauge** and answer
 |---|---|---|---|---|
 | `set-backend cpu` → `ask-llm What is an NPU?` | `cpu` | **10.1** | ~1 min | fluent, shaky facts |
 | `set-backend neutron` → same question | `neutron` | **13.7** | ~2.5 min (NPU compile dominates) | same words, +35% speed |
-| `set-model danube-500M-q4` → same (still neutron) | `neutron` | **15.9** | ~2.5–3 min | fastest measured — and audibly terser: quantization's price |
+| `set-model danube-500M-q4` → same (still neutron) | `neutron` | **15.9** | ~2.5–3 min | fastest measured — but quantization broke its RAG ability (refusals instead of quotes), which is why it isn't the default |
 | `set-model qwen2.5-0.5b-instruct-q8_0` → same | `cpu-llama.cpp` | **12.9** | **~15 s** | correct definition, 5.6 s load |
 | `set-model qwen2.5-1.5b-instruct-q4_k_m` → same | `cpu-llama.cpp` | **5.7** | ~30 s | best reasoning |
 | `set-model danube-500M-q8` | back to GenAI Flow | | | |
