@@ -11,6 +11,8 @@ temperature) streamed to /IOTCONNECT.
 > [!TIP]
 > Demoing this at a booth or customer meeting? Follow the step-by-step [demo flow guide](demo-flow.md) —
 > every feature with expected results, time-to-result, the telemetry to point at, and a failure playbook.
+> A complete inventory of every AI model in the demo — function, footprint, measured performance — is in
+> [MODELS.md](MODELS.md).
 
 ## 1. Introduction
 
