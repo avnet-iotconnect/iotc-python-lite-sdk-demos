@@ -19,7 +19,7 @@ This demo streams BLE sensor telemetry from a SensorTile.box PRO (MKBOXPRO) sens
 
 Before installing, change your device's template to `mkboxpro` in the /IOTCONNECT online platform:
 
-1. Open [awspoc.iotconnect.io](https://awspoc.iotconnect.io) and navigate to your device's page.
+1. Open [console.iotconnect.io](https://console.iotconnect.io) and navigate to your device's page.
 2. Locate the **Template** field (mid-left on the page) and click the edit icon.
 3. Select the `mkboxpro` template from the drop-down and save.
 

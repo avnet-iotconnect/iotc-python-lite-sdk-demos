@@ -27,7 +27,7 @@ The numbered connections in the image also include:
 
 Before installing, change your device's template to `eiqIOTC` in the /IOTCONNECT online platform:
 
-1. Open [awspoc.iotconnect.io](https://awspoc.iotconnect.io) and navigate to your device's page.
+1. Open [console.iotconnect.io](https://console.iotconnect.io) and navigate to your device's page.
 2. Locate the **Template** field (mid-left on the page) and click the edit icon.
 3. Select the `eiqIOTC` template from the drop-down and save.
 
