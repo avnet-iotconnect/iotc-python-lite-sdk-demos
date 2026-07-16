@@ -17,6 +17,7 @@ The following development boards are pre-enabled with /IOTCONNECT in this reposi
 * [Microchip SAMA7D65 Curiosity Kit](microchip-sama7d65-curiosity) - ([Purchase Link](https://www.newark.com/microchip/ev63j76a/development-kit-arm-cortex-a7/dp/46AM2853))
 * [NVIDIA Jetson Orin NX](nvidia-jetson-orin) - ([Purchase Link](https://www.newark.com/seeed-studio/110110144/recomputer-j4011-edge-ai-device/dp/74AK7856))
 * [NXP FRDM-IMX93](nxp-frdm-imx-93) - ([Purchase Link](https://www.newark.com/nxp/frdm-imx93/dev-brd-64bit-arm-cortex-a55-m33/dp/20AM9538))
+* [NXP FRDM-IMX95](nxp-frdm-imx-95) - ([Purchase Link](https://www.avnet.com/americas/product/nxp/frdm-imx95/evolve-122131125/))
 * [NXP GoldBox 3 Vehicle Networking Development Platform](nxp-s32g-vnp-gldbox3) - ([Purchase Link](https://www.newark.com/nxp/s32g-vnp-gldbox/ref-design-board-vehicle-n-w-processor/dp/37AJ9124))
 * [Raspberry Pi](raspberry-pi) - ([Purchase Link](https://www.newark.com/raspberry-pi/rpi5-4gb-single/rpi-5-board-2-4ghz-4gb-arm-cortex/dp/81AK1346))
 * [Renesas RZ/G3E Evaluation Board Kit](renesas-rzg3e-evk) - ([Purchase Link](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397))
@@ -59,6 +60,13 @@ The EIQ DMS demo uses the NXP eIQ Vision AI stack to analyze a live camera feed 
 **Supported on:**
 * [NXP FRDM-IMX93](nxp-frdm-imx-93/dms-demo/README.md)
 * [Tria MaaXBoard OSM93](tria-maaxboard-osm93/dms-demo/README.md)
+
+## eIQ GenAI Flow Edge LLM Demo
+
+The eIQ GenAI Flow demo brings on-device Generative AI to /IOTCONNECT using NXP's eIQ GenAI Flow conversational AI pipeline (wake-word, speech-to-text, RAG, LLM, and text-to-speech running locally). Prompt the on-device LLM from the cloud, run the official GenAI Flow benchmark, and stream LLM performance telemetry — tokens/sec, time-to-first-token, CPU, memory, and temperature — to your /IOTCONNECT dashboard. Supports the Cortex-A55 CPU cluster and experimental eIQ Neutron NPU acceleration, with Kinara Ara-2 discrete NPU module support planned.
+
+**Supported on:**
+* [NXP FRDM-IMX95](nxp-frdm-imx-95/genai-flow-demo/README.md)
 
 ## X-LINUX-AI Object Detection
 

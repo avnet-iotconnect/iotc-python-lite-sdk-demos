@@ -1,0 +1,875 @@
+{
+  "ddType": 2,
+  "items": [
+    {
+      "widgetGuid": "A8CB394D-15B1-42C9-94FC-AD7BDC599E2A",
+      "widgetProperties": {
+        "i": "Image",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "NXP FRDM i.MX 95",
+        "titleAlign": "",
+        "contents": {
+          "option": {
+            "imageUpload": "false",
+            "imageUrl": "true",
+            "imageDevice": "false",
+            "imageTelemetry": "false",
+            "key": "option",
+            "position": "center"
+          },
+          "upload": {
+            "imageurl": "",
+            "key": "upload"
+          },
+          "url": {
+            "imageurl": "https://www.nxp.com/assets/images/en/dev-board-image/GS-FRDM-IMX95-IMG1.svg",
+            "key": "url"
+          },
+          "device": {
+            "deviceGuid": "",
+            "deviceName": "",
+            "imageurl": "",
+            "key": "device"
+          },
+          "telemetry": {
+            "deviceGuid": "",
+            "deviceName": "",
+            "imageurl": "",
+            "key": "telemetry"
+          },
+          "classification": {
+            "showClassification": "false",
+            "key": "classification"
+          }
+        }
+      },
+      "properties": {
+        "x": "0",
+        "y": "0",
+        "w": "12",
+        "h": "9",
+        "i": "Image",
+        "minW": "5",
+        "minH": "5",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+      "widgetProperties": {
+        "i": "gauge",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "LLM Tokens / Second",
+        "titleAlign": "",
+        "contents": {
+          "gauge": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "94AB89D2-9F1E-47C9-8B00-2BECCA820025",
+                  "attributeName": "llm_tps",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "minValue": "0",
+            "maxValue": "20",
+            "version": "2.0",
+            "zones": [
+              {
+                "zoneName": "slow",
+                "upToValue": "5",
+                "zoneColor": "#d0021b"
+              },
+              {
+                "zoneName": "ok",
+                "upToValue": "10",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "fast",
+                "upToValue": "20",
+                "zoneColor": "#7ed321"
+              }
+            ],
+            "attrType": "1"
+          }
+        }
+      },
+      "properties": {
+        "x": "12",
+        "y": "0",
+        "w": "10",
+        "h": "9",
+        "i": "gauge",
+        "minW": "10",
+        "minH": "9",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+      "widgetProperties": {
+        "i": "gauge",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "SoC Temperature (C)",
+        "titleAlign": "",
+        "contents": {
+          "gauge": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "F4FEEA25-CB05-4782-9CBE-E087865B586C",
+                  "attributeName": "cpu_temp",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "minValue": "0",
+            "maxValue": "100",
+            "version": "2.0",
+            "zones": [
+              {
+                "zoneName": "cool",
+                "upToValue": "60",
+                "zoneColor": "#7ed321"
+              },
+              {
+                "zoneName": "warm",
+                "upToValue": "80",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "hot",
+                "upToValue": "100",
+                "zoneColor": "#d0021b"
+              }
+            ],
+            "attrType": "1"
+          }
+        }
+      },
+      "properties": {
+        "x": "22",
+        "y": "0",
+        "w": "10",
+        "h": "9",
+        "i": "gauge",
+        "minW": "10",
+        "minH": "9",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "21A18C90-2DBC-4283-89D2-B01E1B70E363",
+      "widgetProperties": {
+        "i": "gauge",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "CPU Load (%)",
+        "titleAlign": "",
+        "contents": {
+          "gauge": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "EC9D69DF-D4DB-4F24-AFF2-07BFC9750A9B",
+                  "attributeName": "cpu_percent",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "minValue": "0",
+            "maxValue": "100",
+            "version": "2.0",
+            "zones": [
+              {
+                "zoneName": "idle",
+                "upToValue": "60",
+                "zoneColor": "#7ed321"
+              },
+              {
+                "zoneName": "busy",
+                "upToValue": "85",
+                "zoneColor": "#f5a623"
+              },
+              {
+                "zoneName": "pinned",
+                "upToValue": "100",
+                "zoneColor": "#d0021b"
+              }
+            ],
+            "attrType": "1"
+          }
+        }
+      },
+      "properties": {
+        "x": "32",
+        "y": "0",
+        "w": "10",
+        "h": "9",
+        "i": "gauge",
+        "minW": "10",
+        "minH": "9",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "6A7BB4C8-1763-41EB-A490-0764F72A527F",
+      "widgetProperties": {
+        "i": "DeviceLatestValue",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "AI Engine Status",
+        "titleAlign": "",
+        "contents": {
+          "devicelatestvalue": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "boxtypes": "3",
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "13335721-B977-42E1-81B7-318E5629763E",
+                  "attributeName": "genai_status"
+                },
+                {
+                  "attributeGuid": "04D7D078-C8FD-42AC-8845-32D67863F369",
+                  "attributeName": "llm_model"
+                },
+                {
+                  "attributeGuid": "F2E43AF7-158A-4F4A-80ED-0CE7D4E60BD7",
+                  "attributeName": "llm_backend"
+                },
+                {
+                  "attributeGuid": "83BC7023-2670-4578-98FB-5181123BB04E",
+                  "attributeName": "voice_status"
+                },
+                {
+                  "attributeGuid": "E5D26EBB-DF98-4FDF-B001-2B53872E6E99",
+                  "attributeName": "board_ip"
+                },
+                {
+                  "attributeGuid": "73BDAF77-B08E-4338-A26F-06A91F1B5BE0",
+                  "attributeName": "sdk_version"
+                }
+              ]
+            },
+            "attrType": "1",
+            "key": "devicelatestvalue"
+          }
+        }
+      },
+      "properties": {
+        "x": "42",
+        "y": "0",
+        "w": "15",
+        "h": "16",
+        "i": "DeviceLatestValue",
+        "minW": "15",
+        "minH": "16",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "E1C837D5-D575-44AB-8D1D-EEFBB3DF5940",
+      "widgetProperties": {
+        "i": "Embedded",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "AI Responses (live from the board)",
+        "titleAlign": "",
+        "contents": {
+          "embedded": {
+            "link": "https://192.168.68.80:8080/responses",
+            "refresh": "",
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": "",
+            "key": "embedded"
+          }
+        }
+      },
+      "properties": {
+        "x": "0",
+        "y": "9",
+        "w": "42",
+        "h": "13",
+        "i": "Embedded",
+        "minW": "10",
+        "minH": "10",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "8BF5A2DF-51FA-479B-B5D8-8413DC425CFF",
+      "widgetProperties": {
+        "i": "LiveLineChart",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Performance Live",
+        "titleAlign": "",
+        "contents": {
+          "liveChart": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "94AB89D2-9F1E-47C9-8B00-2BECCA820025",
+                  "attributeName": "llm_tps",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "EC9D69DF-D4DB-4F24-AFF2-07BFC9750A9B",
+                  "attributeName": "cpu_percent",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "F4FEEA25-CB05-4782-9CBE-E087865B586C",
+                  "attributeName": "cpu_temp",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "attrType": "1",
+            "recentEndPoints": 10
+          }
+        }
+      },
+      "properties": {
+        "x": "42",
+        "y": "16",
+        "w": "15",
+        "h": "15",
+        "i": "LiveLineChart",
+        "minW": "15",
+        "minH": "15",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "C6C9FCF9-FAEF-49E1-B546-9E066BF9A02C",
+      "widgetProperties": {
+        "i": "Control",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "RAG Grounding",
+        "titleAlign": "",
+        "contents": {
+          "control": {
+            "device": "MCLiMX95b",
+            "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+            "controlType": "switch",
+            "leftText": "On",
+            "leftCommand": "set-rag",
+            "leftParam": "on",
+            "leftSwitchColor": "#002d72",
+            "leftBackgroundColor": "#7ed321",
+            "rightText": "Off",
+            "rightCommand": "set-rag",
+            "rightParam": "off",
+            "rightSwitchColor": "#002d72",
+            "rightBackgroundColor": "#9b9b9b",
+            "showStatus": "true",
+            "template": "84A118ED-DE65-45C2-B000-E4DD7A570660",
+            "key": "control",
+            "showleftSwitchColorPicker": "false",
+            "showleftBackgroundColorPicker": "false",
+            "showrightSwitchColorPicker": "false",
+            "showrightBackgroundColorPicker": "false"
+          }
+        }
+      },
+      "properties": {
+        "x": "0",
+        "y": "22",
+        "w": "9",
+        "h": "6",
+        "i": "Control",
+        "minW": "9",
+        "minH": "6",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "C6C9FCF9-FAEF-49E1-B546-9E066BF9A02C",
+      "widgetProperties": {
+        "i": "Control",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "LLM Backend",
+        "titleAlign": "",
+        "contents": {
+          "control": {
+            "device": "MCLiMX95b",
+            "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+            "controlType": "switch",
+            "leftText": "NPU",
+            "leftCommand": "set-backend",
+            "leftParam": "neutron",
+            "leftSwitchColor": "#002d72",
+            "leftBackgroundColor": "#7ed321",
+            "rightText": "CPU",
+            "rightCommand": "set-backend",
+            "rightParam": "cpu",
+            "rightSwitchColor": "#002d72",
+            "rightBackgroundColor": "#9b9b9b",
+            "showStatus": "true",
+            "template": "84A118ED-DE65-45C2-B000-E4DD7A570660",
+            "key": "control",
+            "showleftSwitchColorPicker": "false",
+            "showleftBackgroundColorPicker": "false",
+            "showrightSwitchColorPicker": "false",
+            "showrightBackgroundColorPicker": "false"
+          }
+        }
+      },
+      "properties": {
+        "x": "9",
+        "y": "22",
+        "w": "9",
+        "h": "6",
+        "i": "Control",
+        "minW": "9",
+        "minH": "6",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "C6C9FCF9-FAEF-49E1-B546-9E066BF9A02C",
+      "widgetProperties": {
+        "i": "Control",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Ask VLM: Describe Scene",
+        "titleAlign": "",
+        "contents": {
+          "control": {
+            "device": "MCLiMX95b",
+            "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+            "controlType": "button",
+            "leftText": "Look",
+            "leftCommand": "ask-vlm",
+            "leftParam": "What do you see?",
+            "leftSwitchColor": "#002d72",
+            "leftBackgroundColor": "#7ed321",
+            "rightText": "Look",
+            "rightCommand": "ask-vlm",
+            "rightParam": "What do you see?",
+            "rightSwitchColor": "#002d72",
+            "rightBackgroundColor": "#9b9b9b",
+            "showStatus": "true",
+            "template": "84A118ED-DE65-45C2-B000-E4DD7A570660",
+            "key": "control",
+            "showleftSwitchColorPicker": "false",
+            "showleftBackgroundColorPicker": "false",
+            "showrightSwitchColorPicker": "false",
+            "showrightBackgroundColorPicker": "false"
+          }
+        }
+      },
+      "properties": {
+        "x": "18",
+        "y": "22",
+        "w": "9",
+        "h": "6",
+        "i": "Control",
+        "minW": "9",
+        "minH": "6",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "C6C9FCF9-FAEF-49E1-B546-9E066BF9A02C",
+      "widgetProperties": {
+        "i": "Control",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Agent: What Time Is It?",
+        "titleAlign": "",
+        "contents": {
+          "control": {
+            "device": "MCLiMX95b",
+            "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+            "controlType": "button",
+            "leftText": "Ask",
+            "leftCommand": "ask-agent",
+            "leftParam": "what time is it",
+            "leftSwitchColor": "#002d72",
+            "leftBackgroundColor": "#7ed321",
+            "rightText": "Ask",
+            "rightCommand": "ask-agent",
+            "rightParam": "what time is it",
+            "rightSwitchColor": "#002d72",
+            "rightBackgroundColor": "#9b9b9b",
+            "showStatus": "true",
+            "template": "84A118ED-DE65-45C2-B000-E4DD7A570660",
+            "key": "control",
+            "showleftSwitchColorPicker": "false",
+            "showleftBackgroundColorPicker": "false",
+            "showrightSwitchColorPicker": "false",
+            "showrightBackgroundColorPicker": "false"
+          }
+        }
+      },
+      "properties": {
+        "x": "27",
+        "y": "22",
+        "w": "9",
+        "h": "6",
+        "i": "Control",
+        "minW": "9",
+        "minH": "6",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "F7979C1B-8637-4667-90A2-6961052C6E21",
+      "widgetProperties": {
+        "i": "Live",
+        "background": "#B8E986",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Board IP",
+        "titleAlign": "",
+        "contents": {
+          "attributeValue": {
+            "attributeName": "board_ip",
+            "key": "attributeValue"
+          },
+          "attributeTime": {
+            "attributeName": "board_ip",
+            "key": "attributeTime"
+          },
+          "live": {
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "E5D26EBB-DF98-4FDF-B001-2B53872E6E99",
+                  "attributeName": "board_ip",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "rules": "",
+            "attrType": "1"
+          }
+        }
+      },
+      "properties": {
+        "x": "36",
+        "y": "22",
+        "w": "7",
+        "h": "4",
+        "i": "Live",
+        "minW": "7",
+        "minH": "4",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "E1C837D5-D575-44AB-8D1D-EEFBB3DF5940",
+      "widgetProperties": {
+        "i": "Embedded",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Live Camera (board web server)",
+        "titleAlign": "",
+        "contents": {
+          "embedded": {
+            "link": "https://192.168.68.80:8080/live",
+            "refresh": "",
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": "",
+            "key": "embedded"
+          }
+        }
+      },
+      "properties": {
+        "x": "0",
+        "y": "28",
+        "w": "21",
+        "h": "15",
+        "i": "Embedded",
+        "minW": "10",
+        "minH": "10",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "E413CDFD-54EB-465E-BA97-CE610867E440",
+      "widgetProperties": {
+        "i": "DeviceCommand",
+        "background": "#f5f5f5",
+        "fontColor": "#002d72",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Send Any Command",
+        "titleAlign": "",
+        "contents": {
+          "deviceCommand": {
+            "template": "84A118ED-DE65-45C2-B000-E4DD7A570660",
+            "device": "MCLiMX95b",
+            "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+            "key": "deviceCommand"
+          }
+        }
+      },
+      "properties": {
+        "x": "21",
+        "y": "30",
+        "w": "14",
+        "h": "15",
+        "i": "DeviceCommand",
+        "minW": "22",
+        "minH": "10",
+        "maxH": "20",
+        "maxW": "35",
+        "isStatic": "false"
+      }
+    },
+    {
+      "widgetGuid": "A0326788-ACC8-4C4C-8243-98112CAEB98B",
+      "widgetProperties": {
+        "i": "Telemetry",
+        "background": "#fff",
+        "fontColor": "#343434",
+        "fontFamily": "Proxima Nova",
+        "fontSize": "18",
+        "title": "Raw Telemetry",
+        "titleAlign": "",
+        "contents": {
+          "telemetry": {
+            "showHeader": "true",
+            "showDate": "true",
+            "device": {
+              "deviceGuid": "B9F1F218-DD33-4128-A065-153A4463D612",
+              "deviceUniqueId": "MCLiMX95b"
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "attributeGuid": "13335721-B977-42E1-81B7-318E5629763E",
+                  "attributeName": "genai_status",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "04D7D078-C8FD-42AC-8845-32D67863F369",
+                  "attributeName": "llm_model",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "94AB89D2-9F1E-47C9-8B00-2BECCA820025",
+                  "attributeName": "llm_tps",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "1EF93632-0393-4C42-8701-01BAAE559B22",
+                  "attributeName": "llm_response",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "3F401C80-CD28-4363-BCE9-0664C87DD2DB",
+                  "attributeName": "vlm_response",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "284D1AD2-D461-4B62-AA04-2664531B2B3F",
+                  "attributeName": "voice_question",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "BE32850A-6314-43F4-8426-10859E8065AF",
+                  "attributeName": "voice_response",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "STRING",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "EC9D69DF-D4DB-4F24-AFF2-07BFC9750A9B",
+                  "attributeName": "cpu_percent",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "F4FEEA25-CB05-4782-9CBE-E087865B586C",
+                  "attributeName": "cpu_temp",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                },
+                {
+                  "attributeGuid": "40476E22-9771-4A79-B512-C9BFD1E5D7DA",
+                  "attributeName": "mem_used_mb",
+                  "displayName": "",
+                  "checked": "true",
+                  "dataType": "DECIMAL",
+                  "attributeLatestValue": "",
+                  "deviceUpdatedDate": "2026-07-05T20:48:55.013Z",
+                  "gatewayUpdatedDate": "NA",
+                  "attributeValue": ""
+                }
+              ]
+            },
+            "attrType": "1"
+          }
+        }
+      },
+      "properties": {
+        "x": "35",
+        "y": "30",
+        "w": "15",
+        "h": "10",
+        "i": "Telemetry",
+        "minW": "15",
+        "minH": "6",
+        "isStatic": "false"
+      }
+    }
+  ]
+}
