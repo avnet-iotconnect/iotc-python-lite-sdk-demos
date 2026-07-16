@@ -247,6 +247,7 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | Wake word ignored AND no beep after a reboot or venue move | ALSA card order reshuffles on boot; GStreamer playback lands on a device with no output, and auto-detection can misroute audio | pin devices by name in `/opt/demo/genai-config.json`: `"capture_device": "sysdefault:CARD=C920"`, `"playback_device": "sysdefault:CARD=mqsaudio"`, then `voice-stop` / `voice-start` |
 | Wake word ignored at a new venue | speaking too far from the mic (works at ≥4000 RMS, fails near the ~450 noise floor) | run the mic check below; move the mic to arm's length of the speaker |
 | Status badges show `error` but everything works | last-known value from a past failure (statuses don't auto-clear) | run any successful operation of that engine (e.g. `voice-start`/`voice-stop`) and it resets |
+| Agent reports a wrong date/time | board clock drifted (no RTC battery) and the venue blocks NTP — `timedatectl` may still claim "synchronized" | `date -u -s 'YYYY-MM-DD HH:MM:SS'` on the board, then `hwclock --systohc`; the start block prints board time so you catch it at T+1 |
 | Nothing responds at all | app died | on the board: `cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &` |
 
 ### Venue mic check (run after any board move, before doors open)

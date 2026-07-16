@@ -15,6 +15,7 @@ pgrep -f 'python3.*app\.py' > /dev/null && echo "cloud app:     RUNNING" || echo
 pgrep -f 'camera-server'    > /dev/null && echo "camera server: RUNNING" || echo "camera server: FAILED (see /opt/demo/camera.log)"
 pgrep -f 'iotc-mcp-server'  > /dev/null && echo "mcp server:    RUNNING" || echo "mcp server:    FAILED (see /opt/demo/mcp.log)"
 echo "board IP:      $(ip -4 -br addr show eth0 | awk '{print $3}' | cut -d/ -f1)"
+echo "board time:    $(date -u) (UTC - if wrong, venue blocks NTP: date -u -s 'YYYY-MM-DD HH:MM:SS')"
 
 2) WHAT YOU GET
 
