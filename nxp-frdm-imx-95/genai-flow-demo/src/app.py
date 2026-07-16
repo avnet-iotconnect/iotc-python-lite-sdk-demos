@@ -265,6 +265,12 @@ _TPS_RE = re.compile(r"([\d.]+)\s*tok(?:en)?s?\s*(?:/|per)\s*s(?:ec)?", re.IGNOR
 _TTFT_RE = re.compile(r"ttft\D*([\d.]+)", re.IGNORECASE)
 
 
+def genai_model():
+    """GenAI Flow only runs Danube models - fall back to the default when a
+    GGUF (llama.cpp) model is selected, so voice/benchmark never break."""
+    return config["model"] if config["model"].startswith("danube") else "danube-500M-q8"
+
+
 def build_genai_cmd(extra_args):
     cmd = [config["python"], "-u", genai_script_path()] + extra_args
     if config["backend"] == "neutron":
@@ -530,7 +536,7 @@ def voice_session(output_mode):
     subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i vasr"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     time.sleep(1)
-    cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", config["model"]])
+    cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", genai_model()])
     if config.get("stt_model"):
         cmd += ["--stt", config["stt_model"]]
     if config.get("capture_device"):
@@ -1131,7 +1137,7 @@ def run_benchmark(extra_args):
         stdout = ""
     else:
         args = extra_args if extra_args else ["-i", "keyb", "-o", "text"]
-        cmd = build_genai_cmd(args + ["-m", config["model"], "-r", "-b"])
+        cmd = build_genai_cmd(args + ["-m", genai_model(), "-r", "-b"])
         print("Running benchmark:", " ".join(cmd))
         start_time = time.time()
         result = subprocess.run(
