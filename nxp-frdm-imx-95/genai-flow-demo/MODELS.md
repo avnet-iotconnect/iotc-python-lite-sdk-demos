@@ -21,7 +21,27 @@ Same prompt for all six configurations. TTFT = time from prompt to first token, 
 
 **Ladder takeaways:** quantization buys speed at answer-quality cost (q4 beats q8 everywhere on tok/s — but q4 cannot do grounded RAG answers, which is why q8 stays the demo default);
 the NPU adds ~35% to whichever Danube quant it runs; llama.cpp's near-instant loads make the Qwens the
-responsive choice despite CPU-only execution; and parameter count — not tok/s — is what buys reasoning.
+responsive choice despite CPU-only execution; and parameter count — not tok/s — is what buys reasoning. (Threading: Danube/onnxruntime uses the default
+intra-op pool across all 6 cores; the Qwen runs are pinned to 6 threads — see the runtimes section below.)
+
+## The two LLM runtimes
+
+The language models run on two very different engines — most of the table above is explained by this split:
+
+| | **eIQ GenAI Flow** (NXP) | **llama.cpp** (open source) |
+|---|---|---|
+| Model format | Encrypted ONNX, delivered by NXP (Danube only) | GGUF — any open model from Hugging Face |
+| Execution engine | onnxruntime: CPU provider, or the **Neutron NPU** execution provider (i.MX 95 B0) | GGML CPU backend with Arm NEON |
+| CPU threads | Not pinned — onnxruntime's default intra-op pool, all 6 Cortex-A55 cores available | Explicitly **6 threads** (`llama_threads` in `genai-config.json`) |
+| Load behavior | Spawns a full pipeline process per session: **39–44 s** CPU, **129–147 s** NPU (the model is compiled for the NPU on every launch) | Memory-maps the GGUF: **5.6–7.1 s** cold start |
+| NPU access | ✅ (this is the only path to the Neutron NPU) | ❌ — CPU only on this board |
+| What it brings | The whole conversational stack: RAG, wake word, STT, TTS, benchmark mode, query classification | Bare, fast LLM inference |
+| Used by | `ask-llm` (Danube), voice assistant, RAG, `run-benchmark`, the agent's session | `ask-llm` when a GGUF is selected via `set-model` |
+
+The practical reading: **GenAI Flow is the pipeline, llama.cpp is the escape hatch.** GenAI Flow buys NPU
+acceleration and every voice/RAG feature at the cost of heavyweight session startup and an NXP-only model list;
+llama.cpp trades all the pipeline features for open model choice and near-instant loads. The demo uses both on
+purpose — and the `set-model` command is the seam between them.
 
 ## Vision language models (image understanding)
 
