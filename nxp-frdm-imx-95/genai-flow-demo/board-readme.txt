@@ -47,8 +47,9 @@ echo "board time:    $(date -u) (UTC - if wrong, venue blocks NTP: date -u -s 'Y
 
    The agent's cloud tools need the MCP server authenticated once:
 
-iotconnect-cli configure -u <email> -p '<password>' -s <solution-key> --pf aws -e poc
+iotconnect-cli configure -u <email> -p '<password>' -s <solution-key> --pf aws -e <env>
 
+   (<env> is your IoTConnect environment as shown in the platform URL, e.g. prod)
    The session token refreshes automatically afterwards.
 
 5) STOP THE DEMO - copy and paste:
