@@ -987,8 +987,15 @@ def run_chat_prompt(prompt):
     sig = _chat_signature()
     load_time = 0.0
     if not (chat_llm.alive() and chat_llm.signature == sig):
+        if chat_llm.proc is not None and chat_llm.signature == sig:
+            print("chat LLM session died unexpectedly (likely OOM) - reloading")
         chat_llm.stop()
         chat_llm.signature = sig
+        if agent_llm.alive():
+            print("Releasing agent session - the board fits one LLM session (no swap)")
+            agent_llm.stop()
+            with telemetry_lock:
+                telemetry["agent_status"] = "off"
         t0 = time.monotonic()
         with chat_llm.lock:
             chat_llm.start()
@@ -1049,6 +1056,9 @@ def run_agent_request(request):
     """Route a natural-language request to a board tool and answer from its result."""
     if not agent_llm.alive():
         set_agent_status("loading")
+        if chat_llm.alive():
+            print("Releasing chat session - the board fits one LLM session (no swap)")
+            chat_llm.stop()
     else:
         set_agent_status("routing")
 
@@ -1382,6 +1392,11 @@ def on_command(msg: C2dCommand):
         def preload():
             try:
                 set_agent_status("loading")
+                if chat_llm.alive():
+                    # Wait out any in-flight ask-llm before taking its session
+                    with llm_busy:
+                        print("Releasing chat session - the board fits one LLM session (no swap)")
+                        chat_llm.stop()
                 with agent_llm.lock:
                     if not agent_llm.alive():
                         agent_llm.start()
