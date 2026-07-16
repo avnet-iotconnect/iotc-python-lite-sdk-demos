@@ -88,6 +88,10 @@ DEFAULT_CONFIG = {
     # allowlist). "turn on the lights" -> <led_command> on to the device whose
     # DUID best matches the request.
     "led_command": "board-user-led",
+    # Spoken-fragment aliases for devices whose names don't survive speech
+    # transcription (e.g. "psoc6" arrives as "p-sock 6"). Checked before the
+    # fleet search; keys are lowercase words, values are exact DUIDs.
+    "device_aliases": {},
     # llama.cpp integration for larger GGUF models (see set-model)
     "llama_dir": "/opt/llama",
     "llama_threads": 6,
@@ -795,7 +799,17 @@ def tool_send_device_command(request):
     """
     words = [w for w in re.findall(r"[a-z0-9]{3,}", request.lower())
              if w not in ("turn", "the", "device", "board", "please", "can", "you")]
-    # Large fleets paginate device_list, so search server-side per word
+    # Alias map first: spoken fragments that reliably mis-transcribe
+    aliases = config.get("device_aliases", {})
+    for w in words:
+        if w in aliases:
+            arg = "off" if re.search(r"\boff\b", request, re.I) else "on"
+            cmd = config["led_command"]
+            _mcp_call("command_send", {"duid": aliases[w], "command_name": cmd, "args": arg})
+            return "Sent command %s %s to device %s through IOTCONNECT" % (cmd, arg, aliases[w])
+    # Large fleets paginate device_list, so search server-side per word.
+    # Score by word length so a distinctive fragment ("psoc6") outranks a
+    # generic one ("led" - which is also a device-name fragment in some fleets).
     candidates = {}
     for w in words[:4]:
         try:
@@ -809,7 +823,7 @@ def tool_send_device_command(request):
         for d in devs:
             duid = str(_first_of(d, "duid", "uniqueId", "name") or "")
             if duid:
-                candidates[duid] = candidates.get(duid, 0) + 1
+                candidates[duid] = candidates.get(duid, 0) + len(w)
     if not candidates:
         raise RuntimeError("No device matched %r - try including part of the device name, e.g. 'lights'"
                            % " ".join(words))
