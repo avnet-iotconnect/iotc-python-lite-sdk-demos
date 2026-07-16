@@ -388,10 +388,15 @@ def run_llm_prompt(prompt):
     Run a single prompt through eIQ GenAI Flow in keyboard-input / text-output
     mode, measure load time, TTFT, generation time and tokens/sec, and update
     the telemetry dictionary. Returns the response text (or raises).
-    GGUF models (see set-model) are dispatched to llama.cpp instead.
+    GGUF models (see set-model) are dispatched to llama.cpp instead; Danube
+    models use a persistent warm session (run_chat_prompt).
     """
     if is_gguf_model(config["model"]):
         return run_llama_prompt(prompt)
+    return run_chat_prompt(prompt)
+
+
+def _run_llm_prompt_oneshot(prompt):  # retained for reference/manual testing
     cmd = build_genai_cmd(["-i", "keyb", "-o", "text", "-m", config["model"]])
     print("Running:", " ".join(cmd))
     proc = subprocess.Popen(
@@ -539,6 +544,7 @@ def voice_session(output_mode):
     # orphan holds the ALSA playback device open, silencing the new session.
     subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i vasr"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    chat_llm.stop()  # release the warm ask-llm session; voice needs the RAM
     time.sleep(1)
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", genai_model()])
     if config.get("stt_model"):
@@ -866,7 +872,10 @@ _TOOL_KEYWORDS = [
 class PersistentLLM:
     """A GenAI Flow keyb/text session kept alive for multi-turn use."""
 
-    def __init__(self):
+    def __init__(self, name="agent", cmd_factory=None):
+        self.name = name
+        self.cmd_factory = cmd_factory
+        self.signature = None      # config the session was started with
         self.proc = None
         self.reader = None
         self.lock = threading.Lock()
@@ -876,11 +885,14 @@ class PersistentLLM:
         return _ANSI_RE.sub("", buf.decode("utf-8", "replace"))
 
     def start(self):
-        # Always CPU (41s load vs ~2min NPU compile) and no RAG (the tool
-        # router must see only its own instructions).
-        cmd = [config["python"], "-u", genai_script_path(),
-               "-i", "keyb", "-o", "text", "-m", "danube-500M-q8"]
-        print("Starting agent LLM session:", " ".join(cmd))
+        if self.cmd_factory:
+            cmd = self.cmd_factory()
+        else:
+            # Agent default: always CPU (41s load vs ~2min NPU compile) and no
+            # RAG (the tool router must see only its own instructions).
+            cmd = [config["python"], "-u", genai_script_path(),
+                   "-i", "keyb", "-o", "text", "-m", "danube-500M-q8"]
+        print("Starting %s LLM session: %s" % (self.name, " ".join(cmd)))
         self.proc = subprocess.Popen(
             cmd, cwd=config["genai_dir"],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -906,19 +918,39 @@ class PersistentLLM:
         return self.proc is not None and self.proc.poll() is None
 
     def ask(self, prompt, timeout=120):
+        return self.ask_timed(prompt, timeout)[0]
+
+    def ask_timed(self, prompt, timeout=120):
+        """Returns (answer, ttft_s, gen_time_s, token_count)."""
         with self.lock:
             if not self.alive():
                 self.start()
             self.proc.stdin.write((prompt.strip() + "\n").encode())
             self.proc.stdin.flush()
-            buf = self._read_until_marker(timeout)
+            t0 = time.monotonic()
+            buf = b""
+            t_first = t_last = None
+            deadline = t0 + timeout
+            while READY_MARKER not in self._clean(buf):
+                if time.monotonic() > deadline:
+                    raise RuntimeError("%s LLM timed out" % self.name)
+                ts, data = self.reader.get(timeout=5)
+                if data is None:
+                    raise RuntimeError("%s LLM exited:\n" % self.name + self._clean(buf[-1500:]))
+                if data and self._clean(data).strip():
+                    if t_first is None:
+                        t_first = ts
+                    t_last = ts
+                buf += data
             self.last_used = time.monotonic()
         raw = buf.decode("utf-8", "replace")
-        tokens = _LLM_TOKEN_CONTENT_RE.findall(raw)
-        answer = "".join(tokens).strip()
+        token_list = _LLM_TOKEN_CONTENT_RE.findall(raw)
+        answer = "".join(token_list).strip()
         if not answer:  # fall back to plain text before the marker
             answer = self._clean(buf).split(READY_MARKER)[0].strip()
-        return answer
+        ttft = round(t_first - t0, 2) if t_first else 0.0
+        gen_time = round((t_last - t0), 2) if t_last else 0.0
+        return answer, ttft, gen_time, len(token_list)
 
     def stop(self):
         with self.lock:
@@ -931,22 +963,78 @@ class PersistentLLM:
                 self.proc = None
 
 
-agent_llm = PersistentLLM()
+agent_llm = PersistentLLM("agent")
+
+
+def _chat_cmd():
+    return build_genai_cmd(["-i", "keyb", "-o", "text", "-m", genai_model()])
+
+
+chat_llm = PersistentLLM("chat", _chat_cmd)
+
+
+def _chat_signature():
+    return (genai_model(), config["backend"], bool(config.get("use_rag")))
+
+
+def run_chat_prompt(prompt):
+    """
+    ask-llm via a persistent GenAI Flow session: the model loads once per
+    configuration (model/backend/RAG) and answers follow-ups in seconds.
+    Any set-* change or voice session invalidates it; idle-reaped like the
+    agent session.
+    """
+    sig = _chat_signature()
+    load_time = 0.0
+    if not (chat_llm.alive() and chat_llm.signature == sig):
+        chat_llm.stop()
+        chat_llm.signature = sig
+        t0 = time.monotonic()
+        with chat_llm.lock:
+            chat_llm.start()
+        load_time = round(time.monotonic() - t0, 2)
+    answer, ttft, gen_time, tokens = chat_llm.ask_timed(prompt, timeout=config["prompt_timeout_s"])
+    # Drop logger lines that can interleave with the token stream
+    answer = "\n".join(
+        l for l in answer.splitlines()
+        if not re.match(r"\s*\d{4}-\d{2}-\d{2}[ T]", l) and "Error:" not in l
+    ).strip()
+    if not answer:
+        raise RuntimeError("No LLM response captured")
+    if tokens == 0:
+        tokens = max(1, int(len(answer) / 4))
+    tps = round(tokens / max(0.01, gen_time - ttft), 2) if gen_time > ttft else 0.0
+    with telemetry_lock:
+        telemetry.update({
+            "llm_model": genai_model(),
+            "llm_backend": config["backend"],
+            "llm_prompt": prompt[:500],
+            "llm_response": answer[:1000],
+            "llm_load_time": load_time,
+            "llm_ttft": ttft,
+            "llm_gen_time": gen_time,
+            "llm_tps": tps,
+            "llm_token_count": tokens,
+        })
+    print("LLM response (warm=%s, %.1fs, ~%.1f tok/s): %s" % (load_time == 0.0, gen_time, tps, answer[:200]))
+    return answer
 
 
 def agent_reaper():
-    """Stop the idle agent session to reclaim ~1.8 GB of RAM."""
+    """Stop idle LLM sessions (agent + chat) to reclaim RAM."""
     while True:
         time.sleep(60)
-        if agent_llm.alive() and time.monotonic() - agent_llm.last_used > config["agent_idle_timeout_s"]:
-            if llm_busy.acquire(blocking=False):
-                try:
-                    print("Agent LLM idle - stopping session")
-                    agent_llm.stop()
-                    with telemetry_lock:
-                        telemetry["agent_status"] = "off"
-                finally:
-                    llm_busy.release()
+        for sess in (agent_llm, chat_llm):
+            if sess.alive() and time.monotonic() - sess.last_used > config["agent_idle_timeout_s"]:
+                if llm_busy.acquire(blocking=False):
+                    try:
+                        print("%s LLM idle - stopping session" % sess.name)
+                        sess.stop()
+                        if sess is agent_llm:
+                            with telemetry_lock:
+                                telemetry["agent_status"] = "off"
+                    finally:
+                        llm_busy.release()
 
 
 threading.Thread(target=agent_reaper, daemon=True).start()
@@ -1501,6 +1589,10 @@ if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm"):
     sys.exit(0)
 
 try:
+    # Reap keyb LLM sessions orphaned by a previous app instance - they hold
+    # RAM (and their answers go nowhere).
+    subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i keyb"],
+                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     telemetry["board_ip"] = get_local_ip()
     if not genai_installed():
         telemetry["genai_status"] = "not-installed"
