@@ -1264,6 +1264,9 @@ def on_command(msg: C2dCommand):
         start_llm_job(lambda: run_agent_request(request), "agent", "Agent request complete")
 
     elif msg.command_name == "agent-start":
+        # Pre-loading doesn't generate anything, so it deliberately skips the
+        # llm_busy lock - it works even while a voice session is running
+        # (the agent loads on CPU; concurrency is guarded by agent_llm.lock).
         if agent_llm.alive():
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Agent session is already loaded")
             return
@@ -1271,23 +1274,21 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_FAILED,
                                "eIQ GenAI Flow not found at %s - see demo README" % config["genai_dir"])
             return
-        if not llm_busy.acquire(blocking=False):
-            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
-            return
         c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                            "Agent loading (~1 min) - agent_status shows ready when warm")
 
         def preload():
             try:
                 set_agent_status("loading")
-                agent_llm.start()
+                with agent_llm.lock:
+                    if not agent_llm.alive():
+                        agent_llm.start()
                 set_agent_status("ready")
+                publish_state()
                 print("Agent session pre-loaded")
             except Exception as e:
                 print("Agent preload failed:", e)
                 set_agent_status("error")
-            finally:
-                llm_busy.release()
         threading.Thread(target=preload, daemon=True).start()
 
     elif msg.command_name == "agent-stop":
