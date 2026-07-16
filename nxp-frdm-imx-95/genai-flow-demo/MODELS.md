@@ -43,6 +43,38 @@ acceleration and every voice/RAG feature at the cost of heavyweight session star
 llama.cpp trades all the pipeline features for open model choice and near-instant loads. The demo uses both on
 purpose — and the `set-model` command is the seam between them.
 
+## Quantization formats: q8/q4 vs Q8_0/Q4_K_M
+
+The Danube and Qwen quant labels look similar but name **different schemes** — and the difference explains the
+quality results:
+
+| Format | Family | How it works | Effective bits/weight |
+|---|---|---|---|
+| Danube **q8** / **q4** | NXP encrypted ONNX | NXP-delivered INT8/INT4 weight quantization for onnxruntime and the Neutron NPU (exact scheme proprietary). Uniform treatment of the network — no mixed-precision protection for sensitive layers | ~8 / ~4 |
+| Qwen **Q8_0** | GGUF (llama.cpp) | 8-bit round-to-nearest in 32-weight blocks, one FP16 scale per block. Near-lossless — quality is essentially the FP16 model | ~8.5 |
+| Qwen **Q4_K_M** | GGUF "K-quant" | 4-bit in 256-weight super-blocks with grouped scales/mins, and the **M**edium mix keeps the most damage-sensitive tensors (attention values, FFN down-projections) at 6-bit | ~4.8 |
+
+The lesson in our results: **4-bit is survivable with K-quant's mixed precision, brutal without it.** Qwen-1.5B
+at Q4_K_M kept its reasoning intact; Danube q4's uniform 4-bit broke exactly the fragile skill (instruction-
+following for RAG synthesis) while leaving fluent chat mostly working. On a 500M-parameter model there's no
+redundancy to absorb the damage.
+
+## Quality of Results (QoR) grades
+
+Qualitative grades from the answers observed across our test set (same prompts, hardware-validated — but a
+small sample and our judgment; treat as a booth-calibrated rubric, not an academic eval).
+
+| Model / config | General facts | Instruction following | RAG synthesis | Overall QoR |
+|---|---|---|---|---|
+| Qwen2.5-1.5B Q4_K_M | B+ (right decades and real details on niche topics; occasional slip — called the Porsche 928 mid-engine) | A- | n/a (llama.cpp path has no RAG) | **B+** |
+| Qwen2.5-0.5B Q8_0 | B- (correct NPU definition, Everest at 8848 m; wanders on long answers) | B+ | n/a | **B** |
+| Danube-500M q8 | D (invents dates, times, "NPU analyzes the human brain") | B- | **A- with RAG on** — quotes retrieved documentation verbatim | **C** unassisted, **B+ grounded** |
+| Danube-500M q4 | D+ (terser, occasionally more accurate than q8) | C- | **F** — reproducible canned refusals | **D+** |
+
+Two readings worth internalizing: **grounding beats parameters** for factual work — Danube-q8 + RAG outscores
+every ungrounded model here on documentation questions; and **the grades explain the demo flow** — Qwen for
+open questions, Danube-q8 for grounded ones, Danube-q4 only where raw tok/s is the story.
+
 ## Vision language models (image understanding)
 
 Same image and question for both. Vision = image encoding; TTFT = vision + decoder to first token.
