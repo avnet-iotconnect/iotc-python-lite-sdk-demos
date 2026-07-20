@@ -1,0 +1,4 @@
+# Per-device credentials from /IOTCONNECT — never commit
+*.pem
+iotcDeviceConfig.json
+__pycache__/

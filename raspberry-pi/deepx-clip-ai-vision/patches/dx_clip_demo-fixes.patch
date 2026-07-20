@@ -1,0 +1,71 @@
+diff --git a/clip_demo_app_opencv/dx_realtime_demo.py b/clip_demo_app_opencv/dx_realtime_demo.py
+index 81ea4e0..a43f6ae 100644
+--- a/clip_demo_app_opencv/dx_realtime_demo.py
++++ b/clip_demo_app_opencv/dx_realtime_demo.py
+@@ -294,6 +294,10 @@ class VideoThread(threading.Thread):
+         else:
+             self.cap = cv2.VideoCapture(self.video_path_current)
+ 
++        if self.is_camera_source:
++            # live view: keep at most one queued frame so the feed stays current
++            self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
++
+         self.original = np.zeros((224, 224, 3), dtype=np.uint8)
+         self.transform_ = self.transform(224)
+         self.update_new_text = False
+@@ -375,6 +379,27 @@ class VideoThread(threading.Thread):
+ 
+             if not ret:
+                 if self.is_camera_source:
++                    # camera glitch/unplug: keep retrying (device may renumber)
++                    print("[DEBUG] camera lost, attempting to reopen...")
++                    self.cap.release()
++                    reopened = False
++                    for _ in range(30):
++                        if self.stop_thread or global_quit:
++                            break
++                        time.sleep(1.0)
++                        for idx in range(10):
++                            cap = cv2.VideoCapture(idx)
++                            if cap.isOpened() and cap.read()[0]:
++                                self.cap = cap
++                                self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
++                                reopened = True
++                                print("[DEBUG] camera reopened at index %d" % idx)
++                                break
++                            cap.release()
++                        if reopened:
++                            break
++                    if reopened:
++                        continue
+                     print("[DEBUG] camera source is abnormally")
+                     self.stop()
+                     break
+@@ -438,7 +463,9 @@ class VideoThread(threading.Thread):
+ 
+             cv2.imshow('Video', self.view_pannel_frame)
+ 
+-            if cv2.waitKey(30) == ord('q'):
++            # camera mode is paced by cap.read(); the 30 ms wait is only for
++            # file playback pacing and would let the V4L2 queue back up
++            if cv2.waitKey(1 if self.is_camera_source else 30) == ord('q'):
+                 global_quit = True
+                 self.released = True
+                 break
+@@ -754,8 +781,14 @@ def main():
+         run_sol_time_t.append(run_sol_time_e - run_sol_time_s)
+ 
+         if len(text_vector_list) > 0:
+-            result_logits_np += np.stack(result_logits)
+-            video_thread.update_text(gt_text_list, result_logits_np[:, 0, 0] / (j + 1), gt_text_alarm_level)
++            # exponential moving average: stays responsive no matter how long the
++            # demo has been running (cumulative mean froze scores after minutes)
++            ema_alpha = 0.12
++            if j == 0:
++                result_logits_np = np.stack(result_logits).astype(np.float64)
++            else:
++                result_logits_np = result_logits_np * (1.0 - ema_alpha) + np.stack(result_logits) * ema_alpha
++            video_thread.update_text(gt_text_list, result_logits_np[:, 0, 0], gt_text_alarm_level)
+         else:
+             video_thread.empty_text()
+ 

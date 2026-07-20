@@ -1,0 +1,104 @@
+{
+  "code": "DXCLIP",
+  "name": "DXCLIP",
+  "authType": 2,
+  "messageVersion": "2.1",
+  "greenGrass": "0",
+  "wireless": "0",
+  "properties": {
+    "description": "DEEPX DX-M1 CLIP 'Ask the Camera' demo on Raspberry Pi 5",
+    "dataFrequency": "6",
+    "fileSupport": false
+  },
+  "attributes": [
+    {
+      "name": "top_prompt",
+      "type": "STRING",
+      "description": "Prompt with the highest similarity score",
+      "unit": "",
+      "aggregateTypes": []
+    },
+    {
+      "name": "top_score",
+      "type": "DECIMAL",
+      "description": "Highest CLIP similarity score",
+      "unit": "",
+      "aggregateTypes": []
+    },
+    {
+      "name": "scores",
+      "type": "STRING",
+      "description": "JSON map of prompt to similarity score",
+      "unit": "",
+      "aggregateTypes": []
+    },
+    {
+      "name": "fps",
+      "type": "DECIMAL",
+      "description": "End-to-end pipeline frames per second",
+      "unit": "fps",
+      "aggregateTypes": []
+    },
+    {
+      "name": "npu_temp",
+      "type": "DECIMAL",
+      "description": "DX-M1 NPU temperature",
+      "unit": "C",
+      "aggregateTypes": []
+    },
+    {
+      "name": "cpu_temp",
+      "type": "DECIMAL",
+      "description": "Pi 5 CPU temperature",
+      "unit": "C",
+      "aggregateTypes": []
+    },
+    {
+      "name": "alert",
+      "type": "INTEGER",
+      "description": "1 when top_score >= threshold",
+      "unit": "",
+      "aggregateTypes": []
+    }
+  ],
+  "commands": [
+    {
+      "name": "set-prompt",
+      "command": "set-prompt",
+      "requiredParam": true,
+      "requiredAck": true,
+      "isOTACommand": false
+    },
+    {
+      "name": "add-prompt",
+      "command": "add-prompt",
+      "requiredParam": true,
+      "requiredAck": true,
+      "isOTACommand": false
+    },
+    {
+      "name": "del-prompt",
+      "command": "del-prompt",
+      "requiredParam": false,
+      "requiredAck": true,
+      "isOTACommand": false
+    },
+    {
+      "name": "clear-prompts",
+      "command": "clear-prompts",
+      "requiredParam": false,
+      "requiredAck": true,
+      "isOTACommand": false
+    },
+    {
+      "name": "set-threshold",
+      "command": "set-threshold",
+      "requiredParam": true,
+      "requiredAck": true,
+      "isOTACommand": false
+    }
+  ],
+  "_meta": {
+    "version": "2.0"
+  }
+}
