@@ -856,7 +856,9 @@ AGENT_TOOLS = {
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
 _TOOL_KEYWORDS = [
-    (re.compile(r"turn (on|off)|switch (on|off)|\bled\b|light", re.I), "send_device_command"),
+    # Requires on/off intent, not just the word "light" - trivia like
+    # "what color is light" must not route to a device command.
+    (re.compile(r"\b(turn|switch|flip)\b.*\b(on|off)\b|\bled\b\s*(on|off)\b", re.I), "send_device_command"),
     (re.compile(r"deployment|fleet|how many devices|other devices|iotconnect|cloud", re.I), "get_cloud_devices"),
     (re.compile(r"telemetry|last reported|received", re.I), "get_cloud_telemetry"),
     (re.compile(r"health|healthy|online|active", re.I), "get_cloud_health"),
