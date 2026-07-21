@@ -2,20 +2,22 @@
  FRDM i.MX 95 GenAI Demo - Quick Start
 =====================================================================
 
-1) START THE DEMO - copy and paste this whole block:
+1) THE DEMO AUTOSTARTS ON POWER-UP (systemd services genai-app,
+   genai-camera, genai-mcp). After plugging in, give it ~90 seconds,
+   then paste this health check:
 
-pkill -f 'python3.*[a]pp\.py'; pkill -f 'camera-serve[r]'; pkill -f 'iotc-mcp-serve[r]'; sleep 2
-cd /opt/demo
-setsid nohup python3 -u app.py > app.log 2>&1 < /dev/null &
-setsid nohup python3 -u camera-server.py > camera.log 2>&1 < /dev/null &
-setsid nohup iotc-mcp-server > mcp.log 2>&1 < /dev/null &
-sleep 10
 echo "--- demo status ---"
-pgrep -f 'python3.*app\.py' > /dev/null && echo "cloud app:     RUNNING" || echo "cloud app:     FAILED (see /opt/demo/app.log)"
-pgrep -f 'camera-server'    > /dev/null && echo "camera server: RUNNING" || echo "camera server: FAILED (see /opt/demo/camera.log)"
-pgrep -f 'iotc-mcp-server'  > /dev/null && echo "mcp server:    RUNNING" || echo "mcp server:    FAILED (see /opt/demo/mcp.log)"
-echo "board IP:      $(ip -4 -br addr show eth0 | awk '{print $3}' | cut -d/ -f1)"
-echo "board time:    $(date -u) (UTC - if wrong, venue blocks NTP: date -u -s 'YYYY-MM-DD HH:MM:SS')"
+systemctl is-active genai-app   | sed 's/^/cloud app:     /'
+systemctl is-active genai-camera| sed 's/^/camera server: /'
+systemctl is-active genai-mcp   | sed 's/^/mcp server:    /'
+echo "board IP:      $(ip -4 route get 1.1.1.1 2>/dev/null | awk '{print $7; exit}')"
+echo "board time:    $(date -u) (UTC - if wrong, venue blocks NTP: date -u -s 'YYYY-MM-DD HH:MM:SS'; hwclock --systohc)"
+
+   To restart everything (after a code update or a hang):
+
+systemctl restart genai-app genai-camera genai-mcp
+
+   Logs stay in /opt/demo/{app,camera,mcp}.log as before.
 
 2) WHAT YOU GET
 
