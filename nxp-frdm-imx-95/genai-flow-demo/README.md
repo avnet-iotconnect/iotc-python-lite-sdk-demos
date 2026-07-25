@@ -38,7 +38,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 |---|---|---|
 | Cortex-A55 CPU (6 cores) | ✅ Supported | Default. Runs Danube-500M q8/q4 |
 | eIQ Neutron NPU | ✅ Supported (experimental) | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and a Neutron memory pool in the device tree — see [Enabling the Neutron NPU](#enabling-the-neutron-npu) |
-| Kinara Ara-2 discrete NPU module | 🔜 Planned | Will enable much larger LLMs at higher tokens/sec. This demo's `backend` config field is designed to add an `ara2` option once the module and runtime are available |
+| Kinara Ara-2 / NXP Ara240 discrete NPU module | ✅ Supported (setup required) | `set-backend ara2` runs `ask-llm` on the Ara240 M.2 module via NXP's eIQ AAF Connector — enables much larger LLMs (Qwen2.5-7B) at interactive speed. Requires the NXP Ara240 runtime + connector (account-gated download) — see [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) |
 
 ### Measured performance
 
@@ -224,6 +224,50 @@ A typical performance experiment from the /IOTCONNECT command panel:
 
 The Neutron backend requires the device tree change from [Enabling the Neutron NPU](#enabling-the-neutron-npu), and its
 first response takes ~2 minutes longer while the model is compiled for the NPU (watch `llm_load_time`).
+
+### Enabling the Kinara Ara-2 / NXP Ara240 backend
+
+`set-backend ara2` runs `ask-llm` on the Kinara Ara-2 (sold by NXP as the **Ara240** M.2 module) instead of the
+CPU or Neutron NPU. The demo talks to the module through NXP's **eIQ AAF Connector** — an OpenAI-compatible REST
+server (`/v1/chat/completions`) in front of the Ara240 runtime — so `ask-llm` works unchanged, just on the
+discrete NPU and with much larger models.
+
+**Where to get the software** — NXP's **Ara Software Development Kit** page (an NXP account is required; these are
+account-gated downloads, **not** NDA):
+
+<https://www.nxp.com/design/design-center/software/embedded-software/ara-software-development-kit:ARA-SDK>
+
+From that page's **Downloads** tab, get:
+
+| Component | What it is | Which to pick |
+|---|---|---|
+| **Ara2 Runtime SDK** | Proxy daemon, `libaraclient`, firmware, Python bindings, `rt-sdk-ara2.service` | **Match your BSP.** The **`2.0.4` `.deb`** for BSP **LF6.18.2‑1.0.0**; the **`2.1.1` `.bin`** for **LF6.18.20_2.0.0**+ (where the `uiodma` PCIe driver ships inside the kernel image). A runtime built for a *newer* BSP will fail to bring up the module — `modprobe uiodma` reports the module is missing. Check your board with `uname -r`. |
+| **eIQ Connector** (`eiq-aaf-connector`) | The REST server this demo's `ara2` backend calls | The `.deb` (also open source: `github.com/nxp-imx-support/eiq-aaf-connector`) |
+| *(optional)* **LLM Edge Studio** | NXP's standalone GUI launcher — handy for a booth screenshot | The `.deb` |
+
+**Models** are separate and **public** (Apache‑2.0) on Hugging Face — `model.dvm` files already compiled for the
+Ara240, so no compiler is needed:
+[`nxp/Qwen2.5-7B-Instruct-Ara240`](https://huggingface.co/nxp/Qwen2.5-7B-Instruct-Ara240) and
+[`nxp/Qwen2.5-Coder-1.5B-Ara240`](https://huggingface.co/nxp/Qwen2.5-Coder-1.5B-Ara240). Compiling *your own*
+models instead needs the full Ara SDK (an x86_64 host + a compile license key) — see
+[docs/ARA2-ENABLEMENT-REQUEST.md](docs/ARA2-ENABLEMENT-REQUEST.md).
+
+**Bring-up outline** (on the board): install the BSP-matched Runtime SDK (its `dpkg -i` sets up
+`rt-sdk-ara2.service`), start it (`systemctl start rt-sdk-ara2`) and confirm the module is bound (`lspci -d
+1e58: -k` shows `Kernel driver in use: uiodma`); fetch a model (`fetch_models --repo-id
+nxp/Qwen2.5-7B-Instruct-Ara240`); enable it in the connector's `server_config.json` and run the connector on
+**port 8100** (its default is 8000, which this demo's MCP server already uses). Point `ara2_aaf_url` /
+`ara2_model` in `/opt/demo/genai-config.json` at your connector URL and model name, then from /IOTCONNECT:
+`set-backend ara2` and `ask-llm`.
+
+**Measured on this board** (FRDM-IMX95 + Ara240, `rt-sdk-ara2` 2.0.4, streaming `/v1/chat/completions`):
+
+| Model (Ara240) | TTFT | tok/s | vs. same-size on CPU |
+|---|---|---|---|
+| Qwen2.5-Coder-1.5B | 0.51 s | **18.7** | 1.5B on A55 CPU: 5.7 tok/s → **~3.3× faster** |
+| Qwen2.5-7B-Instruct | 2.06 s | **5.1** | a 7B at CPU-1.5B speed — 7B quality, interactive |
+
+Full methodology and the CPU/Neutron comparison: [MODELS.md](MODELS.md).
 
 ### Metrics notes
 
@@ -468,9 +512,10 @@ cd /opt/demo && nohup python3 camera-server.py > camera.log 2>&1 &
 * **Custom RAG content**: swap the FRDM95 chunks in section 9 for your own product documentation.
 * **More agent tools**: add entries to `AGENT_TOOLS` in `app.py` — anything the board can read or do (GPIO, camera,
   scripts) becomes voice/cloud addressable.
-* **Kinara Ara-2**: NXP's discrete NPU module for accelerating larger LLMs at the edge. Support will be added to this
-  demo when the module is available — the config's `backend` field and `set-backend` command are the intended
-  extension point, and the llama.cpp model ladder (section 11) shows exactly which models it will accelerate.
+* **Kinara Ara-2 / NXP Ara240**: NXP's discrete NPU module for accelerating larger LLMs at the edge — now wired in
+  as the `ara2` backend (`set-backend ara2`), running Qwen2.5-7B on the module via the eIQ AAF Connector. See
+  [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) for where to get the runtime and
+  models, and [MODELS.md](MODELS.md) for measured performance.
 
 ## 14. Customize and Rebuild (Optional)
 
