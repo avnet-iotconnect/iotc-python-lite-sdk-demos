@@ -46,7 +46,7 @@ import requests
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks, DeviceConfigError
 from avnet.iotconnect.sdk.lite import __version__ as SDK_VERSION
-from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dOta
+from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck, C2dOta, C2dMessage
 
 # -----------------------------------------------------------------------------
 # CONFIGURATION
@@ -72,6 +72,11 @@ DEFAULT_CONFIG = {
     "ara2_aaf_url": "http://127.0.0.1:8100/v1/chat/completions",
     "ara2_model": "Qwen2.5-7B-Instruct",
     "ara2_max_tokens": 200,
+    # IOTCONNECT model push (Cloud-to-Device): where a pushed Ara240 model is
+    # deployed, and the connector service/config to reload once it lands.
+    "model_deploy_dir": "/usr/share/llm",
+    "aaf_connector_config": "/usr/share/eiq/aaf-connector/server_config.json",
+    "aaf_connector_service": "eiq-aaf-connector",
     # Seconds with no LLM output before a response is considered complete
     "output_silence_s": 5,
     # Overall per-prompt timeout (model load on first run can be slow)
@@ -176,6 +181,9 @@ telemetry = {
     "cpu_percent": 0.0,
     "mem_used_mb": 0.0,
     "cpu_temp": 0.0,
+    "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
+    "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
+    "model_deploy_detail": "",       # human-readable progress/error detail
     "board_ip": ""
 }
 telemetry_lock = threading.Lock()
@@ -1553,13 +1561,28 @@ def on_command(msg: C2dCommand):
         start_llm_job(lambda: run_benchmark(extra), "benchmarking", "Benchmark complete")
 
     elif msg.command_name == "set-model":
-        valid = ["danube-500M-q8", "danube-500M-q4"] + list_gguf_models()
-        if len(msg.command_args) == 1 and msg.command_args[0] in valid:
-            config["model"] = msg.command_args[0]
+        # Ara240 models are whatever the eIQ AAF Connector currently serves
+        # (e.g. Qwen2.5-7B-Instruct and any pushed model) - selecting one points
+        # the ara2 backend at it so ask-llm serves it (both stay resident, so the
+        # switch is instant). Danube/GGUF names still select the CPU/Neutron path.
+        ara_models = [m.get("id") for m in _connector_models() if m.get("id")]
+        valid = ["danube-500M-q8", "danube-500M-q4"] + list_gguf_models() + ara_models
+        arg = msg.command_args[0] if len(msg.command_args) == 1 else None
+        if arg in ara_models:
+            config["ara2_model"] = arg
+            config["backend"] = "ara2"
             save_config(config)
             with telemetry_lock:
-                telemetry["llm_model"] = config["model"]
-            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + config["model"])
+                telemetry["llm_model"] = arg
+                telemetry["llm_backend"] = "ara2"
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "Ara240 model set to %s - ask-llm now serves it" % arg)
+        elif arg in valid:
+            config["model"] = arg
+            save_config(config)
+            with telemetry_lock:
+                telemetry["llm_model"] = arg
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + arg)
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Available models: " + ", ".join(valid))
 
@@ -1627,6 +1650,198 @@ def on_command(msg: C2dCommand):
         print("Command %s not implemented!" % msg.command_name)
         if msg.ack_id is not None:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Not Implemented")
+
+
+# -----------------------------------------------------------------------------
+# IOTCONNECT MODEL PUSH (Cloud-to-Device model deployment)
+# -----------------------------------------------------------------------------
+# IOTCONNECT's "Push Model" delivers a model to the device as a download URL,
+# carried by the OTA-style module command (C2dMessage.MODULE_COMMAND / ct:2).
+# We download the pushed package (a tar of an Ara240 model dir: model.dvm +
+# config + tokenizer), extract it into the eIQ AAF Connector's model directory,
+# enable it, reload the connector so it loads onto the Ara240, point the ara2
+# backend at it, and report progress as model_deploy_* telemetry.
+def set_model_deploy_status(status, name=None, detail=""):
+    with telemetry_lock:
+        telemetry["model_deploy_status"] = status
+        if name is not None:
+            telemetry["model_deploy_name"] = name
+        telemetry["model_deploy_detail"] = str(detail)[:200]
+    publish_state()
+
+
+def _connector_base_url():
+    return config["ara2_aaf_url"].rsplit("/v1/", 1)[0]
+
+
+def _connector_models():
+    try:
+        r = requests.get(_connector_base_url() + "/v1/models", timeout=10)
+        return r.json().get("data", [])
+    except Exception:
+        return []
+
+
+def _enable_connector_model(name):
+    """Enable `name` in the AAF connector's server_config.json (add if new)."""
+    cfgp = config["aaf_connector_config"]
+    with open(cfgp) as f:
+        d = json.load(f)
+    models = d.setdefault("available_models", [])
+    for m in models:
+        if m.get("name") == name:
+            m["enabled"] = True
+            break
+    else:
+        models.append({"name": name, "description": "Pushed via IOTCONNECT",
+                       "type": "text", "tool_calling": "native", "enabled": True})
+    with open(cfgp, "w") as f:
+        json.dump(d, f, indent=4)
+
+
+def _extract_push_entries(raw):
+    """
+    Extract model entries from a C2D model-push (ct:2) payload. The platform
+    sends urls[] with capitalized keys: Url, FileName, Code, guid, version.
+    The model NAME comes from the user-set Code, falling back to the file stem.
+    """
+    entries = []
+    for e in (raw.get("urls") or []):
+        if not isinstance(e, dict):
+            continue
+        url = e.get("Url") or e.get("url")
+        if not (isinstance(url, str) and url.startswith("http")):
+            continue
+        fn = e.get("FileName") or e.get("fileName") or e.get("file_name") \
+            or os.path.basename(url.split("?")[0]) or "model.tar"
+        code = e.get("Code") or e.get("code")
+        name = code or os.path.splitext(os.path.basename(fn))[0]
+        entries.append({"url": url, "file_name": fn, "name": name})
+    return entries
+
+
+def _ack_model_push(ack_id, status, detail=""):
+    """Acknowledge a model push back to IOTCONNECT (OTA-style status on the ct:2)."""
+    if not ack_id:
+        return
+    try:
+        c.send_ack(ack_id=ack_id, message_type=C2dMessage.MODULE_COMMAND,
+                   status=status, message_str=str(detail)[:200])
+    except Exception as e:
+        print("Model push ack failed:", e)
+
+
+def deploy_model(entry):
+    """Download a pushed model package and deploy it to the Ara240 connector."""
+    import tarfile
+    import shutil
+    url, file_name, name = entry["url"], entry["file_name"], entry["name"]
+    set_model_deploy_status("downloading", name, "downloading from IOTCONNECT")
+    print("Model push: downloading %s (%s) from %s" % (name, file_name, url[:80]))
+    # download to the models filesystem (disk), never /tmp (may be RAM-backed)
+    dl = os.path.join(config["model_deploy_dir"],
+                      ".push-download" + (os.path.splitext(file_name)[1] or ".tar"))
+    with requests.get(url, stream=True, timeout=1800) as r:
+        r.raise_for_status()
+        with open(dl, "wb") as f:
+            for chunk in r.iter_content(chunk_size=1 << 20):
+                f.write(chunk)
+
+    set_model_deploy_status("deploying", name, "extracting package")
+    dest = os.path.join(config["model_deploy_dir"], name)
+    os.makedirs(dest, exist_ok=True)
+
+    def _find_dvm():
+        for root, _dirs, files in os.walk(dest):
+            if "model.dvm" in files:
+                return root
+        return None
+
+    try:
+        # Unwrap nested archives until model.dvm appears - IOTCONNECT wraps the
+        # uploaded file in its own .tar, so the payload can be a tar-in-tar.
+        current = dl
+        for _ in range(3):
+            if tarfile.is_tarfile(current):
+                with tarfile.open(current) as t:
+                    t.extractall(dest)
+                if current != dl:
+                    os.remove(current)
+                if _find_dvm():
+                    break
+                nested = next((os.path.join(r, fn)
+                               for r, _d, fs in os.walk(dest) for fn in fs
+                               if fn.endswith((".tar", ".tar.gz", ".tgz", ".tar.bz2"))), None)
+                if not nested:
+                    break
+                current = nested
+            else:
+                shutil.move(current, os.path.join(dest, "model.dvm"))  # raw weights
+                break
+    finally:
+        if os.path.exists(dl):
+            os.remove(dl)
+
+    src = _find_dvm()
+    if src is None:
+        raise RuntimeError("no model.dvm found in pushed package %s" % file_name)
+    if os.path.abspath(src) != os.path.abspath(dest):   # flatten if nested
+        for fn in os.listdir(src):
+            shutil.move(os.path.join(src, fn), os.path.join(dest, fn))
+
+    set_model_deploy_status("loading", name, "loading onto the Ara240")
+    _enable_connector_model(name)
+    subprocess.run(["systemctl", "restart", config["aaf_connector_service"]], check=False)
+    deadline = time.monotonic() + 300
+    while time.monotonic() < deadline:
+        if any(m.get("id") == name and m.get("ready") for m in _connector_models()):
+            break
+        time.sleep(5)
+    else:
+        raise RuntimeError("model %s did not report ready on the connector" % name)
+
+    config["ara2_model"] = name
+    config["backend"] = "ara2"
+    save_config(config)
+    with telemetry_lock:
+        telemetry["llm_model"] = name
+        telemetry["llm_backend"] = "ara2"
+    set_model_deploy_status("ready", name, "deployed and serving on the Ara240")
+    print("Model push: %s deployed to the Ara240 and ready" % name)
+    return name
+
+
+def on_module_command(msg, raw):
+    """
+    IOTCONNECT model push. The lite SDK maps the module command (ct:2) to type
+    UNKNOWN (MODULE_COMMAND is missing from its TYPES map), so this is registered
+    under C2dMessage.UNKNOWN and filters on the raw ct. It downloads the pushed
+    package, deploys it to the Ara240 connector, and acks the result to the cloud.
+    """
+    if raw.get("ct") != C2dMessage.MODULE_COMMAND:
+        return  # a different unmapped message type - not a model push
+    ack_id = raw.get("ack")
+    print("Model push received (ct:2). ack=%s payload=%s" % (ack_id, json.dumps(raw)[:800]))
+    entries = _extract_push_entries(raw)
+    if not entries:
+        set_model_deploy_status("error", detail="no download URL in push message")
+        _ack_model_push(ack_id, C2dAck.OTA_DOWNLOAD_FAILED, "no download URL in push")
+        return
+
+    def worker():
+        _ack_model_push(ack_id, C2dAck.OTA_DOWNLOADING, "downloading model")
+        try:
+            deployed = None
+            for entry in entries:
+                deployed = deploy_model(entry)
+            _ack_model_push(ack_id, C2dAck.OTA_DOWNLOAD_DONE,
+                            "deployed %s to the Ara240" % deployed)
+        except Exception as e:
+            print("Model deploy failed:", e)
+            set_model_deploy_status("error", detail=str(e))
+            _ack_model_push(ack_id, C2dAck.OTA_DOWNLOAD_FAILED, str(e)[:150])
+
+    threading.Thread(target=worker, daemon=True).start()
 
 
 # -----------------------------------------------------------------------------
@@ -1714,7 +1929,10 @@ try:
                 callbacks=Callbacks(
                     ota_cb=on_ota,
                     command_cb=on_command,
-                    disconnected_cb=on_disconnect
+                    disconnected_cb=on_disconnect,
+                    # IOTCONNECT model push is a module command (ct:2), which the
+                    # lite SDK maps to type UNKNOWN - register there, filter on ct.
+                    generic_message_callbacks={C2dMessage.UNKNOWN: on_module_command}
                 )
             )
             break
