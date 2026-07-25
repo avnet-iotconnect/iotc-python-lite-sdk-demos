@@ -168,7 +168,9 @@ numbers from the gauge history; the full six-rung walk with the compile waits is
 **Point at**: `llm_tps`, `llm_ttft` (0.13–0.83 s, model-dependent), `llm_backend` changing, and the answers.
 
 **The close**: *"Notice the trade — the smarter model runs at half the speed on CPU. The Kinara Ara-2 module drops
-into this same demo and moves the smart models up the speed column. That's the roadmap, running live."*
+into this same demo and moves the smart models up the speed column. That's the roadmap, running live."* On a board
+with the module fitted, make it literal — run the live before/after in
+[§8](#8-ara240-flow-the-smart-models-now-fast-boards-with-the-kinara-ara-2).
 
 ## 6. Voice finale: "Hey NXP" (~3 min setup, then continuous)
 
@@ -202,6 +204,86 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 
 ---
 
+## 8. Ara240 flow: the smart models, now fast (boards with the Kinara Ara-2)
+
+For a board fitted with the **Kinara Ara-2 / NXP Ara240** M.2 module and its runtime stack installed (see the
+README's [Enabling the Ara240 backend](README.md#enabling-the-kinara-ara-2--nxp-ara240-backend)). Everything in
+§0–7 still applies; this section turns the §5 ladder's *roadmap* into a **live before/after** — the big model
+that crawls on the A55 CPU answers at reading speed on the module — and adds the Ara-specific setup and failure
+notes.
+
+### T‑5:00 — Verify the Ara stack (before doors open)
+
+One paste on the board confirms the module is up, the connector is serving, and a model is loaded:
+
+```bash
+echo "ara runtime : $(systemctl is-active rt-sdk-ara2)"
+lspci -d 1e58: -k | grep -q 'in use: uiodma' && echo "ara module  : bound (uiodma)" || echo "ara module  : NOT bound"
+echo "connector   : $(systemctl is-active eiq-aaf-connector)"
+curl -s --max-time 6 http://127.0.0.1:8100/v1/models   # look for a model with "ready":true
+```
+
+All green means you're set. If not, see the Ara failure rows below. The connector runs on **:8100** (clear of the
+demo's MCP server on :8000); the loaded model is set in its `server_config.json` and mirrored by `ara2_model` /
+`ara2_aaf_url` in `/opt/demo/genai-config.json`.
+
+### Demo state (adds one line to §0)
+
+| Send | Value | Why |
+|---|---|---|
+| `set-backend` | `ara2` | routes `ask-llm` to the Ara240 module (Qwen2.5-7B by default) |
+
+`llm_backend` on the dashboard now reads **`ara2`**. Switch back any time with `set-backend cpu` / `neutron`.
+
+### The headline: a 7B on the module vs a 1.5B on the CPU (~2 min, the wow)
+
+The §5 close, made real. Ask the **same question** at two rungs:
+
+1. `set-backend cpu` → `set-model qwen2.5-1.5b-instruct-q4_k_m` → `ask-llm Explain what an NPU is and why edge
+   devices use one.` **Expect ~30 s**, `llm_tps` **≈ 5.7** — a visible crawl, and it's *only a 1.5B*.
+2. `set-backend ara2` → **same question**. **Expect** a **7B** answer — noticeably richer — streaming at
+   `llm_tps` **≈ 5.1**, `llm_ttft` **≈ 2 s**.
+
+**The line**: *"The CPU runs a 1.5-billion model at 5.7 tokens a second. The module runs a **7-billion** model —
+five times the parameters, far better answers — at the **same speed**. Same board; we just added the card."*
+
+**Point at**: `llm_backend: ara2`, `llm_tps`, and the jump in `llm_response` quality vs step 1.
+
+**Same-size version** (even starker, optional): the module also runs a **1.5B at ~18.7 tok/s — ~3.3× the CPU's
+5.7**. That's the connector's `Qwen2.5-Coder-1.5B`; to show it, enable that model in `server_config.json`, point
+`ara2_model` at it, and restart the connector — set this up *before* the crowd, it isn't a live one-liner.
+
+### What's different on an Ara board
+
+* **No per-prompt reload.** Unlike the Danube/GenAI Flow path (which reloads on every `ask-llm`), the Ara model
+  stays resident in the connector: the **first** ask after a connector (re)start waits for a one-time load
+  (~7 s for the 1.5B, ~2 min for the 7B), then every ask is immediate to first token. `llm_load_time` reads 0.
+* **Voice & agent still run on the CPU/Danube path** in this build — only `ask-llm` routes to the Ara. Keep
+  `set-backend neutron` for the voice finale (§6) unless you've separately pointed those at the connector.
+* **The busy-lock still applies** to `ask-llm`/voice/agent on the board, even though the Ara model itself is warm.
+
+### Ara timing & telemetry
+
+| Action | Ara240 |
+|---|---|
+| `ask-llm` (Qwen 7B, `ara2`) | ~2 s TTFT, **~5.1 tok/s** — no reload between asks |
+| `ask-llm` (Qwen 1.5B, `ara2`) | ~0.5 s TTFT, **~18.7 tok/s** |
+| model load at connector start | ~7 s (1.5B) · ~120 s (7B) — one-time, not per prompt |
+
+`llm_backend: ara2` · `llm_tps` 18.7 (1.5B) / 5.1 (7B) · `llm_ttft` 0.5 / 2.1 s — full methodology and the
+CPU/Neutron comparison in [MODELS.md](MODELS.md).
+
+### Ara failure playbook (in addition to the table below)
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `ask-llm` on `ara2` fails or times out | connector down or no model loaded | `systemctl status eiq-aaf-connector`; `curl http://127.0.0.1:8100/v1/models` should show `"ready":true`; confirm `rt-sdk-ara2` is active |
+| connector won't bind / "address already in use" | it defaulted to :8000, colliding with the demo MCP | run it on `--port 8100` and set `ara2_aaf_url` to match |
+| module not bound (`lspci -d 1e58:` shows no `uiodma`) | wrong Runtime SDK for the BSP | use Runtime SDK **2.0.4** (.deb) on BSP LF6.18.2‑1.0.0 (bundles the matching `uiodma.ko`) — see README/MODELS.md |
+| first `ara2` ask very slow, then fast | one-time model load onto the NPU (~2 min for the 7B) | expected — it stays resident afterward; warm it before the crowd |
+
+---
+
 ## Timing quick reference
 
 | Action | First time | Warmed |
@@ -225,7 +307,7 @@ NPU+RAG), `bench_ttft` (**0.28 s**), `bench_cpu_avg` (**23.6 %** — the NPU doi
 | `genai_status` | what the AI engine is doing | `idle` / `generating` / `agent` / `voice` |
 | `llm_tps` | generation speed | 10.1 CPU · 13.7 NPU · 12.9 qwen-0.5B · 5.7 qwen-1.5B ([MODELS.md](MODELS.md)) |
 | `llm_ttft` | responsiveness | 0.13–0.83 s (model-dependent; see [MODELS.md](MODELS.md)) |
-| `llm_backend` | where inference runs | `cpu` / `neutron` / `cpu-llama.cpp` |
+| `llm_backend` | where inference runs | `cpu` / `neutron` / `cpu-llama.cpp` / `ara2` (Ara240 module, §8) |
 | `llm_rag` | grounded or free-wheeling | `on` for doc questions |
 | `agent_router` | did the LLM route correctly | `llm` (itself) / `keyword-override` (safety net) |
 | `vlm_vision_time` | image understanding speed | 3.6–4.5 s |

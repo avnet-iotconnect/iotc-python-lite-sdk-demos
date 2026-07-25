@@ -164,34 +164,61 @@ Headroom in practice: a Llama-3.1-8B Q4 GGUF is ~4.7 GB — three more models of
 One AI operation runs at a time (busy-lock), but resident sessions (agent, voice) coexist in RAM — the 8 GB
 board holds an active voice session plus the warm agent with headroom.
 
-## The Kinara Ara-2 plan: where this demo goes next
+## The Kinara Ara-2 / NXP Ara240 backend: where this demo goes next
 
-The Ara-2 is NXP's (Kinara) discrete edge NPU module — ~40 TOPS INT8, delivered as an M.2 card, purpose-built
-for generative AI. This demo was architected for it from day one: the `backend` config field and `set-backend`
-command are the drop-in point (`set-backend ara2`), and every command — `ask-llm`, the voice assistant, the
-agent — keeps working unchanged, just faster and on bigger models.
+The Ara-2 (sold by NXP as the **Ara240**) is a discrete edge NPU module — ~40 eTOPS, an M.2 M-key card,
+purpose-built for generative AI. **The module is now installed in this FRDM-IMX95** and enumerates on PCIe
+(`1e58:0002`). This demo was architected for it from day one: `set-backend ara2` routes `ask-llm` to the module
+through NXP's **eIQ AAF Connector** (an OpenAI-compatible REST server in front of the Ara240 runtime), so the
+command keeps working unchanged — just on bigger models at interactive speed.
 
-**Everything below is projection, not measurement** — this table gets replaced with benchmark-suite numbers
-the day the module arrives (the suite in `/root/bench_suite.py` re-runs the whole matrix in one command).
+### Where to get it / what to download
 
-### Where we expect improvement (same models, same demo)
+The runtime and launcher come from NXP's **Ara Software Development Kit** page (an NXP account is required; these
+are account-gated, **not** NDA):
+<https://www.nxp.com/design/design-center/software/embedded-software/ara-software-development-kit:ARA-SDK>
 
-| Today's pain point | Measured today | Expected with Ara-2 |
+| What | Notes |
+|---|---|
+| **Ara2 Runtime SDK** | The on-board runtime (`rt-sdk-ara2.service`; proxy daemon, `libaraclient`, firmware, Python bindings). **Must match the board BSP:** `2.0.4` (**.deb**) for **LF6.18.2-1.0.0**, or `2.1.1` (**.bin**) for **LF6.18.20_2.0.0**+. The runtime binds the PCIe module via the `uiodma` driver; on the newer BSP that driver ships in the kernel image, so a runtime built for a newer BSP than the board won't bring the module up (`modprobe uiodma` fails). |
+| **eIQ Connector** (`eiq-aaf-connector`, .deb) | The REST server the `ara2` backend calls — `/v1/chat/completions`. Its default port is 8000, which collides with this demo's on-board MCP server; run it on **`--port 8100`** (what `ara2_aaf_url` expects). Also open source on GitHub. |
+| **Models** — public, Apache-2.0 on Hugging Face | Pre-compiled `model.dvm` (no compiler needed): [`nxp/Qwen2.5-7B-Instruct-Ara240`](https://huggingface.co/nxp/Qwen2.5-7B-Instruct-Ara240), [`nxp/Qwen2.5-Coder-1.5B-Ara240`](https://huggingface.co/nxp/Qwen2.5-Coder-1.5B-Ara240). Compiling *your own* needs the full Ara SDK (x86_64 host + a compile license). |
+
+Setup steps: README → [Enabling the Ara240 backend](README.md#enabling-the-kinara-ara-2--nxp-ara240-backend).
+Full component/version detail: [docs/ARA2-ENABLEMENT-REQUEST.md](docs/ARA2-ENABLEMENT-REQUEST.md).
+
+### Performance — measured on this board
+
+Measured on our FRDM-IMX95 + Ara240 (rt-sdk-ara2 2.0.4, eIQ AAF Connector), streaming
+`/v1/chat/completions`: TTFT = time to first token; decode tok/s = completion tokens ÷ (last−first token
+time), averaged over 4–5 varied prompts after a warm-up. Load is the one-time `model.dvm` load onto the NPU
+at connector start — after which the model stays resident, so `ask-llm` has **no per-prompt reload**.
+
+| Model (Ara240 `model.dvm`) | Params | Load (s) | TTFT (s) | **tok/s** | NXP-published tok/s |
+|---|---|---|---|---|---|
+| Qwen2.5-Coder-1.5B | 1.54 B | ~7 | **0.51** | **18.7** | ~14.9 |
+| Qwen2.5-7B-Instruct | 7.61 B | ~120 | **2.06** | **5.1** | ~6.0 |
+
+**The headline result:** the same 1.5B-class model runs **18.7 tok/s on the Ara240 vs 5.7 tok/s on the A55
+CPU (llama.cpp) — ~3.3× faster** — and a **7B runs at 5.1 tok/s on the Ara**, roughly the speed the CPU
+manages a *1.5B*, which moves 7B-class answer quality into interactive range. Our measured tok/s land within
+~10–25% of NXP's published figures (prompt mix differs; longer generations pull the average down a little).
+
+### Why this matters (same board, add the module)
+
+| Today's pain point | Measured on this board | With the Ara240 |
 |---|---|---|
-| Qwen-1.5B reasoning is slow on CPU | 5.7 tok/s | Interactive speeds (~15–25 tok/s class) — the quality/speed trade disappears |
-| NPU model compile on every launch | 129–147 s load | Precompiled model artifacts — llama.cpp-class load times on accelerated models |
-| Vision encode dominates `ask-vlm` | 4.4 s | Sub-second-class encode; near-instant scene answers |
-| CPU carries everything | 6 cores shared by LLM + STT + TTS + services | LLM/VLM offloaded — A55s free for audio, camera, and cloud |
+| Qwen-1.5B reasoning is slow on CPU | 5.7 tok/s | **18.7 tok/s measured** (~3.3×) — the quality/speed trade disappears |
+| Danube-NPU compiles on every launch | 129–147 s load | Model stays resident in the connector — no per-prompt reload |
+| CPU carries everything | 6 cores shared by LLM + STT + TTS + services | LLM offloaded to the module — the A55s are free for audio, camera, and cloud |
 
 ### What becomes possible (new models, new functions)
 
-* **8B-class LLMs on the board** — Llama-3.1-8B / Qwen-7B Q4 fit on disk today (~16 GB free); Ara-2 makes them
-  *usable*. That means an agent that reliably routes tools and fills arguments without the keyword safety net,
-  RAG synthesis that paraphrases instead of parroting, and genuinely conversational voice.
-* **Bigger vision models** — 2B-class VLMs for fine-grained scene understanding (reading labels, counting
-  objects, describing defects) instead of one-line captions.
-* **Concurrent engines** — LLM on Ara-2, vision on the on-chip Neutron, speech on CPU: the one-AI-at-a-time
-  busy-lock could relax into a true multi-model pipeline (watch the camera *while* holding a voice
-  conversation).
+* **7–8B-class LLMs on the board, usable** — Qwen2.5-7B-Instruct runs on the Ara240 today; that means an agent
+  that routes tools without the keyword safety net, RAG synthesis that paraphrases instead of parroting, and
+  genuinely conversational voice.
+* **Concurrent engines** — LLM on the Ara240, vision on the on-chip Neutron, speech on the CPU: the
+  one-AI-at-a-time busy-lock could relax into a true multi-model pipeline (watch the camera *while* holding a
+  voice conversation).
 * **The booth narrative completes** — the model ladder (§ language models) stops being a trade-off chart and
-  becomes a before/after: same board, same demo, add the module, the smart models move to the fast column.
+  becomes a before/after: same board, same demo, add the module, and the smart models move to the fast column.

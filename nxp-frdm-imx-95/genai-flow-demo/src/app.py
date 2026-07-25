@@ -23,9 +23,11 @@
 #   The eIQ GenAI Flow demonstrator must be installed separately (see README.md):
 #   https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator
 #
-#   NOTE: The Kinara Ara-2 discrete NPU module is not yet supported by this demo.
-#   The "backend" config field is designed so an "ara2" option can be added once
-#   the module and its runtime are available.
+#   Kinara Ara-2 / NXP Ara240 discrete NPU: set backend to "ara2" to run ask-llm
+#   on the module via NXP's eIQ AAF Connector (an OpenAI-compatible REST server
+#   in front of the Ara240 runtime). Requires the rt-sdk-ara2 runtime + the
+#   connector running on the board and an Ara240 model.dvm loaded - see
+#   docs/ARA2-ENABLEMENT-REQUEST.md and MODELS.md.
 # -----------------------------------------------------------------------------
 
 import glob
@@ -60,8 +62,16 @@ DEFAULT_CONFIG = {
     # Ground LLM answers in the on-device RAG database (rag/src/data/rag_database.pkl).
     # Applies to ask-llm, the voice assistant, and run-benchmark.
     "use_rag": False,
-    # "cpu" or "neutron" (i.MX 95 B0 only). "ara2" reserved for future use.
+    # "cpu", "neutron" (i.MX 95 B0 only), or "ara2" (Kinara Ara-2 / NXP Ara240
+    # discrete NPU via the eIQ AAF Connector REST API - see MODELS.md).
     "backend": "cpu",
+    # ara2 backend: local eIQ AAF Connector endpoint and the Ara240 model to use
+    # (one of the connector's available_models, e.g. a nxp/*-Ara240 model.dvm).
+    # Port 8100 keeps clear of the demo's MCP server on 8000 (the connector's
+    # own default) - set the connector's --port to match.
+    "ara2_aaf_url": "http://127.0.0.1:8100/v1/chat/completions",
+    "ara2_model": "Qwen2.5-7B-Instruct",
+    "ara2_max_tokens": 200,
     # Seconds with no LLM output before a response is considered complete
     "output_silence_s": 5,
     # Overall per-prompt timeout (model load on first run can be slow)
@@ -383,14 +393,83 @@ def run_llama_prompt(prompt):
     return response
 
 
+# --- Kinara Ara-2 / NXP Ara240 backend: inference via the eIQ AAF Connector ----
+# rt-sdk-ara2 + the eIQ AAF Connector expose an OpenAI-compatible REST API on the
+# board (default 127.0.0.1:8000). The ara2 backend POSTs the prompt there and
+# streams tokens back, measuring TTFT and tokens/sec the same way the other paths
+# do, so ask-llm works unchanged - just on the discrete NPU.
+# NOTE: wired to the connector's documented /v1/chat/completions API; end-to-end
+# validation is pending the runtime coming up on a matching BSP (needs the uiodma
+# driver - see docs/ARA2-ENABLEMENT-REQUEST.md).
+def run_ara2_prompt(prompt):
+    url = config["ara2_aaf_url"]
+    model = config.get("ara2_model", "Qwen2.5-7B-Instruct")
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": config.get("ara2_max_tokens", 200),
+        "stream": True,
+    }
+    print("Ara2 request -> %s (model %s)" % (url, model))
+    start = time.monotonic()
+    t_first = t_last = None
+    pieces = []
+    with requests.post(url, json=payload, stream=True,
+                       timeout=config["prompt_timeout_s"]) as resp:
+        resp.raise_for_status()
+        for line in resp.iter_lines(decode_unicode=True):
+            if not line or not line.startswith("data:"):
+                continue
+            data = line[len("data:"):].strip()
+            if data == "[DONE]":
+                break
+            try:
+                delta = json.loads(data)["choices"][0].get("delta", {})
+            except (ValueError, KeyError, IndexError):
+                continue
+            token = delta.get("content") or ""
+            if token:
+                now = time.monotonic()
+                if t_first is None:
+                    t_first = now
+                t_last = now
+                pieces.append(token)
+    response = "".join(pieces).strip()
+    if not response:
+        raise RuntimeError("No response from the Ara2 AAF connector at %s - is "
+                           "`connector` running and a model.dvm loaded?" % url)
+    ttft = round(t_first - start, 2) if t_first else 0.0
+    gen_time = round((t_last or time.monotonic()) - start, 2)
+    tokens = max(1, int(len(response) / 4))  # ~4 chars/token estimate
+    tps = round(tokens / max(0.01, (t_last or start) - (t_first or start)), 2)
+
+    with telemetry_lock:
+        telemetry.update({
+            "llm_model": model,
+            "llm_backend": "ara2",
+            "llm_prompt": prompt[:500],
+            "llm_response": response[:1000],
+            "llm_load_time": 0.0,     # model stays resident in the connector
+            "llm_ttft": ttft,
+            "llm_gen_time": gen_time,
+            "llm_tps": tps,
+            "llm_token_count": tokens,
+        })
+    print("Ara2 response (%.1fs, %.1f tok/s): %s" % (gen_time, tps, response[:200]))
+    return response
+
+
 def run_llm_prompt(prompt):
     """
     Run a single prompt through eIQ GenAI Flow in keyboard-input / text-output
     mode, measure load time, TTFT, generation time and tokens/sec, and update
     the telemetry dictionary. Returns the response text (or raises).
-    GGUF models (see set-model) are dispatched to llama.cpp instead; Danube
-    models use a persistent warm session (run_chat_prompt).
+    The Ara2 backend (set-backend ara2) is dispatched to the eIQ AAF Connector;
+    GGUF models (see set-model) go to llama.cpp; Danube models use a persistent
+    warm GenAI Flow session (run_chat_prompt).
     """
+    if config["backend"] == "ara2":
+        return run_ara2_prompt(prompt)
     if is_gguf_model(config["model"]):
         return run_llama_prompt(prompt)
     return run_chat_prompt(prompt)
@@ -1508,15 +1587,16 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument: on or off")
 
     elif msg.command_name == "set-backend":
-        if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron"):
+        if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron", "ara2"):
             config["backend"] = msg.command_args[0]
             save_config(config)
             with telemetry_lock:
                 telemetry["llm_backend"] = config["backend"]
-            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Backend set to " + config["backend"])
+            note = " - ask-llm now runs on the Ara240 via the AAF connector" if config["backend"] == "ara2" else ""
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Backend set to " + config["backend"] + note)
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED,
-                               "Expected 1 argument: cpu or neutron (ara2 support coming soon)")
+                               "Expected 1 argument: cpu, neutron, or ara2")
 
     elif msg.command_name == "get-ip":
         ip_addr = get_local_ip()
