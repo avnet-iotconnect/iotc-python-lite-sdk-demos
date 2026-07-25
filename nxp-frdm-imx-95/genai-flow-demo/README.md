@@ -269,6 +269,10 @@ nxp/Qwen2.5-7B-Instruct-Ara240`); enable it in the connector's `server_config.js
 
 Full methodology and the CPU/Neutron comparison: [MODELS.md](MODELS.md).
 
+**Deploy models from the cloud.** Once the Ara240 backend is running, you can **push a new model to the device
+straight from IOTCONNECT** — upload it once, hit *Push Model*, and the board downloads it, loads it onto the
+Ara240, and starts serving it (no SSH). Step-by-step with screenshots: [docs/MODEL-PUSH.md](docs/MODEL-PUSH.md).
+
 ### Metrics notes
 
 * For `ask-llm`, token counts (and therefore tokens/sec) are **estimated** from response length (~4 chars/token)
