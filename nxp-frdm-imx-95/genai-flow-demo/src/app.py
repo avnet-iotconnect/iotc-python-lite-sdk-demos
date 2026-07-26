@@ -107,6 +107,9 @@ DEFAULT_CONFIG = {
     # transcription (e.g. "psoc6" arrives as "p-sock 6"). Checked before the
     # fleet search; keys are lowercase words, values are exact DUIDs.
     "device_aliases": {},
+    # The MCX vibration-sensing device (eiq-pdm-vibration demo) the agent can
+    # monitor and control over IOTCONNECT (get_vibration / send_motor_command).
+    "vibration_duid": "mclMCXvib",
     # llama.cpp integration for larger GGUF models (see set-model)
     "llama_dir": "/opt/llama",
     "llama_threads": 6,
@@ -701,9 +704,9 @@ def voice_session(output_mode):
                         telemetry["voice_question"] = question[:500]
                     set_voice_status("answering")
                     # Voice -> agent bridge: spoken ACTION requests also run
-                    # through the agent (e.g. "turn on the lights"), so the
-                    # command actually executes while the chat LLM replies.
-                    if _TOOL_KEYWORDS[0][0].search(question):
+                    # through the agent (e.g. "turn on the lights", "inject a
+                    # fault"), so the command actually executes while chat replies.
+                    if _is_voice_action(question):
                         q = question
                         threading.Thread(target=lambda: _voice_action(q), daemon=True).start()
                 elif "Speak the wakeword" in line or "LLM used:" in line:
@@ -928,6 +931,75 @@ def tool_send_device_command(request):
     return "Sent command %s %s to device %s through IOTCONNECT" % (cmd, arg, best)
 
 
+# --- MCX vibration device (eiq-pdm-vibration demo): monitor + control ----------
+def tool_get_vibration():
+    """Read the MCX vibration sensor's latest telemetry from IOTCONNECT."""
+    duid = config.get("vibration_duid")
+    if not duid:
+        raise RuntimeError("No vibration_duid configured")
+    data = _mcp_json("telemetry_latest_value", {"duid": duid})
+    rows = data.get("attributes") if isinstance(data, dict) else None
+    if not rows:
+        rows = data if isinstance(data, list) else \
+            next((v for v in data.values() if isinstance(v, list)), [])
+    vals = {}
+    for r in rows or []:
+        k = _first_of(r, "attribute", "attributeName", "key", "name")
+        v = _first_of(r, "value", "attributeValue", "latestValue")
+        if k is not None:
+            vals[k] = v
+
+    def _num(x):
+        try:
+            return round(float(x), 3)
+        except (TypeError, ValueError):
+            return None
+
+    if not any(k.startswith("vib.") for k in vals):
+        return "The %s device is reachable but has not reported vibration data yet" % duid
+    # vib.motor is the motor-state classification (idle / balanced / unbalanced /
+    # both). vib.state is a health flag that is unreliable here, so it isn't used.
+    parts = ["The %s vibration sensor reports the motor is %s"
+             % (duid, vals.get("vib.motor") or vals.get("vib.model_class") or "unknown")]
+    rms = _num(vals.get("vib.rms_g"))
+    if rms is not None:
+        parts.append("overall vibration %s g" % rms)
+    return ", ".join(parts)
+
+
+# Natural-language intent -> vibration device command (full template command set)
+_MOTOR_COMMANDS = [
+    (re.compile(r"threshold", re.I), "set-threshold"),
+    (re.compile(r"interval|period|\brate\b", re.I), "set-interval"),
+    (re.compile(r"\breboot\b|\brestart\b", re.I), "reboot"),
+    (re.compile(r"\b(inject|induce|trigger|simulate|cause|create|add|make|set)\b.*\bfault\b", re.I), "inject-fault"),
+    (re.compile(r"\bhealthy\b|\bnormal\b|\bfix\b|\brepair\b|\bclear\b|\bheal\b", re.I), "inject-healthy"),
+    (re.compile(r"\b(stop|halt|kill|pause)\b|\boff\b", re.I), "motor-stop"),
+    (re.compile(r"\b(run|start|spin|both|resume|go)\b", re.I), "run-both"),
+]
+
+
+def tool_send_motor_command(request):
+    """ACTION tool: control the MCX vibration device (inject-fault/healthy,
+    run-both, motor-stop, set-threshold, set-interval, reboot)."""
+    duid = config.get("vibration_duid")
+    if not duid:
+        raise RuntimeError("No vibration_duid configured")
+    cmd = next((c for pat, c in _MOTOR_COMMANDS if pat.search(request)), None)
+    if cmd is None:
+        raise RuntimeError("Motor command not understood - try 'inject a fault', "
+                           "'set healthy', 'stop', 'run', 'set threshold 0.5', or 'reboot'")
+    args = ""
+    if cmd in ("set-threshold", "set-interval"):
+        m = re.search(r"(\d+(?:\.\d+)?)", request)
+        if not m:
+            raise RuntimeError("%s needs a number, e.g. 'set threshold to 0.5'" % cmd)
+        args = m.group(1)
+    _mcp_call("command_send", {"duid": duid, "command_name": cmd, "args": args})
+    return "Sent %s%s to the vibration device %s through IOTCONNECT" % (
+        cmd, (" = %s" % args) if args else "", duid)
+
+
 AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
@@ -939,6 +1011,8 @@ AGENT_TOOLS = {
     "get_cloud_health": ("whether this device is healthy and active in the cloud", tool_get_cloud_health),
     "get_cloud_telemetry": ("the latest telemetry the cloud received", tool_get_cloud_telemetry),
     "send_device_command": ("turning a device's LED or light on or off", tool_send_device_command),
+    "get_vibration": ("the vibration reading or motor state (idle, balanced, unbalanced) of the MCX vibration sensor", tool_get_vibration),
+    "send_motor_command": ("injecting a fault, restoring healthy, running, stopping, or reconfiguring the MCX vibration motor", tool_send_motor_command),
 }
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
@@ -946,6 +1020,9 @@ _TOOL_KEYWORDS = [
     # Requires on/off intent, not just the word "light" - trivia like
     # "what color is light" must not route to a device command.
     (re.compile(r"\b(turn|switch|flip)\b.*\b(on|off)\b|\bled\b\s*(on|off)\b", re.I), "send_device_command"),
+    # Motor CONTROL (action) before motor STATUS (read); both before the cloud/health tools.
+    (re.compile(r"\b(inject|induce|trigger|simulate|cause)\b.*\bfault\b|\b(stop|halt|start|run|spin|reboot|restart)\b.*\b(motors?|device|sensor)\b|\bmotors?[- ]?(stop|run|off)\b|\bset\b.*\b(threshold|interval|healthy)\b|\bmake\b.*\bhealthy\b", re.I), "send_motor_command"),
+    (re.compile(r"\bvibration\b|\banomaly\b|\bmotors?\b|\brms\b", re.I), "get_vibration"),
     (re.compile(r"deployment|fleet|how many devices|other devices|iotconnect|cloud", re.I), "get_cloud_devices"),
     (re.compile(r"telemetry|last reported|received", re.I), "get_cloud_telemetry"),
     (re.compile(r"health|healthy|online|active", re.I), "get_cloud_health"),
@@ -956,6 +1033,14 @@ _TOOL_KEYWORDS = [
     (re.compile(r"uptime|running|how long", re.I), "get_uptime"),
     (re.compile(r"\bip\b|address|network", re.I), "get_ip"),
 ]
+
+# The voice -> agent bridge fires for ACTION requests (device / motor control),
+# so a spoken "inject a fault" or "turn on the lights" actually executes.
+_ACTION_TOOL_NAMES = {"send_device_command", "send_motor_command"}
+
+
+def _is_voice_action(question):
+    return any(pat.search(question) for pat, name in _TOOL_KEYWORDS if name in _ACTION_TOOL_NAMES)
 
 
 class PersistentLLM:
