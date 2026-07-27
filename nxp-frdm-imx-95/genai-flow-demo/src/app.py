@@ -1041,14 +1041,18 @@ def tool_get_vibration():
 
 
 # Natural-language intent -> vibration device command (full template command set)
+# Order matters (first match wins). "both" -> run-both (runs the healthy AND the
+# faulty motor); a plain start/run/turn-on of the motor -> inject-healthy (the
+# healthy motor). "stop"/"off" -> motor-stop is checked before either, and a
+# request naming a fault -> inject-fault (the faulty motor) before that.
 _MOTOR_COMMANDS = [
     (re.compile(r"threshold", re.I), "set-threshold"),
     (re.compile(r"interval|period|\brate\b", re.I), "set-interval"),
     (re.compile(r"\breboot\b|\brestart\b", re.I), "reboot"),
-    (re.compile(r"\b(inject|induce|trigger|simulate|cause|create|add|make|set)\b.*\bfault\b", re.I), "inject-fault"),
-    (re.compile(r"\bhealthy\b|\bnormal\b|\bfix\b|\brepair\b|\bclear\b|\bheal\b", re.I), "inject-healthy"),
+    (re.compile(r"\b(inject|induce|trigger|simulate|cause|create|add|make|set)\b.*\bfault\b|\bfaulty\b|\bunbalanced\b", re.I), "inject-fault"),
     (re.compile(r"\b(stop|halt|kill|pause)\b|\boff\b", re.I), "motor-stop"),
-    (re.compile(r"\b(run|start|spin|both|resume|go)\b", re.I), "run-both"),
+    (re.compile(r"\bboth\b", re.I), "run-both"),
+    (re.compile(r"\bhealthy\b|\bnormal\b|\bfix\b|\brepair\b|\bclear\b|\bheal\b|\b(run|start|spin|resume|go|turn|on)\b", re.I), "inject-healthy"),
 ]
 
 
@@ -1061,7 +1065,8 @@ def tool_send_motor_command(request):
     cmd = next((c for pat, c in _MOTOR_COMMANDS if pat.search(request)), None)
     if cmd is None:
         raise RuntimeError("Motor command not understood - try 'inject a fault', "
-                           "'set healthy', 'stop', 'run', 'set threshold 0.5', or 'reboot'")
+                           "'start the motor' (healthy), 'run both', 'stop', "
+                           "'set threshold 0.5', or 'reboot'")
     args = ""
     if cmd in ("set-threshold", "set-interval"):
         m = re.search(r"(\d+(?:\.\d+)?)", request)
@@ -1091,11 +1096,13 @@ AGENT_TOOLS = {
 
 # Keyword fallback for when the 500M model's tool pick can't be parsed
 _TOOL_KEYWORDS = [
-    # Requires on/off intent, not just the word "light" - trivia like
-    # "what color is light" must not route to a device command.
+    # Motor CONTROL (action) first - "turn on / start the motor" must control the
+    # vibration motor, not fall into the generic device on/off tool below. A bare
+    # "motor" with no action verb is a status READ (get_vibration), further down.
+    (re.compile(r"\b(inject|induce|trigger|simulate|cause)\b.*\bfault\b|\b(turn|switch|flip|start|run|spin|stop|halt|kill|pause|reboot|restart|resume|drive)\b[\w\s]*\bmotors?\b|\bmotors?\b[\w\s]*\b(on|off|start|run|stop|go)\b|\bmotors?[- ]?(stop|run|off)\b|\b(set|make)\b.*\b(threshold|interval|healthy)\b|\brun\s+both\b|\bboth\s+motors?\b|\bstart\s+both\b", re.I), "send_motor_command"),
+    # Device LED / light on-off - requires on/off intent, not just the word
+    # "light" (trivia like "what color is light" must not route here).
     (re.compile(r"\b(turn|switch|flip)\b.*\b(on|off)\b|\bled\b\s*(on|off)\b", re.I), "send_device_command"),
-    # Motor CONTROL (action) before motor STATUS (read); both before the cloud/health tools.
-    (re.compile(r"\b(inject|induce|trigger|simulate|cause)\b.*\bfault\b|\b(stop|halt|start|run|spin|reboot|restart)\b.*\b(motors?|device|sensor)\b|\bmotors?[- ]?(stop|run|off)\b|\bset\b.*\b(threshold|interval|healthy)\b|\bmake\b.*\bhealthy\b", re.I), "send_motor_command"),
     (re.compile(r"\bvibration\b|\banomaly\b|\bmotors?\b|\brms\b", re.I), "get_vibration"),
     (re.compile(r"deployment|fleet|how many devices|other devices|iotconnect|cloud", re.I), "get_cloud_devices"),
     (re.compile(r"telemetry|last reported|received", re.I), "get_cloud_telemetry"),
@@ -1343,7 +1350,7 @@ def invalidate_agent_session():
             telemetry["agent_status"] = "off"
 
 
-def run_agent_request(request):
+def _run_agent_request(request):
     """Route a natural-language request to a board tool and answer from its result.
     The agent's reasoning runs on whatever set-model/set-backend selects (the Ara
     connector, a GGUF, or the Danube session) - the same model ask-llm uses."""
@@ -1407,6 +1414,17 @@ def run_agent_request(request):
     set_agent_status("ready")
     print("Agent response (%s via %s): %s" % (tool_name, router, answer[:200]))
     return answer
+
+
+def run_agent_request(request):
+    """Run the agent, resetting agent_status to 'error' if any step (routing, the
+    tool, or phrasing) raises - otherwise a failed request (e.g. a tool that can't
+    match a device) leaves the dashboard stuck showing 'executing'."""
+    try:
+        return _run_agent_request(request)
+    except Exception:
+        set_agent_status("error")
+        raise
 
 
 # -----------------------------------------------------------------------------
