@@ -760,6 +760,13 @@ def voice_session(output_mode):
                     # Voice -> agent bridge: spoken ACTION requests also run
                     # through the agent (e.g. "turn on the lights", "inject a
                     # fault"), so the command actually executes while chat replies.
+                    # FUTURE UPGRADE: only ACTIONS are bridged and the spoken
+                    # reply is still Danube's (the agent's real result goes to
+                    # telemetry, not TTS). To answer spoken STATUS reads out loud
+                    # - "how's the motor" -> get_vibration, said aloud - bridge
+                    # read tools here too AND speak the agent's answer via TTS,
+                    # i.e. a wake->STT->agent->TTS path instead of GenAI Flow's
+                    # baked-in STT->Danube->TTS. See the voice_session() note.
                     if _is_voice_action(question):
                         q = question
                         threading.Thread(target=lambda: _voice_action(q), daemon=True).start()
