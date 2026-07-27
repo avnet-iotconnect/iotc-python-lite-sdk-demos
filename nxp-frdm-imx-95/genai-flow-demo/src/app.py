@@ -95,7 +95,7 @@ DEFAULT_CONFIG = {
     "camera_device": "auto",
     # Agent (ask-agent): a persistent CPU LLM session routes requests to real
     # board tools (time, temperature, memory...). Stopped after this idle time.
-    "agent_idle_timeout_s": 900,
+    "agent_idle_timeout_s": 3600,
     # Local IoTConnect MCP server (iotc-mcp-server) for the agent's cloud
     # tools. Authenticate once with: iotconnect-cli configure
     "mcp_url": "http://127.0.0.1:8000/mcp",
@@ -173,6 +173,7 @@ telemetry = {
     "vlm_model": "%s (%s)" % (config.get("vlm_model", ""), config.get("vlm_precision", "")),
     "vlm_question": "",
     "vlm_response": "",
+    "vlm_load_time": 0.0,         # model load (s); 0 when the warm VLM worker is reused
     "vlm_vision_time": 0.0,       # vision encoder time (s)
     "vlm_ttft": 0.0,              # vision + decoder time to first token (s)
     "vlm_tps": 0.0,               # decode speed (tokens/sec)
@@ -184,6 +185,8 @@ telemetry = {
     "cpu_percent": 0.0,
     "mem_used_mb": 0.0,
     "cpu_temp": 0.0,
+    "disk_free_gb": 0.0,          # free space on / - a model push needs ~2x the model size
+    "disk_used_pct": 0.0,         # root filesystem usage, same accounting as df
     "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
     "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
     "model_deploy_detail": "",       # human-readable progress/error detail
@@ -261,6 +264,22 @@ def read_cpu_temp():
         except (OSError, ValueError):
             continue
     return 0.0
+
+
+def read_disk():
+    """
+    Root filesystem free GB and used %, using df's accounting (usage is measured
+    against the space actually available to us, not the root-reserved blocks).
+    The model store lives here, and an IOTCONNECT model push needs roughly twice
+    the model size free: it downloads the package next to where it unpacks it.
+    """
+    try:
+        s = os.statvfs("/")
+        used = (s.f_blocks - s.f_bfree) * s.f_frsize
+        avail = s.f_bavail * s.f_frsize
+        return round(avail / float(1 << 30), 1), round(100.0 * used / max(1, used + avail), 1)
+    except (OSError, ValueError):
+        return 0.0, 0.0
 
 
 def get_local_ip():
@@ -635,6 +654,7 @@ def voice_session(output_mode):
     subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i vasr"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     chat_llm.stop()  # release the warm ask-llm session; voice needs the RAM
+    vlm_session.stop()  # release the warm VLM too - a voice session is RAM-heavy
     time.sleep(1)
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", genai_model()])
     if config.get("stt_model"):
@@ -765,9 +785,28 @@ def tool_get_temperature():
     return "The chip temperature is %.1f degrees Celsius" % read_cpu_temp()
 
 
+def read_mem_total_mb():
+    try:
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    return round(int(line.split()[1]) / 1024.0, 1)
+    except (OSError, ValueError, IndexError):
+        pass
+    return 0.0
+
+
 def tool_get_memory():
-    return "The board is using %.0f MB of its 7936 MB of RAM, and CPU load is %.1f percent" % (
-        read_mem_used_mb(), telemetry["cpu_percent"])
+    # Read the total rather than hard-coding it - the reserved Neutron CMA pool
+    # makes MemTotal board- and device-tree-dependent.
+    return "The board is using %.0f MB of its %.0f MB of RAM, and CPU load is %.1f percent" % (
+        read_mem_used_mb(), read_mem_total_mb(), telemetry["cpu_percent"])
+
+
+def tool_get_disk():
+    free_gb, used_pct = read_disk()
+    return "The board's flash storage is %.0f percent full, with %.1f GB free" % (
+        used_pct, free_gb)
 
 
 def tool_get_uptime():
@@ -1004,6 +1043,7 @@ AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
     "get_memory": ("memory usage or CPU load", tool_get_memory),
+    "get_disk": ("free flash storage or disk space", tool_get_disk),
     "get_uptime": ("how long the board has been running", tool_get_uptime),
     "get_ip": ("the board's network or IP address", tool_get_ip),
     "get_usb": ("which USB devices are plugged in", tool_get_usb),
@@ -1029,6 +1069,9 @@ _TOOL_KEYWORDS = [
     (re.compile(r"usb|plugged|peripheral", re.I), "get_usb"),
     (re.compile(r"time|clock|date|day|today", re.I), "get_time"),
     (re.compile(r"temperature|hot|warm|thermal|cool", re.I), "get_temperature"),
+    # Storage before memory: "storage usage" / "disk space" would otherwise be
+    # caught by get_memory's "usage" keyword.
+    (re.compile(r"\bdisk\b|\bstorage\b|\bflash\b|\bemmc\b|\bspace\b|filesystem", re.I), "get_disk"),
     (re.compile(r"memory|ram|cpu|load|usage", re.I), "get_memory"),
     (re.compile(r"uptime|running|how long", re.I), "get_uptime"),
     (re.compile(r"\bip\b|address|network", re.I), "get_ip"),
@@ -1205,7 +1248,7 @@ def agent_reaper():
     """Stop idle LLM sessions (agent + chat) to reclaim RAM."""
     while True:
         time.sleep(60)
-        for sess in (agent_llm, chat_llm):
+        for sess in (agent_llm, chat_llm, vlm_session):
             if sess.alive() and time.monotonic() - sess.last_used > config["agent_idle_timeout_s"]:
                 if llm_busy.acquire(blocking=False):
                     try:
@@ -1342,52 +1385,140 @@ def capture_frame():
     return VLM_FRAME_PATH
 
 
+VLM_WORKER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vlm_worker.py")
+
+
+class PersistentVLM:
+    """
+    A warm SmolVLM worker (vlm_worker.py): the model loads once and stays
+    resident, then answers many (frame, question) requests - so ask-vlm only
+    pays the ~40s load on the first call, and follow-ups answer in seconds.
+    Idle-reaped and released for voice like the LLM sessions, to fit board RAM.
+    """
+
+    def __init__(self):
+        self.proc = None
+        self.q = None
+        self.signature = None      # (model, precision) the worker was started with
+        self.lock = threading.Lock()
+        self.last_used = 0.0
+
+    def alive(self):
+        return self.proc is not None and self.proc.poll() is None
+
+    def _pump(self):
+        try:
+            for line in self.proc.stdout:
+                self.q.put(line.rstrip("\n"))
+        finally:
+            self.q.put(None)  # EOF sentinel
+
+    def _readline(self, timeout):
+        try:
+            return self.q.get(timeout=timeout)  # a str line, or None on EOF
+        except queue.Empty:
+            return False  # timeout tick
+
+    def start(self, init_frame):
+        cmd = [config["python"], "-u", VLM_WORKER,
+               config["vlm_model"], config["vlm_precision"], init_frame]
+        print("Starting warm VLM:", " ".join(cmd))
+        self.proc = subprocess.Popen(
+            cmd, cwd=config["vlm_dir"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+            text=True, bufsize=1,
+        )
+        self.q = queue.Queue()
+        threading.Thread(target=self._pump, daemon=True).start()
+        deadline = time.monotonic() + config["vlm_timeout_s"]
+        while True:
+            line = self._readline(5)
+            if line is None:
+                self.stop()
+                raise RuntimeError("VLM worker exited before it was ready")
+            if line == "VLM_READY":
+                break
+            if line is False and time.monotonic() > deadline:
+                self.stop()
+                raise RuntimeError("VLM worker load timed out")
+        self.signature = (config["vlm_model"], config["vlm_precision"])
+        self.last_used = time.monotonic()
+
+    def ask(self, frame, question):
+        """Answer (frame, question). Returns (answer, perf_line, load_time);
+        (re)loads the model on first use or a model/precision change."""
+        with self.lock:
+            sig = (config["vlm_model"], config["vlm_precision"])
+            load_time = 0.0
+            if not (self.alive() and self.signature == sig):
+                self.stop()
+                t0 = time.monotonic()
+                self.start(frame)
+                load_time = round(time.monotonic() - t0, 2)
+            self.proc.stdin.write(json.dumps({"image": frame, "question": question}) + "\n")
+            self.proc.stdin.flush()
+            ans, perf, grab = [], "", False
+            deadline = time.monotonic() + config["vlm_timeout_s"]
+            while True:
+                line = self._readline(5)
+                if line is None:
+                    raise RuntimeError("VLM worker exited mid-answer")
+                if line is False:
+                    if time.monotonic() > deadline:
+                        raise RuntimeError("VLM worker timed out")
+                    continue
+                if line == "VLM_ANSWER_BEGIN":
+                    grab = True
+                elif line == "VLM_ANSWER_END":
+                    grab = False
+                elif line == "VLM_DONE":
+                    break
+                elif line.startswith("Vision:") or line.startswith("ERROR"):
+                    perf = line
+                elif grab:
+                    ans.append(line)
+            self.last_used = time.monotonic()
+        return "\n".join(ans).strip(), perf, load_time
+
+    def stop(self):
+        if self.proc:
+            self.proc.terminate()
+            try:
+                self.proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
+            self.proc = None
+            self.q = None
+
+
+vlm_session = PersistentVLM()
+
+
 def run_vlm(question):
     """
-    Capture a camera frame and run it through SmolVLM (single-shot -q mode).
-    The VLM answers, prints its perf line, then exits on stdin EOF.
+    Capture a camera frame and answer it with SmolVLM via a warm worker
+    (vlm_worker.py). The model loads once and stays resident, so only the first
+    ask-vlm pays the ~40s load; later questions answer in seconds and
+    vlm_load_time reports 0 on that warm path.
     """
     frame = capture_frame()
-    cmd = [config["python"], "-u", "-m", "vlm", "-ng",
-           "-m", config["vlm_model"], "-p", config["vlm_precision"],
-           "-im", frame, "-q", question]
-    print("Running VLM:", " ".join(cmd))
-    result = subprocess.run(
-        cmd, cwd=config["vlm_dir"],
-        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        text=True, timeout=config["vlm_timeout_s"],
-    )
-    out = _ANSI_RE.sub("", result.stdout)
-
-    m = _VLM_PERF_RE.search(out)
-    if not m:
-        raise RuntimeError("No VLM answer captured. Last output:\n" + out[-2000:])
-    vision_t, ttft, tps = (float(x) for x in m.groups())
-
-    # The VLM streams each answer token wrapped in bright-green ANSI (Fore.LIGHTGREEN_EX).
-    # Its log lines and perf line use the same color, so filter those out rather than
-    # relying on output ordering (stdout/stderr interleaving is not deterministic).
-    segments = re.findall(r"\x1b\[92m(.*?)\x1b\[0m", result.stdout, re.S)
-    answer = "".join(
-        s for s in segments
-        if not re.match(r"\s*\d{4}-\d{2}-\d{2}", s)      # log lines
-        and "Loading" not in s and "Loaded" not in s      # startup prints
-        and "Vision:" not in s                            # perf line
-    ).strip()
+    answer, perf, load_time = vlm_session.ask(frame, question)
     if not answer:
-        # Fallback: plain text between the image line and the perf line
-        answer = out.split("image", 1)[-1].split("Vision:")[0].strip()
-
+        raise RuntimeError("No VLM answer captured (perf: %s)" % perf)
+    m = _VLM_PERF_RE.search(perf)
+    vision_t, ttft, tps = (float(x) for x in m.groups()) if m else (0.0, 0.0, 0.0)
     with telemetry_lock:
         telemetry.update({
             "vlm_model": "%s (%s)" % (config["vlm_model"], config["vlm_precision"]),
             "vlm_question": question[:500],
             "vlm_response": answer[:1000],
+            "vlm_load_time": load_time,
             "vlm_vision_time": vision_t,
             "vlm_ttft": ttft,
             "vlm_tps": tps,
         })
-    print("VLM response (vision %.1fs, %.1f tok/s): %s" % (vision_t, tps, answer[:200]))
+    print("VLM response (load %.1fs, ttft %.1fs, %.1f tok/s): %s"
+          % (load_time, ttft, tps, answer[:200]))
     return answer
 
 
@@ -1976,13 +2107,24 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 # Offline test modes - exercise the AI paths without any /IOTCONNECT setup:
 #   python3 app.py --test-agent what time is it
 #   python3 app.py --test-llm what is an npu
-if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm"):
+#   python3 app.py --test-vlm what do you see   (runs twice to show the warm reuse)
+if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm", "--test-vlm"):
     question = " ".join(sys.argv[2:]) or "What time is it?"
     try:
-        answer = run_agent_request(question) if sys.argv[1] == "--test-agent" else run_llm_prompt(question)
+        if sys.argv[1] == "--test-vlm":
+            for i in range(2):
+                t = time.monotonic()
+                answer = run_vlm(question)
+                print("[ask-vlm #%d took %.1fs (load %.1fs)] %s"
+                      % (i + 1, time.monotonic() - t, telemetry["vlm_load_time"], answer[:120]))
+        elif sys.argv[1] == "--test-agent":
+            answer = run_agent_request(question)
+        else:
+            answer = run_llm_prompt(question)
         print("\n=== RESULT ===\n" + answer)
     finally:
         agent_llm.stop()
+        vlm_session.stop()
     sys.exit(0)
 
 try:
@@ -2043,6 +2185,7 @@ try:
             telemetry["cpu_percent"] = read_cpu_percent()
             telemetry["mem_used_mb"] = read_mem_used_mb()
             telemetry["cpu_temp"] = read_cpu_temp()
+            telemetry["disk_free_gb"], telemetry["disk_used_pct"] = read_disk()
             c.send_telemetry(dict(telemetry))
         publish_state()
         time.sleep(config["telemetry_interval_s"])

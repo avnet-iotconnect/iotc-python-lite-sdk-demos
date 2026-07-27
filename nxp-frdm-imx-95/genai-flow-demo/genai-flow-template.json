@@ -27,7 +27,7 @@
         {
             "name": "llm_backend",
             "type": "STRING",
-            "description": "cpu or neutron (Kinara Ara-2 support planned)",
+            "description": "cpu, neutron, or ara2 (Kinara Ara-2 / NXP Ara240 discrete NPU)",
             "unit": "",
             "aggregateTypes": []
         },
@@ -84,6 +84,27 @@
             "name": "llm_token_count",
             "type": "INTEGER",
             "description": "Token count of the last response (estimated if not reported)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "model_deploy_status",
+            "type": "STRING",
+            "description": "IOTCONNECT model push: idle | downloading | deploying | loading | ready | error",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "model_deploy_name",
+            "type": "STRING",
+            "description": "Name of the model IOTCONNECT last pushed to the device",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "model_deploy_detail",
+            "type": "STRING",
+            "description": "Model push progress or error detail",
             "unit": "",
             "aggregateTypes": []
         },
@@ -186,6 +207,13 @@
             "aggregateTypes": []
         },
         {
+            "name": "vlm_load_time",
+            "type": "DECIMAL",
+            "description": "VLM model load time (0 when the warm VLM worker is reused)",
+            "unit": "s",
+            "aggregateTypes": []
+        },
+        {
             "name": "vlm_vision_time",
             "type": "DECIMAL",
             "description": "Vision encoder time",
@@ -263,6 +291,20 @@
             "aggregateTypes": []
         },
         {
+            "name": "disk_free_gb",
+            "type": "DECIMAL",
+            "description": "Free space on the root filesystem (a model push needs ~2x the model size)",
+            "unit": "GB",
+            "aggregateTypes": []
+        },
+        {
+            "name": "disk_used_pct",
+            "type": "DECIMAL",
+            "description": "Root filesystem usage",
+            "unit": "%",
+            "aggregateTypes": []
+        },
+        {
             "name": "board_ip",
             "type": "STRING",
             "description": "",
@@ -328,7 +370,7 @@
             "isOTACommand": false
         },
         {
-            "name": "Set LLM Model (danube-500M-q8 | danube-500M-q4)",
+            "name": "Set LLM Model (danube / qwen GGUF / Ara240 model name)",
             "command": "set-model",
             "requiredParam": true,
             "requiredAck": true,
@@ -349,7 +391,7 @@
             "isOTACommand": false
         },
         {
-            "name": "Set Backend (cpu | neutron)",
+            "name": "Set Backend (cpu | neutron | ara2)",
             "command": "set-backend",
             "requiredParam": true,
             "requiredAck": true,
