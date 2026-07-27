@@ -366,13 +366,14 @@ def list_gguf_models():
 _LLAMA_PERF_RE = re.compile(r"\[\s*Prompt:\s*([\d.]+)\s*t/s\s*\|\s*Generation:\s*([\d.]+)\s*t/s\s*\]")
 
 
-def run_llama_prompt(prompt):
-    """Run a prompt through llama.cpp (llama-cli) and update llm_* telemetry."""
+def _llama_complete(prompt, max_tokens):
+    """Run a prompt through llama.cpp (llama-cli); return
+    (response, prompt_tps, gen_tps, total_time). Shared by ask-llm and the agent."""
     model = config["model"]
     cmd = [os.path.join(config["llama_dir"], "src", "build", "bin", "llama-cli"),
            "-m", gguf_model_path(model),
            "-p", prompt,
-           "-n", str(config["llama_max_tokens"]),
+           "-n", str(max_tokens),
            "-t", str(config["llama_threads"]),
            "--single-turn"]
     print("Running:", " ".join(cmd))
@@ -400,7 +401,13 @@ def run_llama_prompt(prompt):
     if not response:
         raise RuntimeError("No llama.cpp response. Output tail:\n" +
                            (result.stdout[-1000:] + result.stderr[-500:]))
+    return response, prompt_tps, tps, total_time
 
+
+def run_llama_prompt(prompt):
+    """Run a prompt through llama.cpp (llama-cli) and update llm_* telemetry."""
+    model = config["model"]
+    response, prompt_tps, tps, total_time = _llama_complete(prompt, config["llama_max_tokens"])
     tokens = max(1, int(len(response) / 4))  # ~4 chars/token estimate
     gen_time = round(tokens / tps, 2) if tps else round(total_time, 2)
     ttft = round((len(prompt) / 4) / prompt_tps, 2) if prompt_tps else 0.0
@@ -421,6 +428,11 @@ def run_llama_prompt(prompt):
         })
     print("llama.cpp response (%.1fs, %.1f tok/s): %s" % (gen_time, tps, response[:200]))
     return response
+
+
+def _llama_generate(prompt, max_tokens=200):
+    """Text-only llama.cpp completion for the agent (no llm_* telemetry)."""
+    return _llama_complete(prompt, max_tokens)[0]
 
 
 # --- Kinara Ara-2 / NXP Ara240 backend: inference via the eIQ AAF Connector ----
@@ -487,6 +499,21 @@ def run_ara2_prompt(prompt):
         })
     print("Ara2 response (%.1fs, %.1f tok/s): %s" % (gen_time, tps, response[:200]))
     return response
+
+
+def _ara2_generate(prompt, max_tokens=200):
+    """Text-only completion from the Ara connector (no llm_* telemetry) - used by
+    the agent so its reasoning runs on the resident Ara240 model, not Danube."""
+    payload = {
+        "model": config.get("ara2_model", "Qwen2.5-7B-Instruct"),
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
+        "stream": False,
+    }
+    resp = requests.post(config["ara2_aaf_url"], json=payload,
+                         timeout=config["prompt_timeout_s"])
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"].strip()
 
 
 def run_llm_prompt(prompt):
@@ -654,8 +681,15 @@ def voice_session(output_mode):
     subprocess.run(["pkill", "-f", r"eiq_genai_flow\.py -i vasr"],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     chat_llm.stop()  # release the warm ask-llm session; voice needs the RAM
+    agent_llm.stop()  # and the Danube agent session, if it was pre-warmed
     vlm_session.stop()  # release the warm VLM too - a voice session is RAM-heavy
     time.sleep(1)
+    # NOTE (future expansion): voice always runs on Danube here. The LLM step is
+    # baked into GenAI Flow's vasr pipeline (wake -> STT -> Danube -> TTS), so voice
+    # follows set-backend cpu/neutron and Danube q8/q4, but cannot use the Ara240
+    # (ara2) or a GGUF without rebuilding the wake/STT/TTS loop around the connector
+    # (unlike the agent, which now does). genai_model() falls back to Danube for
+    # those selections. See the agent's agent_generate() for the pattern to reuse.
     cmd = build_genai_cmd(["-i", "vasr", "-o", output_mode, "-m", genai_model()])
     if config.get("stt_model"):
         cmd += ["--stt", config["stt_model"]]
@@ -1180,7 +1214,17 @@ class PersistentLLM:
                 self.proc = None
 
 
-agent_llm = PersistentLLM("agent")
+def _agent_cmd():
+    # The agent's Danube session follows set-model/set-backend like ask-llm, but
+    # never uses RAG - the tool router must see only its own instructions.
+    cmd = [config["python"], "-u", genai_script_path(),
+           "-i", "keyb", "-o", "text", "-m", genai_model()]
+    if config["backend"] == "neutron":
+        cmd.append("--use-neutron")
+    return cmd
+
+
+agent_llm = PersistentLLM("agent", _agent_cmd)
 
 
 def _chat_cmd():
@@ -1269,21 +1313,56 @@ def set_agent_status(status):
         telemetry["agent_status"] = status
 
 
-def run_agent_request(request):
-    """Route a natural-language request to a board tool and answer from its result."""
+def agent_uses_board_session():
+    """True when the agent runs its own Danube keyb session (cpu/neutron + a
+    Danube model) rather than the resident Ara connector or a one-shot GGUF."""
+    return config["backend"] != "ara2" and not is_gguf_model(config["model"])
+
+
+def agent_generate(prompt, max_tokens=200):
+    """One agent LLM call on whatever set-model/set-backend selects: the Ara240
+    connector (ara2), llama.cpp (a GGUF), or the warm Danube session. This is what
+    lets the agent reason on the same model ask-llm uses - e.g. the resident 7B on
+    the Ara instead of the little Danube router."""
+    if config["backend"] == "ara2":
+        return _ara2_generate(prompt, max_tokens)
+    if is_gguf_model(config["model"]):
+        return _llama_generate(prompt, max_tokens)
     if not agent_llm.alive():
-        set_agent_status("loading")
-        if chat_llm.alive():
-            print("Releasing chat session - the board fits one LLM session (no swap)")
-            chat_llm.stop()
+        agent_llm.start()
+    return agent_llm.ask(prompt)
+
+
+def invalidate_agent_session():
+    """Drop a warm Danube agent session so the next request reloads it with the
+    current selection (or skips it entirely for ara2/GGUF)."""
+    if agent_llm.alive():
+        print("Selection changed - releasing the warm agent session")
+        agent_llm.stop()
+        with telemetry_lock:
+            telemetry["agent_status"] = "off"
+
+
+def run_agent_request(request):
+    """Route a natural-language request to a board tool and answer from its result.
+    The agent's reasoning runs on whatever set-model/set-backend selects (the Ara
+    connector, a GGUF, or the Danube session) - the same model ask-llm uses."""
+    if agent_uses_board_session():
+        if not agent_llm.alive():
+            set_agent_status("loading")
+            if chat_llm.alive():
+                print("Releasing chat session - the board fits one LLM session (no swap)")
+                chat_llm.stop()
+        else:
+            set_agent_status("routing")
     else:
-        set_agent_status("routing")
+        set_agent_status("routing")  # ara2 connector / GGUF: no board session to warm
 
     # Prompt formats chosen empirically - danube-500M answers simple Q/A framing
     # reliably but rambles on multi-line instruction menus.
     router_prompt = "Q: Which tool answers '%s'? Options: %s. A:" % (
         request, ", ".join(AGENT_TOOLS))
-    reply = agent_llm.ask(router_prompt)
+    reply = agent_generate(router_prompt)
     set_agent_status("routing")
 
     # The model often echoes the options list before answering, so the chosen
@@ -1309,7 +1388,7 @@ def run_agent_request(request):
     if tool_name.startswith("send_"):
         answer = tool_result  # for actions, the confirmation IS the answer
     else:
-        answer = agent_llm.ask("%s. Q: %s? A:" % (tool_result, request.rstrip("?")))
+        answer = agent_generate("%s. Q: %s? A:" % (tool_result, request.rstrip("?")))
     # Sanity check: the answer must actually reuse the tool's data - if the
     # small model wandered off, the tool result itself is the better answer.
     fact_words = {w for w in re.findall(r"[A-Za-z0-9.:]{4,}", tool_result)}
@@ -1675,7 +1754,14 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Busy: %s (voice: %s) - stop that first" % (telemetry["genai_status"], telemetry["voice_status"]))
             return
         request = " ".join(msg.command_args)
-        note = "" if agent_llm.alive() else " (first request loads the model, ~1 min)"
+        if config["backend"] == "ara2":
+            note = " (reasons on the resident Ara240 model)"
+        elif is_gguf_model(config["model"]):
+            note = " (loads the GGUF per request)"
+        elif agent_llm.alive():
+            note = ""
+        else:
+            note = " (first request loads the model, ~1 min)"
         c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                            "Agent working - answer will arrive as telemetry" + note)
         start_llm_job(lambda: run_agent_request(request), "agent", "Agent request complete")
@@ -1684,6 +1770,15 @@ def on_command(msg: C2dCommand):
         # Pre-loading doesn't generate anything, so it deliberately skips the
         # llm_busy lock - it works even while a voice session is running
         # (the agent loads on CPU; concurrency is guarded by agent_llm.lock).
+        if not agent_uses_board_session():
+            # ara2 -> the connector's model is always resident; GGUF -> loads per
+            # request. Either way there is no separate Danube session to preload.
+            set_agent_status("ready")
+            publish_state()
+            which = config.get("ara2_model") if config["backend"] == "ara2" else config["model"]
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "Agent uses %s (no separate session to preload)" % which)
+            return
         if agent_llm.alive():
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Agent session is already loaded")
             return
@@ -1788,6 +1883,7 @@ def on_command(msg: C2dCommand):
             config["ara2_model"] = arg
             config["backend"] = "ara2"
             save_config(config)
+            invalidate_agent_session()
             with telemetry_lock:
                 telemetry["llm_model"] = arg
                 telemetry["llm_backend"] = "ara2"
@@ -1796,6 +1892,7 @@ def on_command(msg: C2dCommand):
         elif arg in valid:
             config["model"] = arg
             save_config(config)
+            invalidate_agent_session()
             with telemetry_lock:
                 telemetry["llm_model"] = arg
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + arg)
@@ -1829,6 +1926,7 @@ def on_command(msg: C2dCommand):
         if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron", "ara2"):
             config["backend"] = msg.command_args[0]
             save_config(config)
+            invalidate_agent_session()
             with telemetry_lock:
                 telemetry["llm_backend"] = config["backend"]
             note = " - ask-llm now runs on the Ara240 via the AAF connector" if config["backend"] == "ara2" else ""
