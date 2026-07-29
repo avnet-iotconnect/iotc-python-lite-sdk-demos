@@ -88,11 +88,14 @@ on first use). Install it on the board first:
    ```
 
    > [!TIP]
-   > A packaged copy of the demonstrator is also mirrored on our S3 hosting at
-   > [downloads.iotconnect.io](https://downloads.iotconnect.io/partners/nxp/frdm-imx95/genai-flow-demo/) so you can
-   > `wget` it directly onto the board without Git LFS on the host. Alternatively, `git` and `git-lfs` can be
-   > installed **on the board itself** (via Arch Linux ARM packages) so the board pulls the demonstrator and this
-   > demo repo straight from Git.
+   > A packaged copy of the demonstrator is also mirrored on our S3 hosting, so you can `wget` it directly onto the
+   > board (or your host) without Git LFS:
+   > ```bash
+   > wget https://downloads.iotconnect.io/partners/nxp/packages/dm-eiq-genai-flow-lib-v1.0.0.tgz
+   > tar -xzf dm-eiq-genai-flow-lib-v1.0.0.tgz
+   > ```
+   > Alternatively, `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM packages) so the
+   > board pulls the demonstrator and this demo repo straight from Git.
 
 2. On the **board**:
 
@@ -137,7 +140,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/frdm-imx95/genai-flow-demo/package.tar.gz
+wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.0.tgz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
