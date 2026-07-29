@@ -449,6 +449,25 @@ The agent keeps one persistent LLM session alive (CPU backend), so the **first**
 subsequent ones answer in seconds. The session stops itself after 15 idle minutes (configurable via
 `agent_idle_timeout_s`), or immediately with `agent-stop`.
 
+### Companion device: MCX predictive-maintenance (PdM)
+
+Beyond the board-local tools above, the agent can **monitor and control a second device over /IOTCONNECT** through
+the on-board MCP server — an **FRDM-MCXN947** running the
+[eIQ predictive-maintenance vibration demo](https://github.com/avnet-iotconnect/iotc-zephyr-demos/tree/main/demos/eiq-pdm-vibration)
+(NXP FXLS8974CF accelerometer + an on-Click balanced/unbalanced motor pair, classified on-device by an eIQ Time
+Series Studio model). It's a natural pairing for a booth: the i.MX 95 queries the machine's health and injects
+faults by voice, and the MCXN947 detects them.
+
+| Tool | What it does |
+|---|---|
+| `get_vibration` | reads the MCX device's latest `vib.*` telemetry (motor state, RMS g, anomaly score) from /IOTCONNECT |
+| `send_motor_command` | maps natural language to the PdM device's commands — `inject-fault` (spin the unbalanced motor), `inject-healthy`, `run-both`, `motor-stop`, `set-threshold`, `set-interval`, `reboot` |
+
+Set the target device in `/opt/demo/genai-config.json` (`vibration_duid`, default `mclMCXvib`). Then, with the
+agent warm: `ask-agent how's the motor` → reads the live state; `ask-agent inject a fault` → the unbalanced motor
+spins and the MCX board reports `fault`. Requires the MCP server running and authenticated (§0 start block) and the
+companion device onboarded — see the [eIQ PdM demo](https://github.com/avnet-iotconnect/iotc-zephyr-demos/tree/main/demos/eiq-pdm-vibration).
+
 ### Test without the cloud
 
 Both the agent and the plain LLM path can be exercised with no /IOTCONNECT connection:
