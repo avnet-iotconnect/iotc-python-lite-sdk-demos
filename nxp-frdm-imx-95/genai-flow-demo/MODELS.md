@@ -124,7 +124,7 @@ The board that runs all of the above (measured with the full demo kit installed)
 | Resource | Total | Notes |
 |---|---|---|
 | **RAM** | 8 GB LPDDR4X (~7.7 GB usable) | Shared by Linux, the demo services, and every loaded model |
-| **CMA / NPU pool** | ~5.1 GB (960 MB stock + 4 GB Neutron pool) | The 4 GB pool comes from the device-tree overlay (README §6); Neutron LLM inference consumes ~2.5 GB of it while loaded |
+| **CMA / NPU pool** | ~5.1 GB (960 MB stock + 4 GB Neutron pool) | The 4 GB pool comes from booting the Neutron device tree shipped in the LF6.18.20_2.0.0 boot partition (see README, [Enabling the Neutron NPU](README.md#enabling-the-neutron-npu)); Neutron LLM inference consumes ~2.5 GB of it while loaded |
 | **eMMC storage** | 32 GB (28 GB rootfs after expansion) | Stock image ships with only an 11 GB partition — expansion is step one (README §2) |
 
 ### Disk budget (as installed, measured)

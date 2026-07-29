@@ -37,7 +37,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 | Backend | Status | Notes |
 |---|---|---|
 | Cortex-A55 CPU (6 cores) | ✅ Supported | Default. Runs Danube-500M q8/q4 |
-| eIQ Neutron NPU | ✅ Supported (experimental) | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and a Neutron memory pool in the device tree — see [Enabling the Neutron NPU](#enabling-the-neutron-npu) |
+| eIQ Neutron NPU | ✅ Supported (experimental) | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and booting the Neutron device tree shipped in the LF6.18.20_2.0.0 boot partition — see [Enabling the Neutron NPU](#enabling-the-neutron-npu) |
 | Kinara Ara-2 / NXP Ara240 discrete NPU module | ✅ Supported (setup required) | `set-backend ara2` runs `ask-llm` on the Ara240 M.2 module via NXP's eIQ AAF Connector — enables much larger LLMs (Qwen2.5-7B) at interactive speed. Requires the NXP Ara240 runtime + connector (account-gated download) — see [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) |
 
 ### Measured performance
@@ -54,7 +54,10 @@ performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix)
 ## 2. Requirements
 
 * Completed [FRDM i.MX 95 quickstart](../README.md) (starter demo onboarded and working in `/opt/demo`)
-* NXP Linux BSP **L6.12.49-2.2.0 or later** recommended (see the [flashing guide](../FLASHING.md) to update)
+* NXP Linux BSP **LF6.18.20_2.0.0** (kernel `6.18.20-2.0.0`) — this flow is developed and locked to that
+  release (see the [flashing guide](../FLASHING.md) to update). It ships the Neutron device trees in the boot
+  partition, so no local device-tree build is needed (see [Enabling the Neutron NPU](#enabling-the-neutron-npu)).
+  Check yours with `uname -r`.
 * At least **16 GB free storage** on the board for GenAI Flow and its models
 * Internet access on the board (models are downloaded on first use)
 
@@ -84,12 +87,25 @@ on first use). Install it on the board first:
    scp -r eiq_genai_flow root@<board-ip>:/root/
    ```
 
+   > [!TIP]
+   > A packaged copy of the demonstrator is also mirrored on our S3 hosting at
+   > [downloads.iotconnect.io](https://downloads.iotconnect.io/partners/nxp/frdm-imx95/genai-flow-demo/) so you can
+   > `wget` it directly onto the board without Git LFS on the host. Alternatively, `git` and `git-lfs` can be
+   > installed **on the board itself** (via Arch Linux ARM packages) so the board pulls the demonstrator and this
+   > demo repo straight from Git.
+
 2. On the **board**:
 
    ```bash
    cd /root/eiq_genai_flow
    ./install.sh
    ```
+
+   > [!NOTE]
+   > The **LF6.18.20_2.0.0** image defaults to **Python 3.14**, but eIQ GenAI Flow (and the AI stack it pulls in) is
+   > built against **Python 3.13**. Run the demonstrator under 3.13 — check with `python3.13 --version`, and if the
+   > board has only 3.14, build/install 3.13 alongside it (`python3.13`) and use that interpreter for
+   > `eiq_genai_flow.py`, `install.sh`, and this demo's `app.py`.
 
 3. (Optional) Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
@@ -121,10 +137,14 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/package.tar.gz
+wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/frdm-imx95/genai-flow-demo/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
+
+> [!NOTE]
+> The demo package is hosted on /IOTCONNECT's download server, not in Git. To build it yourself from the `src/`
+> files in this repository (e.g. after local edits), see [Customize and Rebuild](#14-customize-and-rebuild-optional).
 
 ### Run
 
@@ -167,53 +187,47 @@ to interact with the LLM:
 <a name="enabling-the-neutron-npu"></a>
 ### Enabling the Neutron NPU
 
-The stock FRDM-IMX95 demo image does **not** reserve the DMA memory pool the Neutron NPU needs for LLM inference
-(`CmaTotal` shows only ~960 MB; NXP requires >3 GB), and unlike the i.MX 95 EVK images it ships no
-`*-neutron.dtb`. You can build one on the board itself in about a minute using NXP's official overlay:
+The Neutron NPU needs a large reserved DMA/CMA memory pool for LLM inference (the default `CmaTotal` is only
+~960 MB; NXP requires >3 GB). On the **LF6.18.20_2.0.0** image this pool is already provided by the
+Neutron device trees NXP ships **in the boot partition** — you just boot the board with the Neutron DTB instead of
+the default one. **Nothing is built or overwritten:**
 
 ```bash
-# On the board - create NXP's neutron memory overlay (4 GB pool at 0x100000000)
-cat > /tmp/neutron.dtso << 'EOF'
-/dts-v1/;
-/plugin/;
-
-&{/reserved-memory} {
-	#address-cells = <2>;
-	#size-cells = <2>;
-
-	neutron_mem: neutron_memory@100000000 {
-		compatible = "shared-dma-pool";
-		reusable;
-		reg = <0x1 0x00000000 0x1 0x00000000>;
-	};
-};
-
-&neutron {
-	memory-region = <&neutron_mem>;
-};
-EOF
-
-cd /run/media/boot-mmcblk0p1
-dtc -@ -I dts -O dtb -o /tmp/neutron.dtbo /tmp/neutron.dtso
-cp imx95-15x15-frdm.dtb /root/imx95-15x15-frdm.dtb.orig            # keep a backup!
-fdtoverlay -i /root/imx95-15x15-frdm.dtb.orig -o imx95-15x15-frdm.dtb /tmp/neutron.dtbo
-sync && reboot
+# On the board - confirm the shipped Neutron device trees are present
+ls /run/media/boot-mmcblk1p1 | grep neutron
+# imx95-15x15-frdm-neutron.dtb      <- the FRDM (15x15) one this board uses
+# imx95-19x19-evk-neutron.dtb
+# imx95-19x19-frdm-pro-neutron.dtb
 ```
 
-After the reboot, verify:
+Select it from the **U-Boot** prompt over the serial console (interrupt boot to reach `u-boot=>`):
+
+```text
+u-boot=> setenv fdtfile imx95-15x15-frdm-neutron.dtb
+u-boot=> saveenv    # persist the choice across reboots (omit for a one-time try)
+u-boot=> boot
+```
+
+After Linux comes up, verify:
 
 ```bash
-grep -i cma /proc/meminfo   # CmaTotal should now be ~5 GB (960 MB default + 4 GB Neutron pool)
+grep -i cma /proc/meminfo   # CmaTotal now shows the enlarged Neutron pool (>3 GB)
 ls /dev/neutron0            # NPU device present
 ```
 
-To revert, copy `/root/imx95-15x15-frdm.dtb.orig` back over `imx95-15x15-frdm.dtb` and reboot.
+To revert, set `fdtfile` back to the default `imx95-15x15-frdm.dtb` (`setenv fdtfile imx95-15x15-frdm.dtb; saveenv;
+boot`). The original DTB is never touched.
+
+> [!TIP]
+> No serial console? The U-Boot environment can also be edited from Linux userspace with NXP's `fw_setenv` /
+> `fw_printenv` (`fw_env`) tools — `fw_setenv fdtfile imx95-15x15-frdm-neutron.dtb` — which lets you switch the DTB
+> without a console. It needs a matching `/etc/fw_env.config` for this board's eMMC environment; treat it as
+> experimental until confirmed on your image.
 
 > [!NOTE]
-> The overlay is NXP's own `imx95-19x19-evk-neutron.dtso` from the
-> [linux-imx kernel tree](https://github.com/nxp-imx/linux-imx/blob/lf-6.12.y/arch/arm64/boot/dts/freescale/imx95-19x19-evk-neutron.dtso),
-> applied to the FRDM device tree. This demo requires 8 GB RAM boards (the pool reserves the 4 GB of DDR at
-> `0x100000000`).
+> This demo requires 8 GB RAM boards — the Neutron pool reserves the upper 4 GB of DDR. The Neutron device trees are
+> NXP's own, shipped in the LF6.18.20_2.0.0 boot partition; older images that predate them needed a hand-built
+> overlay, which this flow no longer uses.
 
 ### Comparing CPU vs. NPU performance
 
@@ -222,8 +236,8 @@ A typical performance experiment from the /IOTCONNECT command panel:
 1. `set-backend cpu` → `ask-llm Tell me about the i.MX 95 processor.` → note `llm_tps`
 2. `set-backend neutron` → repeat the same prompt → compare `llm_tps` and `llm_ttft`
 
-The Neutron backend requires the device tree change from [Enabling the Neutron NPU](#enabling-the-neutron-npu), and its
-first response takes ~2 minutes longer while the model is compiled for the NPU (watch `llm_load_time`).
+The Neutron backend requires booting the Neutron device tree from [Enabling the Neutron NPU](#enabling-the-neutron-npu),
+and its first response takes ~2 minutes longer while the model is compiled for the NPU (watch `llm_load_time`).
 
 ### Enabling the Kinara Ara-2 / NXP Ara240 backend
 
@@ -339,6 +353,16 @@ business/UC model) improves wake-word and transcription accuracy; override `capt
 
 ### Tuning
 
+* **Set the capture gain first (STT accuracy depends on it).** The microphone capture level is very low by default
+  on this image — low enough that speech-to-text still *works*, but transcription accuracy jumps dramatically once
+  the gain is raised (true for both the webcam mic and USB microphones). Turn it up with `alsamixer`:
+  ```bash
+  alsamixer                 # press F6, pick the capture card (your mic); F4 for Capture view;
+                            # raise the Capture/Mic level with the Up arrow (aim high, ~80–100%)
+  alsactl store            # persist the levels across reboots
+  ```
+  Or set it non-interactively, e.g. `amixer -c <card> sset 'Mic' 100%` (use `arecord -l` to find the card and
+  `amixer -c <card> scontrols` for the exact control name). Re-run the [venue mic check](demo-flow.md#venue-mic-check-run-after-any-board-move-before-doors-open) — you want speech seconds at **2000+ RMS**.
 * **Getting cut off mid-question?** GenAI Flow ends speech capture after only 200 ms of silence by default, which
   truncates questions to their first word or two. Raise it (800 ms works well) in
   `/root/eiq_genai_flow/adapters/stt/stt_adapter.py`:
