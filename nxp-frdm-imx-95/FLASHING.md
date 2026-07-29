@@ -5,9 +5,10 @@
 This simple guide will help you download all the necessary files for flashing a fresh stock image to an NXP FRDM
 i.MX 95, and then flash the image to the board.
 
-The FRDM i.MX 95 ships pre-flashed with an NXP Linux demo image, so flashing is only required to update to a newer BSP
-release (recommended for the [eIQ GenAI Flow demo](genai-flow-demo/README.md), which needs L6.12.49-2.2.0 or later) or
-to return the board to an out-of-box state.
+The FRDM i.MX 95 ships pre-flashed with an NXP Linux demo image, so flashing is only required to update the BSP
+release (the [eIQ GenAI Flow demo](genai-flow-demo/README.md) is locked to **LF6.18.20_2.0.0**) or to return the
+board to an out-of-box state. Check your board's current release with `uname -r` (the LF6.18.20_2.0.0 image reports
+`6.18.20-2.0.0`).
 
 > [!NOTE]
 > This guide is to be used with a Windows host machine. If you are using a Linux machine, the actual flashing utility
@@ -22,8 +23,18 @@ to return the board to an out-of-box state.
 
 * Go to the "Software" section of
   NXP's [FRDM-IMX95 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX95#software)
-* Click the "Download" button next to the latest entry of "FRDM-IMX95 Demo Images"
+* Click the "Download" button next to the **"FRDM-IMX95 Demo Images"** entry for the **LF6.18.20_2.0.0** release
+  (the release the GenAI Flow demo is locked to; its
+  [release notes are RN00210](https://www.nxp.com/docs/en/release-note/RN00210.pdf))
 * Accept the Software License Agreement and the download should automatically start
+
+> [!NOTE]
+> These pre-built demo images are hosted on NXP's product page, **not** on GitHub. If you would rather build the
+> image from source with Yocto, the manifest is on GitHub at
+> [nxp-imx/imx-manifest](https://github.com/nxp-imx/imx-manifest) — use manifest `imx-6.18.20-2.0.0.xml` with
+> machine `imx95-15x15-lpddr4x-frdm` (confirm the exact `repo init -b <branch>` name against RN00210 /
+> the [Yocto User's Guide UG10164](https://www.nxp.com/docs/en/user-guide/UG10164.pdf)). Most users should just
+> download the pre-built image above.
 
 # 4. Organize Files for Flashing
 
