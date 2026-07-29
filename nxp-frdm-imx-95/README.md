@@ -52,8 +52,9 @@ modern industrial, IoT, and edge AI applications.
 
 > [!NOTE]
 > The FRDM i.MX 95 ships from the factory with a pre-built NXP Linux demo image already flashed to the eMMC, so it will
-> boot directly into Linux out of the box. The eIQ GenAI Flow demo requires a recent BSP (L6.12.49-2.2.0 or later
-> recommended) — if your board has an older image, first re-flash it using the [flashing guide](FLASHING.md).
+> boot directly into Linux out of the box. The eIQ GenAI Flow demo is locked to NXP BSP **LF6.18.20_2.0.0** (kernel
+> `6.18.20-2.0.0`) — check with `uname -r`, and if your board has a different image, re-flash it using the
+> [flashing guide](FLASHING.md).
 
 # 4. Device Setup
 
