@@ -37,6 +37,39 @@ RUN_TIMEOUT = 420
 job_lock = threading.Lock()
 job = {"state": "idle", "prompt": "", "current": "", "queue": [], "results": []}
 
+# --- expected-duration estimates ----------------------------------------------
+# Defaults come from measured runs (docs/BENCHMARKS.md); after every run the
+# actual wall time is remembered per combo and used for future estimates.
+EST_FILE = "/tmp/bench_est.json"
+
+
+def default_est(combo_id):
+    if combo_id.startswith("ara2|"):
+        return 15 if "7B" in combo_id else 5
+    if combo_id.startswith("cpu|"):
+        return 55 if "q8" in combo_id else 45
+    if combo_id.startswith("neutron|"):
+        return 135 if "q8" in combo_id else 155
+    if combo_id.startswith("gguf|"):
+        return 25
+    return 30
+
+
+def load_estimates():
+    try:
+        return json.load(open(EST_FILE))
+    except Exception:
+        return {}
+
+
+def save_estimate(combo_id, wall_s):
+    est = load_estimates()
+    est[combo_id] = round(wall_s, 1)
+    try:
+        json.dump(est, open(EST_FILE, "w"))
+    except Exception:
+        pass
+
 
 # --- combo discovery ----------------------------------------------------------
 def list_combos():
@@ -63,6 +96,9 @@ def list_combos():
         name = os.path.splitext(os.path.basename(p))[0]
         combos.append({"id": "gguf|" + name, "label": "CPU (llama.cpp) / " + name,
                        "group": "CPU (llama.cpp)", "cfg": {"backend": "cpu", "model": name}})
+    learned = load_estimates()
+    for c in combos:
+        c["est_s"] = learned.get(c["id"], default_est(c["id"]))
     return combos
 
 
@@ -180,7 +216,11 @@ def worker(selected, prompt):
         for combo in selected:
             with job_lock:
                 job["current"] = combo["label"]
+                job["current_est_s"] = combo.get("est_s", 30)
+                job["current_started"] = time.time()
             result = run_combo(combo, prompt)
+            if not result.get("error"):
+                save_estimate(combo["id"], result["wall_s"])
             with job_lock:
                 job["results"].append(result)
                 job["queue"] = [q for q in job["queue"] if q != combo["label"]]
@@ -234,9 +274,10 @@ PAGE = """<!DOCTYPE html>
  <div class="bar">
   <button id="run">Run shootout</button>
   <label class="cb"><input type="checkbox" id="selall"> select all</label>
+  <span id="est" style="color:var(--warn);font-weight:600"></span>
   <span id="status"></span>
  </div>
- <div class="note">Runs are sequential on the board (Danube loads ~40&nbsp;s, Neutron compiles ~2&nbsp;min). Device config is restored after every run &mdash; the /IOTCONNECT demo is untouched.</div>
+ <div class="note">Runs are sequential on the board. Estimates come from each combination's <em>last measured</em> run on this board (defaults from docs/BENCHMARKS.md until a combo has run once). Device config is restored after every run &mdash; the /IOTCONNECT demo is untouched.</div>
 </div>
 <div class="card" id="resultscard" style="display:none">
  <div class="tblwrap"><table id="tbl"><thead><tr>
@@ -245,19 +286,28 @@ PAGE = """<!DOCTYPE html>
  <div id="resps"></div>
 </div>
 <script>
-let combos=[];
+let combos=[],estById={},estByLabel={};
+function fmtDur(s){s=Math.max(0,Math.round(s));return s<60?('~'+s+' s'):('~'+Math.floor(s/60)+' min '+(s%60)+' s')}
+function updateEst(){
+ const sel=[...document.querySelectorAll('#groups input:checked')];
+ const total=sel.reduce((a,i)=>a+(estById[i.value]||30),0);
+ document.getElementById('est').textContent=sel.length?('Estimated wait: '+fmtDur(total)):'';
+}
 async function loadCombos(){
  combos=await (await fetch('api/combos')).json();
+ estById={};estByLabel={};combos.forEach(c=>{estById[c.id]=c.est_s;estByLabel[c.label]=c.est_s});
  const groups={};combos.forEach(c=>{(groups[c.group]=groups[c.group]||[]).push(c)});
  const gd=document.getElementById('groups');gd.innerHTML='';
  for(const[g,list]of Object.entries(groups)){
   const fs=document.createElement('fieldset');fs.innerHTML='<legend>'+g+'</legend>';
   list.forEach(c=>{const l=document.createElement('label');l.className='cb';
-   l.innerHTML='<input type="checkbox" value="'+c.id+'" '+(c.id.startsWith('ara2')?'checked':'')+'>'+c.label.replace(g+' / ','');
+   l.innerHTML='<input type="checkbox" value="'+c.id+'" '+(c.id.startsWith('ara2')?'checked':'')+'>'+c.label.replace(g+' / ','')
+    +' <span style="color:var(--dim);font-size:.8rem">'+fmtDur(c.est_s)+'</span>';
    fs.appendChild(l)});
   gd.appendChild(fs);}
+ gd.addEventListener('change',updateEst);updateEst();
 }
-document.getElementById('selall').onchange=e=>document.querySelectorAll('#groups input').forEach(i=>i.checked=e.target.checked);
+document.getElementById('selall').onchange=e=>{document.querySelectorAll('#groups input').forEach(i=>i.checked=e.target.checked);updateEst()};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function fmt(v){return v==null?'–':v}
 function render(j){
@@ -278,9 +328,15 @@ let poller=null;
 async function poll(){
  const j=await (await fetch('api/status')).json();render(j);
  const st=document.getElementById('status');
- if(j.state==='running'){st.innerHTML='<span class="spin"></span> running: <b>'+esc(j.current)+'</b> &middot; '+j.results.length+' done, '+j.queue.length+' queued';}
+ if(j.state==='running'){
+  const elapsed=j.current_started?(Date.now()/1000-j.current_started):0;
+  const remCur=Math.max(0,(j.current_est_s||30)-elapsed);
+  const remQ=j.queue.reduce((a,l)=>a+(estByLabel[l]||30),0);
+  st.innerHTML='<span class="spin"></span> running: <b>'+esc(j.current)+'</b> &middot; '+j.results.length+' done, '+j.queue.length+' queued &middot; <b style="color:var(--warn)">'+fmtDur(remCur+remQ)+' left</b>';
+  document.getElementById('run').disabled=true;}
  else{st.textContent=j.results.length?'done — '+j.results.length+' result(s)':'';
-  document.getElementById('run').disabled=false;clearInterval(poller);poller=null;}
+  document.getElementById('run').disabled=false;
+  if(poller){clearInterval(poller);poller=null;loadCombos();}}
 }
 document.getElementById('run').onclick=async()=>{
  const sel=[...document.querySelectorAll('#groups input:checked')].map(i=>i.value);
