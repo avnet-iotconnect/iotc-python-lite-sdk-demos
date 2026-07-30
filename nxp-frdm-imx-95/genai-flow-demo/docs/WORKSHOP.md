@@ -77,7 +77,7 @@ Attendee boards ship **without** the /IOTCONNECT MCP server, by design:
 - The MCP server authenticates with **account-level credentials** and can query/command every device the
   account sees. On hardware attendees control (they have root), that would expose the credentials and give
   any attendee fleet-wide reach. It stays on the **host's board only**.
-- Attendee agents still work fully against their own hardware (: time, temperature, memory,
+- Attendee agents still work fully against their own hardware (`ask-agent`: time, temperature, memory,
   storage, uptime, USB, LED). Cloud-backed tools simply report an error on attendee boards.
 - This gives the workshop a deliberate asymmetry the host can demo: from the host board's agent,
   *"how many boards are online?"* or *"query board imx95-4f2c's temperature"* works across the whole room -
