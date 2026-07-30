@@ -105,10 +105,20 @@ class Client:
         return self._req("POST", self.urls["entityBaseUrl"] + "/Entity",
                          body={"name": name, "parentEntityGuid": parent_guid})
 
-    def create_user(self, email, first, last, role_guid, entity_guid):
+    # Verified payload 2026-07-30: userId is the login (use the email), isActive
+    # MUST be the integer 1 (booleans and "true" are both rejected), and
+    # timezoneGuid is mandatory (lookup via {dashboard}/master/timezone).
+    # Success returns an invitationGuid and sends the platform welcome email -
+    # entity creation alone does NOT invite anyone.
+    DEFAULT_TZ = "C41A0E73-E62B-4275-B236-19E894B80381"  # (UTC-06:00) Central America
+
+    def create_user(self, email, first, last, role_guid, entity_guid, timezone_guid=None):
         return self._req("POST", self.urls["entityBaseUrl"] + "/User",
-                         body={"email": email, "firstName": first, "lastName": last,
-                               "roleGuid": role_guid, "entityGuid": entity_guid})
+                         body={"userId": email, "email": email,
+                               "firstName": first, "lastName": last,
+                               "roleGuid": role_guid, "entityGuid": entity_guid,
+                               "isActive": 1,
+                               "timezoneGuid": timezone_guid or self.DEFAULT_TZ})
 
     def create_device(self, duid, name, template_guid, entity_guid):
         return self._req("POST", self.urls["deviceBaseUrl"] + "/Device",
