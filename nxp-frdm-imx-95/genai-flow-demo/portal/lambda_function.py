@@ -102,10 +102,13 @@ def onboard(item):
         ent_name = "%s%d" % (base, n)
     first, _, last = (item["name"] or "Portal User").partition(" ")
     out = c._req("POST", c.urls["entityBaseUrl"] + "/Entity",
-                 body={"name": ent_name, "parentEntityGuid": PORTAL_PARENT,
-                       "email": item["email"], "firstName": first or "Portal",
-                       "lastName": last or "User", "roleGuid": ADMIN_ROLE})
+                 body={"name": ent_name, "parentEntityGuid": PORTAL_PARENT})
     ent_guid = out["data"][0]["entityGuid"]
+    # Entity creation does NOT invite anyone (its userGuid/isWelcomeEmail response
+    # is misleading) - the user must be created explicitly. This call issues the
+    # invitation and sends the platform welcome email.
+    c.create_user(item["email"], first or "Portal", last or "User",
+                  ADMIN_ROLE, ent_guid)
 
     duid = "p95" + uuid.uuid4().hex[:9]
     cert_pem, key_pem = make_device_cert(duid)
