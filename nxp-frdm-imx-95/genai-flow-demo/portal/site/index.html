@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>i.MX95 GenAI Demo — Get Connected</title>
+<style>
+ :root{--bg:#0e1116;--card:#161b22;--line:#2a3441;--fg:#e6edf3;--dim:#8b98a5;--acc:#33b5e5;--ok:#3fb950;--err:#f85149}
+ *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif}
+ .wrap{max-width:640px;margin:0 auto;padding:36px 20px}
+ h1{font-size:1.7rem;margin:.2rem 0}h1 span{color:var(--acc)}
+ p.lead{color:var(--dim);margin-top:4px}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin:18px 0}
+ label{display:block;margin:12px 0 4px;font-weight:600;font-size:.92rem}
+ input{width:100%;background:#0d1117;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:11px;font:inherit}
+ input:focus{outline:none;border-color:var(--acc)}
+ .hint{color:var(--dim);font-size:.8rem;margin-top:3px}
+ button{margin-top:18px;width:100%;background:var(--acc);color:#04131b;border:0;border-radius:8px;padding:13px;font:700 1.05rem inherit;cursor:pointer}
+ button:disabled{background:#2a3441;color:var(--dim)}
+ .status{text-align:center;padding:8px 0}
+ .big{font-size:1.15rem;font-weight:700}
+ .ok{color:var(--ok)}.err{color:var(--err)}.dim{color:var(--dim)}
+ .spin{display:inline-block;width:16px;height:16px;border:2px solid var(--acc);border-top-color:transparent;border-radius:50%;animation:r .9s linear infinite;vertical-align:-3px;margin-right:8px}
+ @keyframes r{to{transform:rotate(360deg)}}
+ a{color:var(--acc)}
+ ol{margin:8px 0 0 0;padding-left:20px}li{margin:6px 0}
+ .kit{display:inline-block;margin-top:14px;background:var(--ok);color:#04130a;font-weight:700;padding:12px 26px;border-radius:8px;text-decoration:none}
+</style></head><body><div class="wrap">
+<h1>FRDM i.MX95 <span>GenAI</span> demo — get connected</h1>
+<p class="lead">Sign up to get your own private /IOTCONNECT space and a personalized board kit.
+Your FRDM i.MX95 joins <em>your</em> dashboard — LLM, vision, voice and agent demos, out of the box.</p>
+
+<div class="card" id="formcard">
+ <label>Your name</label><input id="name" placeholder="Jane Maker">
+ <label>Email</label><input id="email" type="email" placeholder="jane@example.com">
+ <div class="hint">Your /IOTCONNECT invite is sent here.</div>
+ <label>Company</label><input id="company" placeholder="Example Corp">
+ <label>Event code <span class="dim">(optional)</span></label><input id="code" placeholder="Have a code from the booth? Instant access.">
+ <button id="go">Request my board kit</button>
+ <div class="status" id="status"></div>
+</div>
+
+<div class="card" id="done" style="display:none">
+ <div class="status big ok">✓ You're onboarded!</div>
+ <p>Entity <b id="entname"></b> · device <b id="duid"></b></p>
+ <ol>
+  <li><b>Check your email</b> — /IOTCONNECT sent you an invite. Set your password, then log in at
+      <a id="console" href="#" target="_blank">the console</a>.</li>
+  <li><b>Download your board kit</b> and copy its 3 files onto your FRDM i.MX95 (see the kit's README).</li>
+  <li>Power the board — it appears live in <em>your</em> dashboard.</li>
+ </ol>
+ <a class="kit" id="kit" href="#">⬇ Download board kit (.zip)</a>
+</div>
+<p class="dim" style="font-size:.8rem;text-align:center">Avnet /IOTCONNECT · NXP FRDM i.MX 95 + Ara240 · UAT environment</p>
+
+<script>
+const API = window.PORTAL_API || "";  // same-origin /api by default; set window.PORTAL_API to override
+const $ = id => document.getElementById(id);
+let poll = null;
+function setStatus(html){ $("status").innerHTML = html; }
+async function refresh(id, token){
+ try{
+  const r = await fetch(`${API}/api/status/${id}?t=${token}`);
+  if(!r.ok) throw new Error("status " + r.status);
+  const j = await r.json();
+  if(j.state === "ready"){
+   clearInterval(poll); poll = null;
+   $("formcard").style.display = "none"; $("done").style.display = "";
+   $("entname").textContent = j.entity; $("duid").textContent = j.duid;
+   $("console").href = j.console; $("kit").href = API + j.kit;
+  } else if(j.state === "rejected"){
+   clearInterval(poll); poll = null;
+   setStatus('<span class="err big">Your request was not approved.</span>');
+   $("go").disabled = false;
+  } else if(j.state === "error"){
+   clearInterval(poll); poll = null;
+   setStatus('<span class="err">Something went wrong: ' + (j.detail||"") + '</span>');
+   $("go").disabled = false;
+  } else {
+   setStatus('<span class="spin"></span>Waiting for approval — this page updates automatically. '
+    + '<span class="dim">You can close it; your signup is saved.</span>');
+  }
+ }catch(e){ setStatus('<span class="dim">retrying…</span>'); }
+}
+function watch(id, token){
+ localStorage.setItem("imx95portal", JSON.stringify({id, token}));
+ refresh(id, token);
+ if(!poll) poll = setInterval(() => refresh(id, token), 4000);
+}
+$("go").onclick = async () => {
+ const body = {name: $("name").value.trim(), email: $("email").value.trim(),
+               company: $("company").value.trim(), eventCode: $("code").value.trim()};
+ if(!body.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(body.email)){
+  setStatus('<span class="err">Please enter your name and a valid email.</span>'); return;
+ }
+ $("go").disabled = true;
+ setStatus('<span class="spin"></span>Creating your space…');
+ try{
+  const r = await fetch(`${API}/api/signup`, {method:"POST",
+    headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+  const j = await r.json();
+  if(!r.ok) throw new Error(j.error || ("HTTP " + r.status));
+  watch(j.id, j.token);
+ }catch(e){
+  setStatus('<span class="err">' + e.message + '</span>'); $("go").disabled = false;
+ }
+};
+const saved = localStorage.getItem("imx95portal");
+if(saved){ const {id, token} = JSON.parse(saved); watch(id, token); }
+</script>
+</div></body></html>

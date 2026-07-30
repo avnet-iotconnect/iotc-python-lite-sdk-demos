@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PortalServerless",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:*",
+        "apigateway:*",
+        "dynamodb:*",
+        "logs:*",
+        "cloudfront:*",
+        "ses:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PortalBuckets",
+      "Effect": "Allow",
+      "Action": ["s3:*"],
+      "Resource": [
+        "arn:aws:s3:::imx95-portal-*",
+        "arn:aws:s3:::imx95-portal-*/*"
+      ]
+    },
+    {
+      "Sid": "PortalSecrets",
+      "Effect": "Allow",
+      "Action": ["secretsmanager:*"],
+      "Resource": "arn:aws:secretsmanager:us-east-1:761303338807:secret:imx95-portal/*"
+    },
+    {
+      "Sid": "PortalLambdaRole",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:PutRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:PassRole",
+        "iam:CreatePolicy",
+        "iam:TagRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::761303338807:role/imx95-portal-*",
+        "arn:aws:iam::761303338807:policy/imx95-portal-*"
+      ]
+    }
+  ]
+}
