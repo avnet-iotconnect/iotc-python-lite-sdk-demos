@@ -86,6 +86,63 @@ def make_device_cert(cn):
     return cert_pem, key_pem
 
 
+# --- timezone resolution ------------------------------------------------------
+# The platform's user-create requires one of ITS timezone GUIDs (Windows-style
+# names). The signup page sends the browser's IANA zone; map it: explicit table
+# for common zones whose Windows name shares no city, then city-substring match,
+# then standard (January) offset match, then US Central.
+_IANA_KEYWORD = {
+    "America/Chicago": "Central Time", "America/New_York": "Eastern Time",
+    "America/Denver": "Mountain Time", "America/Phoenix": "Arizona",
+    "America/Los_Angeles": "Pacific Time", "America/Anchorage": "Alaska",
+    "Pacific/Honolulu": "Hawaii", "Asia/Shanghai": "Beijing",
+    "Asia/Calcutta": "Kolkata", "Asia/Kolkata": "Kolkata",
+}
+_tz_cache = None
+
+
+def _tz_list(c):
+    global _tz_cache
+    if _tz_cache is None:
+        out = c._req("GET", c.urls["dashboardBaseUrl"] + "/master/timezone")
+        _tz_cache = out.get("data", [])
+    return _tz_cache
+
+
+def resolve_timezone_guid(c, iana):
+    zones = _tz_list(c)
+
+    def find(pred):
+        return next((z for z in zones if pred(("%s %s" % (z.get("utcName", ""), z.get("name", ""))).lower())), None)
+
+    hit = None
+    if iana:
+        kw = _IANA_KEYWORD.get(iana)
+        if kw:
+            hit = find(lambda s: kw.lower() in s)
+        if hit is None and "/" in iana:
+            city = iana.rsplit("/", 1)[1].replace("_", " ").lower()
+            hit = find(lambda s: city in s)
+        if hit is None:
+            try:
+                import datetime
+                from zoneinfo import ZoneInfo
+                jan = datetime.datetime(2026, 1, 15, tzinfo=ZoneInfo(iana))
+                off = jan.utcoffset()
+                sign = "+" if off >= datetime.timedelta(0) else "-"
+                total = abs(int(off.total_seconds()))
+                tag = "(utc%s%02d:%02d)" % (sign, total // 3600, (total % 3600) // 60)
+                if total == 0:
+                    hit = find(lambda s: "(utc)" in s or "(utc+00:00)" in s)
+                else:
+                    hit = find(lambda s: tag in s)
+            except Exception:
+                pass
+    if hit is None:
+        hit = find(lambda s: "central time" in s)
+    return (hit or {}).get("guid")
+
+
 # --- the proven onboard flow --------------------------------------------------
 def slug(s, maxlen=18):
     return re.sub(r"[^A-Za-z0-9]", "", s)[:maxlen] or "Customer"
@@ -107,8 +164,10 @@ def onboard(item):
     # Entity creation does NOT invite anyone (its userGuid/isWelcomeEmail response
     # is misleading) - the user must be created explicitly. This call issues the
     # invitation and sends the platform welcome email.
+    tz_guid = resolve_timezone_guid(c, item.get("tz") or "")
+    print("timezone: %r -> %s" % (item.get("tz"), tz_guid), flush=True)
     c.create_user(item["email"], first or "Portal", last or "User",
-                  ADMIN_ROLE, ent_guid)
+                  ADMIN_ROLE, ent_guid, timezone_guid=tz_guid)
 
     duid = "p95" + uuid.uuid4().hex[:9]
     cert_pem, key_pem = make_device_cert(duid)
@@ -228,7 +287,8 @@ def lambda_handler(event, context):
             return resp(400, {"error": "name and a valid email are required"})
         item = {"id": uuid.uuid4().hex[:12], "token": pysecrets.token_urlsafe(16),
                 "admin_token": pysecrets.token_urlsafe(16), "name": name, "email": email,
-                "company": company, "state": "pending", "created_at": int(time.time())}
+                "company": company, "tz": (b.get("tz") or "")[:64],
+                "state": "pending", "created_at": int(time.time())}
         instant = bool(EVENT_CODE) and (b.get("eventCode") or "").strip() == EVENT_CODE
         ddb.put_item(Item=item)
         if instant:

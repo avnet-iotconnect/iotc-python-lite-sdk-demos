@@ -86,7 +86,8 @@ function watch(id, token){
 }
 $("go").onclick = async () => {
  const body = {name: $("name").value.trim(), email: $("email").value.trim(),
-               company: $("company").value.trim(), eventCode: $("code").value.trim()};
+               company: $("company").value.trim(), eventCode: $("code").value.trim(),
+               tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || "")};
  if(!body.name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(body.email)){
   setStatus('<span class="err">Please enter your name and a valid email.</span>'); return;
  }
