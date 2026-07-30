@@ -290,6 +290,9 @@ def lambda_handler(event, context):
                 "company": company, "tz": (b.get("tz") or "")[:64],
                 "state": "pending", "created_at": int(time.time())}
         instant = bool(EVENT_CODE) and (b.get("eventCode") or "").strip() == EVENT_CODE
+        if os.environ.get("REQUIRE_CODE") == "1" and not instant:
+            return resp(400, {"error": "A valid attendee code is required for this event - "
+                                       "get it from the workshop host."})
         ddb.put_item(Item=item)
         if instant:
             try:
