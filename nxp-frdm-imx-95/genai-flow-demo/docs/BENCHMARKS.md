@@ -8,7 +8,11 @@ memory sampled once per second during each run. Responses below are **verbatim m
 > **Prompt:** `What color is an apple?`
 
 Reproduce with [src/bench_llms.py](../src/bench_llms.py) (run on the board:
-`python3 /tmp/bench.py`, results land in `/tmp/bench_results.json`).
+`python3 /tmp/bench.py`, results land in `/tmp/bench_results.json`) — or interactively from a browser with
+[src/bench_server.py](../src/bench_server.py): it serves a shootout UI on `http://<board-ip>:8090` where you
+type any prompt, tick the backend/model combinations to compare, and watch the same metrics and verbatim
+responses stream in as each run completes. Install it as the `genai-bench` systemd service (same pattern as
+`genai-camera`: `WorkingDirectory=/opt/demo`, `ExecStart=/usr/bin/python3 -u /opt/demo/bench_server.py`).
 
 ## Results
 
