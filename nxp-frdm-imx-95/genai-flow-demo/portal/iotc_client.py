@@ -113,11 +113,14 @@ class Client:
     DEFAULT_TZ = "C41A0E73-E62B-4275-B236-19E894B80381"  # (UTC-06:00) Central America
 
     def create_user(self, email, first, last, role_guid, entity_guid, timezone_guid=None):
+        # sendInvitationEmail (a real boolean, unlike isActive) is what actually
+        # makes the platform email the invite - omitted, no mail is ever sent
+        # (verified: forgot-password mails arrived while invites did not).
         return self._req("POST", self.urls["entityBaseUrl"] + "/User",
                          body={"userId": email, "email": email,
                                "firstName": first, "lastName": last,
                                "roleGuid": role_guid, "entityGuid": entity_guid,
-                               "isActive": 1,
+                               "isActive": 1, "sendInvitationEmail": True,
                                "timezoneGuid": timezone_guid or self.DEFAULT_TZ})
 
     def create_device(self, duid, name, template_guid, entity_guid):
