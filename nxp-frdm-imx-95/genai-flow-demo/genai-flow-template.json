@@ -39,6 +39,27 @@
             "aggregateTypes": []
         },
         {
+            "name": "rag_status",
+            "type": "STRING",
+            "description": "RAG ingestion: idle | downloading | indexing | ready | error",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "rag_doc",
+            "type": "STRING",
+            "description": "Last document added to the RAG database",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "rag_detail",
+            "type": "STRING",
+            "description": "RAG ingestion progress or error detail",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "llm_prompt",
             "type": "STRING",
             "description": "Last prompt sent to the on-device LLM",
@@ -407,6 +428,13 @@
         {
             "name": "file-download",
             "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Add document to RAG database (URL)",
+            "command": "rag-add",
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false

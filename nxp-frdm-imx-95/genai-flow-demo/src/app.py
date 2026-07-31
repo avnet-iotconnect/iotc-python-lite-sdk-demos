@@ -35,10 +35,12 @@ import json
 import os
 import queue
 import re
+import shutil
 import socket
 import subprocess
 import sys
 import threading
+import urllib.parse
 import time
 import urllib.request
 
@@ -62,6 +64,9 @@ DEFAULT_CONFIG = {
     # Ground LLM answers in the on-device RAG database (rag/src/data/rag_database.pkl).
     # Applies to ask-llm, the voice assistant, and run-benchmark.
     "use_rag": False,
+    # RAG document ingestion (rag-add): where GenAI Flow's RAG package lives
+    "rag_dir": "/root/eiq_genai_flow/rag",
+
     # "cpu", "neutron" (i.MX 95 B0 only), or "ara2" (Kinara Ara-2 / NXP Ara240
     # discrete NPU via the eIQ AAF Connector REST API - see MODELS.md).
     "backend": "cpu",
@@ -187,6 +192,9 @@ telemetry = {
     "cpu_temp": 0.0,
     "disk_free_gb": 0.0,          # free space on / - a model push needs ~2x the model size
     "disk_used_pct": 0.0,         # root filesystem usage, same accounting as df
+    "rag_status": "idle",         # idle | downloading | indexing | ready | error
+    "rag_doc": "",                # last document added to the RAG database
+    "rag_detail": "",             # progress or error detail
     "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
     "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
     "model_deploy_detail": "",       # human-readable progress/error detail
@@ -1085,6 +1093,116 @@ def tool_send_motor_command(request):
         cmd, (" = %s" % args) if args else "", duid)
 
 
+# -----------------------------------------------------------------------------
+# RAG DOCUMENT INGESTION (rag-add <url>)
+# -----------------------------------------------------------------------------
+# Adds a document to the on-device RAG database so the LLM can answer from it.
+# The file is fetched from a URL (IOTCONNECT hands out a presigned link when a
+# document is uploaded through the console/cockpit), dropped into GenAI Flow's
+# input_files, and run through its own pipeline:
+#     document_parsing -> rag.preprocessing.generate_chunks
+#                      -> rag.preprocessing.generate_embeddings (rebuilds the .pkl)
+# Answers are grounded in it as soon as RAG is on (set-rag on).
+# Documents are chunked here, in the app, into GenAI Flow's chunked_files format
+# ({"doc-id": {"chunks": [...]}}) and only its embedding step is run. That keeps
+# ingestion light: GenAI Flow's own chunker pulls in nltk/spacy (and docling for
+# PDFs), none of which ship on a demo board - embedding needs only torch, which
+# the LLM already requires.
+_RAG_TEXT_EXT = (".txt", ".md", ".markdown", ".rst", ".csv", ".json", ".log")
+RAG_CHUNK_CHARS = 900          # ~200 tokens; the hand-made chunks run 200-400 chars
+RAG_CHUNK_MIN = 120
+_RAG_PARA_RE = re.compile(r"\n{3,}")
+_RAG_SENT_RE = re.compile(r"(?<=[.!?])\s+")
+
+
+def chunk_text(text, max_chars=RAG_CHUNK_CHARS, min_chars=RAG_CHUNK_MIN):
+    """Split a document into retrieval-sized chunks on paragraph, then sentence
+    boundaries - short trailing fragments are folded into the previous chunk."""
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = _RAG_PARA_RE.sub("\n\n", text).strip()
+    chunks = []
+    for para in [p.strip() for p in text.split("\n\n") if p.strip()]:
+        if len(para) <= max_chars:
+            pieces = [para]
+        else:  # long paragraph: pack sentences up to the limit
+            pieces, cur = [], ""
+            for sent in _RAG_SENT_RE.split(para):
+                if cur and len(cur) + len(sent) + 1 > max_chars:
+                    pieces.append(cur.strip())
+                    cur = sent
+                else:
+                    cur = (cur + " " + sent).strip()
+            if cur:
+                pieces.append(cur.strip())
+        for piece in pieces:
+            if chunks and len(piece) < min_chars:
+                chunks[-1] = (chunks[-1] + " " + piece).strip()
+            else:
+                chunks.append(piece)
+    return [c for c in chunks if c]
+
+
+def set_rag_status(status, detail=""):
+    with telemetry_lock:
+        telemetry["rag_status"] = status
+        if detail:
+            telemetry["rag_detail"] = detail[:300]
+    publish_state()
+
+
+def rag_add(url, name=None):
+    """Download a document, chunk it, and rebuild the on-device RAG database."""
+    rag_dir = config["rag_dir"]
+    src_dir = os.path.join(rag_dir, "src")
+    chunk_dir = os.path.join(src_dir, "data", "chunked_files")
+    input_dir = os.path.join(src_dir, "data", "input_files")
+    if not os.path.isdir(chunk_dir):
+        raise RuntimeError("RAG data directory not found at %s - is GenAI Flow installed?" % chunk_dir)
+
+    name = name or os.path.basename(urllib.parse.urlparse(url).path) or "document.txt"
+    name = re.sub(r"[^A-Za-z0-9._-]", "_", name)
+    stem, ext = os.path.splitext(name)
+    if ext.lower() not in _RAG_TEXT_EXT:
+        raise RuntimeError("%s is not a text document - upload .txt, .md, .csv, .json or .log "
+                           "(PDF/DOCX need GenAI Flow's docling parser, which is not installed)" % name)
+
+    set_rag_status("downloading", name)
+    os.makedirs(input_dir, exist_ok=True)
+    dest = os.path.join(input_dir, name)
+    with requests.get(url, stream=True, timeout=120) as r:
+        r.raise_for_status()
+        with open(dest, "wb") as f:
+            for part in r.iter_content(chunk_size=65536):
+                f.write(part)
+    text = open(dest, encoding="utf-8", errors="replace").read()
+    chunks = chunk_text(text)
+    if not chunks:
+        raise RuntimeError("%s has no readable text" % name)
+    set_rag_status("indexing", "%s - %d chunks" % (name, len(chunks)))
+    with open(os.path.join(chunk_dir, stem + ".json"), "w", encoding="utf-8") as f:
+        json.dump({stem: {"chunks": chunks}}, f, indent=4)
+    print("RAG: %s -> %d chunks, embedding..." % (name, len(chunks)))
+
+    # generate_embeddings prompts for a one-line description of the database
+    # (used by the domain classifier) - feed it rather than block on stdin.
+    description = config.get("rag_description") or ("Documents about " + stem.replace("_", " "))
+    r = subprocess.run([config["python"], "-m", "rag.preprocessing.generate_embeddings"],
+                       cwd=src_dir, input=description + "\n",
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                       text=True, timeout=config.get("rag_timeout_s", 900))
+    if r.returncode != 0:
+        raise RuntimeError("RAG embedding failed: %s" % (r.stdout or "")[-300:])
+
+    docs = len([f for f in os.listdir(chunk_dir) if f.endswith(".json")])
+    with telemetry_lock:
+        telemetry["rag_doc"] = name
+        telemetry["rag_detail"] = "%d chunks from %s | %d document(s) indexed" % (len(chunks), name, docs)
+    set_rag_status("ready")
+    chat_llm.stop()   # a rebuilt database only takes effect in a fresh session
+    print("RAG: %s indexed (%d chunks, %d docs)" % (name, len(chunks), docs))
+    return "Added %s to the RAG database: %d chunks, %d documents indexed" % (name, len(chunks), docs)
+
+
 AGENT_TOOLS = {
     "get_time": ("the current time or date", tool_get_time),
     "get_temperature": ("the chip or board temperature", tool_get_temperature),
@@ -1468,7 +1586,6 @@ def capture_frame():
     shared = "/tmp/camera-latest.jpg"
     try:
         if time.time() - os.path.getmtime(shared) < 3:
-            import shutil
             shutil.copyfile(shared, VLM_FRAME_PATH)
             return VLM_FRAME_PATH
     except OSError:
@@ -1937,6 +2054,24 @@ def on_command(msg: C2dCommand):
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Options: " + ", ".join(valid_stt))
 
+    elif msg.command_name == "rag-add":
+        if len(msg.command_args) < 1:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "Expected a document URL (IOTCONNECT provides one on upload)")
+            return
+        url = msg.command_args[0]
+        name = msg.command_args[1] if len(msg.command_args) > 1 else None
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                           "Adding the document to the RAG database - watch rag_status")
+
+        def do_rag():
+            try:
+                rag_add(url, name)
+            except Exception as e:
+                print("RAG add failed:", e)
+                set_rag_status("error", str(e))
+        threading.Thread(target=do_rag, daemon=True).start()
+
     elif msg.command_name == "set-rag":
         if len(msg.command_args) == 1 and msg.command_args[0] in ("on", "off"):
             config["use_rag"] = msg.command_args[0] == "on"
@@ -2231,7 +2366,8 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 #   python3 app.py --test-agent what time is it
 #   python3 app.py --test-llm what is an npu
 #   python3 app.py --test-vlm what do you see   (runs twice to show the warm reuse)
-if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm", "--test-vlm"):
+#   python3 app.py --test-rag <url>             (add a document to the RAG database)
+if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm", "--test-vlm", "--test-rag"):
     question = " ".join(sys.argv[2:]) or "What time is it?"
     try:
         if sys.argv[1] == "--test-vlm":
@@ -2240,6 +2376,8 @@ if len(sys.argv) >= 2 and sys.argv[1] in ("--test-agent", "--test-llm", "--test-
                 answer = run_vlm(question)
                 print("[ask-vlm #%d took %.1fs (load %.1fs)] %s"
                       % (i + 1, time.monotonic() - t, telemetry["vlm_load_time"], answer[:120]))
+        elif sys.argv[1] == "--test-rag":
+            answer = rag_add(sys.argv[2])
         elif sys.argv[1] == "--test-agent":
             answer = run_agent_request(question)
         else:

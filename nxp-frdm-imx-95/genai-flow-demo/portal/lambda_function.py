@@ -39,6 +39,7 @@ PORTAL_PARENT = os.environ.get("PORTAL_PARENT", "9A993EB8-B6EE-41D7-B13E-01CA53D
 TEMPLATE_GUID = os.environ.get("TEMPLATE_GUID", "91DD49FB-CFB8-4035-9B51-1F37D3EB2D1D")  # iMX95genai
 ADMIN_ROLE = os.environ.get("ADMIN_ROLE", "6F3294E9-F31B-4A3B-8A48-42D200917846")
 CONSOLE_URL = "https://awspoc.iotconnect.io"
+UPLOAD_BUCKET = os.environ.get("UPLOAD_BUCKET", "imx95-portal-uploads")
 
 ddb = boto3.resource("dynamodb", region_name=REGION).Table(TABLE)
 ses = boto3.client("ses", region_name=REGION)
@@ -340,6 +341,29 @@ def cockpit(event, path, method, headers, body_raw):
                    body={"commandGuid": b["commandGuid"], "parameterValue": b.get("value", ""),
                          "gatewayGuid": ""})
             return resp(200, {"sent": True})
+
+        if path.endswith("/rag-upload"):
+            # The attendee drops a document in the cockpit; it is staged in a
+            # private bucket and the board is told to fetch it with a short-lived
+            # presigned URL, then chunk + embed it into its RAG database.
+            b = json.loads(body_raw or "{}")
+            name = re.sub(r"[^A-Za-z0-9._-]", "_", (b.get("name") or "document.txt"))[:80]
+            data = base64.b64decode(b.get("content") or "")
+            if not data:
+                return resp(400, {"error": "empty file"})
+            if len(data) > 4 * 1024 * 1024:
+                return resp(400, {"error": "file too large (4 MB limit)"})
+            key = "rag/%s/%s" % (b.get("deviceGuid", "unknown"), name)
+            s3 = boto3.client("s3", region_name=REGION)
+            s3.put_object(Bucket=UPLOAD_BUCKET, Key=key, Body=data)
+            url = s3.generate_presigned_url("get_object",
+                                            Params={"Bucket": UPLOAD_BUCKET, "Key": key},
+                                            ExpiresIn=3600)
+            c._req("POST", c.urls["deviceBaseUrl"] + "/template-command/device/%s/send"
+                   % b["deviceGuid"],
+                   body={"commandGuid": b["commandGuid"], "parameterValue": url,
+                         "gatewayGuid": ""})
+            return resp(200, {"sent": True, "name": name, "bytes": len(data)})
 
         if path.endswith("/models"):
             fw = c.urls.get("firmwareBaseUrl", "")
