@@ -201,6 +201,8 @@ telemetry = {
     "rag_detail": "",             # progress or error detail
     "rag_docs": "",               # inventory: name:chunks:builtin;... for a UI list
     "rag_chunks": 0,              # total chunks in the RAG database
+    "rag_preview_doc": "",        # document last previewed
+    "rag_preview": "",            # first chunks of that document
     "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
     "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
     "model_deploy_detail": "",       # human-readable progress/error detail
@@ -1156,6 +1158,63 @@ def set_rag_status(status, detail=""):
     publish_state()
 
 
+def rag_chunk_path(name):
+    """Path of a document's chunk file, guarding against traversal."""
+    stem = re.sub(r"[^A-Za-z0-9._-]", "_", os.path.splitext(name)[0])
+    return os.path.join(config["rag_dir"], "src", "data", "chunked_files", stem + ".json"), stem
+
+
+def rag_show(name, limit=6):
+    """Publish a document's first chunks so a UI can preview what was indexed."""
+    path, stem = rag_chunk_path(name)
+    if not os.path.isfile(path):
+        raise RuntimeError("%s is not in the RAG database" % stem)
+    with open(path, encoding="utf-8") as fh:
+        doc = json.load(fh)
+    chunks = []
+    for v in doc.values():
+        if isinstance(v, dict):
+            chunks.extend(v.get("chunks", []))
+    preview = " || ".join(c.replace("\n", " ").strip() for c in chunks[:limit])
+    with telemetry_lock:
+        telemetry["rag_preview_doc"] = stem
+        telemetry["rag_preview"] = preview[:900]
+    publish_state()
+    print("RAG: previewing %s (%d chunks)" % (stem, len(chunks)))
+    return "%s: %d chunks" % (stem, len(chunks))
+
+
+def rag_remove(name):
+    """Drop a document from the RAG database and rebuild the embeddings."""
+    path, stem = rag_chunk_path(name)
+    if not os.path.isfile(path):
+        raise RuntimeError("%s is not in the RAG database" % stem)
+    src_dir = os.path.join(config["rag_dir"], "src")
+    os.remove(path)
+    input_dir = os.path.join(src_dir, "data", "input_files")
+    for f in os.listdir(input_dir) if os.path.isdir(input_dir) else []:
+        if os.path.splitext(f)[0] == stem:
+            try:
+                os.remove(os.path.join(input_dir, f))
+            except OSError:
+                pass
+    set_rag_status("indexing", "removing " + stem)
+    description = config.get("rag_description") or "Workshop documents"
+    r = subprocess.run([config["python"], "-m", "rag.preprocessing.generate_embeddings"],
+                       cwd=src_dir, input=description + "\n",
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                       text=True, timeout=config.get("rag_timeout_s", 900))
+    if r.returncode != 0:
+        raise RuntimeError("RAG rebuild after removal failed: %s" % (r.stdout or "")[-300:])
+    inv = refresh_rag_docs()
+    with telemetry_lock:
+        telemetry["rag_detail"] = "removed %s | %d document(s) indexed" % (stem, len(inv))
+    set_rag_status("ready")
+    chat_llm.stop()
+    print("RAG: removed %s (%d docs left)" % (stem, len(inv)))
+    return "Removed %s from the RAG database (%d documents remain)" % (stem, len(inv))
+
+
 _RAG_BUILTIN = ("garbage_model", "intent", "FRDM95_hand_made_chunks", "Medical")
 
 
@@ -2101,6 +2160,34 @@ def on_command(msg: C2dCommand):
                                "Speech recognizer set to %s%s" % (config["stt_model"], note))
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Options: " + ", ".join(valid_stt))
+
+    elif msg.command_name in ("rag-show", "rag-remove"):
+        if len(msg.command_args) < 1:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected a document name")
+            return
+        doc = msg.command_args[0]
+        verb = "Previewing" if msg.command_name == "rag-show" else "Removing"
+        c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "%s %s" % (verb, doc))
+
+        def do_doc(cmd=msg.command_name, doc=doc):
+            if cmd == "rag-show":
+                try:
+                    rag_show(doc)
+                except Exception as e:
+                    print("RAG show failed:", e)
+                    set_rag_status("error", str(e))
+                return
+            if not rag_lock.acquire(blocking=False):
+                set_rag_status("indexing", "waiting - another document is still indexing")
+                rag_lock.acquire()
+            try:
+                rag_remove(doc)
+            except Exception as e:
+                print("RAG remove failed:", e)
+                set_rag_status("error", str(e))
+            finally:
+                rag_lock.release()
+        threading.Thread(target=do_doc, daemon=True).start()
 
     elif msg.command_name == "rag-add":
         if len(msg.command_args) < 1:
