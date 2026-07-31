@@ -1154,6 +1154,12 @@ def set_rag_status(status, detail=""):
     publish_state()
 
 
+# Embedding rebuilds the whole database and is memory-hungry: two of them at
+# once OOM-killed the app on an 8 GB board, so ingestion is serialized. A second
+# document waits its turn rather than running concurrently.
+rag_lock = threading.Lock()
+
+
 def rag_add(url, name=None):
     """Download a document, chunk it, and rebuild the on-device RAG database."""
     rag_dir = config["rag_dir"]
@@ -2069,11 +2075,16 @@ def on_command(msg: C2dCommand):
                            "Adding the document to the RAG database - watch rag_status")
 
         def do_rag():
+            if not rag_lock.acquire(blocking=False):
+                set_rag_status("indexing", "waiting - another document is still indexing")
+                rag_lock.acquire()
             try:
                 rag_add(url, name)
             except Exception as e:
                 print("RAG add failed:", e)
                 set_rag_status("error", str(e))
+            finally:
+                rag_lock.release()
         threading.Thread(target=do_rag, daemon=True).start()
 
     elif msg.command_name == "set-rag":

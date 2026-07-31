@@ -329,6 +329,23 @@ def cockpit(event, path, method, headers, body_raw):
     token = headers.get("x-iotc-token") or headers.get("X-Iotc-Token")
     qs = event.get("queryStringParameters") or {}
 
+    # Converting a large PDF or page can outlast API Gateway's 30 s ceiling, which
+    # surfaced as a 503 even though the work completed. Hand those two jobs to an
+    # asynchronous self-invoke and answer immediately - the board reports real
+    # progress through rag_status telemetry anyway.
+    if path.endswith(("/rag-upload", "/rag-url")) and not event.get("_rag_job"):
+        if not token:
+            return resp(401, {"error": "not signed in"})
+        try:
+            boto3.client("lambda", region_name=REGION).invoke(
+                FunctionName=os.environ.get("AWS_LAMBDA_FUNCTION_NAME", "imx95-portal-api"),
+                InvocationType="Event",
+                Payload=json.dumps({"_rag_job": True, "path": path,
+                                    "token": token, "body": body_raw}).encode())
+            return resp(202, {"queued": True})
+        except Exception as e:  # noqa: BLE001 - fall through to run it inline
+            print("async dispatch failed, running inline:", e)
+
     if path.endswith("/login"):
         try:
             b = json.loads(body_raw or "{}")
@@ -458,6 +475,15 @@ def cockpit(event, path, method, headers, body_raw):
 
 
 def lambda_handler(event, context):
+    # Asynchronous re-invoke of a RAG conversion job (see cockpit()).
+    if event.get("_rag_job"):
+        try:
+            return cockpit(event, event["path"], "POST",
+                           {"x-iotc-token": event.get("token")}, event.get("body") or "")
+        except Exception as e:  # noqa: BLE001 - log; the board reports its own status
+            print("rag job failed:", e)
+            return {"ok": False}
+
     rc = event.get("requestContext", {})
     http = rc.get("http", {})
     method, path = http.get("method", ""), http.get("path", "")
