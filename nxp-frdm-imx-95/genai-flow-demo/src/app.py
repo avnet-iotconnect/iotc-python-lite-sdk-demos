@@ -204,6 +204,8 @@ telemetry = {
     "rag_chunks": 0,              # total chunks in the RAG database
     "rag_preview_doc": "",        # document last previewed
     "rag_preview": "",            # first chunks of that document
+    "rag_preview_file": "",       # device-upload path of the full chunk file
+    "rag_preview_count": 0,       # how many chunks that document has
     "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
     "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
     "model_deploy_detail": "",       # human-readable progress/error detail
@@ -1176,10 +1178,29 @@ def rag_show(name, limit=6):
     for v in doc.values():
         if isinstance(v, dict):
             chunks.extend(v.get("chunks", []))
-    preview = " || ".join(c.replace("\n", " ").strip() for c in chunks[:limit])
+    # Publish the whole document through /IOTCONNECT's device file upload (the
+    # SDK uploads with the device's own S3 credentials and registers it under
+    # Telemetry Files), so a UI can page through every chunk. Telemetry keeps a
+    # short preview as a fallback - attributes are far too small for a document.
+    upload_path = ""
+    try:
+        tmp = "/tmp/rag-chunks-%s.json" % stem
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump({"doc": stem, "count": len(chunks), "chunks": chunks}, fh)
+        rel = "rag/%s.json" % stem
+        c.s3_upload(tmp, relative_upload_path=rel,
+                    custom_values={"cf": {"doc": stem, "chunks": len(chunks)}})
+        upload_path = rel
+        print("RAG: uploaded %d chunks of %s to device files" % (len(chunks), stem))
+    except Exception as e:  # noqa: BLE001 - preview still works without the upload
+        print("RAG: chunk upload failed (%s) - preview only" % e)
+
+    preview = " || ".join(x.replace("\n", " ").strip() for x in chunks[:limit])
     with telemetry_lock:
         telemetry["rag_preview_doc"] = stem
         telemetry["rag_preview"] = preview[:900]
+        telemetry["rag_preview_file"] = upload_path
+        telemetry["rag_preview_count"] = len(chunks)
     publish_state()
     print("RAG: previewing %s (%d chunks)" % (stem, len(chunks)))
     return "%s: %d chunks" % (stem, len(chunks))
