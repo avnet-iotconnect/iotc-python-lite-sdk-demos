@@ -35,6 +35,8 @@ Your FRDM i.MX95 joins <em>your</em> dashboard — LLM, vision, voice and agent 
  <label>Event code <span class="dim">(optional)</span></label><input id="code" placeholder="Have a code from the booth? Instant access.">
  <button id="go">Request my board kit</button>
  <div class="status" id="status"></div>
+ <div id="resumed" style="display:none;text-align:center;margin-top:8px">
+  <a href="#" id="newsignup2">Not you? Start a fresh signup →</a></div>
 </div>
 
 <div class="card" id="done" style="display:none">
@@ -47,6 +49,7 @@ Your FRDM i.MX95 joins <em>your</em> dashboard — LLM, vision, voice and agent 
   <li>Power the board — it appears live in <em>your</em> dashboard.</li>
  </ol>
  <a class="kit" id="kit" href="#">⬇ Download board kit (.zip)</a>
+ <div style="margin-top:16px"><a href="#" id="newsignup">Sign up someone else →</a></div>
 </div>
 <p class="dim" style="font-size:.8rem;text-align:center">Avnet /IOTCONNECT · NXP FRDM i.MX 95 + Ara240 · UAT environment</p>
 
@@ -80,10 +83,21 @@ async function refresh(id, token){
  }catch(e){ setStatus('<span class="dim">retrying…</span>'); }
 }
 function watch(id, token){
- localStorage.setItem("imx95portal", JSON.stringify({id, token}));
+ localStorage.setItem("imx95portal", JSON.stringify({id, token, at: Date.now()}));
+ $("resumed").style.display = "";
  refresh(id, token);
  if(!poll) poll = setInterval(() => refresh(id, token), 4000);
 }
+// A shared laptop signs up several people, so make starting over obvious rather
+// than something only an incognito window can fix.
+function startOver(e){
+ if(e) e.preventDefault();
+ localStorage.removeItem("imx95portal");
+ if(poll){ clearInterval(poll); poll = null; }
+ location.href = location.pathname;
+}
+$("newsignup").onclick = startOver;
+$("newsignup2").onclick = startOver;
 $("go").onclick = async () => {
  const body = {name: $("name").value.trim(), email: $("email").value.trim(),
                company: $("company").value.trim(), eventCode: $("code").value.trim(),
@@ -103,7 +117,13 @@ $("go").onclick = async () => {
   setStatus('<span class="err">' + e.message + '</span>'); $("go").disabled = false;
  }
 };
+// Resume a signup only briefly (so someone who closed the tab can still fetch
+// their kit) and never when the page was opened fresh with ?new.
 const saved = localStorage.getItem("imx95portal");
-if(saved){ const {id, token} = JSON.parse(saved); watch(id, token); }
+if(saved && !location.search.includes("new")){
+ const s = JSON.parse(saved);
+ if(!s.at || Date.now() - s.at < 6 * 3600 * 1000) watch(s.id, s.token);
+ else localStorage.removeItem("imx95portal");
+}
 </script>
 </div></body></html>
