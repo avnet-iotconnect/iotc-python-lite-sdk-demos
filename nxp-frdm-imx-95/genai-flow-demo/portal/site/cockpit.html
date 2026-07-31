@@ -201,6 +201,9 @@
      <button class="ghost" id="ragurlbtn">Fetch &amp; index</button>
     </div>
     <div class="metrics" id="ragstatus"></div>
+    <label style="display:flex;align-items:center;gap:8px">Indexed documents
+     <span class="dim" id="ragtotal" style="font-weight:400;text-transform:none"></span></label>
+    <div id="raglist"><span class="dim">—</span></div>
    </div>
   </main>
 
@@ -325,9 +328,25 @@ async function refresh(){
    $("voiceqa").innerHTML="<b>Q:</b> "+esc(v.voice_question)+"\n<b>A:</b> "+esc(v.voice_response||"…")}
   if(v.rag_status&&v.rag_status!=="idle")
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
+  renderRagList(v);
   const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
   if(S.await&&v[key]&&v[key]!==S.await.prev){$("answer").textContent=v[key];S.await=null;metrics(v);log("answer received","ok")}
  }catch(e){$("livepill").textContent="error";$("livepill").className="pill dead"}
+}
+let ragSig="";
+function renderRagList(v){
+ const raw=v.rag_docs||"";
+ if(raw===ragSig)return; ragSig=raw;
+ if(!raw){$("raglist").innerHTML='<span class="dim">no inventory reported yet</span>';return}
+ const docs=raw.split(";").filter(Boolean).map(e=>{const p=e.split(":");
+   return {name:p[0],chunks:+p[1]||0,builtin:p[2]==="1"}});
+ const yours=docs.filter(d=>!d.builtin), built=docs.filter(d=>d.builtin);
+ $("ragtotal").textContent="· "+docs.length+" documents, "+(v.rag_chunks||docs.reduce((a,d)=>a+d.chunks,0))+" chunks total";
+ const rows=ds=>ds.map(d=>'<tr><td>'+esc(d.name)+(d.builtin?' <span class="dim">(shipped)</span>':'')+
+   '</td><td>'+d.chunks+'</td></tr>').join("");
+ $("raglist").innerHTML='<table><tr><th>Document</th><th>chunks</th></tr>'+
+  (yours.length?rows(yours):'<tr><td class="dim">nothing added yet</td><td>—</td></tr>')+
+  rows(built)+'</table>';
 }
 function metrics(v){
  const m=[];
