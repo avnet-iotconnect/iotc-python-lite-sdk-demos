@@ -368,6 +368,13 @@
             "aggregateTypes": []
         },
         {
+            "name": "llm_models",
+            "type": "STRING",
+            "description": "Models this board can serve (for a UI picker)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "board_ip",
             "type": "STRING",
             "description": "",
