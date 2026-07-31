@@ -328,7 +328,7 @@ async function refresh(){
    $("voiceqa").innerHTML="<b>Q:</b> "+esc(v.voice_question)+"\n<b>A:</b> "+esc(v.voice_response||"…")}
   if(v.rag_status&&v.rag_status!=="idle")
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
-  renderRagList(v);
+  renderRagList(v); renderPreview(v);
   const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
   if(S.await&&v[key]&&v[key]!==S.await.prev){$("answer").textContent=v[key];S.await=null;metrics(v);log("answer received","ok")}
  }catch(e){$("livepill").textContent="error";$("livepill").className="pill dead"}
@@ -343,10 +343,27 @@ function renderRagList(v){
  const yours=docs.filter(d=>!d.builtin), built=docs.filter(d=>d.builtin);
  $("ragtotal").textContent="· "+docs.length+" documents, "+(v.rag_chunks||docs.reduce((a,d)=>a+d.chunks,0))+" chunks total";
  const rows=ds=>ds.map(d=>'<tr><td>'+esc(d.name)+(d.builtin?' <span class="dim">(shipped)</span>':'')+
-   '</td><td>'+d.chunks+'</td></tr>').join("");
- $("raglist").innerHTML='<table><tr><th>Document</th><th>chunks</th></tr>'+
-  (yours.length?rows(yours):'<tr><td class="dim">nothing added yet</td><td>—</td></tr>')+
-  rows(built)+'</table>';
+   '</td><td>'+d.chunks+'</td><td style="white-space:nowrap">'+
+   '<button class="ghost" style="padding:4px 9px;font-size:.78rem" data-show="'+esc(d.name)+'">view</button> '+
+   '<button class="ghost" style="padding:4px 9px;font-size:.78rem" data-del="'+esc(d.name)+'">remove</button>'+
+   '</td></tr>').join("");
+ $("raglist").innerHTML='<table><tr><th>Document</th><th>chunks</th><th></th></tr>'+
+  (yours.length?rows(yours):'<tr><td class="dim">nothing added yet</td><td>—</td><td></td></tr>')+
+  rows(built)+'</table><div id="ragpreview"></div>';
+ document.querySelectorAll("[data-show]").forEach(b=>b.onclick=function(){
+  S.previewWant=this.dataset.show;
+  $("ragpreview").innerHTML='<div class="resp"><span class="spin"></span>loading chunks…</div>';
+  withPress(this,()=>send("rag-show",this.dataset.show));});
+ document.querySelectorAll("[data-del]").forEach(b=>b.onclick=function(){
+  const n=this.dataset.del;
+  if(!confirm('Remove "'+n+'" from the RAG database?\nThe database is rebuilt, which takes a minute or two.'))return;
+  withPress(this,()=>send("rag-remove",n));});
+}
+function renderPreview(v){
+ if(!S.previewWant||!v.rag_preview||v.rag_preview_doc!==S.previewWant)return;
+ const el=$("ragpreview"); if(!el)return;
+ el.innerHTML='<div class="resp"><b>'+esc(v.rag_preview_doc)+'</b> — first chunks\n'+
+  esc(v.rag_preview).split(" || ").map((c,i)=>(i+1)+". "+c).join("\n\n")+'</div>';
 }
 function metrics(v){
  const m=[];

@@ -74,6 +74,20 @@
             "aggregateTypes": []
         },
         {
+            "name": "rag_preview_doc",
+            "type": "STRING",
+            "description": "Document last previewed from the RAG database",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "rag_preview",
+            "type": "STRING",
+            "description": "First chunks of the previewed document",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "llm_prompt",
             "type": "STRING",
             "description": "Last prompt sent to the on-device LLM",
@@ -463,6 +477,20 @@
         {
             "name": "Add document to RAG database (URL)",
             "command": "rag-add",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Preview a RAG document's chunks",
+            "command": "rag-show",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
+            "name": "Remove a document from the RAG database",
+            "command": "rag-remove",
             "requiredParam": true,
             "requiredAck": true,
             "isOTACommand": false
