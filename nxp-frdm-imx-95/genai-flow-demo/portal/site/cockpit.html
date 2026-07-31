@@ -364,18 +364,49 @@ function renderRagList(v){
   (yours.length?rows(yours):'<tr><td class="dim">nothing added yet</td><td>—</td><td></td></tr>')+
   rows(built)+'</table><div id="ragpreview"></div>';
  document.querySelectorAll("[data-show]").forEach(b=>b.onclick=function(){
-  S.previewWant=this.dataset.show;
-  $("ragpreview").innerHTML='<div class="resp"><span class="spin"></span>loading chunks…</div>';
-  withPress(this,()=>send("rag-show",this.dataset.show));});
+  const doc=this.dataset.show;
+  S.previewWant=doc; S.chunks=null; S.page=0;
+  $("ragpreview").innerHTML='<div class="resp"><span class="spin"></span>asking the board for '+esc(doc)+'…</div>';
+  withPress(this,async()=>{ await send("rag-show",doc); fetchChunks(doc); });});
  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=function(){
   const n=this.dataset.del;
   if(!confirm('Remove "'+n+'" from the RAG database?\nThe database is rebuilt, which takes a minute or two.'))return;
   withPress(this,()=>send("rag-remove",n));});
 }
+const CHUNKS_PER_PAGE=8;
+async function fetchChunks(doc, tries){
+ tries=tries||0;
+ try{
+  const j=await api("rag-chunks?uid="+encodeURIComponent(S.device.uniqueId)+"&doc="+encodeURIComponent(doc));
+  S.chunks=j.chunks; S.page=0; S.chunkDoc=j.doc; renderChunkPage();
+  log("loaded <b>"+j.count+"</b> chunks of "+esc(doc)+" from /IOTCONNECT files","ok");
+ }catch(e){
+  if(tries<8){ setTimeout(()=>fetchChunks(doc,tries+1), 4000); return; }   // board is still uploading
+  const el=$("ragpreview"); if(el)el.innerHTML='<div class="resp"><span class="warn">'+
+   esc(e.message)+'</span>\nFalling back to the short telemetry preview below.</div>';
+  S.chunks=null;
+ }
+}
+function renderChunkPage(){
+ const el=$("ragpreview"); if(!el||!S.chunks)return;
+ const n=S.chunks.length, per=CHUNKS_PER_PAGE, pages=Math.max(1,Math.ceil(n/per));
+ S.page=Math.min(Math.max(0,S.page),pages-1);
+ const from=S.page*per, slice=S.chunks.slice(from,from+per);
+ el.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">'+
+  '<b>'+esc(S.chunkDoc)+'</b><span class="dim">chunks '+(from+1)+'–'+(from+slice.length)+' of '+n+'</span>'+
+  '<span style="flex:1"></span>'+
+  '<button class="ghost" id="cprev" style="padding:4px 10px;font-size:.78rem"'+(S.page?'':' disabled')+'>‹ prev</button>'+
+  '<button class="ghost" id="cnext" style="padding:4px 10px;font-size:.78rem"'+(S.page<pages-1?'':' disabled')+'>next ›</button>'+
+  '</div>'+slice.map((ch,i)=>'<div class="resp"><span class="dim">#'+(from+i+1)+'</span>\n'+esc(ch)+'</div>').join("");
+ const p=$("cprev"), nx=$("cnext");
+ if(p)p.onclick=()=>{S.page--;renderChunkPage()};
+ if(nx)nx.onclick=()=>{S.page++;renderChunkPage()};
+}
 function renderPreview(v){
+ if(S.chunks)return;   // the full file is showing; ignore the telemetry preview
  if(!S.previewWant||!v.rag_preview||v.rag_preview_doc!==S.previewWant)return;
  const el=$("ragpreview"); if(!el)return;
- el.innerHTML='<div class="resp"><b>'+esc(v.rag_preview_doc)+'</b> — first chunks\n'+
+ el.innerHTML='<div class="resp"><b>'+esc(v.rag_preview_doc)+'</b> — preview (first chunks)\n'+
   esc(v.rag_preview).split(" || ").map((c,i)=>(i+1)+". "+c).join("\n\n")+'</div>';
 }
 function metrics(v){

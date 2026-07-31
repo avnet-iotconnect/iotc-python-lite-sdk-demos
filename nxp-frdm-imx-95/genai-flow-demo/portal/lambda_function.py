@@ -452,6 +452,27 @@ def cockpit(event, path, method, headers, body_raw):
                 data = text.encode("utf-8")
             return stage_and_send(c, b, name, data)
 
+        if path.endswith("/rag-chunks"):
+            # Fetch the chunk file the board published to /IOTCONNECT Telemetry
+            # Files (rag-show uploads it) so the cockpit can page through every
+            # chunk instead of the short telemetry preview.
+            uid, doc = qs.get("uid") or "", qs.get("doc") or ""
+            if not uid or not doc:
+                return resp(400, {"error": "uid and doc are required"})
+            listing = c._req("GET", c.urls["fileBaseUrl"] +
+                             "/File/device-telemetry/%s?pageSize=50" % urllib.parse.quote(uid))
+            files = (listing.get("data") or {}).get("fileData") or []
+            want = doc + ".json"
+            matches = [f for f in files if (f.get("name") or "") == want and f.get("file")]
+            if not matches:
+                return resp(404, {"error": "the board has not published %s yet" % want})
+            newest = max(matches, key=lambda f: f.get("enqueuedTime") or "")
+            with urllib.request.urlopen(newest["file"], timeout=30) as r:
+                payload = json.loads(r.read().decode("utf-8", "replace"))
+            chunks = payload.get("chunks") or []
+            return resp(200, {"doc": payload.get("doc") or doc, "count": len(chunks),
+                              "uploaded": newest.get("enqueuedTime"), "chunks": chunks})
+
         if path.endswith("/models"):
             fw = c.urls.get("firmwareBaseUrl", "")
             try:
