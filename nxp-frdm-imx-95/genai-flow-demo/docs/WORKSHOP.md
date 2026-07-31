@@ -34,21 +34,28 @@ your logistics allow.
    ```bash
    cd /root/eiq_genai_flow && python3 eiq_genai_flow.py -i keyb -o text -m danube-500M-q8
    ```
-4. **Do NOT install any device identity** — boards ship unclaimed; attendees bring their own.
-5. **Run the workshop installer**:
+4. **Install llama.cpp** if attendees should be able to push their own GGUF models from /IOTCONNECT
+   (the demo refuses a GGUF push on a board without it). Fastest for a fleet is to copy the built binaries
+   from a prepared board:
+   ```bash
+   scp -r root@<ready-board>:/opt/llama/src/build /opt/llama/src/
+   ```
+5. **Do NOT install any device identity** — boards ship unclaimed; attendees bring their own.
+6. **Run the workshop installer**:
    ```bash
    bash /opt/demo/workshop-install.sh
    ```
    This gives the board a **unique hostname from its MAC** (e.g. `imx95-4f2c`), enables the demo +
-   claim-page services on boot, and prints the board's claim URL:
+   claim-page services on boot (demo app, claim page, camera server and shootout UI), warns about anything
+   still missing, and prints the board's URLs:
    ```
    Claim page:  http://imx95-4f2c.local:8088
    ```
-6. **Write the URL on the board's card** (sticker or tent card next to each board). This is how attendees
+7. **Write the URL on the board's card** (sticker or tent card next to each board). This is how attendees
    find *their* board among many — every board in the room has a different name.
-7. **Room network**: boards and attendee laptops must share one LAN (the venue Wi-Fi or a workshop router).
+8. **Room network**: boards and attendee laptops must share one LAN (the venue Wi-Fi or a workshop router).
    mDNS (`.local`) must be allowed — on locked-down venue networks, bring your own access point.
-8. **Portal event code**: set/rotate the `EVENT_CODE` env var on the `imx95-portal-api` Lambda so signups
+9. **Portal event code**: set/rotate the `EVENT_CODE` env var on the `imx95-portal-api` Lambda so signups
    onboard instantly (no approval clicks mid-workshop). Tell attendees the code at the start.
 
 ## Part 2 — Attendee experience (~10 minutes to a live board)

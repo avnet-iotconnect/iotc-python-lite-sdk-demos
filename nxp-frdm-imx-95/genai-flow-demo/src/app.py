@@ -2480,6 +2480,13 @@ def deploy_model(entry):
     # board without an Ara240 can still receive and serve a pushed model.
     gguf = _find_gguf()
     if gguf is not None:
+        # Refuse rather than select a model this board cannot run: a GGUF needs
+        # llama.cpp, and silently switching to it would break ask-llm.
+        cli = os.path.join(config["llama_dir"], "src", "build", "bin", "llama-cli")
+        if not os.path.isfile(cli):
+            raise RuntimeError(
+                "%s is a GGUF but this board has no llama.cpp runtime (%s not found) - "
+                "install llama.cpp first; the current model is unchanged" % (file_name, cli))
         stem = re.sub(r"[^A-Za-z0-9._-]", "_", os.path.splitext(os.path.basename(gguf))[0])
         models_dir = os.path.join(config["llama_dir"], "models")
         os.makedirs(models_dir, exist_ok=True)
