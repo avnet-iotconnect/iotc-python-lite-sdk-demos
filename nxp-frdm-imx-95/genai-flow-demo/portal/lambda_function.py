@@ -257,6 +257,112 @@ def do_onboard(item):
     return ob
 
 
+# --- cockpit: the attendee's own web experience -------------------------------
+# Every cockpit call runs with the ATTENDEE'S OWN /IOTCONNECT token (obtained by
+# proxying their login), never the portal's master credentials - so the platform
+# itself enforces that they only ever see and command their own entity's device.
+def cockpit_client(user_token=None):
+    cr = creds()
+    c = Client(solution_key=cr["solution_key"], env=cr.get("env", "poc"), pf=cr.get("pf", "aws"))
+    c.discover()
+    if user_token:
+        c.token = user_token
+    return c
+
+
+def telemetry_base(c):
+    return (c.urls.get("telemetryBaseUrl")
+            or c.urls["deviceBaseUrl"].replace("device", "telemetry"))
+
+
+def cockpit(event, path, method, headers, body_raw):
+    token = headers.get("x-iotc-token") or headers.get("X-Iotc-Token")
+    qs = event.get("queryStringParameters") or {}
+
+    if path.endswith("/login"):
+        try:
+            b = json.loads(body_raw or "{}")
+        except ValueError:
+            return resp(400, {"error": "bad json"})
+        email, password = (b.get("email") or "").strip(), b.get("password") or ""
+        if not email or not password:
+            return resp(400, {"error": "email and password are required"})
+        c = cockpit_client()
+        try:
+            data = c.login(email, password)
+        except IoTConnectError:
+            return resp(401, {"error": "Sign-in failed - check the email and password "
+                                       "from your welcome email."})
+        return resp(200, {"token": data.get("access_token") or data.get("accessToken")})
+
+    if not token:
+        return resp(401, {"error": "not signed in"})
+    c = cockpit_client(token)
+
+    try:
+        if path.endswith("/bootstrap"):
+            devs = c.devices().get("data", [])
+            devs = [d for d in devs if d.get("uniqueId", "").startswith("p95")] or devs
+            out = {"devices": [{"guid": d["guid"], "uniqueId": d["uniqueId"],
+                                "templateGuid": d.get("deviceTemplateGuid")} for d in devs[:10]],
+                   "commands": {}}
+            if out["devices"]:
+                tpl = out["devices"][0]["templateGuid"]
+                cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
+                out["commands"] = {x.get("command"): x.get("guid")
+                                   for x in cmds.get("data", []) if x.get("command")}
+            return resp(200, out)
+
+        if path.endswith("/telemetry"):
+            guid = qs.get("guid") or ""
+            rows = c._req("GET", telemetry_base(c) + "/Telemetry/device/" + guid).get("data", [])
+            values, newest = {}, None
+            for r in rows:
+                values[r.get("attributeName")] = r.get("attributeValue")
+                ts = r.get("deviceUpdatedDate")
+                if ts and (newest is None or ts > newest):
+                    newest = ts
+            age = None
+            if newest:
+                try:
+                    import datetime
+                    t = datetime.datetime.strptime(newest[:19], "%Y-%m-%dT%H:%M:%S").replace(
+                        tzinfo=datetime.timezone.utc)
+                    age = (datetime.datetime.now(datetime.timezone.utc) - t).total_seconds()
+                except ValueError:
+                    pass
+            return resp(200, {"values": values, "age_s": age})
+
+        if path.endswith("/command"):
+            b = json.loads(body_raw or "{}")
+            c._req("POST", c.urls["deviceBaseUrl"] + "/template-command/device/%s/send"
+                   % b["deviceGuid"],
+                   body={"commandGuid": b["commandGuid"], "parameterValue": b.get("value", ""),
+                         "gatewayGuid": ""})
+            return resp(200, {"sent": True})
+
+        if path.endswith("/models"):
+            fw = c.urls.get("firmwareBaseUrl", "")
+            try:
+                out = c._req("GET", fw + "/Module/lookup")
+                return resp(200, {"models": out.get("data", []) or []})
+            except IoTConnectError as e:
+                return resp(200, {"models": [], "note": str(e)[:160]})
+
+        if path.endswith("/model-push"):
+            b = json.loads(body_raw or "{}")
+            fw = c.urls.get("firmwareBaseUrl", "")
+            out = c._req("POST", fw + "/Module/push",
+                         body={"moduleGuid": b.get("moduleGuid"),
+                               "devices": [b.get("deviceGuid")], "applyTo": 2})
+            return resp(200, {"pushed": True, "detail": json.dumps(out)[:200]})
+    except IoTConnectError as e:
+        return resp(502, {"error": str(e)[-200:]})
+    except (KeyError, ValueError) as e:
+        return resp(400, {"error": str(e)[:200]})
+    return resp(404, {"error": "not found"})
+
+
 def lambda_handler(event, context):
     rc = event.get("requestContext", {})
     http = rc.get("http", {})
@@ -268,13 +374,19 @@ def lambda_handler(event, context):
     if method == "OPTIONS":
         return resp(200, "")
 
-    if method == "GET" and path in ("/", "/index.html"):
+    if method == "GET" and path in ("/", "/index.html", "/cockpit", "/cockpit.html"):
+        name = "cockpit.html" if "cockpit" in path else "index.html"
         try:
-            page = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                     "index.html")).read()
+            page = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), name)).read()
             return resp(200, page, "text/html; charset=utf-8")
         except OSError:
-            return html(500, "Portal", "index.html missing from deployment")
+            return html(500, "Portal", "%s missing from deployment" % name)
+
+    if "/api/cockpit/" in path:
+        body_raw = (base64.b64decode(event["body"]).decode() if event.get("isBase64Encoded")
+                    else event.get("body") or "")
+        hdrs = {k.lower(): v for k, v in (event.get("headers") or {}).items()}
+        return cockpit(event, path, method, hdrs, body_raw)
 
     if method == "POST" and path.endswith("/api/signup"):
         try:
