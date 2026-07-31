@@ -23,6 +23,8 @@ import os
 import re
 import secrets as pysecrets
 import time
+import urllib.parse
+import urllib.request
 import uuid
 import zipfile
 
@@ -276,6 +278,53 @@ def telemetry_base(c):
             or c.urls["deviceBaseUrl"].replace("device", "telemetry"))
 
 
+_TAG_STRIP = re.compile(r"(?is)<(script|style|nav|footer|header|aside|noscript)[^>]*>.*?</\1>")
+_TAGS = re.compile(r"(?s)<[^>]+>")
+_WS = re.compile(r"[ \t\x0b\f]+")
+_BLANKS = re.compile(r"\n{3,}")
+
+
+def html_to_text(html):
+    """Readable text from a web page - stdlib only, no scraping stack."""
+    import html as htmlmod
+    body = re.search(r"(?is)<body[^>]*>(.*)</body>", html)
+    text = body.group(1) if body else html
+    text = _TAG_STRIP.sub(" ", text)
+    text = re.sub(r"(?i)</(p|div|li|h[1-6]|tr|section|article)>", "\n\n", text)
+    text = re.sub(r"(?i)<br[^>]*>", "\n", text)
+    text = _TAGS.sub(" ", text)
+    text = htmlmod.unescape(text)
+    text = _WS.sub(" ", text)
+    return _BLANKS.sub("\n\n", "\n".join(l.strip() for l in text.splitlines())).strip()
+
+
+def pdf_to_text(data):
+    """Text layer of a PDF (pypdf is vendored). Scanned pages yield nothing."""
+    import io as _io
+    from pypdf import PdfReader
+    reader = PdfReader(_io.BytesIO(data))
+    pages = []
+    for page in reader.pages[:120]:
+        try:
+            pages.append(page.extract_text() or "")
+        except Exception:  # noqa: BLE001 - skip pages pypdf cannot decode
+            continue
+    return _BLANKS.sub("\n\n", "\n\n".join(pages)).strip()
+
+
+def stage_and_send(c, b, name, data):
+    """Put a text document in the private bucket and tell the board to fetch it."""
+    key = "rag/%s/%s" % (b.get("deviceGuid", "unknown"), name)
+    s3 = boto3.client("s3", region_name=REGION)
+    s3.put_object(Bucket=UPLOAD_BUCKET, Key=key, Body=data)
+    url = s3.generate_presigned_url("get_object",
+                                    Params={"Bucket": UPLOAD_BUCKET, "Key": key},
+                                    ExpiresIn=3600)
+    c._req("POST", c.urls["deviceBaseUrl"] + "/template-command/device/%s/send" % b["deviceGuid"],
+           body={"commandGuid": b["commandGuid"], "parameterValue": url, "gatewayGuid": ""})
+    return resp(200, {"sent": True, "name": name, "bytes": len(data)})
+
+
 def cockpit(event, path, method, headers, body_raw):
     token = headers.get("x-iotc-token") or headers.get("X-Iotc-Token")
     qs = event.get("queryStringParameters") or {}
@@ -342,6 +391,29 @@ def cockpit(event, path, method, headers, body_raw):
                          "gatewayGuid": ""})
             return resp(200, {"sent": True})
 
+        if path.endswith("/rag-url"):
+            # Scrape a web page into clean text and hand it to the board. The
+            # conversion happens here so the board never needs a parser stack.
+            b = json.loads(body_raw or "{}")
+            url = (b.get("url") or "").strip()
+            if not url.startswith(("http://", "https://")):
+                return resp(400, {"error": "enter a full http(s) URL"})
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "iotconnect-rag/1.0"})
+                with urllib.request.urlopen(req, timeout=25) as r:
+                    raw = r.read(6 * 1024 * 1024)
+                    ctype = (r.headers.get("Content-Type") or "").lower()
+            except Exception as e:  # noqa: BLE001 - report fetch problems to the user
+                return resp(400, {"error": "could not fetch that page: %s" % str(e)[:120]})
+            if "pdf" in ctype or url.lower().endswith(".pdf"):
+                text = pdf_to_text(raw)
+            else:
+                text = html_to_text(raw.decode("utf-8", "replace"))
+            if len(text.strip()) < 40:
+                return resp(400, {"error": "no readable text found at that URL"})
+            host = re.sub(r"[^A-Za-z0-9]+", "_", urllib.parse.urlparse(url).netloc)[:40]
+            return stage_and_send(c, b, host + ".txt", text.encode("utf-8"))
+
         if path.endswith("/rag-upload"):
             # The attendee drops a document in the cockpit; it is staged in a
             # private bucket and the board is told to fetch it with a short-lived
@@ -353,17 +425,15 @@ def cockpit(event, path, method, headers, body_raw):
                 return resp(400, {"error": "empty file"})
             if len(data) > 4 * 1024 * 1024:
                 return resp(400, {"error": "file too large (4 MB limit)"})
-            key = "rag/%s/%s" % (b.get("deviceGuid", "unknown"), name)
-            s3 = boto3.client("s3", region_name=REGION)
-            s3.put_object(Bucket=UPLOAD_BUCKET, Key=key, Body=data)
-            url = s3.generate_presigned_url("get_object",
-                                            Params={"Bucket": UPLOAD_BUCKET, "Key": key},
-                                            ExpiresIn=3600)
-            c._req("POST", c.urls["deviceBaseUrl"] + "/template-command/device/%s/send"
-                   % b["deviceGuid"],
-                   body={"commandGuid": b["commandGuid"], "parameterValue": url,
-                         "gatewayGuid": ""})
-            return resp(200, {"sent": True, "name": name, "bytes": len(data)})
+            # PDFs are converted here - the board only ever ingests plain text.
+            if name.lower().endswith(".pdf") or data[:5] == b"%PDF-":
+                text = pdf_to_text(data)
+                if len(text.strip()) < 40:
+                    return resp(400, {"error": "no extractable text in that PDF "
+                                               "(scanned pages need OCR)"})
+                name = re.sub(r"\.pdf$", "", name, flags=re.I) + ".txt"
+                data = text.encode("utf-8")
+            return stage_and_send(c, b, name, data)
 
         if path.endswith("/models"):
             fw = c.urls.get("firmwareBaseUrl", "")
