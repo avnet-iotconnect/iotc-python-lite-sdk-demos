@@ -326,6 +326,20 @@
             "aggregateTypes": []
         },
         {
+            "name": "ara_status",
+            "type": "STRING",
+            "description": "Ara240 module: absent | present | ready",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "ara_models",
+            "type": "STRING",
+            "description": "Models the Ara240 connector is serving",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "board_ip",
             "type": "STRING",
             "description": "",

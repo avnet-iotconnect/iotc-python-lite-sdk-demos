@@ -192,6 +192,10 @@ telemetry = {
     "cpu_temp": 0.0,
     "disk_free_gb": 0.0,          # free space on / - a model push needs ~2x the model size
     "disk_used_pct": 0.0,         # root filesystem usage, same accounting as df
+    # Ara240 presence, so a UI can disable NPU options on boards without one:
+    # absent (no card) | present (card, runtime not serving) | ready (models served)
+    "ara_status": "absent",
+    "ara_models": "",             # comma-separated models the connector serves
     "rag_status": "idle",         # idle | downloading | indexing | ready | error
     "rag_doc": "",                # last document added to the RAG database
     "rag_detail": "",             # progress or error detail
@@ -2148,6 +2152,30 @@ def _connector_base_url():
     return config["ara2_aaf_url"].rsplit("/v1/", 1)[0]
 
 
+_ARA_PCI_ID = "1e58:"          # Kinara vendor id - the Ara-2 / NXP Ara240 M.2 card
+_ara_cache = {"t": 0.0, "card": False}
+
+
+def read_ara_status():
+    """(status, models) for the Ara240: absent | present | ready.
+
+    The PCI check is cached - the card cannot appear without a reboot, but the
+    runtime and its models can come and go while the demo is running."""
+    now = time.monotonic()
+    if now - _ara_cache["t"] > 300:
+        try:
+            out = subprocess.run(["lspci", "-d", _ARA_PCI_ID], stdout=subprocess.PIPE,
+                                 stderr=subprocess.DEVNULL, text=True, timeout=10).stdout
+            _ara_cache["card"] = bool(out.strip())
+        except (OSError, subprocess.SubprocessError):
+            _ara_cache["card"] = False
+        _ara_cache["t"] = now
+    if not _ara_cache["card"]:
+        return "absent", ""
+    models = [m.get("id") for m in _connector_models() if m.get("id")]
+    return ("ready", ",".join(models)) if models else ("present", "")
+
+
 def _connector_models():
     try:
         r = requests.get(_connector_base_url() + "/v1/models", timeout=10)
@@ -2447,6 +2475,7 @@ try:
             telemetry["mem_used_mb"] = read_mem_used_mb()
             telemetry["cpu_temp"] = read_cpu_temp()
             telemetry["disk_free_gb"], telemetry["disk_used_pct"] = read_disk()
+            telemetry["ara_status"], telemetry["ara_models"] = read_ara_status()
             c.send_telemetry(dict(telemetry))
         publish_state()
         time.sleep(config["telemetry_interval_s"])
