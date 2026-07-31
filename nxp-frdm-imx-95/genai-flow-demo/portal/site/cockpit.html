@@ -371,7 +371,9 @@ function uploadRag(file){
   $("ragstatus").innerHTML='<span class="spin"></span>uploading '+esc(file.name)+'…';
   try{await api("rag-upload",{method:"POST",body:JSON.stringify(
     {name:file.name,content:rd.result.split(",")[1],deviceGuid:S.device.guid,commandGuid:S.commands["rag-add"]})});
-   log("uploaded <b>"+esc(file.name)+"</b> — board is indexing it","ok");
+   $("ragstatus").innerHTML='<span class="spin"></span>converting '+esc(file.name)+
+     ' in the cloud — the board reports progress below';
+   log("uploaded <b>"+esc(file.name)+"</b> — converting, then the board indexes it","ok");
   }catch(e){$("ragstatus").innerHTML='<span class="err">'+e.message+'</span>';log("upload failed: "+e.message,"err")}};
  rd.readAsDataURL(file);
 }
