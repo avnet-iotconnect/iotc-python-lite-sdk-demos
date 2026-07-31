@@ -191,9 +191,14 @@
     <h2>RAG knowledge base <em>— drop a document, then ask about it</em></h2>
     <div class="drop" id="ragdrop">
      <b>Drop a document here</b>
-     <div class="dim" style="font-size:.82rem">.txt .md .csv .json .log — uploaded through /IOTCONNECT,
-      chunked and embedded on your board</div>
-     <input type="file" id="ragfile" accept=".txt,.md,.markdown,.csv,.json,.log,.rst" class="hidden">
+     <div class="dim" style="font-size:.82rem">PDF, .txt, .md, .csv, .json, .log — PDFs are converted to
+      text in the cloud, then chunked and embedded on your board</div>
+     <input type="file" id="ragfile" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.rst" class="hidden">
+    </div>
+    <label>…or index a web page</label>
+    <div class="row tight">
+     <input id="ragurl" placeholder="https://example.com/product-page" style="flex:1;min-width:180px">
+     <button class="ghost" id="ragurlbtn">Fetch &amp; index</button>
     </div>
     <div class="metrics" id="ragstatus"></div>
    </div>
@@ -370,6 +375,17 @@ function uploadRag(file){
   }catch(e){$("ragstatus").innerHTML='<span class="err">'+e.message+'</span>';log("upload failed: "+e.message,"err")}};
  rd.readAsDataURL(file);
 }
+$("ragurlbtn").onclick=function(){
+ const url=$("ragurl").value.trim();
+ if(!url){$("ragstatus").innerHTML='<span class="err">Enter a page URL.</span>';return}
+ if(!S.commands["rag-add"]){log("rag-add is not in your device template","err");return}
+ $("ragstatus").innerHTML='<span class="spin"></span>fetching '+esc(url)+'…';
+ withPress(this,async()=>{
+  const j=await api("rag-url",{method:"POST",body:JSON.stringify(
+   {url,deviceGuid:S.device.guid,commandGuid:S.commands["rag-add"]})});
+  log("indexed <b>"+esc(j.name)+"</b> ("+j.bytes+" bytes of text) — board is embedding it","ok");
+ });
+};
 $("ragdrop").onclick=()=>$("ragfile").click();
 $("ragfile").onchange=e=>{if(e.target.files[0])uploadRag(e.target.files[0])};
 ["dragover","dragleave","drop"].forEach(ev=>$("ragdrop").addEventListener(ev,e=>{
