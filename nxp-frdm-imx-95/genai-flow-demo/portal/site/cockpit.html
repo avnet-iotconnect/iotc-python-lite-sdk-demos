@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>i.MX95 GenAI Cockpit</title>
+<style>
+ :root{--bg:#0b0e13;--card:#141a22;--card2:#1a212b;--line:#27313f;--fg:#e8eef5;--dim:#8fa0b3;
+       --acc:#33b5e5;--acc2:#7ee787;--ok:#3fb950;--warn:#d29922;--err:#f85149;--glow:rgba(51,181,229,.15)}
+ *{box-sizing:border-box}
+ body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#132030 0%,var(--bg) 60%);
+      color:var(--fg);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif;min-height:100vh}
+ .wrap{max-width:1140px;margin:0 auto;padding:22px 18px 60px}
+ header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+ h1{font-size:1.25rem;margin:0;letter-spacing:.2px}h1 span{color:var(--acc)}
+ .pill{font-size:.78rem;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--dim)}
+ .pill.live{color:var(--ok);border-color:#1d4429;background:#0f2116}
+ .pill.dead{color:var(--err);border-color:#4b1d1d;background:#210f0f}
+ .spacer{flex:1}
+ button{background:var(--acc);color:#04131b;border:0;border-radius:9px;padding:10px 16px;font:600 .93rem inherit;cursor:pointer;transition:.15s}
+ button:hover:not(:disabled){filter:brightness(1.1)}
+ button:disabled{background:#243040;color:var(--dim);cursor:default}
+ button.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+ button.ghost:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+ input,select,textarea{width:100%;background:#0a0f16;color:var(--fg);border:1px solid var(--line);
+      border-radius:9px;padding:11px 12px;font:inherit}
+ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--glow)}
+ textarea{resize:vertical;min-height:74px}
+ label{display:block;font-size:.82rem;color:var(--dim);margin:10px 0 5px;font-weight:600;letter-spacing:.3px}
+ .card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--line);
+       border-radius:14px;padding:18px;margin-bottom:16px}
+ .card h2{margin:0 0 12px;font-size:.95rem;letter-spacing:.4px;text-transform:uppercase;color:var(--dim)}
+ .grid{display:grid;gap:16px}
+ @media(min-width:900px){.grid.two{grid-template-columns:1.15fr .85fr}}
+ .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}
+ .tile{background:#0e141c;border:1px solid var(--line);border-radius:11px;padding:12px}
+ .tile .k{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+ .tile .v{font-size:1.32rem;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums}
+ .tile .v small{font-size:.7rem;font-weight:500;color:var(--dim);margin-left:2px}
+ .row{display:flex;gap:9px;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
+ .answer{background:#0a0f16;border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:13px 15px;margin-top:12px;white-space:pre-wrap;min-height:52px}
+ .metrics{display:flex;gap:16px;flex-wrap:wrap;margin-top:9px;font-size:.8rem;color:var(--dim);font-variant-numeric:tabular-nums}
+ .metrics b{color:var(--acc2);font-weight:700}
+ .spin{display:inline-block;width:14px;height:14px;border:2px solid var(--acc);border-top-color:transparent;
+       border-radius:50%;animation:r .85s linear infinite;vertical-align:-2px;margin-right:7px}
+ @keyframes r{to{transform:rotate(360deg)}}
+ .log{font:12px/1.6 ui-monospace,Menlo,Consolas,monospace;max-height:170px;overflow:auto;color:var(--dim)}
+ .log b{color:var(--fg);font-weight:600}
+ .err{color:var(--err)}.ok{color:var(--ok)}.dim{color:var(--dim)}
+ .login{max-width:410px;margin:9vh auto}
+ .hint{font-size:.79rem;color:var(--dim);margin-top:7px}
+ table{width:100%;border-collapse:collapse;font-size:.86rem}
+ td,th{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+ th{color:var(--dim);font-weight:600;font-size:.76rem;text-transform:uppercase}
+ .hidden{display:none}
+</style></head><body><div class="wrap">
+
+<!-- ============ LOGIN ============ -->
+<div id="loginview" class="login">
+ <h1 style="text-align:center;margin-bottom:6px">i.MX95 <span>GenAI</span> Cockpit</h1>
+ <p class="dim" style="text-align:center;margin-top:0">Sign in with the /IOTCONNECT account from your welcome email.</p>
+ <div class="card">
+  <label>Email</label><input id="email" type="email" autocomplete="username" placeholder="you@example.com">
+  <label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+  <button id="loginbtn" style="width:100%;margin-top:16px">Sign in</button>
+  <div id="loginstatus" style="margin-top:10px;text-align:center"></div>
+  <div class="hint">Your credentials go straight to /IOTCONNECT — the platform scopes everything to your own
+   entity, so you only ever see your board.</div>
+ </div>
+</div>
+
+<!-- ============ COCKPIT ============ -->
+<div id="cockpit" class="hidden">
+ <header>
+  <h1>i.MX95 <span>GenAI</span> Cockpit</h1>
+  <span class="pill" id="devpill">no device</span>
+  <span class="pill" id="livepill">…</span>
+  <span class="spacer"></span>
+  <span class="dim" id="whoami" style="font-size:.83rem"></span>
+  <button class="ghost" id="logout">Sign out</button>
+ </header>
+
+ <div class="card">
+  <h2>Board telemetry</h2>
+  <div class="tiles" id="tiles"></div>
+ </div>
+
+ <div class="grid two">
+  <div>
+   <div class="card">
+    <h2>Ask your board</h2>
+    <textarea id="prompt" placeholder="What is an NPU?">What is an NPU?</textarea>
+    <div class="row" style="margin-top:11px">
+     <button data-cmd="ask-llm">Ask LLM</button>
+     <button data-cmd="ask-agent" class="ghost">Ask Agent (real data)</button>
+     <button data-cmd="ask-vlm" class="ghost">Ask VLM (camera)</button>
+    </div>
+    <div class="answer" id="answer"><span class="dim">Answers appear here, with live performance numbers.</span></div>
+    <div class="metrics" id="metrics"></div>
+   </div>
+
+   <div class="card">
+    <h2>Deploy a model from /IOTCONNECT</h2>
+    <div id="models"><span class="dim">Loading your models…</span></div>
+    <div class="hint">Models you create in /IOTCONNECT (My Models) can be pushed straight to your board —
+     it downloads, installs and serves them automatically.</div>
+   </div>
+  </div>
+
+  <div>
+   <div class="card">
+    <h2>Model &amp; backend</h2>
+    <label>Active model</label>
+    <div class="row"><input id="modelname" placeholder="danube-500M-q8"><button id="setmodel" style="flex:0 0 auto">Set</button></div>
+    <label>Execution backend</label>
+    <div class="row">
+     <button class="ghost" data-backend="cpu">CPU</button>
+     <button class="ghost" data-backend="neutron">Neutron NPU</button>
+     <button class="ghost" data-backend="ara2">Ara240</button>
+    </div>
+    <label>Session &amp; benchmarks</label>
+    <div class="row">
+     <button class="ghost" data-cmd0="agent-start">Warm agent</button>
+     <button class="ghost" data-cmd0="run-benchmark">Benchmark</button>
+     <button class="ghost" data-cmd0="get-ip">Get IP</button>
+    </div>
+   </div>
+
+   <div class="card">
+    <h2>Activity</h2>
+    <div class="log" id="log"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const S = {token:null, device:null, commands:{}, poll:null, email:null};
+const TILES = [
+ ["genai_status","status",""],["llm_model","model",""],["llm_backend","backend",""],
+ ["cpu_percent","cpu","%"],["cpu_temp","temp","°C"],["mem_used_mb","memory","MB"],
+ ["disk_free_gb","disk free","GB"],["llm_tps","last tok/s",""]
+];
+function log(msg, cls){
+ const d = document.createElement("div");
+ d.innerHTML = '<span class="dim">'+new Date().toLocaleTimeString()+'</span> <span class="'+(cls||"")+'">'+msg+'</span>';
+ $("log").prepend(d);
+}
+async function api(path, opts){
+ const o = opts || {};
+ o.headers = Object.assign({"Content-Type":"application/json"}, o.headers||{});
+ if(S.token) o.headers["X-Iotc-Token"] = S.token;
+ const r = await fetch("api/cockpit/"+path, o);
+ const j = await r.json().catch(()=>({error:"bad response"}));
+ if(!r.ok) throw new Error(j.error || ("HTTP "+r.status));
+ return j;
+}
+
+/* ---------- login ---------- */
+$("loginbtn").onclick = async () => {
+ const email = $("email").value.trim(), password = $("password").value;
+ if(!email || !password){ $("loginstatus").innerHTML = '<span class="err">Enter your email and password.</span>'; return; }
+ $("loginbtn").disabled = true;
+ $("loginstatus").innerHTML = '<span class="spin"></span>Signing in…';
+ try{
+  const j = await api("login", {method:"POST", body: JSON.stringify({email, password})});
+  S.token = j.token; S.email = email;
+  sessionStorage.setItem("cockpit", JSON.stringify({token:j.token, email}));
+  await boot();
+ }catch(e){
+  $("loginstatus").innerHTML = '<span class="err">'+e.message+'</span>';
+  $("loginbtn").disabled = false;
+ }
+};
+$("logout").onclick = () => { sessionStorage.removeItem("cockpit"); location.reload(); };
+
+/* ---------- bootstrap ---------- */
+async function boot(){
+ const b = await api("bootstrap");
+ if(!b.devices.length){ $("loginstatus").innerHTML = '<span class="err">No device found in your account yet.</span>';
+                        $("loginbtn").disabled = false; return; }
+ S.device = b.devices[0];
+ S.commands = b.commands || {};
+ $("loginview").classList.add("hidden"); $("cockpit").classList.remove("hidden");
+ $("devpill").textContent = S.device.uniqueId;
+ $("whoami").textContent = S.email;
+ log("signed in — board <b>"+S.device.uniqueId+"</b> ("+Object.keys(S.commands).length+" commands available)", "ok");
+ loadModels();
+ refresh(); if(!S.poll) S.poll = setInterval(refresh, 5000);
+}
+
+/* ---------- telemetry ---------- */
+function fmt(v){ return (v===null||v===undefined||v==="") ? "–" : v; }
+async function refresh(){
+ try{
+  const t = await api("telemetry?guid="+encodeURIComponent(S.device.guid));
+  const v = t.values || {};
+  $("tiles").innerHTML = TILES.map(([k,label,unit])=>
+    '<div class="tile"><div class="k">'+label+'</div><div class="v">'+fmt(v[k])+
+    (unit&&v[k]!==undefined&&v[k]!==""?'<small>'+unit+'</small>':'')+'</div></div>').join("");
+  const fresh = t.age_s !== null && t.age_s < 45;
+  $("livepill").textContent = fresh ? "live" : (t.age_s===null ? "no data" : "last seen "+Math.round(t.age_s)+"s ago");
+  $("livepill").className = "pill " + (fresh ? "live" : "dead");
+  if(v.llm_model && !$("modelname").matches(":focus")) $("modelname").placeholder = v.llm_model;
+  // surface answers as they arrive
+  const ans = v.llm_response || v.agent_response || v.vlm_response;
+  if(ans && ans !== S.lastAnswer && S.awaiting){
+   S.lastAnswer = ans; S.awaiting = false;
+   $("answer").textContent = ans;
+   const m = [];
+   if(v.llm_ttft) m.push("TTFT <b>"+v.llm_ttft+"s</b>");
+   if(v.llm_tps) m.push("<b>"+v.llm_tps+"</b> tok/s");
+   if(v.llm_load_time!==undefined) m.push("load <b>"+v.llm_load_time+"s</b>");
+   if(v.llm_gen_time) m.push("gen <b>"+v.llm_gen_time+"s</b>");
+   if(v.agent_tool) m.push("tool <b>"+v.agent_tool+"</b>");
+   $("metrics").innerHTML = m.join(" · ");
+   log("answer received", "ok");
+  }
+ }catch(e){ $("livepill").textContent = "error"; $("livepill").className = "pill dead"; }
+}
+
+/* ---------- commands ---------- */
+async function send(cmd, value, quiet){
+ if(!S.commands[cmd]) { log("command <b>"+cmd+"</b> is not in your template", "err"); return; }
+ try{
+  await api("command", {method:"POST", body: JSON.stringify(
+    {deviceGuid: S.device.guid, commandGuid: S.commands[cmd], value: value || ""})});
+  log("sent <b>"+cmd+"</b>"+(value?" — "+value.slice(0,60):""));
+ }catch(e){ log("send failed: "+e.message, "err"); }
+}
+document.querySelectorAll("[data-cmd]").forEach(b => b.onclick = async () => {
+ const p = $("prompt").value.trim();
+ if(!p && b.dataset.cmd !== "ask-vlm"){ log("type a prompt first", "err"); return; }
+ S.awaiting = true;
+ $("answer").innerHTML = '<span class="spin"></span><span class="dim">'+b.dataset.cmd+
+   ' running on your board… (first prompt loads the model)</span>';
+ $("metrics").innerHTML = "";
+ send(b.dataset.cmd, p);
+});
+document.querySelectorAll("[data-cmd0]").forEach(b => b.onclick = () => send(b.dataset.cmd0, ""));
+document.querySelectorAll("[data-backend]").forEach(b => b.onclick = () => send("set-backend", b.dataset.backend));
+$("setmodel").onclick = () => { const m = $("modelname").value.trim(); if(m) send("set-model", m); };
+
+/* ---------- models ---------- */
+async function loadModels(){
+ try{
+  const j = await api("models");
+  if(!j.models.length){
+   $("models").innerHTML = '<span class="dim">No models yet. Create one in /IOTCONNECT → My Models, '+
+     'then push it here.</span>'; return;
+  }
+  $("models").innerHTML = '<table><tr><th>Model</th><th>Version</th><th></th></tr>' +
+   j.models.map(m => '<tr><td>'+ (m.name||m.moduleName||"?") +'</td><td class="dim">'+ (m.version||m.moduleVersion||"—") +
+   '</td><td style="text-align:right"><button class="ghost" data-push="'+(m.guid||m.moduleGuid||"")+'">Push to board</button></td></tr>').join("") +
+   '</table>';
+  document.querySelectorAll("[data-push]").forEach(b => b.onclick = async () => {
+   b.disabled = true; log("pushing model…");
+   try{
+    await api("model-push", {method:"POST", body: JSON.stringify(
+      {moduleGuid: b.dataset.push, deviceGuid: S.device.guid})});
+    log("model push started — watch model_deploy_status on your board", "ok");
+   }catch(e){ log("push failed: "+e.message+" (use the /IOTCONNECT console flow)", "err"); }
+   b.disabled = false;
+  });
+ }catch(e){ $("models").innerHTML = '<span class="dim">Models unavailable: '+e.message+'</span>'; }
+}
+
+/* ---------- resume session ---------- */
+const saved = sessionStorage.getItem("cockpit");
+if(saved){ const s = JSON.parse(saved); S.token = s.token; S.email = s.email;
+           boot().catch(()=>{ sessionStorage.removeItem("cockpit"); location.reload(); }); }
+</script>
+</div></body></html>
