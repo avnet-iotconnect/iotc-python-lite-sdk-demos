@@ -163,7 +163,7 @@
      <div class="card">
       <h2>Model &amp; backend</h2>
       <label>Model</label>
-      <div class="row tight"><input id="modelname" style="flex:1;min-width:120px"><button id="setmodel">Set</button></div>
+      <div class="row tight"><select id="modelname" style="flex:1;min-width:130px"></select><button id="setmodel">Set</button></div>
       <label>Backend</label>
       <div class="row"><button class="ghost" data-backend="cpu">CPU</button>
        <button class="ghost" data-backend="neutron">Neutron</button>
@@ -320,7 +320,7 @@ async function refresh(){
   const voiceOn=v.voice_status&&!["off","error"].includes(v.voice_status);
   $("voicestart").classList.toggle("on",!!voiceOn);
   $("voicestart").disabled=!!voiceOn; $("voicestop").disabled=!voiceOn;
-  if(!$("modelname").matches(":focus"))$("modelname").placeholder=v.llm_model||"";
+  renderModels(v);
   const vs=[];if(v.voice_status)vs.push("status <b>"+v.voice_status+"</b>");
   if(v.voice_exchanges)vs.push("<b>"+v.voice_exchanges+"</b> exchanges");
   $("voicestate").innerHTML=vs.join(" · ");
@@ -332,6 +332,19 @@ async function refresh(){
   const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
   if(S.await&&v[key]&&v[key]!==S.await.prev){$("answer").textContent=v[key];S.await=null;metrics(v);log("answer received","ok")}
  }catch(e){$("livepill").textContent="error";$("livepill").className="pill dead"}
+}
+let modelSig="";
+function renderModels(v){
+ const list=(v.llm_models||"").split(",").filter(Boolean);
+ const ara=new Set((v.ara_models||"").split(",").filter(Boolean));
+ const sig=list.join(",")+"|"+(v.llm_model||"");
+ if(sig===modelSig||$("modelname").matches(":focus"))return; modelSig=sig;
+ const sel=$("modelname");
+ if(!list.length){sel.innerHTML='<option value="">'+esc(v.llm_model||"no models reported")+'</option>';return}
+ sel.innerHTML=list.map(m=>'<option value="'+esc(m)+'"'+(m===v.llm_model?" selected":"")+'>'+
+   esc(m)+(ara.has(m)?" — Ara240":(/\.gguf$|^qwen|^llama/i.test(m)?" — llama.cpp":""))+'</option>').join("");
+ if(v.llm_model&&!list.includes(v.llm_model))
+  sel.insertAdjacentHTML("afterbegin",'<option selected>'+esc(v.llm_model)+'</option>');
 }
 let ragSig="";
 function renderRagList(v){

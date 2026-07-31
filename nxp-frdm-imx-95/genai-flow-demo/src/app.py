@@ -196,6 +196,7 @@ telemetry = {
     # absent (no card) | present (card, runtime not serving) | ready (models served)
     "ara_status": "absent",
     "ara_models": "",             # comma-separated models the connector serves
+    "llm_models": "",             # every model this board can serve, for a UI picker
     "rag_status": "idle",         # idle | downloading | indexing | ready | error
     "rag_doc": "",                # last document added to the RAG database
     "rag_detail": "",             # progress or error detail
@@ -2312,6 +2313,27 @@ def read_ara_status():
     return ("ready", ",".join(models)) if models else ("present", "")
 
 
+_models_cache = {"t": 0.0, "v": ""}
+
+
+def read_model_inventory():
+    """Comma-separated models this board can actually serve, so a UI can offer a
+    picker instead of free text: the Danube variants GenAI Flow ships, any GGUF
+    in the llama.cpp models directory, and whatever the Ara240 connector serves."""
+    now = time.monotonic()
+    if _models_cache["v"] and now - _models_cache["t"] < 60:
+        return _models_cache["v"]
+    names = ["danube-500M-q8", "danube-500M-q4"]
+    try:
+        names += list_gguf_models()
+    except OSError:
+        pass
+    if _ara_cache.get("card"):
+        names += [m.get("id") for m in _connector_models() if m.get("id")]
+    _models_cache.update(t=now, v=",".join(dict.fromkeys(n for n in names if n)))
+    return _models_cache["v"]
+
+
 def _connector_models():
     try:
         r = requests.get(_connector_base_url() + "/v1/models", timeout=10)
@@ -2617,6 +2639,7 @@ try:
             telemetry["cpu_temp"] = read_cpu_temp()
             telemetry["disk_free_gb"], telemetry["disk_used_pct"] = read_disk()
             telemetry["ara_status"], telemetry["ara_models"] = read_ara_status()
+            telemetry["llm_models"] = read_model_inventory()
             c.send_telemetry(dict(telemetry))
         publish_state()
         time.sleep(config["telemetry_interval_s"])
