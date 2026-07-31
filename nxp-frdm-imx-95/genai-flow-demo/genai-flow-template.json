@@ -60,6 +60,20 @@
             "aggregateTypes": []
         },
         {
+            "name": "rag_docs",
+            "type": "STRING",
+            "description": "RAG inventory: name:chunks:builtin;\u2026 for each indexed document",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "rag_chunks",
+            "type": "INTEGER",
+            "description": "Total chunks in the RAG database",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
             "name": "llm_prompt",
             "type": "STRING",
             "description": "Last prompt sent to the on-device LLM",

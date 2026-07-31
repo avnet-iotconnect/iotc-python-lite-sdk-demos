@@ -199,6 +199,8 @@ telemetry = {
     "rag_status": "idle",         # idle | downloading | indexing | ready | error
     "rag_doc": "",                # last document added to the RAG database
     "rag_detail": "",             # progress or error detail
+    "rag_docs": "",               # inventory: name:chunks:builtin;... for a UI list
+    "rag_chunks": 0,              # total chunks in the RAG database
     "model_deploy_status": "idle",   # idle | downloading | deploying | loading | ready | error
     "model_deploy_name": "",         # name of the model IOTCONNECT last pushed
     "model_deploy_detail": "",       # human-readable progress/error detail
@@ -1154,6 +1156,41 @@ def set_rag_status(status, detail=""):
     publish_state()
 
 
+_RAG_BUILTIN = ("garbage_model", "intent", "FRDM95_hand_made_chunks", "Medical")
+
+
+def rag_inventory():
+    """[(name, chunks, builtin)] for every document in the RAG database."""
+    chunk_dir = os.path.join(config["rag_dir"], "src", "data", "chunked_files")
+    out = []
+    try:
+        names = sorted(os.listdir(chunk_dir))
+    except OSError:
+        return out
+    for f in names:
+        if not f.endswith(".json"):
+            continue
+        stem = os.path.splitext(f)[0]
+        try:
+            with open(os.path.join(chunk_dir, f), encoding="utf-8") as fh:
+                doc = json.load(fh)
+            n = sum(len(v.get("chunks", [])) for v in doc.values() if isinstance(v, dict))
+        except (OSError, ValueError):
+            n = 0
+        out.append((stem, n, stem in _RAG_BUILTIN))
+    return out
+
+
+def refresh_rag_docs():
+    """Publish the database inventory as telemetry so a UI can list it."""
+    inv = rag_inventory()
+    summary = ";".join("%s:%d:%d" % (n, c, 1 if b else 0) for n, c, b in inv)
+    with telemetry_lock:
+        telemetry["rag_docs"] = summary[:900]
+        telemetry["rag_chunks"] = sum(c for _, c, _ in inv)
+    return inv
+
+
 # Embedding rebuilds the whole database and is memory-hungry: two of them at
 # once OOM-killed the app on an 8 GB board, so ingestion is serialized. A second
 # document waits its turn rather than running concurrently.
@@ -1207,6 +1244,7 @@ def rag_add(url, name=None):
     with telemetry_lock:
         telemetry["rag_doc"] = name
         telemetry["rag_detail"] = "%d chunks from %s | %d document(s) indexed" % (len(chunks), name, docs)
+    refresh_rag_docs()
     set_rag_status("ready")
     chat_llm.stop()   # a rebuilt database only takes effect in a fresh session
     print("RAG: %s indexed (%d chunks, %d docs)" % (name, len(chunks), docs))
@@ -2481,6 +2519,11 @@ try:
                 print("Unable to connect. Exiting.")
                 sys.exit(2)
 
+        if not telemetry["rag_docs"]:
+            try:
+                refresh_rag_docs()
+            except Exception as e:
+                print("RAG inventory unavailable:", e)
         with telemetry_lock:
             telemetry["cpu_percent"] = read_cpu_percent()
             telemetry["mem_used_mb"] = read_mem_used_mb()
