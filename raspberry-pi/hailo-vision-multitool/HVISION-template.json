@@ -1,0 +1,28 @@
+{
+  "code": "HVISION",
+  "name": "HVISION",
+  "authType": 2,
+  "messageVersion": "2.1",
+  "greenGrass": "0",
+  "wireless": "0",
+  "properties": {
+    "description": "Hailo-8 Vision Multi-Tool: cloud-retaskable detection/pose/segmentation on Raspberry Pi 5",
+    "dataFrequency": "6",
+    "fileSupport": false
+  },
+  "attributes": [
+    { "name": "mode", "type": "STRING", "description": "Active pipeline: detect | pose | segment", "unit": "", "aggregateTypes": [] },
+    { "name": "person_count", "type": "INTEGER", "description": "People currently in view", "unit": "", "aggregateTypes": [] },
+    { "name": "object_count", "type": "INTEGER", "description": "Total detections in view", "unit": "", "aggregateTypes": [] },
+    { "name": "objects", "type": "STRING", "description": "JSON map of label to count", "unit": "", "aggregateTypes": [] },
+    { "name": "top_object", "type": "STRING", "description": "Most frequent label in view", "unit": "", "aggregateTypes": [] },
+    { "name": "fps", "type": "DECIMAL", "description": "Pipeline frames per second", "unit": "fps", "aggregateTypes": [] },
+    { "name": "cpu_temp", "type": "DECIMAL", "description": "Pi 5 CPU temperature", "unit": "C", "aggregateTypes": [] },
+    { "name": "alert", "type": "INTEGER", "description": "1 when person_count >= alert threshold", "unit": "", "aggregateTypes": [] }
+  ],
+  "commands": [
+    { "name": "set-mode", "command": "set-mode", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+    { "name": "set-alert-count", "command": "set-alert-count", "requiredParam": true, "requiredAck": true, "isOTACommand": false }
+  ],
+  "_meta": { "version": "2.0" }
+}
