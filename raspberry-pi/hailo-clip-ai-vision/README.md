@@ -56,7 +56,7 @@ Finally, the bridge dependencies into the hailo-apps venv:
 1. In /IOTCONNECT: **Devices → Templates → Create Template → Import** with
    [HCLIP-template.json](HCLIP-template.json) (attributes + the five commands).
 2. Create a device from it and download `iotcDeviceConfig.json`,
-   `device-cert.pem`, `device-pkey.pem` into this directory on the board
+   `device-cert.pem`, `device-pkey.pem` into the `src/` directory on the board (next to the bridge)
    (never commit these).
 
 ## 4. Run
