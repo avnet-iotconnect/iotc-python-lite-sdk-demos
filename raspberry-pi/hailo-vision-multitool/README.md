@@ -47,11 +47,15 @@ installer.
 Telemetry @1 Hz: `mode`, `person_count`, `object_count`, `objects`
 (JSON label→count), `top_object`, `fps`, `cpu_temp`, `alert`.
 
-**Web pages** (embed in dashboard widgets, port 8081): `/` — control page
-with the live annotated stream, people counter, per-label object counts, and
-**mode buttons** (local fallback control, no cloud needed); `/camera` —
-full-bleed stream; `/state.json` — raw state;
-`/cmd?name=set-mode&arg=pose` — HTTP control endpoint.
+**Web pages** (embed in dashboard widgets, port 8081):
+
+| URL | Contents |
+|---|---|
+| `/` | Control page: live annotated stream, people counter, object counts, **mode buttons** (local fallback control, no cloud needed) |
+| `/objects` | **Animated object board** — every detected object type becomes an emoji tile that springs in, bobs while in view, bumps its count badge on change, and shrinks away when it leaves; page flips to a flashing red CROWD ALERT when `person_count` crosses the threshold |
+| `/camera` | Full-bleed annotated stream |
+| `/state.json` | Raw state (JSON) |
+| `/cmd?name=set-mode&arg=pose` | HTTP control endpoint |
 
 ### Booth flow
 
