@@ -3,9 +3,8 @@
 
 One device, three heavyweight YOLOv8m pipelines — object detection, pose
 estimation, instance segmentation — switched live from the /IOTCONNECT
-dashboard (`set-mode pose`). Where the CLIP demo re-aims *what* the camera
-looks for, this demo re-tasks *the entire vision workload* — and these
-CNN pipelines are what the Hailo-8 excels at (full camera rate, yolov8m).
+dashboard (`set-mode pose`): the entire neural workload is re-tasked from
+the cloud in seconds, running at full camera rate on the Hailo-8.
 
 Telemetry @1 Hz (template HVISION): mode, person_count, object_count,
 objects (json label->count), top_object, fps, cpu_temp, alert.

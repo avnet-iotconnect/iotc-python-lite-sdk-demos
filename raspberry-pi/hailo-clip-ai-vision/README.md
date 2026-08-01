@@ -1,18 +1,18 @@
 # "Ask the Camera" — CLIP Vision on Hailo-8 Quickstart
 
 Cloud-reprogrammable AI vision on a Raspberry Pi 5 with the Hailo-8 M.2 AI
-accelerator, connected to Avnet /IOTCONNECT. Companion to the
-[DEEPX DX-M1 variant](../deepx-clip-ai-vision) — same cloud surface
-(commands, telemetry, embeddable live pages), different NPU and demo stack.
+accelerator, connected to Avnet /IOTCONNECT: prompt commands down, live
+similarity telemetry up, and embeddable live pages served from the board.
 
 ## 1. Introduction
 
 The CLIP vision-language model runs on the Hailo-8 (image embeddings on the
-NPU, text embeddings on host via the NPU text encoder) and scores the live
-camera feed against plain-English prompts sent from the /IOTCONNECT dashboard.
-Scores are **softmax probabilities across the loaded prompts (0–1)** — a clear
-match typically reads 0.9+, and the default alert threshold is **0.8** (unlike
-the DEEPX variant's raw CLIP similarities).
+NPU, text embeddings via the NPU text encoder) and scores the live camera
+feed against plain-English prompts sent from the /IOTCONNECT dashboard —
+*"a person waving"*, *"a red toolbox"* — with no retraining and no
+redeployment. Scores are **softmax probabilities across the loaded prompts
+(0–1)** — a clear match typically reads 0.9+, and the default alert threshold
+is **0.8**.
 
 ## 2. Prerequisites (on-device software)
 
@@ -56,7 +56,7 @@ Finally, the bridge dependencies into the hailo-apps venv:
 1. In /IOTCONNECT: **Devices → Templates → Create Template → Import** with
    [HCLIP-template.json](HCLIP-template.json) (attributes + the five commands).
 2. Create a device from it and download `iotcDeviceConfig.json`,
-   `device-cert.pem`, `device-pkey.pem` into the `src/` directory on the board (next to the bridge)
+   `device-cert.pem`, `device-pkey.pem` into this directory on the board
    (never commit these).
 
 ## 4. Run
@@ -71,10 +71,20 @@ booth web pages serve on port 8080.
 
 ## 5. Using the Demo
 
-Commands and telemetry are identical to the DEEPX variant (`set-prompt`,
-`add-prompt`, `del-prompt`, `clear-prompts`, `set-threshold`; telemetry
-`top_prompt`, `top_score`, `scores`, `fps`, `npu_temp`, `cpu_temp`, `alert`),
-with these Hailo-specific notes:
+### Cloud commands (C2D)
+
+| Command | Argument | Effect |
+|---|---|---|
+| `set-prompt` | text | Replace all prompts with this one |
+| `add-prompt` | text | Append a prompt (stacks with existing) |
+| `del-prompt` | — | Remove the most recently added prompt |
+| `clear-prompts` | — | Remove all prompts |
+| `set-threshold` | 0–1 | Alert threshold on `top_score` |
+
+Telemetry @1 Hz: `top_prompt`, `top_score`, `scores` (JSON map),
+`fps`, `npu_temp`, `cpu_temp`, `alert`.
+
+Notes:
 
 - **Six prompt slots maximum** (the matcher's fixed capacity); `add-prompt`
   fails with an ack message when full.
@@ -85,10 +95,20 @@ with these Hailo-specific notes:
 - `npu_temp` reports −1 (the current hailo_pci driver exposes no thermal
   sensor).
 
-### Web pages (embed in dashboard widgets)
+### Web pages (embed in dashboard widgets, port 8080)
 
-Same URLs as the DEEPX variant: `http://<pi-ip>:8080/` (combined), `/top`
-(hero + match reveal), `/prompts`, `/camera`, `/state.json`.
+| URL | Contents |
+|---|---|
+| `/` | Combined view: live stream + score bars + fps/temps + command ticker |
+| `/top` | Hero view: top prompt in large type, giant score, animated match reveal |
+| `/prompts` | Numbered list of loaded prompts |
+| `/camera` | Full-bleed live stream |
+| `/state.json` | Raw state (JSON) |
+
+> [!TIP]
+> The /IOTCONNECT dashboard is HTTPS; allow mixed content for the dashboard
+> origin in the viewing browser (padlock → Site settings → Insecure content:
+> Allow) and give the board a DHCP reservation so widget URLs stay stable.
 
 ### Suggested gauges
 

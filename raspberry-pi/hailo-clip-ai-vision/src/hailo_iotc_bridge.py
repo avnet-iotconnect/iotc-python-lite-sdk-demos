@@ -1,8 +1,8 @@
 """
 "Ask the Camera" — /IOTCONNECT bridge for the Hailo-8 CLIP demo (hailo-apps).
 
-Wraps hailo-apps' GStreamerClipApp with the same cloud surface as the DEEPX
-variant: C2D prompt commands in, 1 Hz telemetry out, and self-served booth web
+Wraps hailo-apps' GStreamerClipApp with an /IOTCONNECT cloud surface:
+C2D prompt commands in, 1 Hz telemetry out, and self-served booth web
 pages (live MJPEG + scores) for dashboard embedded widgets.
 
 Integration seams (all public API, no monkeypatching):
@@ -236,7 +236,7 @@ def start_iotc():
     return client_ref
 
 
-# ---------------- web pages (same layout as the DEEPX booth pages) ----------------
+# ---------------- web pages ----------------
 
 METER_MAX = 1.0  # softmax probability scale
 
