@@ -103,6 +103,11 @@ Give attendees these steps (slide or handout):
 | Demo down after claim | `systemctl status genai-app`; logs: `journalctl -u genai-app -f` |
 | Attendee lost their kit | The portal signup page re-offers the download on the same browser (localStorage), or look up the request in DynamoDB `imx95-portal-requests` |
 
+## Preparing a fleet / upgrading
+
+See **[BSP-UPGRADE.md](BSP-UPGRADE.md)** for the full software stack, the safe upgrade order (non-Ara boards
+first, backup before touching an Ara board), and cloning a golden image to the rest of the fleet.
+
 ## Related docs
 
 - [Onboarding portal](../portal/README.md) — the signup/approval backend
