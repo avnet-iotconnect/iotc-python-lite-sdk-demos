@@ -12,7 +12,7 @@ Written to be repeatable: prepare **one** board fully, verify it, then clone.
 |---|---|---|
 | NXP i.MX Linux BSP | every board | **LF6.18.20_2.0.0** (25 June 2026) is current — [release notes RN00210](https://www.nxp.com/docs/en/release-note/RN00210.pdf) |
 | NXP eIQ GenAI Flow | every board | the LLM/VLM/voice stack; check for a newer release at upgrade time |
-| This demo package | every board | `frdm-imx95-genai-flow-demo-v1.0.1.tgz` (README section 5) |
+| This demo package | every board | `frdm-imx95-genai-flow-demo-v1.0.2.tgz` (README section 5) |
 | llama.cpp | every board | needed for GGUF models pushed from /IOTCONNECT |
 | rt-sdk-ara240 | **Ara boards only** | 2.0.4 today; 2.1.1 (`imx-nxp-ara2-2.1.1-*.bin`) needs LF6.18.20_2.0.0 |
 | eIQ AAF Connector | **Ara boards only** | must match the rt-sdk version |
@@ -62,7 +62,7 @@ df -h /            # expect ~28 GB
 
 ```bash
 mkdir -p /opt/demo && cd /opt/demo
-wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.1.tgz
+wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.2.tgz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
