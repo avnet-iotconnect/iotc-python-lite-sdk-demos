@@ -140,7 +140,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.1.tgz
+wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.2.tgz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
