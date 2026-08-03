@@ -37,7 +37,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 | Backend | Status | Notes |
 |---|---|---|
 | Cortex-A55 CPU (6 cores) | ✅ Supported | Default. Runs Danube-500M q8/q4 |
-| eIQ Neutron NPU | ⚠️ Experimental | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and booting a Neutron device tree that reserves the enlarged CMA pool — see [Enabling the Neutron NPU](#enabling-the-neutron-npu). On the whinlatter FRDM image this is **not yet confirmed** (see that section). |
+| eIQ Neutron NPU | ✅ Confirmed on whinlatter FRDM | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0), an **8 GB** board, and booting a Neutron device tree that reserves the enlarged CMA pool — see [Enabling the Neutron NPU](#enabling-the-neutron-npu). The benchmark table's NPU numbers were measured this way on a whinlatter (LF6.18.2-1.0.0) FRDM. |
 | Kinara Ara-2 / NXP Ara240 discrete NPU module | ✅ Supported (setup required) | `set-backend ara2` runs `ask-llm` on the Ara240 M.2 module via NXP's eIQ AAF Connector — enables much larger LLMs (Qwen2.5-7B) at interactive speed. Requires the NXP Ara240 runtime + connector (account-gated download) — see [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) |
 
 ### Measured performance
@@ -193,23 +193,24 @@ to interact with the LLM:
 ### Enabling the Neutron NPU
 
 The Neutron NPU needs a large reserved DMA/CMA memory pool for LLM inference (the default `CmaTotal` is only
-~960 MB; NXP requires >3 GB). The whinlatter image ships Neutron device trees **in the boot partition** that
-provide this pool — you boot the board with a Neutron DTB instead of the default one. **Nothing is built or
-overwritten:**
+~960 MB; NXP requires >3 GB). The whinlatter FRDM image ships **no** FRDM Neutron device tree — the boot
+partition holds only the default `imx95-15x15-frdm.dtb` and peripheral variants — so this repo provides the
+missing one: **[`imx95-15x15-frdm-neutron.dtb`](imx95-15x15-frdm-neutron.dtb)**
+(sha256 `5a7a0bf478f1395f374d9b207aeb7a1cc277f0e9a5482afa1e0d5f2c4240b09e`).
 
-> [!WARNING]
-> **Not yet confirmed on the whinlatter FRDM (15×15) board.** That image ships only the **EVK** Neutron DTBs
-> (`imx95-15x15-evk-neutron.dtb`, `imx95-19x19-evk-neutron.dtb`) — there is **no `imx95-15x15-frdm-neutron.dtb`**,
-> and a freshly booted FRDM shows the default ~960 MB CMA pool (though `/dev/neutron0` is present). Whether the
-> EVK DTB is usable on the FRDM, or a FRDM Neutron DTB is needed, is unresolved. Treat the steps below as the
-> EVK procedure and verify before relying on the Neutron backend on FRDM.
+It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay merged in — the delta is a
+4 GB `shared-dma-pool` reserved at `0x1_0000_0000` (the upper half of an 8 GB board's DDR) plus a
+`memory-region` reference on the `imx95-neutron@4ab00004` node. This exact DTB is what produced the NPU
+column of the benchmark table above (verified on whinlatter, kernel `6.18.2-1.0.0`: `CmaTotal` ≈ 5.1 GB,
+danube-500M-q8 at 13.7 tok/s). To rebuild it yourself instead of trusting the binary, decompile with
+`dtc -I dtb -O dts`, add those two nodes, and recompile — or merge NXP's `imx95-19x19-evk-neutron.dtso`
+from the linux-imx kernel source with `fdtoverlay`.
+
+Install it alongside the stock DTB (**nothing is overwritten**):
 
 ```bash
-# On the board - confirm the shipped Neutron device trees are present
-ls /run/media/boot-mmcblk1p1 | grep neutron
-# imx95-15x15-frdm-neutron.dtb      <- the FRDM (15x15) one this board uses
-# imx95-19x19-evk-neutron.dtb
-# imx95-19x19-frdm-pro-neutron.dtb
+# From this repo's genai-flow-demo/ directory on your host PC
+scp imx95-15x15-frdm-neutron.dtb root@<board-ip>:/run/media/boot-mmcblk0p1/
 ```
 
 Select it from the **U-Boot** prompt over the serial console (interrupt boot to reach `u-boot=>`):
@@ -237,9 +238,9 @@ boot`). The original DTB is never touched.
 > experimental until confirmed on your image.
 
 > [!NOTE]
-> This demo requires 8 GB RAM boards — the Neutron pool reserves the upper 4 GB of DDR. The Neutron device trees are
-> NXP's own, shipped in the boot partition; older images that predate them needed a hand-built overlay, which this
-> flow no longer uses.
+> This requires an **8 GB** board — the Neutron pool reserves the upper 4 GB of DDR (`0x1_0000_0000`–`0x2_0000_0000`),
+> which a 4 GB board does not have. General-purpose RAM drops to ~4 GB, which is why the demo app keeps only one
+> LLM session resident at a time.
 
 ### Comparing CPU vs. NPU performance
 
