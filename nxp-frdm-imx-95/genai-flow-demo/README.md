@@ -37,7 +37,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 | Backend | Status | Notes |
 |---|---|---|
 | Cortex-A55 CPU (6 cores) | ✅ Supported | Default. Runs Danube-500M q8/q4 |
-| eIQ Neutron NPU | ✅ Supported (experimental) | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and booting the Neutron device tree shipped in the LF6.18.20_2.0.0 boot partition — see [Enabling the Neutron NPU](#enabling-the-neutron-npu) |
+| eIQ Neutron NPU | ⚠️ Experimental | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and booting a Neutron device tree that reserves the enlarged CMA pool — see [Enabling the Neutron NPU](#enabling-the-neutron-npu). On the whinlatter FRDM image this is **not yet confirmed** (see that section). |
 | Kinara Ara-2 / NXP Ara240 discrete NPU module | ✅ Supported (setup required) | `set-backend ara2` runs `ask-llm` on the Ara240 M.2 module via NXP's eIQ AAF Connector — enables much larger LLMs (Qwen2.5-7B) at interactive speed. Requires the NXP Ara240 runtime + connector (account-gated download) — see [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) |
 
 ### Measured performance
@@ -54,10 +54,13 @@ performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix)
 ## 2. Requirements
 
 * Completed [FRDM i.MX 95 quickstart](../README.md) (starter demo onboarded and working in `/opt/demo`)
-* NXP Linux BSP **LF6.18.20_2.0.0** (kernel `6.18.20-2.0.0`) — this flow is developed and locked to that
-  release (see the [flashing guide](../FLASHING.md) to update). It ships the Neutron device trees in the boot
-  partition, so no local device-tree build is needed (see [Enabling the Neutron NPU](#enabling-the-neutron-npu)).
-  Check yours with `uname -r`.
+* NXP Linux BSP **LF6.18.2-1.0.0** ("whinlatter", kernel `6.18.2`) — the release this flow runs on. Check
+  yours with `uname -r`, and see the [flashing guide](../FLASHING.md) / [BSP-UPGRADE.md](docs/BSP-UPGRADE.md)
+  to install it.
+  > [!WARNING]
+  > **Do not use the newer LF6.18.20_2.0.0 ("wrynose").** It ships **Python 3.14 only**, and eIQ GenAI Flow's
+  > core is distributed as **`cpython-313` compiled binaries** that Python 3.14 cannot load — the stack does
+  > not run there (verified on hardware). Revisit only when NXP publishes `cpython-314` GenAI Flow builds.
 * At least **16 GB free storage** on the board for GenAI Flow and its models
 * Internet access on the board (models are downloaded on first use)
 
@@ -105,10 +108,9 @@ on first use). Install it on the board first:
    ```
 
    > [!NOTE]
-   > The **LF6.18.20_2.0.0** image defaults to **Python 3.14**, but eIQ GenAI Flow (and the AI stack it pulls in) is
-   > built against **Python 3.13**. Run the demonstrator under 3.13 — check with `python3.13 --version`, and if the
-   > board has only 3.14, build/install 3.13 alongside it (`python3.13`) and use that interpreter for
-   > `eiq_genai_flow.py`, `install.sh`, and this demo's `app.py`.
+   > The whinlatter image ships **Python 3.13**, which is what eIQ GenAI Flow's compiled modules
+   > (`cpython-313`) require — so `install.sh` and `eiq_genai_flow.py` run under the stock `python3` with no
+   > extra steps. (This is why the demo stays on whinlatter; see the BSP warning under Requirements.)
 
 3. (Optional) Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
@@ -191,9 +193,16 @@ to interact with the LLM:
 ### Enabling the Neutron NPU
 
 The Neutron NPU needs a large reserved DMA/CMA memory pool for LLM inference (the default `CmaTotal` is only
-~960 MB; NXP requires >3 GB). On the **LF6.18.20_2.0.0** image this pool is already provided by the
-Neutron device trees NXP ships **in the boot partition** — you just boot the board with the Neutron DTB instead of
-the default one. **Nothing is built or overwritten:**
+~960 MB; NXP requires >3 GB). The whinlatter image ships Neutron device trees **in the boot partition** that
+provide this pool — you boot the board with a Neutron DTB instead of the default one. **Nothing is built or
+overwritten:**
+
+> [!WARNING]
+> **Not yet confirmed on the whinlatter FRDM (15×15) board.** That image ships only the **EVK** Neutron DTBs
+> (`imx95-15x15-evk-neutron.dtb`, `imx95-19x19-evk-neutron.dtb`) — there is **no `imx95-15x15-frdm-neutron.dtb`**,
+> and a freshly booted FRDM shows the default ~960 MB CMA pool (though `/dev/neutron0` is present). Whether the
+> EVK DTB is usable on the FRDM, or a FRDM Neutron DTB is needed, is unresolved. Treat the steps below as the
+> EVK procedure and verify before relying on the Neutron backend on FRDM.
 
 ```bash
 # On the board - confirm the shipped Neutron device trees are present
@@ -229,8 +238,8 @@ boot`). The original DTB is never touched.
 
 > [!NOTE]
 > This demo requires 8 GB RAM boards — the Neutron pool reserves the upper 4 GB of DDR. The Neutron device trees are
-> NXP's own, shipped in the LF6.18.20_2.0.0 boot partition; older images that predate them needed a hand-built
-> overlay, which this flow no longer uses.
+> NXP's own, shipped in the boot partition; older images that predate them needed a hand-built overlay, which this
+> flow no longer uses.
 
 ### Comparing CPU vs. NPU performance
 
