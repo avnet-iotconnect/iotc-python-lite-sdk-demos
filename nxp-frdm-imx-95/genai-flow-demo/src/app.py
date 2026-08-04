@@ -2451,6 +2451,13 @@ def deploy_model(entry):
                     return os.path.join(root, fn)
         return None
 
+    def _fail(message):
+        # A failed deploy must not leave its half-extracted directory on disk: an
+        # incompatible push (e.g. an Ara240 .dvm to a non-Ara board) would otherwise
+        # litter GBs under the models dir. Clean up, then raise for the caller to report.
+        shutil.rmtree(dest, ignore_errors=True)
+        raise RuntimeError(message)
+
     try:
         # Unwrap nested archives until model.dvm appears - IOTCONNECT wraps the
         # uploaded file in its own .tar, so the payload can be a tar-in-tar.
@@ -2484,7 +2491,7 @@ def deploy_model(entry):
         # llama.cpp, and silently switching to it would break ask-llm.
         cli = os.path.join(config["llama_dir"], "src", "build", "bin", "llama-cli")
         if not os.path.isfile(cli):
-            raise RuntimeError(
+            _fail(
                 "%s is a GGUF but this board has no llama.cpp runtime (%s not found) - "
                 "install llama.cpp first; the current model is unchanged" % (file_name, cli))
         stem = re.sub(r"[^A-Za-z0-9._-]", "_", os.path.splitext(os.path.basename(gguf))[0])
@@ -2509,11 +2516,11 @@ def deploy_model(entry):
 
     src = _find_dvm()
     if src is None:
-        raise RuntimeError(
+        _fail(
             "%s contains no model.dvm or .gguf - push an Ara240-compiled model "
             "(.dvm) or a GGUF for llama.cpp" % file_name)
     if not have_ara:
-        raise RuntimeError(
+        _fail(
             "%s is an Ara240 model (model.dvm) but this board has no Ara240 "
             "module - push a GGUF instead to run it on the CPU" % file_name)
     if os.path.abspath(src) != os.path.abspath(dest):   # flatten if nested
@@ -2529,7 +2536,7 @@ def deploy_model(entry):
             break
         time.sleep(5)
     else:
-        raise RuntimeError("model %s did not report ready on the connector" % name)
+        _fail("model %s did not report ready on the connector" % name)
 
     config["ara2_model"] = name
     config["backend"] = "ara2"
