@@ -35,6 +35,12 @@ cat > /etc/systemd/system/genai-app.service <<EOF
 Description=GenAI /IOTCONNECT demo app
 After=network-online.target
 Wants=network-online.target
+# Only run once the board is claimed. Without an identity the app can't connect,
+# so on an unclaimed board systemd would auto-start it, fail, and (Restart=on-failure)
+# retry-loop forever. This condition makes systemd skip it cleanly until the claim
+# writes the identity; provision_server's 'systemctl restart genai-app' on claim
+# re-checks the condition and starts it.
+ConditionPathExists=$DEMO_DIR/iotcDeviceConfig.json
 
 [Service]
 WorkingDirectory=$DEMO_DIR
