@@ -113,7 +113,7 @@
   <div class="brand"><span class="avnet">AVNET</span><span class="slash">/</span><span class="iotc">IOTCONNECT</span>
    <span class="sep"></span><span class="prod">i.MX 95 GenAI Cockpit</span></div>
   <span class="spacer"></span>
-  <span class="pill" id="devpill">no device</span>
+  <select class="pill" id="devsel" title="Choose which board to view" style="cursor:pointer"></select>
   <span class="pill" id="arapill">Ara: …</span>
   <span class="pill" id="livepill">…</span>
   <span class="dim" id="whoami" style="font-size:.8rem"></span>
@@ -276,11 +276,25 @@ async function boot(){
  const b=await api("bootstrap");
  if(!b.devices.length){$("loginstatus").innerHTML='<span class="err">No device in your account yet.</span>';
   $("loginbtn").disabled=false;return}
- S.device=b.devices[0];S.commands=b.commands||{};
+ S.devices=b.devices; S.cmdsByTpl=b.commandsByTemplate||{};
+ const sel=$("devsel");
+ sel.innerHTML=S.devices.map((d,i)=>'<option value="'+i+'">'+d.uniqueId+'</option>').join("");
+ sel.onchange=function(){selectDevice(+sel.value)};
  $("loginview").classList.add("hidden");$("cockpit").classList.remove("hidden");
- $("devpill").textContent=S.device.uniqueId;$("whoami").textContent=S.email;
- log("signed in — board <b>"+S.device.uniqueId+"</b>","ok");
- refresh(); if(!S.poll)S.poll=setInterval(refresh,5000);
+ $("whoami").textContent=S.email;
+ log("signed in — "+S.devices.length+" board(s) available","ok");
+ selectDevice(0);
+ if(!S.poll)S.poll=setInterval(refresh,5000);
+}
+/* Switch which board the cockpit is looking at. Commands come from that device's
+   own template, so a board on a different template still gets the right command set. */
+function selectDevice(i){
+ S.device=S.devices[i];
+ S.commands=S.cmdsByTpl[S.device.templateGuid]||{};
+ S.chunks=null;                       // RAG chunk view is per-device
+ $("devsel").value=i;
+ log("viewing board <b>"+S.device.uniqueId+"</b>","ok");
+ refresh();
 }
 
 /* ---------- telemetry + state reflection ---------- */
