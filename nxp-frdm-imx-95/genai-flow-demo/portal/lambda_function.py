@@ -369,15 +369,24 @@ def cockpit(event, path, method, headers, body_raw):
     try:
         if path.endswith("/bootstrap"):
             devs = c.devices().get("data", [])
-            devs = [d for d in devs if d.get("uniqueId", "").startswith("p95")] or devs
+            # Show every device the user owns so non-p95 demo boards (e.g. the Ara
+            # MCLiMX95b) are selectable, but list p95 attendee boards first so the
+            # default selection stays the attendee's own board.
+            devs.sort(key=lambda d: (not d.get("uniqueId", "").startswith("p95"),
+                                     d.get("uniqueId", "")))
+            devs = devs[:25]
             out = {"devices": [{"guid": d["guid"], "uniqueId": d["uniqueId"],
-                                "templateGuid": d.get("deviceTemplateGuid")} for d in devs[:10]],
-                   "commands": {}}
-            if out["devices"]:
-                tpl = out["devices"][0]["templateGuid"]
+                                "templateGuid": d.get("deviceTemplateGuid")} for d in devs],
+                   "commands": {}, "commandsByTemplate": {}}
+            # Commands per distinct template, so the picker can switch to a device
+            # on a different template without another round trip.
+            for tpl in {d.get("deviceTemplateGuid") for d in devs if d.get("deviceTemplateGuid")}:
                 cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
-                out["commands"] = {x.get("command"): x.get("guid")
-                                   for x in cmds.get("data", []) if x.get("command")}
+                out["commandsByTemplate"][tpl] = {x.get("command"): x.get("guid")
+                                                  for x in cmds.get("data", []) if x.get("command")}
+            if out["devices"]:
+                out["commands"] = out["commandsByTemplate"].get(
+                    out["devices"][0]["templateGuid"], {})
             return resp(200, out)
 
         if path.endswith("/telemetry"):
