@@ -379,11 +379,18 @@ def cockpit(event, path, method, headers, body_raw):
                                 "templateGuid": d.get("deviceTemplateGuid")} for d in devs],
                    "commands": {}, "commandsByTemplate": {}}
             # Commands per distinct template, so the picker can switch to a device
-            # on a different template without another round trip.
+            # on a different template without another round trip. An admin account
+            # can own devices on many templates; a single template whose lookup
+            # errors or returns non-JSON (some system/legacy templates do) must not
+            # break the whole picker, so each lookup is isolated.
             for tpl in {d.get("deviceTemplateGuid") for d in devs if d.get("deviceTemplateGuid")}:
-                cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
-                out["commandsByTemplate"][tpl] = {x.get("command"): x.get("guid")
-                                                  for x in cmds.get("data", []) if x.get("command")}
+                try:
+                    cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
+                    out["commandsByTemplate"][tpl] = {x.get("command"): x.get("guid")
+                                                      for x in cmds.get("data", []) if x.get("command")}
+                except Exception as e:  # noqa: BLE001 - leave this template's commands empty
+                    print("template-command lookup failed for %s: %s" % (tpl, e))
+                    out["commandsByTemplate"][tpl] = {}
             if out["devices"]:
                 out["commands"] = out["commandsByTemplate"].get(
                     out["devices"][0]["templateGuid"], {})
