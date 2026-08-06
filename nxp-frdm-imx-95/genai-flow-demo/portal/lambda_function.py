@@ -369,12 +369,15 @@ def cockpit(event, path, method, headers, body_raw):
     try:
         if path.endswith("/bootstrap"):
             devs = c.devices().get("data", [])
-            # Show every device the user owns so non-p95 demo boards (e.g. the Ara
-            # MCLiMX95b) are selectable, but list p95 attendee boards first so the
-            # default selection stays the attendee's own board.
+            # Only show boards on the GenAI demo template (iMX95genai). An admin
+            # account can own hundreds of unrelated devices (seen: 747 vs 8 on this
+            # template); the cockpit only makes sense for devices on it - its
+            # telemetry attributes and commands. Attendee p95 boards are created on
+            # this same template so they still appear, and the Ara MCLiMX95b is on it.
+            devs = [d for d in devs if d.get("deviceTemplateGuid") == TEMPLATE_GUID]
             devs.sort(key=lambda d: (not d.get("uniqueId", "").startswith("p95"),
                                      d.get("uniqueId", "")))
-            devs = devs[:25]
+            devs = devs[:50]
             out = {"devices": [{"guid": d["guid"], "uniqueId": d["uniqueId"],
                                 "templateGuid": d.get("deviceTemplateGuid")} for d in devs],
                    "commands": {}, "commandsByTemplate": {}}
