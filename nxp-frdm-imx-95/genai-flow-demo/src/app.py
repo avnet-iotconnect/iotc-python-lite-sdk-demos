@@ -823,6 +823,25 @@ def start_voice(output_mode):
     threading.Thread(target=worker, daemon=True).start()
 
 
+def _restart_voice_for_config_change():
+    """Relaunch a live voice session so a config change (RAG, STT, model, backend)
+    takes effect. A vasr subprocess reads its flags once at launch and never re-reads
+    config, so a running session keeps the OLD settings until it is restarted - e.g.
+    'set-rag off' cannot silence the domain classifier for an already-running voice
+    assistant. No-op if voice is not running. Returns True if a restart was started."""
+    if telemetry["voice_status"] in ("off", "error"):
+        return False
+    mode = config.get("voice_output", "tts")
+
+    def _worker():
+        _voice_stop.set()      # ask the running session to exit
+        llm_busy.acquire()     # block until its worker's finally releases the lock
+        _voice_stop.clear()
+        start_voice(mode)      # new session, launched with the current config
+    threading.Thread(target=_worker, daemon=True).start()
+    return True
+
+
 # -----------------------------------------------------------------------------
 # AGENT (ask-agent): LLM + real board tools
 # -----------------------------------------------------------------------------
@@ -2177,7 +2196,7 @@ def on_command(msg: C2dCommand):
             save_config(config)
             with telemetry_lock:
                 telemetry["voice_stt"] = config["stt_model"]
-            note = " - voice-stop / voice-start to apply" if telemetry["voice_status"] not in ("off", "error") else ""
+            note = " (restarting voice to apply)" if _restart_voice_for_config_change() else ""
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                                "Speech recognizer set to %s%s" % (config["stt_model"], note))
         else:
@@ -2240,7 +2259,9 @@ def on_command(msg: C2dCommand):
             save_config(config)
             with telemetry_lock:
                 telemetry["llm_rag"] = msg.command_args[0]
-            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "RAG " + msg.command_args[0])
+            note = " (restarting voice to apply)" if _restart_voice_for_config_change() else ""
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "RAG " + msg.command_args[0] + note)
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument: on or off")
 
