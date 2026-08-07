@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """Trim KWS speech clips, keep small margins, and re-pad them to a fixed length."""
 
 from __future__ import annotations

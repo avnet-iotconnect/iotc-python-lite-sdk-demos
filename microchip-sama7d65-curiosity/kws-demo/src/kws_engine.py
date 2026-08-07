@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """Keyword spotting runtime for the SAMA7D65 /IOTCONNECT demo."""
 
 from __future__ import annotations

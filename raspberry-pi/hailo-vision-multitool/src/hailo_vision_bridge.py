@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """
 "Hailo Vision Multi-Tool" — cloud-retaskable CNN vision on Hailo-8 + /IOTCONNECT.
 

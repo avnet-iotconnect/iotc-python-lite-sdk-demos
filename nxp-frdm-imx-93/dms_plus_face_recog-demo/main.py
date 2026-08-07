@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 import cv2
 import numpy as np
 import tflite_runtime.interpreter as tflite

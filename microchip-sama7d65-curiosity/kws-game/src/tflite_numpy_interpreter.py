@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """Pure-numpy TFLite interpreter fallback.
 
 Supports a fixed subset of ops:

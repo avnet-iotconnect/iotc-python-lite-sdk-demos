@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """
 "Ask the Camera" — /IOTCONNECT bridge for the Hailo-8 CLIP demo (hailo-apps).
 
