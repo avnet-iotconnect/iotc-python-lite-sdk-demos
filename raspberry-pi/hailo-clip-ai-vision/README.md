@@ -110,6 +110,15 @@ Notes:
 > origin in the viewing browser (padlock → Site settings → Insecure content:
 > Allow) and give the board a DHCP reservation so widget URLs stay stable.
 
+### Optional: unified demo device
+
+If the Vision Multi-Tool demo from this repository is also installed, both
+demos can share one /IOTCONNECT device (template `HAILODEMO`, shipped with
+that demo) with credentials in `~/hailo-identity/`, and switch between each
+other via the `set-demo clip|vision` command. See that demo's README for
+setup; this bridge participates automatically when the shared credentials
+folder exists.
+
 ### Suggested gauges
 
 | Gauge | Range | Zones |
