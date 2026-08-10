@@ -470,6 +470,22 @@ def start_web(port):
     return srv
 
 
+DEFAULT_PROMPTS = ("a person looking at the camera", "an empty scene")
+
+
+def _seed_default_prompts():
+    """If no prompts are loaded shortly after startup, add a starter pair so
+    the demo is visibly alive the moment it comes up (softmax needs >=2)."""
+    time.sleep(25)  # let the pipeline and text-encoder HEF settle
+    try:
+        if not text_image_matcher.get_embeddings():
+            for i, p in enumerate(DEFAULT_PROMPTS):
+                text_image_matcher.add_text(p, index=i)
+            print("[prompts] seeded defaults: %s" % (DEFAULT_PROMPTS,))
+    except Exception as e:
+        print("[prompts] default seeding failed: %s" % e)
+
+
 def main():
     ap = argparse.ArgumentParser(add_help=False)
     ap.add_argument("--serve", type=int, default=8080)
@@ -482,6 +498,7 @@ def main():
     if args.serve:
         start_web(args.serve)
     threading.Thread(target=telemetry_loop, args=(client_ref,), daemon=True).start()
+    threading.Thread(target=_seed_default_prompts, daemon=True).start()
 
     user_data = app_callback_class()
     app = GStreamerClipApp(app_callback, user_data)
