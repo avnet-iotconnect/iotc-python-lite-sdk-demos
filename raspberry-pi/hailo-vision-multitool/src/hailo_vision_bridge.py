@@ -37,6 +37,24 @@ from hailo_apps.python.core.gstreamer.gstreamer_app import app_callback_class
 from hailo_apps.python.core.common.buffer_utils import get_caps_from_pad, get_numpy_from_buffer
 
 MODES = ("detect", "pose", "segment")
+MODE_FILE = os.path.join(BRIDGE_DIR, ".mode")  # survives crashes; run.sh supervises
+
+
+def _persist_mode(mode):
+    try:
+        with open(MODE_FILE, "w") as f:
+            f.write(mode)
+    except OSError:
+        pass
+
+
+def _persisted_mode():
+    try:
+        with open(MODE_FILE) as f:
+            m = f.read().strip()
+            return m if m in MODES else None
+    except OSError:
+        return None
 
 
 class SharedState:
@@ -154,6 +172,8 @@ def request_mode(mode):
             return True, "already in %s mode" % mode
         STATE.requested_mode = mode
         app = STATE.app_ref
+    _persist_mode(mode)  # if teardown crashes the process, the supervisor
+                         # restarts us straight into the requested mode
     if app is not None:
         app.shutdown()   # run() returns; main loop starts the new pipeline
     return True, "switching to %s" % mode
@@ -266,10 +286,13 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
  </div>
 </div><script>
 const MODES = ["detect","pose","segment"];
-function setMode(m){ fetch('/cmd?name=set-mode&arg='+m); }
+let fails = 0;
+function setMode(m){ fetch('/cmd?name=set-mode&arg='+m).catch(()=>{}); }
 async function tick(){
  try{
   const s = await (await fetch('/state.json')).json();
+  fails = 0;
+  document.getElementById('reconn').style.display = 'none';
   document.getElementById('modes').innerHTML = MODES.map(m=>
     `<button class="mode ${m===s.mode?'active':''}" onclick="setMode('${m}')">${m}</button>`).join('');
   document.getElementById('persons').textContent = s.person_count;
@@ -279,7 +302,13 @@ async function tick(){
     : '(none)';
   document.getElementById('meta').textContent =
     `fps ${s.fps} · cpu ${s.cpu_temp}°C · alert at ≥${s.alert_count} people`;
- }catch(e){}
+ }catch(e){
+  if (++fails >= 2){
+    document.getElementById('reconn').style.display = 'inline-block';
+    const img = document.querySelector('img');
+    if (img && fails % 8 === 0) img.src = '/stream.mjpg?' + Date.now();
+  }
+ }
  setTimeout(tick, 1000);
 }
 tick();
@@ -332,6 +361,7 @@ OBJECTS_PAGE = """<!doctype html><html><head><meta charset="utf-8">
  <span class="chip mode" id="mode">detect</span>
  <span class="chip" id="count">0 objects</span>
  <span class="alertbanner">&#9888; CROWD ALERT</span>
+ <span class="chip" id="reconn" style="display:none;background:#fab219;color:#0b0b0b">switching pipeline&hellip;</span>
  <span class="muted" id="meta"></span>
 </div>
 <div id="board"><div id="empty">nothing detected&hellip; step into view</div></div>
@@ -503,11 +533,11 @@ def main():
     ap = argparse.ArgumentParser(add_help=False)
     ap.add_argument("--input", default="/dev/video0")
     ap.add_argument("--serve", type=int, default=8081)
-    ap.add_argument("--mode", default="detect", choices=MODES)
+    ap.add_argument("--mode", default=None, choices=MODES)
     args, _ = ap.parse_known_args()
 
     with STATE.lock:
-        STATE.mode = args.mode
+        STATE.mode = args.mode or _persisted_mode() or "detect"
 
     client_ref = start_iotc()
     if args.serve:
@@ -519,7 +549,8 @@ def main():
             mode = STATE.requested_mode or STATE.mode
             STATE.mode = mode
             STATE.requested_mode = None
-        print("[mode] starting %s pipeline" % mode)
+        print("[mode] starting %s pipeline" % mode, flush=True)
+        _persist_mode(mode)
         app = build_app(mode, args.input)
         _attach_overlay_probe(app)
         with STATE.lock:
