@@ -1,5 +1,3 @@
-# SPDX-License-Identifier: MIT
-# Copyright (C) 2026 Avnet
 """
 "Hailo Vision Multi-Tool" — cloud-retaskable CNN vision on Hailo-8 + /IOTCONNECT.
 
@@ -97,10 +95,20 @@ def app_callback(element, buffer, user_data):
         STATE.frame_times.append(now)
         STATE.person_count = persons
         STATE.object_counts = dict(labels)
-        want_frame = now - STATE.last_frame_copy > 0.1
-    if want_frame and user_data.use_frame:
+    return Gst.PadProbeReturn.OK
+
+
+def _overlay_probe(pad, info, _ud):
+    """Capture frames AFTER hailooverlay so the web stream shows the drawn
+    boxes/skeletons/masks, matching the on-screen window."""
+    buffer = info.get_buffer()
+    if buffer is None:
+        return Gst.PadProbeReturn.OK
+    now = time.time()
+    with STATE.lock:
+        want = now - STATE.last_frame_copy > 0.1
+    if want:
         try:
-            pad = element.get_static_pad("src") if hasattr(element, "get_static_pad") else element
             fmt, width, height = get_caps_from_pad(pad)
             if fmt is not None:
                 frame = get_numpy_from_buffer(buffer, fmt, width, height)
@@ -110,6 +118,29 @@ def app_callback(element, buffer, user_data):
         except Exception:
             pass
     return Gst.PadProbeReturn.OK
+
+
+def _attach_overlay_probe(app):
+    ov = None
+    for name in ("hailo_display_overlay", "hailo_overlay"):
+        ov = app.pipeline.get_by_name(name)
+        if ov is not None:
+            break
+    if ov is None:
+        it = app.pipeline.iterate_elements()
+        while True:
+            ok, el = it.next()
+            if ok != Gst.IteratorResult.OK:
+                break
+            f = el.get_factory()
+            if f is not None and f.get_name() == "hailooverlay":
+                ov = el
+                break
+    if ov is None:
+        print("[web] WARNING: no hailooverlay element found; stream will be un-annotated")
+        return
+    ov.get_static_pad("src").add_probe(Gst.PadProbeType.BUFFER, _overlay_probe, None)
+    print("[web] streaming annotated frames from %s" % ov.get_name())
 
 
 # ---------------- commands ----------------
@@ -456,7 +487,7 @@ def start_web(port):
 
 def build_app(mode, input_arg):
     """Construct the pipeline app for a mode. Each parses sys.argv itself."""
-    sys.argv = [sys.argv[0], "--input", input_arg, "--use-frame", "--disable-sync"]
+    sys.argv = [sys.argv[0], "--input", input_arg, "--disable-sync"]
     user_data = app_callback_class()
     if mode == "pose":
         from hailo_apps.python.pipeline_apps.pose_estimation.pose_estimation_pipeline import GStreamerPoseEstimationApp
@@ -490,6 +521,7 @@ def main():
             STATE.requested_mode = None
         print("[mode] starting %s pipeline" % mode)
         app = build_app(mode, args.input)
+        _attach_overlay_probe(app)
         with STATE.lock:
             STATE.app_ref = app
         try:
