@@ -88,7 +88,26 @@ Telemetry @1 Hz: `mode`, `person_count`, `object_count`, `objects`
 If another camera application is using the device, stop it first — one
 pipeline owns the camera and NPU at a time.
 
-## 5. Suggested Gauges
+## 5. Optional: Unified Demo Device (`set-demo`)
+
+If the CLIP demo from this repository is also installed on the board, both
+demos can share **one** /IOTCONNECT device and hand the camera/NPU to each
+other from the cloud:
+
+1. Import [HAILODEMO-template.json](HAILODEMO-template.json) — it carries the
+   superset of both demos' telemetry and commands plus `set-demo`.
+2. Create (or re-template) a device on it and place its
+   `iotcDeviceConfig.json`, `device-cert.pem`, `device-pkey.pem` in
+   `~/hailo-identity/` on the board. Both bridges prefer that folder over
+   their local credentials when it exists.
+3. Send `set-demo clip` or `set-demo vision` (from the dashboard or either
+   demo's `/cmd` endpoint). The running demo acks, exits cleanly, and the
+   other starts — about 30 seconds end to end. The `demo` telemetry
+   attribute always reports which one is live.
+
+Remove `~/hailo-identity/` to return to separate per-demo devices.
+
+## 6. Suggested Gauges
 
 `person_count` 0–10 (alert marker at your threshold), `fps` 0–35 (green
 `#0ca30c` ≥25, orange `#ec835a` 15–25, red `#d03b3b` <15), `cpu_temp` 0–100
