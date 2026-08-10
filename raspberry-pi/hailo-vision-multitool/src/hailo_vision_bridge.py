@@ -17,12 +17,24 @@ Run on the board:  ./run.sh   (from this directory; certs optional)
 import argparse
 import json
 import os
+import subprocess
 import sys
 import threading
 import time
 from collections import Counter
 
 BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Unified-device mode: if ~/hailo-identity/ holds credentials, both demos
+# share that single /IOTCONNECT identity (template HAILODEMO) and hand the
+# device off to each other via the set-demo command.
+SHARED_IDENTITY_DIR = os.path.expanduser("~/hailo-identity")
+CLIP_RUN = os.path.expanduser("~/hailo-bridge/run.sh")
+
+
+def cred_dir():
+    if os.path.isfile(os.path.join(SHARED_IDENTITY_DIR, "iotcDeviceConfig.json")):
+        return SHARED_IDENTITY_DIR
+    return BRIDGE_DIR
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks
 from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
@@ -179,6 +191,20 @@ def request_mode(mode):
     return True, "switching to %s" % mode
 
 
+def _handoff_to_clip():
+    """Start the CLIP demo after we exit cleanly (supervisor stops on exit 0)."""
+    subprocess.Popen(
+        ["bash", "-c", "sleep 4; exec %s >> %s 2>&1" %
+         (CLIP_RUN, os.path.expanduser("~/hailo-bridge-run.log"))],
+        start_new_session=True, stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    with STATE.lock:
+        STATE.requested_mode = None   # no pending mode -> main loop exits 0
+        app = STATE.app_ref
+    if app is not None:
+        threading.Thread(target=app.shutdown, daemon=True).start()
+
+
 def handle_command(source, name, args):
     STATE.record_command(source, name, args)
     if name == "set-mode" and args:
@@ -189,6 +215,14 @@ def handle_command(source, name, args):
             return True, "alert_count=%d" % STATE.alert_count
         except ValueError:
             return False, "bad number"
+    if name == "set-demo" and args:
+        target = args[0].strip().lower()
+        if target in ("vision", "multitool", "multi-tool"):
+            return True, "vision demo already running"
+        if target == "clip":
+            _handoff_to_clip()
+            return True, "switching to clip demo (~30s)"
+        return False, "unknown demo %r (use clip|vision)" % target
     return False, "unknown command"
 
 
@@ -227,6 +261,7 @@ def telemetry_loop(client_ref):
         top_object = max(counts, key=counts.get) if counts else ""
         try:
             c.send_telemetry({
+                "demo": "vision",
                 "mode": mode,
                 "person_count": persons,
                 "object_count": sum(counts.values()),
@@ -242,14 +277,16 @@ def telemetry_loop(client_ref):
 
 def start_iotc():
     client_ref = {"client": None}
-    cfg_json = os.path.join(BRIDGE_DIR, "iotcDeviceConfig.json")
+    d = cred_dir()
+    cfg_json = os.path.join(d, "iotcDeviceConfig.json")
     if not os.path.isfile(cfg_json):
         print("[iotc] %s not found — running OFFLINE" % cfg_json)
         return client_ref
+    print("[iotc] using credentials from %s" % d)
     device_config = DeviceConfig.from_iotc_device_config_json_file(
         device_config_json_path=cfg_json,
-        device_cert_path=os.path.join(BRIDGE_DIR, "device-cert.pem"),
-        device_pkey_path=os.path.join(BRIDGE_DIR, "device-pkey.pem"),
+        device_cert_path=os.path.join(d, "device-cert.pem"),
+        device_pkey_path=os.path.join(d, "device-pkey.pem"),
     )
     c = Client(config=device_config,
                callbacks=Callbacks(command_cb=make_command_cb(client_ref)))
@@ -269,7 +306,8 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
  .video{flex:2;min-width:320px}.side{flex:1;min-width:260px}
  h1{font-size:17px;margin:0 0 10px;color:#c3c2b7}
  .mode{display:inline-block;padding:6px 14px;margin:0 8px 12px 0;border-radius:16px;
-       background:#2c2c2a;color:#c3c2b7;cursor:pointer;border:none;font:inherit}
+       background:#2c2c2a;color:#c3c2b7;cursor:pointer;border:none;font:inherit;
+       text-decoration:none}
  .mode.active{background:#0ca30c;color:#fff;font-weight:700}
  .big{font-size:44px;font-weight:800}
  .muted{color:#898781;font-size:13px}
@@ -279,7 +317,11 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8">
  <div class="video"><img src="/stream.mjpg"></div>
  <div class="side">
   <h1>PIPELINE</h1>
-  <div id="modes"></div>
+  <div id="modes">
+   <a class="mode" id="m-detect" href="/cmd?name=set-mode&amp;arg=detect&amp;back=1">detect</a>
+   <a class="mode" id="m-pose" href="/cmd?name=set-mode&amp;arg=pose&amp;back=1">pose</a>
+   <a class="mode" id="m-segment" href="/cmd?name=set-mode&amp;arg=segment&amp;back=1">segment</a>
+  </div>
   <h1>PEOPLE IN VIEW</h1><div class="big" id="persons">0</div>
   <h1>OBJECTS</h1><div id="objects" class="muted">(none)</div>
   <div class="muted" id="meta" style="margin-top:10px"></div>
@@ -292,9 +334,14 @@ async function tick(){
  try{
   const s = await (await fetch('/state.json')).json();
   fails = 0;
-  document.getElementById('reconn').style.display = 'none';
-  document.getElementById('modes').innerHTML = MODES.map(m=>
-    `<button class="mode ${m===s.mode?'active':''}" onclick="setMode('${m}')">${m}</button>`).join('');
+  const rc = document.getElementById('reconn'); if (rc) rc.style.display = 'none';
+  for (const m of MODES){
+    const b = document.getElementById('m-'+m);
+    if (b){
+      b.className = 'mode' + (m===s.mode ? ' active' : '');
+      b.onclick = (ev)=>{ ev.preventDefault(); setMode(m); };  // JS path: no page reload
+    }
+  }
   document.getElementById('persons').textContent = s.person_count;
   const objs = Object.entries(s.objects);
   document.getElementById('objects').innerHTML = objs.length
@@ -470,6 +517,11 @@ def start_web(port):
                 name = (q.get("name") or [""])[0]
                 arg = (q.get("arg") or [None])[0]
                 ok, note = handle_command("web", name, [arg] if arg else [])
+                if q.get("back"):  # no-JS fallback: bounce back to the page
+                    self.send_response(303)
+                    self.send_header("Location", "/")
+                    self.end_headers()
+                    return
                 self._send(200 if ok else 400, "application/json",
                            json.dumps({"ok": ok, "note": note}).encode())
             elif u.path == "/state.json":
