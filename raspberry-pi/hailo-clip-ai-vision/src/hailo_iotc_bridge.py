@@ -1,5 +1,3 @@
-# SPDX-License-Identifier: MIT
-# Copyright (C) 2026 Avnet
 """
 "Ask the Camera" — /IOTCONNECT bridge for the Hailo-8 CLIP demo (hailo-apps).
 
@@ -27,11 +25,24 @@ import argparse
 import glob
 import json
 import os
+import subprocess
 import sys
 import threading
 import time
 
 BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Unified-device mode: if ~/hailo-identity/ holds credentials, both demos
+# share that single /IOTCONNECT identity (template HAILODEMO) and hand the
+# device off to each other via the set-demo command.
+SHARED_IDENTITY_DIR = os.path.expanduser("~/hailo-identity")
+VISION_RUN = os.path.expanduser("~/hailo-vision/run.sh")
+
+
+def cred_dir():
+    if os.path.isfile(os.path.join(SHARED_IDENTITY_DIR, "iotcDeviceConfig.json")):
+        return SHARED_IDENTITY_DIR
+    return BRIDGE_DIR
+
 
 from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks
 from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
@@ -131,42 +142,63 @@ def _del_last():
         text_image_matcher.add_text("", index=used[-1])
 
 
+def _handoff_to_vision():
+    """Start the Multi-Tool; its run.sh stops this demo's process."""
+    subprocess.Popen(
+        ["bash", "-c", "sleep 4; exec %s >> %s 2>&1" %
+         (VISION_RUN, os.path.expanduser("~/vision-run.log"))],
+        start_new_session=True, stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def handle_command(source, name, args):
+    STATE.record_command(source, name, args)
+    ok, note = True, "OK"
+    try:
+        if name == "set-demo" and args:
+            target = args[0].strip().lower()
+            if target == "clip":
+                note = "clip demo already running"
+            elif target in ("vision", "multitool", "multi-tool"):
+                _handoff_to_vision()
+                note = "switching to vision demo (~30s)"
+            else:
+                ok, note = False, "unknown demo %r (use clip|vision)" % target
+        elif name == "set-prompt" and args:
+            _clear_all()
+            text_image_matcher.add_text(" ".join(args), index=0)
+            note = "prompt set"
+        elif name == "add-prompt" and args:
+            slot = _free_slot()
+            if slot is None:
+                ok, note = False, "all %d prompt slots in use" % MAX_PROMPTS
+            else:
+                text_image_matcher.add_text(" ".join(args), index=slot)
+                note = "prompt added (slot %d)" % slot
+        elif name == "del-prompt":
+            _del_last()
+            note = "prompt deleted"
+        elif name == "clear-prompts":
+            _clear_all()
+            note = "prompts cleared"
+        elif name == "set-threshold" and args:
+            text_image_matcher.set_threshold(float(args[0]))
+            note = "threshold=%s" % args[0]
+        else:
+            ok, note = False, "unknown command"
+    except Exception as e:
+        ok, note = False, "error: %s" % e
+    print("[cmd] %s %s %s -> %s" % (source, name, args, note))
+    return ok, note
+
+
 def make_command_cb(client_ref):
     def on_command(msg: C2dCommand):
-        name = msg.command_name
-        args = msg.command_args or []
-        STATE.record_command("cloud", name, args)
-        ok, note = True, "OK"
-        try:
-            if name == "set-prompt" and args:
-                _clear_all()
-                text_image_matcher.add_text(" ".join(args), index=0)
-                note = "prompt set"
-            elif name == "add-prompt" and args:
-                slot = _free_slot()
-                if slot is None:
-                    ok, note = False, "all %d prompt slots in use" % MAX_PROMPTS
-                else:
-                    text_image_matcher.add_text(" ".join(args), index=slot)
-                    note = "prompt added (slot %d)" % slot
-            elif name == "del-prompt":
-                _del_last()
-                note = "prompt deleted"
-            elif name == "clear-prompts":
-                _clear_all()
-                note = "prompts cleared"
-            elif name == "set-threshold" and args:
-                text_image_matcher.set_threshold(float(args[0]))
-                note = "threshold=%s" % args[0]
-            else:
-                ok, note = False, "unknown command"
-        except Exception as e:
-            ok, note = False, "error: %s" % e
+        ok, note = handle_command("cloud", msg.command_name, msg.command_args or [])
         c = client_ref.get("client")
         if c is not None and msg.ack_id is not None:
             c.send_command_ack(
                 msg, C2dAck.CMD_SUCCESS_WITH_ACK if ok else C2dAck.CMD_FAILED, note)
-        print("[iotc] cmd %s %s -> %s" % (name, args, note))
     return on_command
 
 
@@ -206,6 +238,7 @@ def telemetry_loop(client_ref):
             top_prompt, top_score = "", 0.0
         try:
             c.send_telemetry({
+                "demo": "clip",
                 "top_prompt": top_prompt,
                 "top_score": round(top_score, 4),
                 "scores": json.dumps(
@@ -221,14 +254,16 @@ def telemetry_loop(client_ref):
 
 def start_iotc():
     client_ref = {"client": None}
-    cfg_json = os.path.join(BRIDGE_DIR, "iotcDeviceConfig.json")
+    d = cred_dir()
+    cfg_json = os.path.join(d, "iotcDeviceConfig.json")
     if not os.path.isfile(cfg_json):
         print("[iotc] %s not found — running OFFLINE" % cfg_json)
         return client_ref
+    print("[iotc] using credentials from %s" % d)
     device_config = DeviceConfig.from_iotc_device_config_json_file(
         device_config_json_path=cfg_json,
-        device_cert_path=os.path.join(BRIDGE_DIR, "device-cert.pem"),
-        device_pkey_path=os.path.join(BRIDGE_DIR, "device-pkey.pem"),
+        device_cert_path=os.path.join(d, "device-cert.pem"),
+        device_pkey_path=os.path.join(d, "device-pkey.pem"),
     )
     c = Client(config=device_config,
                callbacks=Callbacks(command_cb=make_command_cb(client_ref)))
@@ -364,6 +399,7 @@ tick();
 def start_web(port):
     import cv2
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from urllib.parse import urlparse, parse_qs
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *a):
@@ -386,6 +422,13 @@ def start_web(port):
                 self._send(200, "text/html; charset=utf-8", TOP_PAGE.encode())
             elif self.path == "/camera":
                 self._send(200, "text/html; charset=utf-8", CAMERA_PAGE.encode())
+            elif self.path.startswith("/cmd"):
+                q = parse_qs(urlparse(self.path).query)
+                name = (q.get("name") or [""])[0]
+                arg = (q.get("arg") or [None])[0]
+                ok, note = handle_command("web", name, [arg] if arg else [])
+                self._send(200 if ok else 400, "application/json",
+                           json.dumps({"ok": ok, "note": note}).encode())
             elif self.path == "/state.json":
                 prompts, scores, threshold = snapshot_matcher()
                 with STATE.lock:
