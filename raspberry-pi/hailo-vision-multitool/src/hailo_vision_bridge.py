@@ -591,6 +591,11 @@ def main():
     with STATE.lock:
         STATE.mode = args.mode or _persisted_mode() or "detect"
 
+    try:
+        with open(os.path.expanduser("~/.hailo-demo"), "w") as f:
+            f.write("vision")
+    except OSError:
+        pass
     client_ref = start_iotc()
     if args.serve:
         start_web(args.serve)
