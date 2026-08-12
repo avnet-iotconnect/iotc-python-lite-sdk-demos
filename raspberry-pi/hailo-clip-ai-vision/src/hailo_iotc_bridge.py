@@ -494,6 +494,11 @@ def main():
     # hand remaining args (e.g. --input /dev/video0) to the hailo app parser
     sys.argv = [sys.argv[0]] + passthrough + ["--use-frame"]
 
+    try:
+        with open(os.path.expanduser("~/.hailo-demo"), "w") as f:
+            f.write("clip")
+    except OSError:
+        pass
     client_ref = start_iotc()
     if args.serve:
         start_web(args.serve)
