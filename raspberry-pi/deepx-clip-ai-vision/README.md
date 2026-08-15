@@ -46,6 +46,22 @@ The OpenCV window opens on the local display, `[iotc] connected` confirms the
 cloud link, and the booth web server starts on port 8080. If the device
 credentials are missing the demo still runs fully — just offline.
 
+### Start automatically at boot
+
+To launch the demo on every boot (booth mode), install the desktop autostart
+entry once:
+
+```bash
+~/deepx/dx_clip_demo/bridge/install-autostart.sh
+```
+
+The demo then opens in a terminal about 10 seconds after the desktop appears,
+with the camera window, cloud link, and the interactive `prompt>` input all
+working as usual. Requirements: desktop auto-login must be enabled
+(`raspi-config` → System Options → Boot / Auto Login → **Desktop Autologin**).
+
+To disable: `~/deepx/dx_clip_demo/bridge/install-autostart.sh --remove`
+
 ## 5. Using the Demo
 
 ### Cloud commands (C2D)

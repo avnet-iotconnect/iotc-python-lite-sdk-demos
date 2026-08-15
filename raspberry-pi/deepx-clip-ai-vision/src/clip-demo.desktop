@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=CLIP Ask-the-Camera Demo
+Comment=DEEPX DX-M1 CLIP demo with /IOTCONNECT bridge (autostarts at desktop login)
+Exec=lxterminal --title="CLIP Demo" --command="bash -lc 'sleep 10; ~/deepx/dx_clip_demo/bridge/run.sh'"
+Terminal=false
+X-GNOME-Autostart-enabled=true
