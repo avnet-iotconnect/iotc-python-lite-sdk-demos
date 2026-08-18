@@ -33,8 +33,7 @@ modern industrial, IoT, and edge AI applications.
 
 * NXP FRDM i.MX 95 Development Board [Purchase](https://www.avnet.com/americas/product/nxp/frdm-imx95/evolve-122131125/) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX95)
 * 2x USB Type-C Cables
-* (Optional) Ethernet Cable
-* (Optional) WiFi Network SSID and Password
+* Ethernet Cable OR WiFi Network SSID and Password
 * (Optional, for the GenAI voice pipeline) USB headset or USB speaker + microphone
 * (Optional, for the ask-vlm vision demo) UVC-compliant USB webcam
 
@@ -66,17 +65,13 @@ modern industrial, IoT, and edge AI applications.
 - Stop Bits: 1
 - Parity: None
 
-3. The board's WCH USB-serial converter enumerates **four** serial ports on your PC. The Linux (Cortex-A55) console is
-   the **first** port of the group (the second port is the System Manager debug monitor on the Cortex-M33). On a
-   Windows host, connect to the lowest COM port value of the board's "USB Quad_Serial" devices in Device Manager; on a
-   Linux host this is typically `/dev/ttyACM0`.
+3. The board's WCH USB-serial converter enumerates **four** serial ports on your PC. To find the Linux (Cortex-A55) console connect to each port and press ENTER until you get a login prompt.  
+```
+imx95-15x15-lpddr4x-frdm login:
+```
 
-> [!NOTE]
-> A successful connection may result in just a blank terminal box. If you see a blank terminal box, press the ENTER key
-> to get a login prompt. An unsuccessful connection attempt will usually result in an error window popping up.
-
-4. When prompted for a login, type `root` followed by the ENTER key.
-5. Run this command to install the necessary /IOTCONNECT packages:
+5. When prompted for a login, type `root` followed by the ENTER key.
+6. Run this command to install the necessary /IOTCONNECT packages:
 
 ```
 python3 -m pip install iotconnect-sdk-lite requests
