@@ -66,9 +66,7 @@ modern industrial, IoT, and edge AI applications.
 - Parity: None
 
 3. The board's WCH USB-serial converter enumerates **four** serial ports on your PC. To find the Linux (Cortex-A55) console connect to each port and press ENTER until you get a login prompt.  
-```
-imx95-15x15-lpddr4x-frdm login:
-```
+`imx95-15x15-lpddr4x-frdm login:`
 
 5. When prompted for a login, type `root` followed by the ENTER key.
 6. Run this command to install the necessary /IOTCONNECT packages:
