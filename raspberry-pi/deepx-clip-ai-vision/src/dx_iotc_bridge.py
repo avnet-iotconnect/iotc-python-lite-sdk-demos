@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """
 "Ask the Camera" — /IOTCONNECT bridge for the DEEPX CLIP demo (OpenCV variant).
 
@@ -38,12 +40,21 @@ import threading
 import time
 
 BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_ROOT = os.path.dirname(BRIDGE_DIR)
+# When run as a Greengrass component the bridge lives outside the dx_clip_demo
+# checkout; DX_CLIP_DEMO_ROOT points at it (defaults to the parent directory
+# for the in-tree bridge/ layout).
+REPO_ROOT = os.environ.get("DX_CLIP_DEMO_ROOT") or os.path.dirname(BRIDGE_DIR)
 sys.path.insert(0, os.path.join(REPO_ROOT, "clip_demo_app_opencv"))
 sys.path.insert(0, REPO_ROOT)
+os.chdir(REPO_ROOT)  # the demo uses relative asset paths
 
-from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks
 from avnet.iotconnect.sdk.sdklib.mqtt import C2dAck
+
+USE_GREENGRASS = bool(os.environ.get("SVCUID") or os.environ.get("AWS_IOT_THING_NAME"))
+if USE_GREENGRASS:
+    from avnet.iotconnect.sdk.greengrass import Client, C2dCommand, Callbacks
+else:
+    from avnet.iotconnect.sdk.lite import Client, DeviceConfig, C2dCommand, Callbacks
 
 import dx_realtime_demo as demo
 
@@ -133,6 +144,21 @@ def _feed_demo_input(op: str, timeout=5.0):
             return False
         time.sleep(0.02)
     return False
+
+
+def _enable_headless():
+    """No-display mode for service/Greengrass use: the OpenCV window calls
+    become no-ops and the web pages on --serve are the only UI."""
+    demo.cv2.namedWindow = lambda *a, **k: None
+    demo.cv2.setWindowProperty = lambda *a, **k: None
+    demo.cv2.imshow = lambda *a, **k: None
+    demo.cv2.destroyAllWindows = lambda *a, **k: None
+
+    def _wait(ms=1):
+        time.sleep(max(ms, 1) / 1000.0)
+        return -1
+    demo.cv2.waitKey = _wait
+    print("[headless] display disabled; web UI only")
 
 
 def _terminal_input():
@@ -420,6 +446,10 @@ def make_command_cb(client_ref):
                 ok, note = False, "bad threshold"
         else:
             ok, note = False, "unknown command"
+            if USE_GREENGRASS:
+                # another component may service this command; don't fail-ack it
+                print("[iotc] cmd %s not ours; ignoring" % name)
+                return
         c = client_ref.get("client")
         if c is not None and msg.ack_id is not None:
             c.send_command_ack(
@@ -432,7 +462,7 @@ def telemetry_loop(client_ref):
     while True:
         time.sleep(1.0)
         c = client_ref.get("client")
-        if c is None or not c.is_connected():
+        if c is None or not getattr(c, "is_connected", lambda: True)():
             continue
         prompts, scores, threshold = STATE.snapshot()
         if prompts and scores:
@@ -457,6 +487,12 @@ def telemetry_loop(client_ref):
 
 def start_iotc():
     client_ref = {"client": None}
+    if USE_GREENGRASS:
+        # identity/connection comes from the Greengrass nucleus over IPC
+        c = Client(callbacks=Callbacks(command_cb=make_command_cb(client_ref)))
+        client_ref["client"] = c
+        print("[iotc] greengrass client ready")
+        return client_ref
     cfg_json = os.path.join(BRIDGE_DIR, "iotcDeviceConfig.json")
     cert = os.path.join(BRIDGE_DIR, "device-cert.pem")
     pkey = os.path.join(BRIDGE_DIR, "device-pkey.pem")
@@ -502,9 +538,13 @@ def main():
                     help="camera index for the demo (features_path)")
     ap.add_argument("--serve", type=int, default=8080,
                     help="port for the booth web page / MJPEG stream (0 disables)")
+    ap.add_argument("--headless", action="store_true",
+                    help="no OpenCV window (service/Greengrass mode); web UI only")
     args, extra = ap.parse_known_args()
 
     _wrap_update_text()
+    if args.headless or not os.environ.get("DISPLAY"):
+        _enable_headless()
     demo.insert_text_in_term = _terminal_input
 
     if args.serve:

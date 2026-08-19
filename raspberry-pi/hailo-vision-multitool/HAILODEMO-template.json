@@ -1,0 +1,44 @@
+{
+  "code": "HAILODEMO",
+  "name": "HAILODEMO",
+  "authType": 2,
+  "messageVersion": "2.1",
+  "greenGrass": "0",
+  "wireless": "0",
+  "properties": {
+    "description": "Hailo-8 unified demo device: CLIP zero-shot vision + Vision Multi-Tool, switchable from the cloud",
+    "dataFrequency": "6",
+    "fileSupport": false
+  },
+  "attributes": [
+    { "name": "demo", "type": "STRING", "description": "Active demo: clip | vision", "unit": "", "aggregateTypes": [] },
+
+    { "name": "top_prompt", "type": "STRING", "description": "[clip] Prompt with the highest probability", "unit": "", "aggregateTypes": [] },
+    { "name": "top_score", "type": "DECIMAL", "description": "[clip] Highest softmax probability (0-1)", "unit": "", "aggregateTypes": [] },
+    { "name": "scores", "type": "STRING", "description": "[clip] JSON map of prompt to probability", "unit": "", "aggregateTypes": [] },
+
+    { "name": "mode", "type": "STRING", "description": "[vision] Active pipeline: detect | pose | segment", "unit": "", "aggregateTypes": [] },
+    { "name": "person_count", "type": "INTEGER", "description": "[vision] People currently in view", "unit": "", "aggregateTypes": [] },
+    { "name": "object_count", "type": "INTEGER", "description": "[vision] Total detections in view", "unit": "", "aggregateTypes": [] },
+    { "name": "objects", "type": "STRING", "description": "[vision] JSON map of label to count", "unit": "", "aggregateTypes": [] },
+    { "name": "top_object", "type": "STRING", "description": "[vision] Most frequent label in view", "unit": "", "aggregateTypes": [] },
+
+    { "name": "fps", "type": "DECIMAL", "description": "Pipeline frames per second", "unit": "fps", "aggregateTypes": [] },
+    { "name": "npu_temp", "type": "DECIMAL", "description": "Hailo-8 temperature (-1 if unavailable)", "unit": "C", "aggregateTypes": [] },
+    { "name": "cpu_temp", "type": "DECIMAL", "description": "Pi 5 CPU temperature", "unit": "C", "aggregateTypes": [] },
+    { "name": "alert", "type": "INTEGER", "description": "1 on match (clip) or crowd threshold (vision)", "unit": "", "aggregateTypes": [] }
+  ],
+  "commands": [
+    { "name": "set-demo", "command": "set-demo", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+
+    { "name": "set-prompt", "command": "set-prompt", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+    { "name": "add-prompt", "command": "add-prompt", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+    { "name": "del-prompt", "command": "del-prompt", "requiredParam": false, "requiredAck": true, "isOTACommand": false },
+    { "name": "clear-prompts", "command": "clear-prompts", "requiredParam": false, "requiredAck": true, "isOTACommand": false },
+    { "name": "set-threshold", "command": "set-threshold", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+
+    { "name": "set-mode", "command": "set-mode", "requiredParam": true, "requiredAck": true, "isOTACommand": false },
+    { "name": "set-alert-count", "command": "set-alert-count", "requiredParam": true, "requiredAck": true, "isOTACommand": false }
+  ],
+  "_meta": { "version": "2.0" }
+}

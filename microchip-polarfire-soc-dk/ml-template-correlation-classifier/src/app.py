@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 #
 # Cloud-driven Tiny-ML demo for PolarFire SoC Discovery Kit.
 # Command: "classify" (e.g. args: ["hw", "4", "42"] or ["mode=hw","class=4","seed=42"])

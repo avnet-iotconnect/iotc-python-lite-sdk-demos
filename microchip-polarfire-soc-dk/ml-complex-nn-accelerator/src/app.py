@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 #
 # Cloud-driven Complex-NN demo for PolarFire SoC Discovery Kit.
 # Command: "classify" (e.g. args: ["hw", "4", "42"] or ["mode=hw","class=4","seed=42"])
@@ -379,7 +380,14 @@ def _start_led_pattern(pattern_name: str, cycles: int = 16, interval_ms: int = 1
     LED_PATTERN_THREAD.start()
 
 
-def _cpu_load_worker(stop_event, duty_pct: int):
+def _cpu_load_worker(stop_event, duty_pct: int, cpu_index: int = -1):
+    # Pin each worker to one core; unpinned workers get migrated and leave
+    # idle gaps that the single-threaded benchmark slips into.
+    if cpu_index >= 0:
+        try:
+            os.sched_setaffinity(0, {cpu_index})
+        except (AttributeError, OSError):
+            pass
     duty = max(1, min(int(duty_pct), 100))
     period_s = 0.1
     busy_s = period_s * (float(duty) / 100.0)
@@ -437,7 +445,8 @@ def _stop_load():
 
 def _start_load(workers: int, duty_pct: int):
     global LOAD_PROCESSES, LOAD_STOP_EVENT, LOAD_WORKERS, LOAD_DUTY
-    w = max(1, min(int(workers), 8))
+    ncpu = os.cpu_count() or 1
+    w = max(1, min(int(workers), 32))
     d = max(1, min(int(duty_pct), 100))
     _stop_load()
     # Use spawn context to avoid forking a multithreaded process.
@@ -447,7 +456,7 @@ def _start_load(workers: int, duty_pct: int):
     for i in range(w):
         p = mp_ctx.Process(
             target=_cpu_load_worker,
-            args=(stop_event, d),
+            args=(stop_event, d, i % ncpu),
             name=f"cpu-load-{i}",
             daemon=True,
         )
@@ -465,8 +474,10 @@ def _start_load(workers: int, duty_pct: int):
 def parse_load_args(args):
     args = _require_args("load", args, "load <start|stop|status|off> [workers] [duty_pct]")
     action = "status"
-    workers = 1
-    duty = 95
+    # Default to heavy oversubscription: a single-threaded benchmark only
+    # slows down when runnable threads outnumber cores.
+    workers = (os.cpu_count() or 4) * 4
+    duty = 100
 
     if len(args) == 1 and args[0].strip().startswith("{"):
         payload = json.loads(args[0])

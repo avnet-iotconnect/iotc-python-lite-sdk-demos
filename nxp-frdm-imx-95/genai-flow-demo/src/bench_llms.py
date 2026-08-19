@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """One-prompt shootout across every LLM backend/model on the board.
 
 For each combination: set genai-config.json, run the patched app copy in

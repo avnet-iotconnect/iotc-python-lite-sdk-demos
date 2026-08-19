@@ -1,4 +1,7 @@
 # Microchip PolarFire SoC Discovery Kit QuickStart
+
+<img src="./images/mchp-polarfire-complex-dashboard.jpg" align="right" width="55%" alt="/IOTCONNECT dashboard for the PolarFire SoC FPGA-accelerated inference demo">
+
  [Purchase Microchip PolarFire SoC Discovery Kit](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474)
 1. [Introduction](#1-introduction)
 2. [Requirements](#2-requirements)
@@ -9,6 +12,8 @@
 7. [Using the Basic Demo](#7-using-the-basic-demo)
 8. [Going Further: Expansion Demos](#8-going-further-expansion-demos)
 9. [Resources](#9-resources)
+
+<br clear="right">
 
 # 1. Introduction
 

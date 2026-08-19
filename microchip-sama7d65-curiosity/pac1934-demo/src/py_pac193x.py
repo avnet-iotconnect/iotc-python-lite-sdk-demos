@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 # PAC193x IIO sysfs Driver for SAMA7D65-Curiosity
 # Reads voltage, current, and power from the kernel's IIO interface
 # for the on-board PAC1934 power monitor.

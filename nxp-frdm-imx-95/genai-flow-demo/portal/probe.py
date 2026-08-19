@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 """Phase-1 smoke test for the onboarding portal's IOTCONNECT client.
 
 Reads secrets from the environment (or a --env-file that is NOT in the repo):

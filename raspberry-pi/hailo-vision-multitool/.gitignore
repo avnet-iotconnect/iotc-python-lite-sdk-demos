@@ -1,0 +1,3 @@
+*.pem
+iotcDeviceConfig.json
+__pycache__/

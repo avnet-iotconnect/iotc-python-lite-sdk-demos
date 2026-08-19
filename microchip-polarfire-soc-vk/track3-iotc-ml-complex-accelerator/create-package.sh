@@ -14,6 +14,10 @@ if [[ ! -f "${SW_ELF}" || ! -f "${HW_ELF}" ]]; then
   wget -q --show-progress -O "${HW_ELF}" "${S3_BASE}/tinyml_complex.accel.elf"
 fi
 
-tar -czf "$ARCHIVE_NAME" -C "$SRC_DIR" .
+tar -czf "$ARCHIVE_NAME" \
+  --exclude="./temp.py" \
+  --exclude="./__pycache__" \
+  --exclude="./*.pyc" \
+  -C "$SRC_DIR" .
 cp "$ARCHIVE_NAME" ../../common/
 echo "Created $ARCHIVE_NAME (also copied to ../../common/)"

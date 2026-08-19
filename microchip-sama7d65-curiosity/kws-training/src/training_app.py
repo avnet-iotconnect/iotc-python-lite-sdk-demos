@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2026 Avnet
 from __future__ import annotations
 
 import json
@@ -6,6 +8,7 @@ import re
 import signal
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 import threading
@@ -275,6 +278,7 @@ class TrainingWorkspace:
         self._last_installed_model_s3_uri = ""
         self._last_install_at = ""
         self._last_error = ""
+        self._hydrate_install_source_marker()
         self._training_status = ""
         self._iotconnect_connected = False
         self._workflow_thread: Optional[threading.Thread] = None
@@ -676,6 +680,46 @@ class TrainingWorkspace:
             return
         raise RuntimeError(f"Unsupported package format: {archive_path.name}")
 
+    def _install_source_marker_path(self) -> Path:
+        return DEPLOY_MODELS_DIR / ".install-source.json"
+
+    def _write_install_source_marker(self, *, package_name: str, s3_uri: str, installed_at: str) -> None:
+        marker = self._install_source_marker_path()
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "package_name": package_name,
+            "s3_uri": s3_uri,
+            "installed_at": installed_at,
+        }
+        marker.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    def _hydrate_install_source_marker(self) -> None:
+        marker = self._install_source_marker_path()
+        if not marker.is_file():
+            return
+        model_path = DEPLOY_MODELS_DIR / "model.tflite"
+        if not model_path.is_file():
+            try:
+                marker.unlink()
+            except OSError:
+                pass
+            return
+        try:
+            payload = json.loads(marker.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return
+        s3_uri = str(payload.get("s3_uri", "")).strip()
+        package_name = str(payload.get("package_name", "")).strip()
+        installed_at = str(payload.get("installed_at", "")).strip()
+        if not s3_uri:
+            return
+        with self._lock:
+            self._last_installed_model_s3_uri = s3_uri
+            if package_name:
+                self._last_installed_model_name = package_name
+            if installed_at:
+                self._last_install_at = installed_at
+
     def install_model_package(self, requested_s3_uri: str = "") -> dict:
         package = self._resolve_model_package(requested_s3_uri.strip())
         session = self._create_model_session()
@@ -704,11 +748,21 @@ class TrainingWorkspace:
                 raise RuntimeError(output or f"install.sh failed with exit code {exc.returncode}") from exc
 
         installed = self.installed_model_summary()
+        installed_at = utc_now()
+        installed_name = installed["package_name"] or package["package_name"]
         with self._lock:
-            self._last_installed_model_name = installed["package_name"] or package["package_name"]
+            self._last_installed_model_name = installed_name
             self._last_installed_model_s3_uri = package["s3_uri"]
-            self._last_install_at = utc_now()
+            self._last_install_at = installed_at
             self._last_error = ""
+        try:
+            self._write_install_source_marker(
+                package_name=installed_name,
+                s3_uri=package["s3_uri"],
+                installed_at=installed_at,
+            )
+        except OSError as exc:
+            self._event("DEPLOY", f"Warning: could not persist install source marker ({exc})")
         self._event("DEPLOY", f"Installed model package {package['package_name']} onto {DEPLOY_MODELS_DIR}")
         return {
             "selected_package": package,
@@ -1697,6 +1751,64 @@ def api_models_install():
         return jsonify({"ok": False, "error": str(exc), "state": workspace.snapshot()}), 400
     workspace.clear_error()
     return jsonify({"ok": True, "result": result, "state": workspace.snapshot()})
+
+
+def _find_optimize_script() -> Optional[Path]:
+    candidates = [
+        BASE_DIR.parent / "scripts" / "optimize_dataset_clips.py",
+        Path("/root/kws-training/scripts/optimize_dataset_clips.py"),
+        Path(os.getenv("KWS_TRAINING_OPTIMIZE_SCRIPT", "")) if os.getenv("KWS_TRAINING_OPTIMIZE_SCRIPT") else None,
+    ]
+    for path in candidates:
+        if path and path.is_file():
+            return path
+    return None
+
+
+@app.post("/api/dataset/optimize")
+def api_dataset_optimize():
+    payload = request.get_json(silent=True) or {}
+    dry_run = bool(payload.get("dry_run"))
+    include_bg = bool(payload.get("include_background_noise"))
+
+    if workspace.snapshot()["recording"]["active"]:
+        return jsonify({"ok": False, "error": "Stop the active recording before running Optimize Clips.", "state": workspace.snapshot()}), 409
+
+    script_path = _find_optimize_script()
+    if not script_path:
+        msg = "optimize_dataset_clips.py not found. Set KWS_TRAINING_OPTIMIZE_SCRIPT or place the script under scripts/."
+        workspace.note_error(msg)
+        return jsonify({"ok": False, "error": msg, "state": workspace.snapshot()}), 500
+
+    cmd = [sys.executable, str(script_path), "--dataset-root", str(DATASET_ROOT)]
+    if dry_run:
+        cmd.append("--dry-run")
+    if include_bg:
+        cmd.append("--include-background-noise")
+
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        msg = "Optimize timed out after 600s."
+        workspace.note_error(msg)
+        return jsonify({"ok": False, "error": msg, "state": workspace.snapshot()}), 504
+
+    if proc.returncode != 0:
+        err = (proc.stderr or proc.stdout or "optimize failed").strip()
+        workspace.note_error(err)
+        return jsonify({"ok": False, "error": err, "stdout": proc.stdout, "stderr": proc.stderr, "state": workspace.snapshot()}), 500
+
+    try:
+        summary = json.loads(proc.stdout) if proc.stdout.strip() else {}
+    except json.JSONDecodeError:
+        summary = {"raw": proc.stdout}
+
+    workspace._event(
+        "DATASET",
+        f"Optimized clips: {summary.get('optimized_files', 0)} changed, {summary.get('unchanged_files', 0)} unchanged, {summary.get('skipped_files', 0)} skipped" + (" (dry-run)" if dry_run else ""),
+    )
+    workspace.clear_error()
+    return jsonify({"ok": True, "result": summary, "state": workspace.snapshot()})
 
 
 def main():
