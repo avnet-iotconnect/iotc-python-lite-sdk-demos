@@ -18,14 +18,17 @@
 This guide provides step-by-step instructions to set up the NXP FRDM i.MX 95 hardware and integrate it with /IOTCONNECT,
 Avnet's robust IoT platform.
 
-<!-- TODO: add a board photo to ./media/FRDM95.png and restore the two-column intro table used by the other boards -->
-
-The FRDM i.MX 95 development board is a low-cost, compact development platform featuring the i.MX 95 applications
+<table>
+  <tr>
+    <td><img src="./media/FRDM95.png" width="6000"></td>
+    <td>The FRDM i.MX 95 development board is a low-cost, compact development platform featuring the i.MX 95 applications
 processor with 6x Arm Cortex-A55 cores, an Arm Cortex-M7 real-time core, an Arm Cortex-M33 safety core, and the
-integrated **eIQ Neutron NPU (2 TOPS)** for on-device machine learning — including Generative AI / small language
+integrated <b>eIQ Neutron NPU (2 TOPS)</b> for on-device machine learning — including Generative AI / small language
 models via NXP's eIQ GenAI Flow software pipeline. The board includes 8 GB LPDDR4X, 32 GB eMMC, a microSD slot, and an
 onboard IW612 module featuring NXP's Tri-Radio solution with Wi-Fi 6 + Bluetooth 5.4 + 802.15.4, making it ideal for
-modern industrial, IoT, and edge AI applications.
+modern industrial, IoT, and edge AI applications.</td>
+  </tr>
+</table>
 
 # 2. Requirements
 
