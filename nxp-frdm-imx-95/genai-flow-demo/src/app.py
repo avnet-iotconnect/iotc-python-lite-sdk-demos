@@ -1766,6 +1766,7 @@ class PersistentVLM:
     """
 
     def __init__(self):
+        self.name = "VLM"          # agent_reaper logs sess.name for every session kind
         self.proc = None
         self.q = None
         self.signature = None      # (model, precision) the worker was started with
