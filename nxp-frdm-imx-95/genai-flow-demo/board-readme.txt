@@ -38,7 +38,7 @@ systemctl restart genai-app genai-camera genai-mcp
                            readback via the on-board MCP server)
    voice-start / voice-stop   "Hey NXP" voice assistant
    set-rag on|off          ground answers in the board's documentation
-   set-backend cpu|neutron    CPU vs on-chip NPU
+   set-backend cpu|neutron|ara2   CPU, on-chip NPU, or Ara240 module
    set-model <name>        danube / qwen models (bad value lists options)
    set-stt <name>          voice transcriber (moonshine-tiny/base, whisper)
 

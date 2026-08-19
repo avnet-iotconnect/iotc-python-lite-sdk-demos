@@ -115,7 +115,7 @@ on a webcam mic); ~900 RMS at casual seating distance fails against a ~450 noise
 
 | Model | Params | On disk | Function | Measured performance |
 |---|---|---|---|---|
-| **all-MiniLM-L6-v2** (ONNX) | ~22 M, 384-dim | 88 MB | Embeds the knowledge base and queries; retrieval, reranking, and in/out-of-domain classification | Database build: **~30 chunks/s on the A55s** (25-chunk board KB in <1 min). Correct-match query similarity typically **0.35–0.45** with hand-made chunks — hence the 0.65→0.35 classifier threshold change (README §9) |
+| **all-MiniLM-L6-v2** (ONNX) | ~22 M, 384-dim | 88 MB | Embeds the knowledge base and queries; retrieval, reranking, and in/out-of-domain classification | Database build: **~30 chunks/s on the A55s** (24-chunk board KB in <1 min). Correct-match query similarity typically **0.35–0.45** with hand-made chunks — hence the 0.65→0.35 classifier threshold change (README §9) |
 
 ## Board resources: what fits on a FRDM-IMX95
 
@@ -124,7 +124,7 @@ The board that runs all of the above (measured with the full demo kit installed)
 | Resource | Total | Notes |
 |---|---|---|
 | **RAM** | 8 GB LPDDR4X (~7.7 GB usable) | Shared by Linux, the demo services, and every loaded model |
-| **CMA / NPU pool** | ~5.1 GB (960 MB stock + 4 GB Neutron pool) | The 4 GB pool comes from booting the Neutron device tree shipped in the LF6.18.20_2.0.0 boot partition (see README, [Enabling the Neutron NPU](README.md#enabling-the-neutron-npu)); Neutron LLM inference consumes ~2.5 GB of it while loaded |
+| **CMA / NPU pool** | ~5.1 GB (960 MB stock + 4 GB Neutron pool) | The 4 GB pool comes from booting a Neutron device tree (see README, [Enabling the Neutron NPU](README.md#enabling-the-neutron-npu)); Neutron LLM inference consumes ~2.5 GB of it while loaded |
 | **eMMC storage** | 32 GB (28 GB rootfs after expansion) | Stock image ships with only an 11 GB partition — expansion is step one (README §2) |
 
 ### Disk budget (as installed, measured)

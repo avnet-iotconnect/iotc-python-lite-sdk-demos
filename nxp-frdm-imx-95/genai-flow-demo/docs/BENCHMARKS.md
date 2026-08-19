@@ -1,6 +1,6 @@
 # LLM Benchmark: one prompt, every backend and model
 
-Measured **2026-07-28** on a FRDM i.MX 95 (8 GB LPDDR5) with a Kinara Ara-2 / NXP **Ara240** discrete NPU
+Measured **2026-07-28** on a FRDM i.MX 95 (8 GB LPDDR4X) with a Kinara Ara-2 / NXP **Ara240** discrete NPU
 (M.2, rt-sdk-ara2 2.0.4, eIQ AAF Connector on `:8100`). Every combination ran the **same prompt** through the
 demo's real `ask-llm` code paths (`run_llm_prompt` in [src/app.py](../src/app.py)), one at a time, with CPU and
 memory sampled once per second during each run. Responses below are **verbatim model output** — unedited.
@@ -8,7 +8,7 @@ memory sampled once per second during each run. Responses below are **verbatim m
 > **Prompt:** `What color is an apple?`
 
 Reproduce with [src/bench_llms.py](../src/bench_llms.py) (run on the board:
-`python3 /tmp/bench.py`, results land in `/tmp/bench_results.json`) — or interactively from a browser with
+`python3 /opt/demo/bench_llms.py`, results land in `/tmp/bench_results.json`) — or interactively from a browser with
 [src/bench_server.py](../src/bench_server.py): it serves a shootout UI on `http://<board-ip>:8090` where you
 type any prompt, tick the backend/model combinations to compare, and watch the same metrics and verbatim
 responses stream in as each run completes. Install it as the `genai-bench` systemd service (same pattern as
@@ -79,7 +79,9 @@ Notes on the columns:
 
 - **Ara240** serves the largest model on the board (7B — 14× Danube's parameter count) with zero load time,
   the lowest CPU use (the NPU does the work), and essentially no host-RAM cost (~27 MB delta vs. 1.1–3.4 GB for
-  the CPU paths). It is also home to the fastest configuration measured (the 1.5B at 27.3 tok/s, 2.4 s wall).
+  the CPU paths). It is also home to the fastest configuration measured (the 1.5B at 27.3 tok/s, 2.4 s wall —
+  a 6-token answer, so treat that rate as a small-sample burst; longer generations measure ~18.7 tok/s, see
+  [MODELS.md](../MODELS.md)).
 - **Neutron** delivers the best TTFT once running (0.29–0.31 s) but pays a 2–2.5 min compile/load and the
   highest memory (4.2–4.5 GB).
 - **Response quality tracks model size.** Only the 7B covers red/green/yellow, mixes, and ripeness. The small

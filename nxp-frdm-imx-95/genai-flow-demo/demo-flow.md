@@ -3,6 +3,8 @@
 A complete walk-through for demonstrating every feature, with expected results, time-to-result, and the telemetry
 to point at. All timings were measured on real hardware (FRDM-IMX95, BSP LF6.18.2). Assumes the device is powered,
 on the network, and onboarded. Full specs for every AI model in the demo are in [MODELS.md](MODELS.md).
+Recording this walk-through as a video? [docs/VIDEO-SCRIPT.md](docs/VIDEO-SCRIPT.md) has the shot list, verbatim
+voice-over, pre-flight checks and timing budget.
 
 **The one rule:** the board runs **one AI operation at a time**. `ask-llm`, `ask-vlm`, `ask-agent`, and
 `run-benchmark` will answer "busy" while another is running — and a **voice session holds the engine for its entire
@@ -20,15 +22,17 @@ engine. Times are measured.
 Plug in the board; Linux boots in ~1 minute. Find the IP (router, serial console, or wait for `board_ip`
 telemetry). A static DHCP lease avoids every downstream IP problem.
 
-### T+1:00 — Start the demo services
-SSH or serial in as `root`, then:
+### T+1:00 — Verify the demo services came up
+The demo autostarts on power-up (systemd: `genai-app`, `genai-camera`, `genai-mcp` on a prepared booth board) —
+give it ~90 s after plug-in. SSH or serial in as `root`, then:
 
 ```bash
-cat readme.txt   # section 1 is the paste-to-start block
+cat readme.txt   # section 1 is the paste-to-check health block
 ```
 
-Paste the block: cloud app, camera server, and MCP server start with a status printout (`RUNNING` ×3 + board
-IP, ~15 s). The MCP auth token persists across boots — no re-login needed.
+Paste the block: it prints `active` ×3 (cloud app, camera server, MCP server) plus the board IP and board time.
+The MCP auth token persists across boots — no re-login needed. If a service reads anything but `active`:
+`systemctl restart genai-app genai-camera genai-mcp`.
 
 ### T+2:00 — Browser checks
 1. Device shows online in /IOTCONNECT; telemetry timestamps current (10 s cadence).
@@ -98,34 +102,36 @@ The cloud only carries the telemetry."*
 
 ## 2. Vision: the board describes what it sees (~45 s)
 
-**Do**: press the **"Ask VLM: Describe Scene"** button (or `ask-vlm What do you see?` — with no argument it
-defaults to "Describe what you see in this image").
+**Do**: press the **"VLM: Scene?"** button (labeled **Look**; or send `ask-vlm What do you see?` — with no
+argument it defaults to "Describe what you see in this image").
 
 **Expect**: command acks in ~2 s; **30–45 s later** the orange Vision card fills with a scene description —
 reliably identifies people, clothing colors, glasses, held objects, and room features.
 
-**Point at**: `vlm_response` (the description), `vlm_vision_time` (**~3.6–4.5 s** vision encode),
-`vlm_tps` (**~10 tok/s** decode).
+**Point at**: `vlm_response` (the description), `vlm_vision_time` (**~4.4 s** vision encode),
+`vlm_tps` (**~9.5 tok/s** decode).
 
 **Crowd move**: have the visitor hold an object up to the camera and ask again — it names what they're holding.
 
 ## 3. The hallucination A/B: why agents matter (~2 min)
 
 This is the smartest beat in the demo. **Requires RAG Off** for part one (the RAG classifier otherwise politely
-declines off-topic questions — itself worth showing, see beat 5).
+declines off-topic questions — itself worth showing, see beat 4).
 
-1. Flip **RAG Grounding → Off**, `set-model qwen2.5-0.5b-instruct-q8_0`, then `ask-llm what time is it`.
+1. Flip the **Grounding** switch **→ Off** (careful: the widget titled *"RAG"* next to it is an `ask-llm` demo
+   button, not the toggle), `set-model qwen2.5-0.5b-instruct-q8_0`, then `ask-llm what time is it`.
    **Expect ~15 s** (llama.cpp loads in 5.6 s — this used to be the slowest moment of the flow; on Danube it costs
    1–2.5 min): a confidently **invented** time. No LLM has a clock; the fancier model just invents more fluently.
    Let the visitor laugh.
-2. Press **"Agent: What Time Is It?"** (`ask-agent what time is it`).
+2. Press **"Agent: Time?"** (labeled **Ask**; sends `ask-agent what time is it`).
    **Expect**: first-ever run ~90 s (session load); **pre-warmed: 10–20 s** — the **correct** date and time.
 
 **Point at** the green Agent card / telemetry chain:
 * `agent_tool: get_time` — the LLM *chose* an action instead of answering
 * `agent_tool_result` — the real data the board fetched
 * `agent_response` — the grounded answer
-* `agent_router` — `llm` (model picked the tool itself) or `keyword-override` (the safety net caught a bad pick)
+* `agent_router` — `llm` (model picked the tool itself), `keyword-override` (the safety net caught a bad pick),
+  or `keyword` (fallback matched when the model's pick was unusable)
 
 **Follow-ups** (each 10–20 s, session stays warm): `ask-agent how warm is the chip` (compare with the temperature
 gauge live!), `ask-agent how much memory is in use`, `ask-agent what usb devices are plugged in` (plug something
@@ -138,11 +144,12 @@ RAG runs through the Danube/GenAI Flow path only, so switch back first: `set-mod
 crowd pacing, `set-backend cpu` (a 44 s load per question instead of the NPU's 129 s compile; save the NPU for
 the ladder beat where the wait *is* the story).
 
-**Do**: flip **RAG Grounding → On**, then `ask-llm How do I expand the root filesystem?`
+**Do**: flip the **Grounding** switch **→ On**, then `ask-llm How do I expand the root filesystem?`
 
 **Expect**: the answer quotes the board's documentation **verbatim**, including the exact `parted` and `resize2fs`
 commands. Other good questions: *"What baud rate does the serial console use?"* (115200), *"What tokens per second
-does the Neutron NPU achieve?"* (13.7).
+does the Neutron NPU achieve?"* (13.7 — a board whose RAG database was embedded from the older chunk file answers
+13.9; rebuild per README §9 to update it).
 
 **Point at**: `llm_rag: on`, and the contrast with beat 3's invention — same model, now grounded.
 
@@ -193,7 +200,8 @@ Best with the USB headset (show floors are loud); a powered speaker on the 3.5 m
    *"Hey NXP … turn **off** the lights."* Requires the MCP server running and authenticated (§0 start block +
    README §10).
 6. **Transcription accuracy is selectable**: `set-stt whisper-small.en` before `voice-start` for the accuracy-
-   critical version (0.00 % clean-speech WER, +1.2 s per utterance) — `moonshine-base` is the balanced default.
+   critical version (0.00 % clean-speech WER, +1.2 s per utterance) — `moonshine-base` is the balanced choice
+   (the shipped default is `moonshine-tiny`; §0's demo-state step sets base).
 7. **`voice-stop` when done** — this is the step people forget, and it blocks every other AI command until sent.
 
 ## 7. Optional: the official benchmark (10–30 min — run between crowds)
@@ -309,8 +317,8 @@ CPU/Neutron comparison in [MODELS.md](MODELS.md).
 | `llm_ttft` | responsiveness | 0.13–0.83 s (model-dependent; see [MODELS.md](MODELS.md)) |
 | `llm_backend` | where inference runs | `cpu` / `neutron` / `cpu-llama.cpp` / `ara2` (Ara240 module, §8) |
 | `llm_rag` | grounded or free-wheeling | `on` for doc questions |
-| `agent_router` | did the LLM route correctly | `llm` (itself) / `keyword-override` (safety net) |
-| `vlm_vision_time` | image understanding speed | 3.6–4.5 s |
+| `agent_router` | did the LLM route correctly | `llm` (itself) / `keyword-override` / `keyword` (safety nets) |
+| `vlm_vision_time` | image understanding speed | ~4.4 s |
 | `cpu_temp` | thermal story | ~45 °C idle, ~63 °C under sustained load |
 | `voice_status` | voice session state | `listening` = ready for "Hey NXP" |
 | `voice_stt` | active transcriber | `moonshine-base` (balanced) / `whisper-small.en` (0 % WER) |
@@ -330,7 +338,7 @@ CPU/Neutron comparison in [MODELS.md](MODELS.md).
 | Wake word ignored at a new venue | speaking too far from the mic (works at ≥4000 RMS, fails near the ~450 noise floor) | run the mic check below; move the mic to arm's length of the speaker |
 | Status badges show `error` but everything works | last-known value from a past failure (statuses don't auto-clear) | run any successful operation of that engine (e.g. `voice-start`/`voice-stop`) and it resets |
 | Agent reports a wrong date/time | board clock drifted (no RTC battery) and the venue blocks NTP — `timedatectl` may still claim "synchronized" | `date -u -s 'YYYY-MM-DD HH:MM:SS'` on the board, then `hwclock --systohc`; the start block prints board time so you catch it at T+1 |
-| Nothing responds at all | app died | on the board: `cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &` |
+| Nothing responds at all | app died | on the board: `systemctl restart genai-app` (no service installed? `cd /opt/demo && nohup python3 -u app.py > app.log 2>&1 &`) |
 
 ### Venue mic check (run after any board move, before doors open)
 

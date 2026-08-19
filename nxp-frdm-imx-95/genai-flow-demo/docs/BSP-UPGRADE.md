@@ -30,7 +30,7 @@ stack **cannot run** — verified on hardware. Revisit only once NXP publishes `
 | NXP eIQ GenAI Flow | every board | the LLM/VLM/voice stack (v3.0); ships `cpython-313` binaries → needs Python 3.13 |
 | This demo package | every board | `frdm-imx95-genai-flow-demo-v1.0.2.tgz` (README section 5) |
 | llama.cpp | every board | needed for GGUF models pushed from /IOTCONNECT |
-| rt-sdk-ara240 | **Ara boards only** | **2.0.4** on whinlatter (matches the r2.0.4 models). See the Ara note below. |
+| rt-sdk-ara2 | **Ara boards only** | **2.0.4** on whinlatter (matches the r2.0.4 models). See the Ara note below. |
 | eIQ AAF Connector | **Ara boards only** | **2.0**, matched to rt-sdk 2.0.4 |
 
 ### Ara240 runtime — stay on 2.0.4
@@ -71,7 +71,7 @@ sized before proceeding.
 
 ## Step 1 — flash the BSP
 
-Follow [FLASHING.md](../FLASHING.md) with the **LF6.18.2-1.0.0** image. For the FRDM 15×15 board the files are
+Follow [FLASHING.md](../../FLASHING.md) with the **LF6.18.2-1.0.0** image. For the FRDM 15×15 board the files are
 `imx-boot-imx95-15x15-lpddr4x-frdm-sd.bin-flash_all` (bootloader) and `imx-image-full-imx95evk.wic` (rootfs;
 shared across i.MX95 variants — the board-specific part is the boot binary).
 

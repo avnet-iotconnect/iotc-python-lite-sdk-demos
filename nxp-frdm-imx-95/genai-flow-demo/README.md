@@ -26,7 +26,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 * **Prompt the on-device LLM from the cloud** with the `ask-llm` command and see the response and measured performance
   come back as telemetry.
 * **Ask a Vision Language Model about the camera view** with the `ask-vlm` command — a USB webcam frame is captured
-  and answered about by SmolVLM running on the board (see [Vision Language Model](#vision-language-model-ask-vlm)).
+  and answered about by SmolVLM2 running on the board (see [Vision Language Model](#vision-language-model-ask-vlm)).
 * **Run the official GenAI Flow benchmark** (`run-benchmark`) and publish its metrics (TTFT, tokens/sec, CPU/memory
   averages) to your dashboard.
 * **Switch models and backends** (`set-model`, `set-backend`) to compare CPU vs. eIQ Neutron NPU performance.
@@ -43,7 +43,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 ### Measured performance
 
 Measured on a FRDM-IMX95 (BSP LF6.18.2, `danube-500M-q8`, identical prompt; load time excluded from
-performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix):
+performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configurations plus the VLM and STT tables):
 
 | Metric | CPU (6× Cortex-A55) | eIQ Neutron NPU |
 |---|---|---|
@@ -91,14 +91,10 @@ on first use). Install it on the board first:
    ```
 
    > [!TIP]
-   > A packaged copy of the demonstrator is also mirrored on our S3 hosting, so you can `wget` it directly onto the
-   > board (or your host) without Git LFS:
-   > ```bash
-   > wget https://downloads.iotconnect.io/partners/nxp/packages/dm-eiq-genai-flow-lib-v1.0.0.tgz
-   > tar -xzf dm-eiq-genai-flow-lib-v1.0.0.tgz
-   > ```
-   > Alternatively, `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM packages) so the
-   > board pulls the demonstrator and this demo repo straight from Git.
+   > No Git LFS on your host? `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM
+   > packages) so the board pulls the demonstrator and this demo repo straight from Git. (The
+   > `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download server is **not** a copy of the demonstrator — it is a
+   > pruned library subset built for a different demo and cannot be used for this install.)
 
 2. On the **board**:
 
@@ -158,9 +154,12 @@ python3 app.py
 ```
 
 > [!TIP]
-> For hands-off starts (booth staff, colleagues), copy [board-readme.txt](board-readme.txt) to the board as
-> `/root/readme.txt` — anyone can then `cat readme.txt` and paste the block it prints to start every demo
-> service (app, camera server, MCP server) with a built-in status check.
+> For hands-off operation (booth staff, colleagues), copy [board-readme.txt](board-readme.txt) to the board as
+> `/root/readme.txt` — anyone can then `cat readme.txt` and paste its health-check block to verify the demo
+> services (app, camera server, MCP server) and get the board's IP. Note it assumes a board prepared with
+> [workshop-install.sh](src/workshop-install.sh), which installs the `genai-app`/`genai-camera` systemd services
+> (the `genai-mcp` service additionally needs the [MCP server](#10-agent-llm-with-real-board-tools-ask-agent)
+> installed and a matching unit created). On a plain install, start the app with `python3 app.py` instead.
 
 
 ## 6. Using the Demo
@@ -171,16 +170,20 @@ to interact with the LLM:
 | Command | Argument | What it does |
 |---|---|---|
 | `ask-llm` | prompt text, e.g. `What is the capital of France?` | Runs the prompt through the on-device LLM. The command is acknowledged immediately; the response arrives as `llm_response` telemetry along with `llm_ttft`, `llm_gen_time`, `llm_tps`, and `llm_token_count` |
-| `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
+| `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM2. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
 | `ask-agent` | request needing live data, e.g. `what time is it` | Function calling: the LLM picks a real board tool (time, temperature, memory, uptime, IP), the board executes it, and the grounded answer plus the full reasoning chain arrive as `agent_*` telemetry. See [Agent](#10-agent-llm-with-real-board-tools-ask-agent) |
 | `agent-start` | — | Pre-warms the agent session (~1 min) so the first question answers in seconds — send at booth open |
-| `agent-stop` | — | Stops the agent’s persistent LLM session (it also auto-stops after 15 idle minutes) |
+| `agent-stop` | — | Stops the agent’s persistent LLM session (it also auto-stops after 60 idle minutes — `agent_idle_timeout_s`) |
 | `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
 | `voice-stop` | — | Stops the voice assistant session |
 | `set-stt` | `moonshine-tiny`, `moonshine-base`, or `whisper-small.en` | Selects the voice transcriber (speed vs. accuracy). Applies on the next `voice-start` |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
-| `set-model` | `danube-500M-q8`, `danube-500M-q4`, or any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`) | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU |
-| `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
+| `set-model` | `danube-500M-q8`, `danube-500M-q4`, any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`), or an Ara240 model served by the AAF connector | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU; picking an Ara240 model switches the backend to `ara2` automatically. An invalid name returns the list of available models |
+| `set-backend` | `cpu`, `neutron`, or `ara2` | Selects where `ask-llm` runs: CPU, eIQ Neutron NPU, or the Kinara Ara-2 / Ara240 module (see the backend sections above/below) |
+| `set-rag` | `on` or `off` | Toggles RAG grounding for `ask-llm`, the voice assistant, and `run-benchmark` (see [RAG](#9-rag-ground-answers-in-your-own-documentation-set-rag)) |
+| `rag-add` | document URL, optional name | Downloads a document (IOTCONNECT's file upload provides a URL), chunks and embeds it into the on-device RAG database — watch `rag_status` |
+| `rag-show` | document name | Publishes a preview of a document's chunks (`rag_preview` telemetry) |
+| `rag-remove` | document name | Removes a document from the RAG database |
 | `get-ip` | — | Returns the board's local IP address |
 | `file-download` | package URL | Self-update with a new demo package |
 
@@ -310,7 +313,7 @@ Ara240, and starts serving it (no SSH). Step-by-step with screenshots: [docs/MOD
 <a name="vision-language-model-ask-vlm"></a>
 ## 7. Vision Language Model (ask-vlm)
 
-The GenAI Flow repository also ships a **VLM submodule** (SmolVLM-256M/500M) that answers natural-language questions
+The GenAI Flow repository also ships a **VLM submodule** (SmolVLM2-256M/500M) that answers natural-language questions
 about images — this demo wires it to a USB camera so you can ask about the live scene from /IOTCONNECT.
 
 ### Install
@@ -335,8 +338,8 @@ Send the `ask-vlm` command from /IOTCONNECT — with no argument it describes th
 `Is there a person in the room?`. The app captures a fresh frame via GStreamer, runs the VLM (models download on
 first use), and publishes `vlm_response` plus performance telemetry.
 
-Measured on the FRDM-IMX95 CPU with SmolVLM-256M q8 and a 1280×720 frame: **vision encode ~3.6 s, time to first
-token ~4.1 s, decode ~10–11 tok/s**.
+Measured on the FRDM-IMX95 CPU with SmolVLM2-256M q8 and a 1280×720 frame: **vision encode ~4.4 s, time to first
+token ~4.9 s, decode ~9.5 tok/s** (see [MODELS.md](MODELS.md)).
 
 ## 8. Voice Assistant (voice-start)
 
@@ -414,6 +417,10 @@ echo "User guide for the NXP FRDM i.MX 95 development board." | \
 To use your own content, write a chunk file in the same JSON format (groups of short, self-contained factual
 passages) and rebuild — any product manual, datasheet, or procedure text works.
 
+You can also manage the database **from the cloud**, no SSH needed: `rag-add <document URL> [name]` downloads a
+document (upload it via IOTCONNECT to get a URL), chunks and embeds it on the board (progress in `rag_status` /
+`rag_detail`); `rag-show <name>` publishes a preview of a document's chunks; `rag-remove <name>` deletes it.
+
 ### Calibrate the ambiguity threshold
 
 GenAI Flow's query classifier rejects questions as "ambiguous" when retrieval similarity is below
@@ -453,11 +460,19 @@ output — a complete plan → act → respond loop running on a small model at 
 Send `ask-agent` with a request that needs live data, e.g. `what time is it`, `how warm is the chip`,
 `how much memory is in use`. Telemetry shows the whole reasoning chain: `agent_tool` (which tool was picked),
 `agent_tool_result` (the real data), `agent_response` (the grounded answer), and `agent_router` — `llm` when the
-model chose the tool itself, `keyword` when the fallback matcher rescued an unparseable pick.
+model chose the tool itself, `keyword-override` when the safety net overrode a bad pick, `keyword` when the
+fallback matcher rescued an unparseable one.
 
 The agent keeps one persistent LLM session alive (CPU backend), so the **first** request takes ~1 minute to load and
-subsequent ones answer in seconds. The session stops itself after 15 idle minutes (configurable via
+subsequent ones answer in seconds. The session stops itself after 60 idle minutes (configurable via
 `agent_idle_timeout_s`), or immediately with `agent-stop`.
+
+Beyond the local tools, the agent can also query your **/IOTCONNECT account itself** (fleet devices, health,
+telemetry readback) through Avnet's [iotc-mcp-server](https://github.com/avnet-iotconnect/iotc-mcp-server) running
+on the board. Install it with `python3 -m pip install iotconnect-mcp-server`, start it with `iotc-mcp-server` (the
+demo expects it at `http://127.0.0.1:8000/mcp` — `mcp_url` in `/opt/demo/genai-config.json`), and authenticate once
+with `iotconnect-cli configure` (the session token refreshes automatically afterwards). Without it, the local board
+tools above still work — only the cloud-backed tools report the server as unreachable.
 
 ### Companion device: MCX predictive-maintenance (PdM)
 
@@ -475,7 +490,7 @@ faults by voice, and the MCXN947 detects them.
 
 Set the target device in `/opt/demo/genai-config.json` (`vibration_duid`, default `mclMCXvib`). Then, with the
 agent warm: `ask-agent how's the motor` → reads the live state; `ask-agent inject a fault` → the unbalanced motor
-spins and the MCX board reports `fault`. Requires the MCP server running and authenticated (§0 start block) and the
+spins and the MCX board reports `fault`. Requires the MCP server running and authenticated (see above) and the
 companion device onboarded — see the [eIQ PdM demo](https://github.com/avnet-iotconnect/iotc-zephyr-demos/tree/main/demos/eiq-pdm-vibration).
 
 ### Test without the cloud
