@@ -53,8 +53,9 @@ Save. The model appears in **My Model** with status **Completed**:
 
 ## 3. Push the model to the device
 
-**AI Models → Push Model.** Select the model + version, pick the device template (**`genaiflow`**), choose
-**Selected devices → `MCLiMX95b`**, and click **Push Model**.
+**AI Models → Push Model.** Select the model + version, pick the device template your device is on —
+**`genaiflow`** if you imported this repo's template (the screenshots show our booth account's `iMX95genai`) —
+choose **Selected devices → `MCLiMX95b`**, and click **Push Model**.
 
 ![Push Model to the FRDM device](media/push-model/4-push-model.png)
 
@@ -81,7 +82,8 @@ new model). Then `ask-llm` answers on the freshly pushed model:
 > network, enabling real-time decision-making and analysis."* — served by `Qwen25C15B` on the Ara240.
 
 `model_deploy_*` are telemetry attributes; add **`model_deploy_status`**, **`model_deploy_name`**, and
-**`model_deploy_detail`** to the `genaiflow` template to show the deploy progress on a dashboard.
+**`model_deploy_detail`** to your device's template (`genaiflow` in this repo) to show the deploy progress on a
+dashboard.
 
 ---
 

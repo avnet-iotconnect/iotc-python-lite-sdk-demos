@@ -147,7 +147,7 @@ Artwork for the engine-state tiles is in this repo:
 | **Change** | **VLM Time to First Token** gauge max `3` → **`6`** | Real `vlm_ttft` is ~4.9 s. At max 3 the needle **pegs at full red on every vision call** |
 | **Change** | **LLM Time to First Token** gauge max `3` → **`5`** | Ara 7B TTFT is 2.06 s — at max 3 it sits ~70% of scale in the red band, during the headline shot |
 | **Leave** | **LLM Tokens / Second** at 0–20 | Do **not** rescale to flatter the Ara — see §3.7. The honest ladder needs green at 10+ |
-| **Optional** | **`model_deploy_status` / `_name` / `_detail`** added to the `genaiflow` template, plus a text widget | §3.8. If you skip it, use the fallback in that segment |
+| **Optional** | **`model_deploy_status` / `_name` / `_detail`** added to the device's template (`iMX95genai` on the booth account; `genaiflow` if imported from this repo), plus a text widget | §3.8. If you skip it, use the fallback in that segment |
 | **Clear** | The red **"Failed"** under the `Voice Asst.` toggle — residue from `voice-start` failing on the old C920 capture device | It's in every wide shot. One successful `voice-start` / `voice-stop` clears it |
 
 Some of these may already exist off-screen — the dashboard scrolls horizontally. **Scroll right and check before
@@ -450,7 +450,7 @@ Cut to Source B on the Ara240 module in the M.2 slot as the VO says "we just add
 | # | Where | Action | Expect |
 |---|---|---|---|
 | 1 | Board | *(pre-flight §1.3 already removed `Qwen25C15B`)* | connector serves only the 7B |
-| 2 | IOTCONNECT | **AI Models → Push Model**, model `Qwen25C15B` v1.0.0.0, template `genaiflow`, **Selected devices → MCLiMX95b**, **Push Model** | — |
+| 2 | IOTCONNECT | **AI Models → Push Model**, model `Qwen25C15B` v1.0.0.0, template `iMX95genai` (the booth account's; `genaiflow` if imported from this repo), **Selected devices → MCLiMX95b**, **Push Model** | — |
 | 3 | Dashboard | watch `model_deploy_status` | `idle → downloading → deploying → loading → ready`, **~54 s** |
 | 4 | Dashboard | `ask-llm In one sentence, what is edge AI?` | answered by `Qwen25C15B` on the Ara240 |
 | 5 | Dashboard | `set-model Qwen2.5-7B-Instruct` | instant — both stay resident |
