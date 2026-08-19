@@ -2203,6 +2203,26 @@ def on_command(msg: C2dCommand):
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Options: " + ", ".join(valid_stt))
 
+    elif msg.command_name == "set-vlm":
+        # PersistentVLM.ask() reloads the worker whenever (model, precision)
+        # changes, so updating the config is all a switch needs.
+        valid_vlm = ("smolvlm-256M", "smolvlm-500M")
+        valid_prec = ("q8", "fp32")
+        args = msg.command_args
+        if 1 <= len(args) <= 2 and args[0] in valid_vlm and (len(args) < 2 or args[1] in valid_prec):
+            config["vlm_model"] = args[0]
+            if len(args) == 2:
+                config["vlm_precision"] = args[1]
+            save_config(config)
+            with telemetry_lock:
+                telemetry["vlm_model"] = "%s (%s)" % (config["vlm_model"], config["vlm_precision"])
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "VLM set to %s (%s) - the next ask-vlm reloads the model (a first-ever "
+                               "load also downloads it)" % (config["vlm_model"], config["vlm_precision"]))
+        else:
+            c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                               "Usage: set-vlm <%s> [%s]" % ("|".join(valid_vlm), "|".join(valid_prec)))
+
     elif msg.command_name in ("rag-show", "rag-remove"):
         if len(msg.command_args) < 1:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected a document name")

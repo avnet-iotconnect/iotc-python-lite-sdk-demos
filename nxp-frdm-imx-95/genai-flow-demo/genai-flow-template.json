@@ -454,6 +454,13 @@
             "isOTACommand": false
         },
         {
+            "name": "Set VLM Model (smolvlm-256M | smolvlm-500M, optional q8 | fp32)",
+            "command": "set-vlm",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
+        {
             "name": "Set RAG grounding (on | off)",
             "command": "set-rag",
             "requiredParam": true,

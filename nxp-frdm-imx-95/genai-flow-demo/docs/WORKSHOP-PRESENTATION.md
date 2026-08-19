@@ -258,7 +258,7 @@ is what it's worth.*
 ### 13 · The management plane: /IOTCONNECT
 
 - Every board here is a normal /IOTCONNECT device — nothing workshop-specific
-- The **device template** is the contract: this one defines **54 telemetry attributes** and **17 commands**
+- The **device template** is the contract: this one defines **54 telemetry attributes** and **18 commands**
 - **D2C**: the board publishes ~50 attributes every 10 s over MQTT (perf metrics, AI responses, health)
 - **C2D**: every dashboard button is a real cloud-to-device command with an acknowledgement
 - Plus: x.509 device identity, OTA delivery, **AI model management**, file storage, fleet queries — all on a public REST API

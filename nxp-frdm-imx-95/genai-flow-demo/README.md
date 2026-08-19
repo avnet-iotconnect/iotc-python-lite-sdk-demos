@@ -197,6 +197,7 @@ to interact with the LLM:
 | `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
 | `voice-stop` | — | Stops the voice assistant session |
 | `set-stt` | `moonshine-tiny`, `moonshine-base`, or `whisper-small.en` | Selects the voice transcriber (speed vs. accuracy). Applies on the next `voice-start` |
+| `set-vlm` | `smolvlm-256M` or `smolvlm-500M`, optional precision `q8` (default) or `fp32` | Selects the vision model for `ask-vlm` — the 500M gives richer, more grounded descriptions at roughly half the decode speed. Applies on the next `ask-vlm`, which reloads the model (a first-ever load also downloads it) |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
 | `set-model` | `danube-500M-q8`, `danube-500M-q4`, any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`), or an Ara240 model served by the AAF connector | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU; picking an Ara240 model switches the backend to `ara2` automatically. An invalid name returns the list of available models |
 | `set-backend` | `cpu`, `neutron`, or `ara2` | Selects where `ask-llm` runs: CPU, eIQ Neutron NPU, or the Kinara Ara-2 / Ara240 module (see the backend sections above/below) |
@@ -351,7 +352,8 @@ Connect a UVC USB webcam to the board's **USB A** port (circled in the
 [quickstart's connector diagram](../README.md#3-hardware-setup)) and find its device node with `v4l2-ctl --list-devices` (e.g. a Logitech C920 typically
 appears as `/dev/video52` on this image, among the many i.MX95 ISP nodes). Set `camera_device` in
 `/opt/demo/genai-config.json` if yours differs, along with `vlm_model` (`smolvlm-256M` default, or `smolvlm-500M`)
-and `vlm_precision` (`q8` default, or `fp32`).
+and `vlm_precision` (`q8` default, or `fp32`) — or switch the vision model from the cloud at any time with the
+`set-vlm` command (e.g. `set-vlm smolvlm-500M`), no SSH needed.
 
 ### Use
 
