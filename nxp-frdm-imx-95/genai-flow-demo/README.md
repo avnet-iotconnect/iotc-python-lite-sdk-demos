@@ -491,10 +491,23 @@ subsequent ones answer in seconds. The session stops itself after 60 idle minute
 
 Beyond the local tools, the agent can also query your **/IOTCONNECT account itself** (fleet devices, health,
 telemetry readback) through Avnet's [iotc-mcp-server](https://github.com/avnet-iotconnect/iotc-mcp-server) running
-on the board. Install it with `python3 -m pip install iotconnect-mcp-server`, start it with `iotc-mcp-server` (the
-demo expects it at `http://127.0.0.1:8000/mcp` — `mcp_url` in `/opt/demo/genai-config.json`), and authenticate once
-with `iotconnect-cli configure` (the session token refreshes automatically afterwards). Without it, the local board
-tools above still work — only the cloud-backed tools report the server as unreachable.
+on the board. Install it on the board (both lines matter — see the note below):
+
+```bash
+python3 -m pip install --ignore-installed --no-deps idna==3.11   # whinlatter ships idna without pip metadata
+python3 -m pip install iotconnect-mcp-server "mcp<2"             # the server is built against the 1.x MCP SDK
+```
+
+Start it with `iotc-mcp-server` (the demo expects it at `http://127.0.0.1:8000/mcp` — `mcp_url` in
+`/opt/demo/genai-config.json`) and authenticate once with `iotconnect-cli configure` (the session token refreshes
+automatically afterwards). Without it, the local board tools above still work — only the cloud-backed tools report
+the server as unreachable.
+
+> [!NOTE]
+> Both workarounds were hit on a stock whinlatter board: a plain `pip install iotconnect-mcp-server` fails with
+> *"Cannot uninstall idna 3.11 … no RECORD file"* (the image's `idna` lacks pip metadata — the first line fixes
+> that), and without the `"mcp<2"` pin the resolver picks the MCP 2.x SDK, which removed the `fastmcp` module the
+> server imports (`ModuleNotFoundError: mcp.server.fastmcp` at startup).
 
 ### Companion device: MCX predictive-maintenance (PdM)
 
