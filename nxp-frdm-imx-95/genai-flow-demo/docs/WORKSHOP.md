@@ -23,7 +23,8 @@ portal signup (event code)
 Do this once per board. Steps 1–4 are identical for every board, so prepare one and clone the eMMC/SD if
 your logistics allow.
 
-1. **Flash / check the BSP** — 6.18-whinlatter or later (see [../FLASHING.md](../FLASHING.md)); expand the
+1. **Flash / check the BSP** — **LF6.18.2-1.0.0 (whinlatter) only**; do *not* use the newer LF6.18.20
+   "wrynose", which breaks GenAI Flow (see [FLASHING.md](../../FLASHING.md) and README §2). Then expand the
    root partition:
    ```bash
    parted -s /dev/mmcblk0 resizepart 2 100% && resize2fs /dev/mmcblk0p2
@@ -34,21 +35,28 @@ your logistics allow.
    ```bash
    cd /root/eiq_genai_flow && python3 eiq_genai_flow.py -i keyb -o text -m danube-500M-q8
    ```
-4. **Do NOT install any device identity** — boards ship unclaimed; attendees bring their own.
-5. **Run the workshop installer**:
+4. **Install llama.cpp** if attendees should be able to push their own GGUF models from /IOTCONNECT
+   (the demo refuses a GGUF push on a board without it). Fastest for a fleet is to copy the built binaries
+   from a prepared board:
+   ```bash
+   scp -r root@<ready-board>:/opt/llama/src/build /opt/llama/src/
+   ```
+5. **Do NOT install any device identity** — boards ship unclaimed; attendees bring their own.
+6. **Run the workshop installer**:
    ```bash
    bash /opt/demo/workshop-install.sh
    ```
    This gives the board a **unique hostname from its MAC** (e.g. `imx95-4f2c`), enables the demo +
-   claim-page services on boot, and prints the board's claim URL:
+   claim-page services on boot (demo app, claim page, camera server and shootout UI), warns about anything
+   still missing, and prints the board's URLs:
    ```
    Claim page:  http://imx95-4f2c.local:8088
    ```
-6. **Write the URL on the board's card** (sticker or tent card next to each board). This is how attendees
+7. **Write the URL on the board's card** (sticker or tent card next to each board). This is how attendees
    find *their* board among many — every board in the room has a different name.
-7. **Room network**: boards and attendee laptops must share one LAN (the venue Wi-Fi or a workshop router).
+8. **Room network**: boards and attendee laptops must share one LAN (the venue Wi-Fi or a workshop router).
    mDNS (`.local`) must be allowed — on locked-down venue networks, bring your own access point.
-8. **Portal event code**: set/rotate the `EVENT_CODE` env var on the `imx95-portal-api` Lambda so signups
+9. **Portal event code**: set/rotate the `EVENT_CODE` env var on the `imx95-portal-api` Lambda so signups
    onboard instantly (no approval clicks mid-workshop). Tell attendees the code at the start.
 
 ## Part 2 — Attendee experience (~10 minutes to a live board)
@@ -95,6 +103,11 @@ Give attendees these steps (slide or handout):
 | Claim page down | `systemctl restart genai-provision` on the board |
 | Demo down after claim | `systemctl status genai-app`; logs: `journalctl -u genai-app -f` |
 | Attendee lost their kit | The portal signup page re-offers the download on the same browser (localStorage), or look up the request in DynamoDB `imx95-portal-requests` |
+
+## Preparing a fleet / upgrading
+
+See **[BSP-UPGRADE.md](BSP-UPGRADE.md)** for the full software stack, the safe upgrade order (non-Ara boards
+first, backup before touching an Ara board), and cloning a golden image to the rest of the fleet.
 
 ## Related docs
 

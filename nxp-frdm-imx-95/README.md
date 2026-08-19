@@ -51,9 +51,9 @@ modern industrial, IoT, and edge AI applications.
 
 > [!NOTE]
 > The FRDM i.MX 95 ships from the factory with a pre-built NXP Linux demo image already flashed to the eMMC, so it will
-> boot directly into Linux out of the box. The eIQ GenAI Flow demo is locked to NXP BSP **LF6.18.20_2.0.0** (kernel
-> `6.18.20-2.0.0`) — check with `uname -r`, and if your board has a different image, re-flash it using the
-> [flashing guide](FLASHING.md).
+> boot directly into Linux out of the box. The eIQ GenAI Flow demo requires BSP **LF6.18.2-1.0.0** ("whinlatter")
+> specifically — newer releases (LF6.18.20_2.0.0 and later) ship Python 3.14 only and cannot run it. If your board has
+> a different image, first re-flash it using the [flashing guide](FLASHING.md).
 
 # 4. Device Setup
 
@@ -120,9 +120,9 @@ running on the i.MX 95 from the cloud and stream live LLM performance metrics (t
 load, memory) to your /IOTCONNECT dashboard. Refer to [this guide](./genai-flow-demo/README.md).
 
 > [!NOTE]
-> The GenAI models run today on the i.MX 95's Cortex-A55 CPU cluster and (experimentally) on the integrated eIQ Neutron
-> NPU. Support for the **Kinara Ara-2 discrete NPU module** — which dramatically accelerates larger LLMs — will be added
-> to this demo once the module is available.
+> The GenAI models run on the i.MX 95's Cortex-A55 CPU cluster, (experimentally) on the integrated eIQ Neutron
+> NPU, and — on boards fitted with the **Kinara Ara-2 / NXP Ara240 M.2 module** — on a discrete NPU that runs much
+> larger LLMs (Qwen2.5-7B) at interactive speed via `set-backend ara2`. See the demo guide for setup.
 
 # 8. Troubleshooting
 

@@ -9,9 +9,10 @@
 # 1. Gives the board a UNIQUE mDNS hostname derived from its MAC address
 #    (imx95-XXXX) so many boards can share a room - each is reachable at
 #    http://imx95-XXXX.local:8088. Prints the URL to put on the board's card.
-# 2. Installs + enables systemd services so the demo app and the claim page
-#    start on every boot:  genai-app (the demo)  and  genai-provision (the
-#    claim page attendees use to drop their board-kit zip).
+# 2. Installs + enables systemd services so the demo stack starts on every
+#    boot:  genai-app (the demo),  genai-provision (the claim page attendees
+#    use to drop their board-kit zip),  genai-camera (HTTPS camera/responses
+#    server on :8080)  and  genai-bench (the model-shootout UI on :8090).
 # -----------------------------------------------------------------------------
 set -e
 DEMO_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -35,6 +36,12 @@ cat > /etc/systemd/system/genai-app.service <<EOF
 Description=GenAI /IOTCONNECT demo app
 After=network-online.target
 Wants=network-online.target
+# Only run once the board is claimed. Without an identity the app can't connect,
+# so on an unclaimed board systemd would auto-start it, fail, and (Restart=on-failure)
+# retry-loop forever. This condition makes systemd skip it cleanly until the claim
+# writes the identity; provision_server's 'systemctl restart genai-app' on claim
+# re-checks the condition and starts it.
+ConditionPathExists=$DEMO_DIR/iotcDeviceConfig.json
 
 [Service]
 WorkingDirectory=$DEMO_DIR
@@ -61,9 +68,39 @@ RestartSec=5s
 WantedBy=multi-user.target
 EOF
 
+cat > /etc/systemd/system/genai-camera.service <<EOF
+[Unit]
+Description=GenAI demo camera/responses web server
+After=network.target
+
+[Service]
+WorkingDirectory=$DEMO_DIR
+ExecStart=/usr/bin/python3 -u $DEMO_DIR/camera-server.py
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat > /etc/systemd/system/genai-bench.service <<EOF
+[Unit]
+Description=GenAI LLM shootout web UI
+After=network.target
+
+[Service]
+WorkingDirectory=$DEMO_DIR
+ExecStart=/usr/bin/python3 -u $DEMO_DIR/bench_server.py
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 systemctl daemon-reload
-systemctl enable genai-provision >/dev/null 2>&1
-systemctl restart genai-provision
+systemctl enable genai-provision genai-camera genai-bench >/dev/null 2>&1
+systemctl restart genai-provision genai-camera genai-bench
 # Only auto-start the demo app when an identity is present (a claimed board);
 # the claim page starts it after provisioning either way.
 if [ -f "$DEMO_DIR/iotcDeviceConfig.json" ]; then
@@ -74,9 +111,21 @@ else
     echo "(no device identity yet - genai-app starts after the board is claimed)"
 fi
 
+# --- 3. readiness checks -------------------------------------------------------
+LLAMA_DIR=$(python3 -c "import json;print(json.load(open('$DEMO_DIR/genai-config.json')).get('llama_dir','/opt/llama'))" 2>/dev/null || echo /opt/llama)
+WARN=""
+[ -d /root/eiq_genai_flow ] || WARN="$WARN\n  ! eIQ GenAI Flow is not installed - ask-llm, voice and RAG will not work (README section 3)"
+[ -x "$LLAMA_DIR/src/build/bin/llama-cli" ] || WARN="$WARN\n  ! llama.cpp is not installed at $LLAMA_DIR - GGUF models pushed from /IOTCONNECT cannot run.\n    Copy it from a prepared board:  scp -r root@<ready-board>:$LLAMA_DIR/src/build $LLAMA_DIR/src/"
+
 echo ""
 echo "=============================================================="
 echo " Workshop board ready: $NAME"
 echo " Claim page:  http://$NAME.local:8088"
-echo " Write this URL on the board's card."
+echo " Shootout:    http://$NAME.local:8090"
+echo " Camera:      https://$NAME.local:8080/live   (accept the self-signed cert once)"
+echo " Write the claim URL on the board's card."
+if [ -n "$WARN" ]; then
+    echo "--------------------------------------------------------------"
+    printf " Before the workshop:%b\n" "$WARN"
+fi
 echo "=============================================================="

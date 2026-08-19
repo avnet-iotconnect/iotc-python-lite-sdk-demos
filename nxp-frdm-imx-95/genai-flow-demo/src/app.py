@@ -823,6 +823,25 @@ def start_voice(output_mode):
     threading.Thread(target=worker, daemon=True).start()
 
 
+def _restart_voice_for_config_change():
+    """Relaunch a live voice session so a config change (RAG, STT, model, backend)
+    takes effect. A vasr subprocess reads its flags once at launch and never re-reads
+    config, so a running session keeps the OLD settings until it is restarted - e.g.
+    'set-rag off' cannot silence the domain classifier for an already-running voice
+    assistant. No-op if voice is not running. Returns True if a restart was started."""
+    if telemetry["voice_status"] in ("off", "error"):
+        return False
+    mode = config.get("voice_output", "tts")
+
+    def _worker():
+        _voice_stop.set()      # ask the running session to exit
+        llm_busy.acquire()     # block until its worker's finally releases the lock
+        _voice_stop.clear()
+        start_voice(mode)      # new session, launched with the current config
+    threading.Thread(target=_worker, daemon=True).start()
+    return True
+
+
 # -----------------------------------------------------------------------------
 # AGENT (ask-agent): LLM + real board tools
 # -----------------------------------------------------------------------------
@@ -2177,7 +2196,7 @@ def on_command(msg: C2dCommand):
             save_config(config)
             with telemetry_lock:
                 telemetry["voice_stt"] = config["stt_model"]
-            note = " - voice-stop / voice-start to apply" if telemetry["voice_status"] not in ("off", "error") else ""
+            note = " (restarting voice to apply)" if _restart_voice_for_config_change() else ""
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                                "Speech recognizer set to %s%s" % (config["stt_model"], note))
         else:
@@ -2240,7 +2259,9 @@ def on_command(msg: C2dCommand):
             save_config(config)
             with telemetry_lock:
                 telemetry["llm_rag"] = msg.command_args[0]
-            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "RAG " + msg.command_args[0])
+            note = " (restarting voice to apply)" if _restart_voice_for_config_change() else ""
+            c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                               "RAG " + msg.command_args[0] + note)
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument: on or off")
 
@@ -2451,6 +2472,13 @@ def deploy_model(entry):
                     return os.path.join(root, fn)
         return None
 
+    def _fail(message):
+        # A failed deploy must not leave its half-extracted directory on disk: an
+        # incompatible push (e.g. an Ara240 .dvm to a non-Ara board) would otherwise
+        # litter GBs under the models dir. Clean up, then raise for the caller to report.
+        shutil.rmtree(dest, ignore_errors=True)
+        raise RuntimeError(message)
+
     try:
         # Unwrap nested archives until model.dvm appears - IOTCONNECT wraps the
         # uploaded file in its own .tar, so the payload can be a tar-in-tar.
@@ -2480,6 +2508,13 @@ def deploy_model(entry):
     # board without an Ara240 can still receive and serve a pushed model.
     gguf = _find_gguf()
     if gguf is not None:
+        # Refuse rather than select a model this board cannot run: a GGUF needs
+        # llama.cpp, and silently switching to it would break ask-llm.
+        cli = os.path.join(config["llama_dir"], "src", "build", "bin", "llama-cli")
+        if not os.path.isfile(cli):
+            _fail(
+                "%s is a GGUF but this board has no llama.cpp runtime (%s not found) - "
+                "install llama.cpp first; the current model is unchanged" % (file_name, cli))
         stem = re.sub(r"[^A-Za-z0-9._-]", "_", os.path.splitext(os.path.basename(gguf))[0])
         models_dir = os.path.join(config["llama_dir"], "models")
         os.makedirs(models_dir, exist_ok=True)
@@ -2502,11 +2537,11 @@ def deploy_model(entry):
 
     src = _find_dvm()
     if src is None:
-        raise RuntimeError(
+        _fail(
             "%s contains no model.dvm or .gguf - push an Ara240-compiled model "
             "(.dvm) or a GGUF for llama.cpp" % file_name)
     if not have_ara:
-        raise RuntimeError(
+        _fail(
             "%s is an Ara240 model (model.dvm) but this board has no Ara240 "
             "module - push a GGUF instead to run it on the CPU" % file_name)
     if os.path.abspath(src) != os.path.abspath(dest):   # flatten if nested
@@ -2522,7 +2557,7 @@ def deploy_model(entry):
             break
         time.sleep(5)
     else:
-        raise RuntimeError("model %s did not report ready on the connector" % name)
+        _fail("model %s did not report ready on the connector" % name)
 
     config["ara2_model"] = name
     config["backend"] = "ara2"

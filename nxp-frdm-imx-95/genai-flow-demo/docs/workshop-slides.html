@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edge GenAI Workshop — i.MX 95 + Ara240 + /IOTCONNECT</title>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}</style>
+</head>
+<body>
+<style>
+  :root {
+    --bg: #F7F8FA;
+    --bg-raise: #FFFFFF;
+    --ink: #1B222B;
+    --ink-soft: #55606E;
+    --line: #D9DEE5;
+    --accent: #C56A1F;
+    --accent-soft: #F3E3D2;
+    --data: #23788A;
+    --good: #2E7D46;
+    --warn: #9C6E1B;
+    --bad: #B5493B;
+    --code-bg: #EEF1F4;
+    --shadow: 0 1px 3px rgba(27,34,43,.08);
+    --mono: "Cascadia Code", Consolas, "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+    --sans: "Segoe UI Variable Display", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0E1116;
+      --bg-raise: #171C23;
+      --ink: #E7EAEE;
+      --ink-soft: #97A1AD;
+      --line: #2A323D;
+      --accent: #F0A050;
+      --accent-soft: #33261A;
+      --data: #6BC1D2;
+      --good: #7FC98A;
+      --warn: #E3C06B;
+      --bad: #E68274;
+      --code-bg: #1D242D;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #F7F8FA; --bg-raise: #FFFFFF; --ink: #1B222B; --ink-soft: #55606E;
+    --line: #D9DEE5; --accent: #C56A1F; --accent-soft: #F3E3D2; --data: #23788A;
+    --good: #2E7D46; --warn: #9C6E1B; --bad: #B5493B; --code-bg: #EEF1F4;
+    --shadow: 0 1px 3px rgba(27,34,43,.08);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1116; --bg-raise: #171C23; --ink: #E7EAEE; --ink-soft: #97A1AD;
+    --line: #2A323D; --accent: #F0A050; --accent-soft: #33261A; --data: #6BC1D2;
+    --good: #7FC98A; --warn: #E3C06B; --bad: #E68274; --code-bg: #1D242D;
+    --shadow: none;
+  }
+
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: clamp(15px, 1.35vw, 20px);
+    line-height: 1.5;
+  }
+
+  #deck {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #deck { scroll-behavior: auto; }
+  }
+
+  .slide {
+    box-sizing: border-box;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.1em;
+    padding: 4.5rem clamp(1.5rem, 7vw, 7rem) 4rem;
+    max-width: 100%;
+  }
+  .slide > * { max-width: 62rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .68em;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: .9em;
+  }
+  .eyebrow::after { content: ""; height: 1px; background: var(--line); flex: 0 1 14rem; }
+
+  h1, h2 { font-weight: 750; letter-spacing: -0.015em; text-wrap: balance; line-height: 1.12; margin: 0; }
+  h1 { font-size: clamp(2.2rem, 5.2vw, 4.2rem); }
+  h2 { font-size: clamp(1.5rem, 3.2vw, 2.5rem); }
+  .kicker { color: var(--ink-soft); font-size: 1.05em; max-width: 46rem; }
+
+  p { margin: 0; }
+  ul { margin: 0; padding-left: 1.15em; display: grid; gap: .55em; }
+  li::marker { color: var(--accent); }
+  ol { margin: 0; padding-left: 1.3em; display: grid; gap: .55em; }
+  ol > li::marker { font-family: var(--mono); color: var(--accent); font-size: .9em; }
+
+  strong { font-weight: 680; }
+  em { font-style: italic; }
+
+  code, .cmd {
+    font-family: var(--mono);
+    font-size: .86em;
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: .1em .4em;
+  }
+  .cmd { color: var(--data); }
+
+  .tablewrap { overflow-x: auto; max-width: 62rem; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-raise); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: .82em; }
+  th, td { text-align: left; padding: .5em .8em; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  th {
+    font-family: var(--mono); font-weight: 600; font-size: .82em;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+    border-bottom: 1px solid var(--accent);
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.hot { color: var(--accent); font-weight: 680; }
+  td.good { color: var(--good); font-weight: 620; }
+  td.bad { color: var(--bad); }
+
+  .quote {
+    border-left: 3px solid var(--accent);
+    padding: .35em 0 .35em 1em;
+    color: var(--ink-soft);
+    font-size: 1.06em;
+    max-width: 46rem;
+  }
+  .quote strong { color: var(--ink); }
+
+  .punch {
+    font-size: 1.25em; font-weight: 680; letter-spacing: -.01em;
+    color: var(--accent); max-width: 44rem; text-wrap: balance;
+  }
+
+  .flow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .5em;
+    font-family: var(--mono); font-size: .82em;
+  }
+  .flow .node {
+    background: var(--bg-raise); border: 1px solid var(--line);
+    border-radius: 6px; padding: .45em .8em; box-shadow: var(--shadow);
+  }
+  .flow .node.hi { border-color: var(--accent); color: var(--accent); }
+  .flow .arrow { color: var(--ink-soft); }
+
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.2em; max-width: 62rem; }
+  .card {
+    background: var(--bg-raise); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1em 1.2em; box-shadow: var(--shadow); display: grid; gap: .45em; align-content: start;
+  }
+  .card h3 { margin: 0; font-family: var(--mono); font-size: .78em; letter-spacing: .14em; text-transform: uppercase; color: var(--data); font-weight: 600; }
+  .card p { margin: 0; font-size: .92em; }
+
+  .title-slide { align-items: flex-start; }
+  .title-slide .brandline {
+    font-family: var(--mono); font-size: .8em; color: var(--ink-soft);
+    display: flex; gap: 1.2em; flex-wrap: wrap;
+  }
+  .title-slide .brandline b { color: var(--accent); font-weight: 600; }
+  .rule { height: 3px; width: 7rem; background: var(--accent); border: none; margin: .4rem 0; }
+
+  .notes {
+    display: none;
+    margin-top: .8em;
+    border-top: 1px dashed var(--line);
+    padding-top: .8em;
+    font-size: .8em;
+    color: var(--ink-soft);
+    max-width: 56rem;
+  }
+  .notes::before {
+    content: "presenter notes";
+    display: block;
+    font-family: var(--mono); font-size: .78em; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--warn); margin-bottom: .4em;
+  }
+  body.show-notes .notes { display: block; }
+
+  .hud {
+    position: fixed; right: 1.1rem; bottom: .9rem; z-index: 5;
+    font-family: var(--mono); font-size: .72rem; color: var(--ink-soft);
+    display: flex; gap: 1.2em; align-items: center;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    padding: .3em .7em; border-radius: 6px;
+  }
+  .hud b { color: var(--ink); font-weight: 600; }
+  .progressbar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0; z-index: 6; }
+
+  a { color: var(--data); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--data) 40%, transparent); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="progressbar" id="pbar"></div>
+
+<main id="deck">
+
+<!-- 1 · Title -->
+<section class="slide title-slide" data-sec="">
+  <p class="eyebrow">60-minute hands-on workshop</p>
+  <h1>Generative AI<br>at the Edge</h1>
+  <hr class="rule">
+  <p class="kicker">A hands-on hour with the NXP FRDM i.MX&nbsp;95, the Ara240 NPU,<br>and Avnet /IOTCONNECT</p>
+  <p class="brandline"><b>presenter</b> · event · date</p>
+  <aside class="notes">Boards are powered and claim-page-ready (WORKSHOP.md host prep). The card next to each board carries its personal claim URL — mention it now so nobody unplugs or swaps boards.</aside>
+</section>
+
+<!-- 2 · Bench -->
+<section class="slide" data-sec="Welcome">
+  <p class="eyebrow">Welcome</p>
+  <h2>What's on your bench</h2>
+  <ul>
+    <li><strong>Your board</strong> — NXP FRDM i.MX&nbsp;95, prepared, powered, on the room network</li>
+    <li><strong>The card next to it</strong> — your board's personal URL (<code>http://imx95-XXXX.local:8088</code>); this is how you'll claim it</li>
+    <li><strong>My board</strong> — the same FRDM i.MX&nbsp;95 <strong>plus a Kinara Ara-2 / NXP Ara240</strong> M.2 NPU module</li>
+    <li>Every model today runs <strong>on the board</strong> — the cloud is how we reach it, measure it, and manage it</li>
+  </ul>
+  <aside class="notes">Set the frame: not an API demo — LLM, VLM, STT, TTS, and the vector DB all execute on the six A55s (and NPUs) in front of them. Only commands go in and telemetry comes out. Boards go back; /IOTCONNECT accounts stay live (ATTENDEE-GUIDE §5–6).</aside>
+</section>
+
+<!-- 3 · Objectives -->
+<section class="slide" data-sec="Welcome">
+  <p class="eyebrow">Welcome</p>
+  <h2>What you'll leave knowing</h2>
+  <ul>
+    <li>What LLMs, VLMs, agents, RAG, and a voice pipeline actually are — <strong>in hardware terms</strong></li>
+    <li>How GenAI performance is measured: load, TTFT, tokens/sec — and what quantization and NPUs buy</li>
+    <li>How to run all of it on an i.MX&nbsp;95, and what changes when you add an Ara240</li>
+    <li>How a fleet manages models: <strong>OTA vs. model push vs. file update</strong></li>
+    <li>How field data becomes <strong>ground truth</strong> in S3, retrains in <strong>SageMaker</strong>, and returns as a model push</li>
+    <li>Where live video fits: <strong>KVS streaming</strong> and cloud analysis services</li>
+  </ul>
+  <aside class="notes">This list mirrors the agenda — return to it in the wrap-up as "we did all of this."</aside>
+</section>
+
+<!-- 4 · Agenda -->
+<section class="slide" data-sec="Welcome">
+  <p class="eyebrow">Welcome</p>
+  <h2>The hour, on a clock</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Time</th><th>Segment</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td class="num">0:00</td><td><strong>Welcome</strong></td><td>What's on your bench</td></tr>
+      <tr><td class="num">0:04</td><td><strong>GenAI in hardware terms</strong></td><td>LLMs &amp; quantization · VLMs · agents · RAG · voice</td></tr>
+      <tr><td class="num">0:16</td><td><strong>The stage</strong></td><td>i.MX&nbsp;95 · Ara240 · eIQ GenAI Flow · /IOTCONNECT <em>(you start signup here)</em></td></tr>
+      <tr><td class="num">0:22</td><td class="hot"><strong>Lab</strong></td><td>Claim your board → your dashboard → first prompts</td></tr>
+      <tr><td class="num">0:34</td><td><strong>Measuring GenAI</strong></td><td>The metrics · the ladder · live shootout · the Ara240</td></tr>
+      <tr><td class="num">0:42</td><td><strong>The model lifecycle</strong></td><td>Live model push · OTA vs. model vs. file · SageMaker · ground truth · KVS</td></tr>
+      <tr><td class="num">0:52</td><td class="hot"><strong>Voice finale</strong></td><td>"Hey NXP" — and a spoken command flips a real LED</td></tr>
+      <tr><td class="num">0:56</td><td><strong>Wrap-up + Q&amp;A</strong></td><td>What stays live after today</td></tr>
+    </tbody>
+  </table></div>
+  <aside class="notes">Flag the two participation moments: the lab at 0:22 and the shootout at ~0:38. Presenter timing: agent-start at 0:22, agent-start again at ~0:45 (idle sessions auto-stop), voice-start at ~0:49 — only after slide 22's verification ask-llm completes (a voice session makes ask-llm report busy until voice-stop).</aside>
+</section>
+
+<!-- 5 · LLM -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · 1 of 5</p>
+  <h2>What is an LLM, in hardware terms</h2>
+  <ul>
+    <li>A next-token predictor: text in → probability of the next token out, looped</li>
+    <li>A <strong>token</strong> ≈ 4 characters; every generated token reads essentially <strong>all the weights</strong> once</li>
+    <li>The weights are a big constant array: Danube-500M at 8-bit ≈ <strong>496&nbsp;MB</strong>; Qwen2.5-7B ≈ 15&nbsp;GB at FP16</li>
+    <li>So generation speed is <strong>memory-bandwidth-bound</strong> — a very familiar problem</li>
+    <li>Parameter count buys capability; it also costs bandwidth, RAM, and storage</li>
+  </ul>
+  <aside class="notes">Meet this audience in buses and footprints: "500M parameters" = "a 496 MB structure you stream through per token" (MODELS.md). That's why tok/s — not FLOPs — is the number everyone quotes, and why this hour is about fitting the best model into the bandwidth you have.</aside>
+</section>
+
+<!-- 6 · Quantization -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · 2 of 5</p>
+  <h2>Quantization: the first lever you pull</h2>
+  <ul>
+    <li>Shrink weights FP16 → INT8 → INT4: smaller, faster, <em>usually</em> fine</li>
+    <li>On this board: Danube-500M <strong>q8 = 496&nbsp;MB</strong>, <strong>q4 = 345&nbsp;MB</strong> — and q4 is faster everywhere</li>
+    <li>The catch: naive uniform 4-bit <strong>broke RAG</strong> on Danube — canned refusals instead of quoting docs</li>
+    <li>GGUF <strong>Q4_K_M</strong> keeps damage-sensitive layers at 6-bit — Qwen-1.5B kept its reasoning</li>
+  </ul>
+  <p class="punch">4-bit is survivable with mixed precision, brutal without it. Quantize — then re-validate.</p>
+  <aside class="notes">Real cautionary tale from MODELS.md: Danube-q4 chats fluently but scores F on RAG synthesis — quantization broke exactly the fragile skill. Analogy: precision loss in a control loop — fine until it isn't, and you find out in validation, not in the datasheet.</aside>
+</section>
+
+<!-- 7 · VLM -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · 3 of 5</p>
+  <h2>VLM: a camera the board can talk about</h2>
+  <ul>
+    <li>Vision-language model = <strong>vision encoder + LLM decoder</strong></li>
+    <li>On this board: <strong>SmolVLM2-256M</strong>, INT8, ~250&nbsp;MB — answers questions about a live USB-camera frame</li>
+    <li>Measured: vision encode ~4.4&nbsp;s · first token ~4.9&nbsp;s · decode ~9.5&nbsp;tok/s</li>
+    <li>The image <strong>never leaves the board</strong></li>
+    <li>Two costs to watch: the <em>encode</em> (per image) and the <em>decode</em> (per token)</li>
+  </ul>
+  <aside class="notes">ask-vlm grabs a fresh GStreamer frame and defaults to "Describe what you see" (numbers: MODELS.md VLM table — README §7 carries older figures). Privacy — inference where the sensor is — is a real product argument here. Warm-worker trick: first question pays ~40 s model load, then a resident worker answers in ~5 s (vlm_worker.py).</aside>
+</section>
+
+<!-- 8 · Agents -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · 4 of 5</p>
+  <h2>Agents: stop the model from guessing</h2>
+  <ul>
+    <li>Ask a small LLM <em>"what time is it?"</em> — it will confidently invent one</li>
+    <li>An <strong>agent</strong> fixes that: the LLM only <strong>chooses a tool</strong> → the board <strong>executes it</strong> → the answer is grounded in real output</li>
+    <li>This board's tools: time, SoC temperature, memory, disk, uptime, IP, USB — plus <strong>cloud tools</strong> (its own /IOTCONNECT fleet) via an on-board MCP server</li>
+  </ul>
+  <div class="flow">
+    <span class="node">request</span><span class="arrow">→</span>
+    <span class="node hi">LLM picks tool</span><span class="arrow">→</span>
+    <span class="node">board runs it</span><span class="arrow">→</span>
+    <span class="node hi">grounded answer</span><span class="arrow">→</span>
+    <span class="node">telemetry: agent_tool · agent_tool_result · agent_response</span>
+  </div>
+  <aside class="notes">The hallucination A/B is the demo's smartest beat (demo-flow.md): ask-llm invents a time, ask-agent gets it right with the tool chain in telemetry. Be honest about small-model agents: a keyword fallback rescues unparseable tool picks (agent_router: llm/keyword) and a grounding check replaces divergent answers with the raw tool result (app.py). That's what production agents on 500M models look like.</aside>
+</section>
+
+<!-- 9 · RAG -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · 5 of 5 — part a</p>
+  <h2>RAG: teach the board its own manual</h2>
+  <ul>
+    <li>Small models hallucinate <strong>facts</strong>; RAG retrieves real passages and injects them into the prompt</li>
+    <li>Ingredients: an <strong>embedding model</strong> (MiniLM — 22M params, 384-dim, 88&nbsp;MB) + a chunked knowledge base + similarity search</li>
+    <li>This board's knowledge base is literally <strong>24 hand-written passages in a JSON file</strong> — about itself</li>
+    <li>RAG on: <em>"How do I expand the root filesystem?"</em> → the actual <code>parted</code>/<code>resize2fs</code> commands, verbatim</li>
+  </ul>
+  <p class="punch">Grounding beats parameters — tiny Danube + RAG outscores every bigger ungrounded model on documentation questions.</p>
+  <aside class="notes">Show rag-db/FRDM95_hand_made_chunks.json — a RAG DB demystified to "a JSON file of facts" is a genuine aha. Swap in your service manual and every field unit answers from it, offline. QoR (MODELS.md): Danube-q8 grades D on ungrounded general facts but A- on RAG synthesis with RAG on (overall C → B+ grounded). Embedding runs on-board at ~30 chunks/s. Keep the stale-chunk observation for the file-update slide.</aside>
+</section>
+
+<!-- 10 · Voice -->
+<section class="slide" data-sec="Concepts">
+  <p class="eyebrow">Concepts · voice</p>
+  <h2>The voice pipeline: four models in a row</h2>
+  <div class="flow">
+    <span class="node hi">"Hey NXP" wake word</span><span class="arrow">→</span>
+    <span class="node">STT</span><span class="arrow">→</span>
+    <span class="node">LLM</span><span class="arrow">→</span>
+    <span class="node">TTS (VITS · 22 MB)</span>
+    <span class="arrow">·</span><span class="node hi">fully offline</span>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>STT model</th><th class="num">Size</th><th class="num">Transcribe</th><th class="num">Word error rate</th></tr></thead>
+    <tbody>
+      <tr><td>moonshine-tiny</td><td class="num">40 MB</td><td class="num hot">3.85 s</td><td class="num">1.06 %</td></tr>
+      <tr><td>moonshine-base <em>(recommended)</em></td><td class="num">84 MB</td><td class="num">4.21 s</td><td class="num">1.59 %*</td></tr>
+      <tr><td>whisper-small.en</td><td class="num">275 MB</td><td class="num">5.40 s</td><td class="num good">0.00 %</td></tr>
+    </tbody>
+  </table></div>
+  <p class="kicker">*base wins in real room acoustics — clean-set WER flatters tiny. A classic embedded trade-off: pick per product.</p>
+  <aside class="notes">Numbers: MODELS.md STT table (NXP's official benchmark). set-stt switches transcribers from the cloud; applies at next voice-start. Wake-word physics: reliable detection needs ~4000 RMS at the mic — arm's length — which is why show-floor voice demos fail. We close the workshop with this pipeline live.</aside>
+</section>
+
+<!-- 11 · i.MX95 -->
+<section class="slide" data-sec="Platform">
+  <p class="eyebrow">The stage · board</p>
+  <h2>NXP FRDM i.MX 95</h2>
+  <div class="cols">
+    <div class="card"><h3>Silicon</h3><p>i.MX&nbsp;95: 6× Cortex-A55 + M7 + M33, <strong>eIQ Neutron NPU</strong> (2 TOPS)</p></div>
+    <div class="card"><h3>Board</h3><p><strong>8 GB LPDDR4X</strong> · 32 GB eMMC · Wi-Fi 6 / BT 5.4 (IW612)</p></div>
+    <div class="card"><h3>Pipeline</h3><p><strong>eIQ GenAI Flow</strong> — NXP's stack tying wake word, STT, RAG, LLM, and TTS together</p></div>
+  </div>
+  <ul>
+    <li>What the full GenAI kit costs (measured): GenAI Flow 1.6&nbsp;GB · Python AI stack 1.6&nbsp;GB · llama.cpp + Qwen models 2.0&nbsp;GB · SmolVLM 0.7&nbsp;GB → <strong>~16&nbsp;GB still free</strong></li>
+    <li>RAM at full demo state (voice session + warm agent): ≈ 5.3–6.8&nbsp;GB of 8&nbsp;GB</li>
+  </ul>
+  <aside class="notes">Budgets from MODELS.md "what fits" tables — engineers love a resource budget. Honest caveat: the Neutron path is experimental — B0 silicon, a device-tree overlay reserving a 4 GB CMA pool, and a ~2 min model recompile per launch. That's why the demo default backend is CPU.</aside>
+</section>
+
+<!-- 12 · Ara240 -->
+<section class="slide" data-sec="Platform">
+  <p class="eyebrow">The stage · accelerator</p>
+  <h2>Kinara Ara-2 / NXP Ara240</h2>
+  <ul>
+    <li>Discrete edge NPU: <strong>~40 eTOPS</strong>, M.2 M-key card on PCIe — purpose-built for generative AI</li>
+    <li>Software: <strong>eIQ AAF Connector</strong> — an <strong>OpenAI-compatible REST server</strong> (<code>/v1/chat/completions</code>) on the board</li>
+    <li>So <code class="cmd">ask-llm</code> doesn't change — <code class="cmd">set-backend ara2</code> just reroutes it</li>
+    <li>Models stay <strong>resident</strong> on the module: zero load per prompt; during 7B generation, ~12% host CPU and host RAM flat</li>
+    <li>Pre-compiled models are public (Apache-2.0): <strong>Qwen2.5-7B-Instruct</strong> and <strong>Qwen2.5-Coder-1.5B</strong> on Hugging Face</li>
+  </ul>
+  <aside class="notes">Specs/stack: MODELS.md Ara240 section. Teaching point: the industry-standard LLM API, served by an M.2 card on PCIe. Runtime + connector are NXP-account-gated (not NDA); compiling custom models needs the full Ara SDK on x86_64 plus a compile license. Numbers come on the "trade-off breaks" slide — this one is what it is, that one is what it's worth.</aside>
+</section>
+
+<!-- 13 · IOTCONNECT -->
+<section class="slide" data-sec="Platform">
+  <p class="eyebrow">The stage · management plane</p>
+  <h2>/IOTCONNECT</h2>
+  <ul>
+    <li>Every board here is a <strong>normal /IOTCONNECT device</strong> — nothing workshop-specific</li>
+    <li>The <strong>device template</strong> is the contract: this one defines <strong>54 telemetry attributes</strong> and <strong>17 commands</strong></li>
+    <li><strong>D2C</strong>: ~50 attributes every 10&nbsp;s over MQTT — perf metrics, AI responses, health</li>
+    <li><strong>C2D</strong>: every dashboard button is a real cloud-to-device command, with an acknowledgement</li>
+    <li>Plus x.509 identity · OTA delivery · <strong>AI model management</strong> · file storage · fleet queries — all on a public REST API</li>
+    <li>Isolation is enforced by the <strong>platform</strong>, not the workshop UI: you only ever see your own board</li>
+  </ul>
+  <aside class="notes">ATTENDEE-GUIDE §4 maps every capability to its API area — everything today runs on the same REST API customers use. The private-entity model is the production multi-tenant mechanism. CUE THE ROOM: open the portal URL, sign up with the event code — kits will be ready when the lab starts.</aside>
+</section>
+
+<!-- 14 · Lab claim -->
+<section class="slide" data-sec="Lab">
+  <p class="eyebrow">Lab · ~5–10 minutes</p>
+  <h2>Claim your board</h2>
+  <ol>
+    <li><strong>Sign up</strong> on the portal — name, email, company, <strong>event code</strong> → your private space, instantly</li>
+    <li><strong>Check your email</strong> — sign in at <code>awspoc.iotconnect.io</code> with the temporary password and set a real one</li>
+    <li><strong>Download your board kit</strong> (.zip) — your device's identity: config + x.509 cert + private key</li>
+    <li><strong>Open your board's URL</strong> from the card — <code>http://imx95-XXXX.local:8088</code></li>
+    <li><strong>Drag the kit onto the page</strong> → identity installs, demo restarts → <strong>"✓ Connected as p95…"</strong></li>
+  </ol>
+  <aside class="notes">ATTENDEE-GUIDE §2 is their copy of these steps + troubleshooting. The kit is a real x.509 device identity (iotcDeviceConfig.json + cert + key) — production mechanism, not a workshop toy. Claim-page safety: re-claiming demands explicit confirmation, so a mistyped URL can't steal a neighbor's board. Failures: mDNS blocked → use board IP; connected-but-empty dashboard → wrong account (WORKSHOP.md).</aside>
+</section>
+
+<!-- 15 · Lab prompts -->
+<section class="slide" data-sec="Lab">
+  <p class="eyebrow">Lab · first prompts</p>
+  <h2>Ask your board something</h2>
+  <ul>
+    <li><code class="cmd">ask-llm</code> <em>what is an NPU?</em> — on-device LLM; the answer arrives as <strong>telemetry</strong></li>
+    <li><code class="cmd">ask-agent</code> <em>how warm is the board?</em> — watch <code>agent_tool</code> → <code>agent_tool_result</code> → grounded answer</li>
+    <li>Response cards fill on your dashboard; <code>llm_tps</code> and <code>llm_ttft</code> land next to them</li>
+    <li>First <code class="cmd">ask-llm</code> takes ~1 minute, first <code class="cmd">ask-agent</code> ~90 s — that's the <strong>model load</strong>, and it's a metric (<code>llm_load_time</code>)</li>
+  </ul>
+  <aside class="notes">Commands ack immediately; the response arrives as telemetry ~10 s later — say that or people think it hung. The first-load pause is a teaching moment, not an apology (attendee boards get no pre-warm: first agent answer ~90 s, then 10–20 s). One AI operation at a time — a second command answers "busy"; wait for genai_status: idle. While the room waits out first loads, run the hallucination A/B on your board: ask-llm what time is it (invented) vs ask-agent (tool chain in telemetry). Full command palette: README §6.</aside>
+</section>
+
+<!-- 16 · What happened -->
+<section class="slide" data-sec="Lab">
+  <p class="eyebrow">Lab · debrief</p>
+  <h2>What just happened</h2>
+  <div class="flow">
+    <span class="node">your laptop</span><span class="arrow">→</span>
+    <span class="node">/IOTCONNECT REST API</span><span class="arrow">→</span>
+    <span class="node hi">C2D command (MQTT)</span><span class="arrow">→</span>
+    <span class="node">board runs the model</span><span class="arrow">→</span>
+    <span class="node hi">D2C telemetry</span><span class="arrow">→</span>
+    <span class="node">your dashboard</span>
+  </div>
+  <ul>
+    <li>Every hop is the same one a production fleet of thousands uses</li>
+    <li>The board found its broker and credentials itself at boot (discovery + provisioning)</li>
+    <li>Commands are acknowledged; telemetry is stored — latest value <em>and</em> history</li>
+  </ul>
+  <aside class="notes">Punchline: you just operated a secure, multi-tenant device-management pipeline, and none of it was mocked. ATTENDEE-GUIDE §4 maps each hop to its API area.</aside>
+</section>
+
+<!-- 17 · Metrics -->
+<section class="slide" data-sec="Measure">
+  <p class="eyebrow">Measuring GenAI</p>
+  <h2>How performance is measured</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Metric</th><th>What it is</th><th>Why you care</th></tr></thead>
+    <tbody>
+      <tr><td class="hot">Load</td><td>Model/pipeline init, before the first token</td><td>Cold-start latency; hidden in most datasheets</td></tr>
+      <tr><td class="hot">TTFT</td><td>Prompt → first token (after load)</td><td>Perceived responsiveness</td></tr>
+      <tr><td class="hot">tok/s</td><td>Completion tokens ÷ generation time</td><td>Sustained throughput — <em>the</em> headline number</td></tr>
+      <tr><td class="hot">Wall</td><td>End-to-end, cold, as a user feels it</td><td>The honest number</td></tr>
+      <tr><td class="hot">CPU % · peak RAM</td><td>Sampled at 1 Hz during the run</td><td>What's left for the rest of your product</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Report load <strong>separately</strong> — never buried in tok/s</li>
+    <li>Know your tokenizer: some paths count real tokens, others estimate ~4 chars/token</li>
+    <li>The official benchmark's JSON report is the authoritative source (<code class="cmd">run-benchmark</code>)</li>
+  </ul>
+  <aside class="notes">Definitions/methodology from BENCHMARKS.md + MODELS.md: measured via the demo's real code paths, /proc sampled at 1 Hz, load always its own column. Estimated-vs-exact tokens matters when comparing engines — GenAI Flow counts real tokens; llama.cpp and Ara paths estimate. This rigor is the difference between benchmarketing and measurement.</aside>
+</section>
+
+<!-- 18 · Ladder -->
+<section class="slide" data-sec="Measure">
+  <p class="eyebrow">Measuring GenAI</p>
+  <h2>The measured ladder — same prompt, same board</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Model</th><th>Runtime / backend</th><th class="num">Load (s)</th><th class="num">TTFT (s)</th><th class="num">tok/s</th><th>Quality*</th></tr></thead>
+    <tbody>
+      <tr><td>Danube-500M q8</td><td>GenAI Flow · CPU</td><td class="num">44</td><td class="num">0.74</td><td class="num">10.1</td><td>C <em>(B+ w/ RAG)</em></td></tr>
+      <tr><td>Danube-500M q8</td><td>GenAI Flow · <strong>Neutron NPU</strong></td><td class="num">129</td><td class="num">0.48</td><td class="num hot">13.7</td><td>same model, +35%</td></tr>
+      <tr><td>Danube-500M q4</td><td>GenAI Flow · Neutron NPU</td><td class="num">147</td><td class="num">0.31</td><td class="num hot">15.9</td><td class="bad">D+ (RAG broken)</td></tr>
+      <tr><td>Qwen2.5-0.5B Q8_0</td><td>llama.cpp · CPU</td><td class="num good">5.6</td><td class="num">0.13</td><td class="num">12.9</td><td>B</td></tr>
+      <tr><td>Qwen2.5-1.5B Q4_K_M</td><td>llama.cpp · CPU</td><td class="num">7.1</td><td class="num">0.83</td><td class="num">5.7</td><td class="good">B+ — best reasoning</td></tr>
+    </tbody>
+  </table></div>
+  <p class="kicker">*QoR grades from the same question set — small-sample, honest rubric. The trade in one row: the best-reasoning model is the <strong>slowest</strong>. Parameter count buys reasoning; today it costs tok/s.</p>
+  <aside class="notes">MODELS.md tables. Three stories: (1) the NPU adds ~35% to whichever Danube it runs, but pays a 2-min compile per launch; (2) llama.cpp's mmap load is 23× faster than GenAI Flow's pipeline spin-up — runtime architecture matters as much as silicon; (3) the q4 row is the quantization cautionary tale, now with numbers. Leave this table up while introducing the next slide.</aside>
+</section>
+
+<!-- 19 · Ara240 numbers -->
+<section class="slide" data-sec="Measure">
+  <p class="eyebrow">Measuring GenAI</p>
+  <h2>Add the Ara240: the trade-off breaks</h2>
+  <ul>
+    <li>Same 1.5B-class model: <strong>5.7 tok/s on the CPU → 18.7 tok/s on the Ara240</strong> (~3.3×)</li>
+    <li><strong>Qwen2.5-7B</strong> — five times the parameters — runs at <strong>5.1 tok/s</strong>: the speed the CPU managed on a 1.5B</li>
+    <li>Load per prompt: <strong>zero</strong> — models stay resident on the module</li>
+    <li>Host CPU during 7B generation: <strong>~12%</strong> — the A55s are free for your actual product</li>
+  </ul>
+  <p class="punch">"Five times the parameters at the same speed. Same board — we just added the card."</p>
+  <aside class="notes">MODELS.md Ara240 tables. Be honest with the gauge: 5.1 tok/s is not a big number — the win is quality-at-speed, not raw speed (the demo's video script forbids rescaling the tok/s gauge to flatter it). Quality exhibit if asked: on "What color is an apple?", only the 7B covers red/green/yellow + ripeness; the 0.5B invents black apples; the 1.5B leads with "green" (BENCHMARKS.md verbatim).</aside>
+</section>
+
+<!-- 20 · Shootout -->
+<section class="slide" data-sec="Measure">
+  <p class="eyebrow">Measuring GenAI · hands-on</p>
+  <h2>Live: the LLM shootout</h2>
+  <ul>
+    <li>On <strong>your</strong> board: open <code>http://imx95-XXXX.local:8090</code> (or the cockpit's Model Shootout)</li>
+    <li>One prompt → every engine you tick → <strong>load / TTFT / gen / tok/s / CPU / RAM</strong> + each model's verbatim answer</li>
+    <li>On <strong>my</strong> board: the same shootout with the <strong>Ara240 rows lit</strong></li>
+    <li>Watch the answers, not just the numbers — quality tracks parameter count</li>
+  </ul>
+  <aside class="notes">bench_server.py serves the shootout on :8090 (genai-bench service). Attendee boards show CPU/Neutron/llama.cpp rows; Ara240 rows are greyed without the module — say so before someone asks. Budget honestly: full multi-engine runs take minutes (Neutron pays its ~2-min compile); pre-select 2–3 quick engines for the room, run your Ara240 on the projector. Give this 4 full minutes.</aside>
+</section>
+
+<!-- 21 · Three updates -->
+<section class="slide" data-sec="Lifecycle">
+  <p class="eyebrow">The model lifecycle</p>
+  <h2>Three kinds of update — this demo implements all three</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th></th><th>OTA update</th><th>Model push</th><th>File update</th></tr></thead>
+    <tbody>
+      <tr><td class="hot">Payload</td><td>App package (<code>package.tar.gz</code>)</td><td>AI model (Ara240 <code>.dvm</code> bundle or GGUF)</td><td>A document / data file (e.g. RAG DB)</td></tr>
+      <tr><td class="hot">Mechanism</td><td>Firmware → OTA campaign</td><td><strong>AI Models → Push Model</strong> (module command + presigned S3 URL)</td><td><code class="cmd">rag-add</code> + presigned URL</td></tr>
+      <tr><td class="hot">Device does</td><td>Untars, runs <code>install.sh</code>, restarts</td><td>Downloads → deploys → loads on NPU → serves</td><td>Downloads → chunks → re-embeds → ready</td></tr>
+      <tr><td class="hot">Progress</td><td>OTA acks</td><td><code>model_deploy_status</code>: idle → downloading → deploying → loading → <strong>ready</strong></td><td><code>rag_status</code>: downloading → indexing → <strong>ready</strong></td></tr>
+      <tr><td class="hot">Cadence</td><td>Rare · QA'd · rollback plan</td><td>Retrain cycles · versioned models</td><td>As often as the knowledge changes</td></tr>
+    </tbody>
+  </table></div>
+  <p class="kicker">Three risk profiles, three cadences — a fleet needs all three lanes.</p>
+  <aside class="notes">Implemented, not just described, in src/app.py: on_ota (package), on_module_command ct:2 (model), rag-add (file). Frame by blast radius: app code changes rarely; models on retrain cycles (need ~2× model size free disk); knowledge files can change weekly and touch nothing else. Next two slides demo lanes two and three.</aside>
+</section>
+
+<!-- 22 · Model push live -->
+<section class="slide" data-sec="Lifecycle">
+  <p class="eyebrow">The model lifecycle · live demo</p>
+  <h2>Push a model from the console</h2>
+  <ul>
+    <li><strong>AI Models → My Model → Create Model</strong>: name, a clean <strong>Code</strong> (3–10 alphanumeric — it becomes the install path), version, the model <code>.tar</code></li>
+    <li><strong>AI Models → Push Model</strong>: model + version → template → device → <strong>Push</strong></li>
+    <li>Watch <code>model_deploy_status</code>: <em>idle → downloading → deploying → loading → <strong>ready</strong></em></li>
+    <li>Measured on this board: <strong>~54 seconds</strong> from click to serving</li>
+    <li>Then <code class="cmd">ask-llm</code> — answered by a model that wasn't on the board a minute ago</li>
+  </ul>
+  <aside class="notes">Walkthrough with screenshots: docs/MODEL-PUSH.md. Under the hood: a ct:2 module command carrying a presigned S3 URL; device untars into /usr/share/llm/&lt;Code&gt;/, restarts the AAF connector, acks OTA_DOWNLOAD_DONE. Leave "Convert through sagemaker?" unchecked — this tar is already Ara-compiled (that checkbox hooks the next slide). Wi-Fi-risk fallback demo: rag-add a URL, watch rag_status reach ready, ask a question only that doc answers — and note the shipped KB still says "Ara-2 will be supported in a future version": that's why file updates matter.</aside>
+</section>
+
+<!-- 23 · SageMaker -->
+<section class="slide" data-sec="Lifecycle">
+  <p class="eyebrow">The model lifecycle · retraining</p>
+  <h2>Retraining in the cloud — the loop closes</h2>
+  <div class="flow">
+    <span class="node">capture on device</span><span class="arrow">→</span>
+    <span class="node">/IOTCONNECT file support</span><span class="arrow">→</span>
+    <span class="node">S3</span><span class="arrow">→</span>
+    <span class="node hi">SageMaker training</span><span class="arrow">→</span>
+    <span class="node">conversion pipeline</span><span class="arrow">→</span>
+    <span class="node hi">deploy to fleet (OTA / Model Push)</span>
+  </div>
+  <ul>
+    <li>Shipping example in this repo — <strong>KWS Training Studio</strong> (Microchip SAMA7D65):</li>
+    <li>Capture voice-command clips on the board → dataset to S3 through /IOTCONNECT</li>
+    <li><strong>SageMaker</strong> trains a PyTorch keyword model; <strong>Step Functions</strong> converts it to a board-ready TFLite package</li>
+    <li>The new model deploys back to the device runtime (via OTA / <code class="cmd">file-download</code>)</li>
+    <li>The Create Model dialog's <em>"Convert through sagemaker?"</em> option is the hook into the <strong>conversion half</strong> of this machinery</li>
+  </ul>
+  <aside class="notes">Source: microchip-sama7d65-curiosity/kws-training — a complete, working retrain loop on the same /IOTCONNECT primitives attendees used today. Be precise on two points: today's Qwen LLMs are deployed, not retrained — the retrain loop is shown on a keyword-spotting model, where edge retraining genuinely pays, and the KWS example closes its loop via OTA/file-download (Model Push is the equivalent lane shown live on the previous slide). And on ownership: file upload, S3 storage, and model delivery are platform features; the SageMaker training job runs in the customer's AWS account (the board needs AWS credentials to submit it) — the platform's provisioned conv-* Step Functions pipeline is conversion, not raw training.</aside>
+</section>
+
+<!-- 24 · Ground truth -->
+<section class="slide" data-sec="Lifecycle">
+  <p class="eyebrow">The model lifecycle · data</p>
+  <h2>Ground truth: what your fleet knows that you don't</h2>
+  <ul>
+    <li><strong>Ground truth</strong> = real field data with verified labels — the raw material of every retrain</li>
+    <li>/IOTCONNECT file support gives each device an <strong>S3-backed bucket</strong>: captures upload from the device and land under <strong>Telemetry Files</strong></li>
+    <li>Working example — the <strong>file-upload demo</strong> (NXP FRDM-IMX93):</li>
+    <li><code class="cmd">capture-picture</code> → JPEG · <code class="cmd">record-start/stop</code> → 30&nbsp;s MP4 clips (zip-wrapped) → uploaded to S3</li>
+    <li>Telemetry carries the <strong>metadata</strong>: <code>recording</code> · <code>pending_uploads</code> · <code>uploaded_clips</code> · <code>upload_failures</code> · <code>last_clip</code></li>
+  </ul>
+  <p class="punch">Media + telemetry context = the raw material of a labeled dataset — add labels and it becomes ground truth.</p>
+  <aside class="notes">Source: nxp-frdm-imx-93/file-upload-demo. Connect backwards: the SageMaker loop starts from exactly this kind of captured, contextualized data — and the labeling step matters: the file-upload demo's telemetry is upload bookkeeping, while the KWS demo captures clips into per-command label folders, which is what makes them ground truth. Today's demo used the same S3 path for something small: rag-show publishes RAG chunk files to Telemetry Files. Metadata is what makes media usable — a clip with device state and timestamps is a dataset row; a bare clip is just a file.</aside>
+</section>
+
+<!-- 25 · KVS -->
+<section class="slide" data-sec="Lifecycle">
+  <p class="eyebrow">The model lifecycle · video</p>
+  <h2>Live video: KVS, and what the cloud adds</h2>
+  <ul>
+    <li>For streams, not clips: <strong>AWS Kinesis Video Streams</strong>, provisioned per device by /IOTCONNECT at creation</li>
+    <li><strong>KVS PutMedia</strong> — ingest to the cloud: durable, recorded, replayable</li>
+    <li><strong>KVS WebRTC</strong> — peer-to-peer live view: sub-second latency, the board is the WebRTC master</li>
+    <li>Start/stop from the device's <strong>Video Streaming</strong> tab; view live in the console</li>
+    <li>Once media is in S3/KVS, cloud analysis is a service call away — e.g. <strong>Amazon Rekognition</strong> for labels, faces, objects → results feed telemetry, alerts, and the retraining loop</li>
+  </ul>
+  <aside class="notes">Sources: tria-vision-ai-kit-6490 kvs-webrtc + kvs-putmedia (same demos for STM32MP257). Stream resource (PutMedia vs WebRTC) is chosen at device creation with the plitekvs template. Be accurate about today's board: the workshop dashboard camera is a local MJPEG server, not KVS — KVS is the productization path for off-LAN/recorded video (genai README §12 points there). Rekognition: the demos ship the capture-and-stream half; wiring Rekognition onto S3/KVS media is standard AWS integration — the architecture, not a button in this repo.</aside>
+</section>
+
+<!-- 26 · Voice finale -->
+<section class="slide" data-sec="Finale">
+  <p class="eyebrow">Finale</p>
+  <h2>"Hey NXP"</h2>
+  <ul>
+    <li>Wake word → Moonshine STT → LLM → VITS TTS — <strong>no cloud in the loop</strong></li>
+    <li>Ask it something. Then ask it to <em>do</em> something:</li>
+  </ul>
+  <p class="punch">"Hey NXP … turn on the lights" → voice → agent → /IOTCONNECT → a real LED on another device switches on.</p>
+  <p class="kicker">Four models, a tool-calling agent, and a cloud command — from one spoken sentence, on one embedded board.</p>
+  <aside class="notes">voice-start was sent at ~0:49; voice_status should read "listening" now. Speak the wake word, pause for the earcon, then ask — running them together puts "Hey NXP" into the transcript. Arm's length (~4000 RMS). The LED beat needs the companion device online and the agent warm — idle agent sessions auto-stop, so re-warm with agent-start at ~0:45 and verify both before voice-start; fallback: a plain voice Q&amp;A with voice_question/voice_response telemetry on screen still closes strong. Send voice-stop afterward — a voice session holds the AI engine until stopped.</aside>
+</section>
+
+<!-- 27 · Wrap -->
+<section class="slide" data-sec="Finale">
+  <p class="eyebrow">Wrap-up</p>
+  <h2>What you leave with</h2>
+  <ul>
+    <li>A mental model: <strong>tok/s is a bandwidth story · quantize but re-validate · ground or agent your small models · measure load separately</strong></li>
+    <li>A live <strong>/IOTCONNECT account</strong> — your entity, dashboard, and RAG documents stay yours after today</li>
+    <li>The full demo — code, docs, every measured number — is public: attendee guide · benchmarks · model catalog · model-push walkthrough</li>
+    <li>NXP eIQ GenAI Flow · Ara240 models on Hugging Face</li>
+  </ul>
+  <p class="punch">The board goes back. Everything you built today doesn't.</p>
+  <aside class="notes">ATTENDEE-GUIDE §5–6 covers keep-vs-return. Point at the guide's platform-capabilities table one last time — it doubles as an evaluation checklist for their own products.</aside>
+</section>
+
+<!-- 28 · QA -->
+<section class="slide" data-sec="Finale">
+  <p class="eyebrow">Thank you</p>
+  <h2>Q&amp;A</h2>
+  <ul>
+    <li>Repo: <code>github.com/avnet-iotconnect/iotc-python-lite-sdk-demos</code> → <code>nxp-frdm-imx-95/genai-flow-demo</code></li>
+    <li>Your manual for today: <strong>ATTENDEE-GUIDE.md</strong></li>
+    <li>Contact / next steps</li>
+  </ul>
+  <aside class="notes">Seed questions if the room is quiet: "What would it take to run OUR model on this?" (GGUF → drop-in via set-model; Ara240 → pre-compiled models, or the Ara SDK with a compile license) and "What does the Neutron NPU do while the Ara runs the LLM?" (today one-AI-at-a-time; roadmap is LLM on Ara + vision on Neutron + speech on CPU concurrently — MODELS.md "what becomes possible").</aside>
+</section>
+
+</main>
+
+<div class="hud">
+  <span><b>←</b>/<b>→</b> navigate · <b>N</b> notes</span>
+  <span id="counter"><b>01</b> / 28</span>
+</div>
+
+<script>
+  (function () {
+    var deck = document.getElementById('deck');
+    var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+    var counter = document.getElementById('counter');
+    var pbar = document.getElementById('pbar');
+    var current = 0;
+
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+    function update() {
+      counter.innerHTML = '<b>' + pad(current + 1) + '</b> / ' + pad(slides.length);
+      pbar.style.width = ((current + 1) / slides.length * 100) + '%';
+    }
+
+    function go(i) {
+      current = Math.max(0, Math.min(slides.length - 1, i));
+      slides[current].scrollIntoView();
+      update();
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault(); go(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault(); go(current - 1);
+      } else if (e.key === 'Home') { e.preventDefault(); go(0);
+      } else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1);
+      } else if (e.key === 'n' || e.key === 'N') {
+        document.body.classList.toggle('show-notes');
+      }
+    });
+
+    // Keep the counter honest when the user scrolls instead of keying.
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          current = slides.indexOf(entry.target);
+          update();
+        }
+      });
+    }, { root: deck, threshold: 0.6 });
+    slides.forEach(function (s) { io.observe(s); });
+
+    update();
+  })();
+</script>
+</body>
+</html>

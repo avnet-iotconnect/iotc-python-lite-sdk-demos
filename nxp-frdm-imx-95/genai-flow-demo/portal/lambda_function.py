@@ -369,15 +369,34 @@ def cockpit(event, path, method, headers, body_raw):
     try:
         if path.endswith("/bootstrap"):
             devs = c.devices().get("data", [])
-            devs = [d for d in devs if d.get("uniqueId", "").startswith("p95")] or devs
+            # Only show boards on the GenAI demo template (iMX95genai). An admin
+            # account can own hundreds of unrelated devices (seen: 747 vs 8 on this
+            # template); the cockpit only makes sense for devices on it - its
+            # telemetry attributes and commands. Attendee p95 boards are created on
+            # this same template so they still appear, and the Ara MCLiMX95b is on it.
+            devs = [d for d in devs if d.get("deviceTemplateGuid") == TEMPLATE_GUID]
+            devs.sort(key=lambda d: (not d.get("uniqueId", "").startswith("p95"),
+                                     d.get("uniqueId", "")))
+            devs = devs[:50]
             out = {"devices": [{"guid": d["guid"], "uniqueId": d["uniqueId"],
-                                "templateGuid": d.get("deviceTemplateGuid")} for d in devs[:10]],
-                   "commands": {}}
+                                "templateGuid": d.get("deviceTemplateGuid")} for d in devs],
+                   "commands": {}, "commandsByTemplate": {}}
+            # Commands per distinct template, so the picker can switch to a device
+            # on a different template without another round trip. An admin account
+            # can own devices on many templates; a single template whose lookup
+            # errors or returns non-JSON (some system/legacy templates do) must not
+            # break the whole picker, so each lookup is isolated.
+            for tpl in {d.get("deviceTemplateGuid") for d in devs if d.get("deviceTemplateGuid")}:
+                try:
+                    cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
+                    out["commandsByTemplate"][tpl] = {x.get("command"): x.get("guid")
+                                                      for x in cmds.get("data", []) if x.get("command")}
+                except Exception as e:  # noqa: BLE001 - leave this template's commands empty
+                    print("template-command lookup failed for %s: %s" % (tpl, e))
+                    out["commandsByTemplate"][tpl] = {}
             if out["devices"]:
-                tpl = out["devices"][0]["templateGuid"]
-                cmds = c._req("GET", c.urls["deviceBaseUrl"] + "/template-command/%s/lookup" % tpl)
-                out["commands"] = {x.get("command"): x.get("guid")
-                                   for x in cmds.get("data", []) if x.get("command")}
+                out["commands"] = out["commandsByTemplate"].get(
+                    out["devices"][0]["templateGuid"], {})
             return resp(200, out)
 
         if path.endswith("/telemetry"):

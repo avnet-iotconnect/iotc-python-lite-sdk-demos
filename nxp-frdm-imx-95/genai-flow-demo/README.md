@@ -26,7 +26,7 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 * **Prompt the on-device LLM from the cloud** with the `ask-llm` command and see the response and measured performance
   come back as telemetry.
 * **Ask a Vision Language Model about the camera view** with the `ask-vlm` command — a USB webcam frame is captured
-  and answered about by SmolVLM running on the board (see [Vision Language Model](#vision-language-model-ask-vlm)).
+  and answered about by SmolVLM2 running on the board (see [Vision Language Model](#vision-language-model-ask-vlm)).
 * **Run the official GenAI Flow benchmark** (`run-benchmark`) and publish its metrics (TTFT, tokens/sec, CPU/memory
   averages) to your dashboard.
 * **Switch models and backends** (`set-model`, `set-backend`) to compare CPU vs. eIQ Neutron NPU performance.
@@ -37,13 +37,13 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 | Backend | Status | Notes |
 |---|---|---|
 | Cortex-A55 CPU (6 cores) | ✅ Supported | Default. Runs Danube-500M q8/q4 |
-| eIQ Neutron NPU | ✅ Supported (experimental) | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0) and booting the Neutron device tree shipped in the LF6.18.20_2.0.0 boot partition — see [Enabling the Neutron NPU](#enabling-the-neutron-npu) |
+| eIQ Neutron NPU | ✅ Confirmed on whinlatter FRDM | `set-backend neutron`; requires i.MX 95 **B0** silicon (SoC revision 2.0), an **8 GB** board, and booting a Neutron device tree that reserves the enlarged CMA pool — see [Enabling the Neutron NPU](#enabling-the-neutron-npu). The benchmark table's NPU numbers were measured this way on a whinlatter (LF6.18.2-1.0.0) FRDM. |
 | Kinara Ara-2 / NXP Ara240 discrete NPU module | ✅ Supported (setup required) | `set-backend ara2` runs `ask-llm` on the Ara240 M.2 module via NXP's eIQ AAF Connector — enables much larger LLMs (Qwen2.5-7B) at interactive speed. Requires the NXP Ara240 runtime + connector (account-gated download) — see [Enabling the Ara240 backend](#enabling-the-kinara-ara-2--nxp-ara240-backend) |
 
 ### Measured performance
 
 Measured on a FRDM-IMX95 (BSP LF6.18.2, `danube-500M-q8`, identical prompt; load time excluded from
-performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix):
+performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configurations plus the VLM and STT tables):
 
 | Metric | CPU (6× Cortex-A55) | eIQ Neutron NPU |
 |---|---|---|
@@ -54,10 +54,13 @@ performance — see [MODELS.md](MODELS.md) for the full 11-configuration matrix)
 ## 2. Requirements
 
 * Completed [FRDM i.MX 95 quickstart](../README.md) (starter demo onboarded and working in `/opt/demo`)
-* NXP Linux BSP **LF6.18.20_2.0.0** (kernel `6.18.20-2.0.0`) — this flow is developed and locked to that
-  release (see the [flashing guide](../FLASHING.md) to update). It ships the Neutron device trees in the boot
-  partition, so no local device-tree build is needed (see [Enabling the Neutron NPU](#enabling-the-neutron-npu)).
-  Check yours with `uname -r`.
+* NXP Linux BSP **LF6.18.2-1.0.0** ("whinlatter", kernel `6.18.2`) — the release this flow runs on. Check
+  yours with `uname -r`, and see the [flashing guide](../FLASHING.md) / [BSP-UPGRADE.md](docs/BSP-UPGRADE.md)
+  to install it.
+  > [!WARNING]
+  > **Do not use the newer LF6.18.20_2.0.0 ("wrynose").** It ships **Python 3.14 only**, and eIQ GenAI Flow's
+  > core is distributed as **`cpython-313` compiled binaries** that Python 3.14 cannot load — the stack does
+  > not run there (verified on hardware). Revisit only when NXP publishes `cpython-314` GenAI Flow builds.
 * At least **16 GB free storage** on the board for GenAI Flow and its models
 * Internet access on the board (models are downloaded on first use)
 
@@ -88,14 +91,10 @@ on first use). Install it on the board first:
    ```
 
    > [!TIP]
-   > A packaged copy of the demonstrator is also mirrored on our S3 hosting, so you can `wget` it directly onto the
-   > board (or your host) without Git LFS:
-   > ```bash
-   > wget https://downloads.iotconnect.io/partners/nxp/packages/dm-eiq-genai-flow-lib-v1.0.0.tgz
-   > tar -xzf dm-eiq-genai-flow-lib-v1.0.0.tgz
-   > ```
-   > Alternatively, `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM packages) so the
-   > board pulls the demonstrator and this demo repo straight from Git.
+   > No Git LFS on your host? `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM
+   > packages) so the board pulls the demonstrator and this demo repo straight from Git. (The
+   > `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download server is **not** a copy of the demonstrator — it is a
+   > pruned library subset built for a different demo and cannot be used for this install.)
 
 2. On the **board**:
 
@@ -105,10 +104,9 @@ on first use). Install it on the board first:
    ```
 
    > [!NOTE]
-   > The **LF6.18.20_2.0.0** image defaults to **Python 3.14**, but eIQ GenAI Flow (and the AI stack it pulls in) is
-   > built against **Python 3.13**. Run the demonstrator under 3.13 — check with `python3.13 --version`, and if the
-   > board has only 3.14, build/install 3.13 alongside it (`python3.13`) and use that interpreter for
-   > `eiq_genai_flow.py`, `install.sh`, and this demo's `app.py`.
+   > The whinlatter image ships **Python 3.13**, which is what eIQ GenAI Flow's compiled modules
+   > (`cpython-313`) require — so `install.sh` and `eiq_genai_flow.py` run under the stock `python3` with no
+   > extra steps. (This is why the demo stays on whinlatter; see the BSP warning under Requirements.)
 
 3. (Optional) Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
@@ -140,7 +138,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.1.tgz
+wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frdm-imx95-genai-flow-demo-v1.0.2.tgz
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
@@ -156,9 +154,12 @@ python3 app.py
 ```
 
 > [!TIP]
-> For hands-off starts (booth staff, colleagues), copy [board-readme.txt](board-readme.txt) to the board as
-> `/root/readme.txt` — anyone can then `cat readme.txt` and paste the block it prints to start every demo
-> service (app, camera server, MCP server) with a built-in status check.
+> For hands-off operation (booth staff, colleagues), copy [board-readme.txt](board-readme.txt) to the board as
+> `/root/readme.txt` — anyone can then `cat readme.txt` and paste its health-check block to verify the demo
+> services (app, camera server, MCP server) and get the board's IP. Note it assumes a board prepared with
+> [workshop-install.sh](src/workshop-install.sh), which installs the `genai-app`/`genai-camera` systemd services
+> (the `genai-mcp` service additionally needs the [MCP server](#10-agent-llm-with-real-board-tools-ask-agent)
+> installed and a matching unit created). On a plain install, start the app with `python3 app.py` instead.
 
 
 ## 6. Using the Demo
@@ -169,16 +170,20 @@ to interact with the LLM:
 | Command | Argument | What it does |
 |---|---|---|
 | `ask-llm` | prompt text, e.g. `What is the capital of France?` | Runs the prompt through the on-device LLM. The command is acknowledged immediately; the response arrives as `llm_response` telemetry along with `llm_ttft`, `llm_gen_time`, `llm_tps`, and `llm_token_count` |
-| `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
+| `ask-vlm` | *(optional)* question, e.g. `Is there a person in the room?` | Captures a frame from the USB camera and answers the question about it with SmolVLM2. Response arrives as `vlm_response` telemetry with `vlm_vision_time`, `vlm_ttft`, and `vlm_tps`. Defaults to "Describe what you see in this image." |
 | `ask-agent` | request needing live data, e.g. `what time is it` | Function calling: the LLM picks a real board tool (time, temperature, memory, uptime, IP), the board executes it, and the grounded answer plus the full reasoning chain arrive as `agent_*` telemetry. See [Agent](#10-agent-llm-with-real-board-tools-ask-agent) |
 | `agent-start` | — | Pre-warms the agent session (~1 min) so the first question answers in seconds — send at booth open |
-| `agent-stop` | — | Stops the agent’s persistent LLM session (it also auto-stops after 15 idle minutes) |
+| `agent-stop` | — | Stops the agent’s persistent LLM session (it also auto-stops after 60 idle minutes — `agent_idle_timeout_s`) |
 | `voice-start` | *(optional)* `tts` (default) or `text` | Starts the wake-word voice assistant ("Hey NXP" → speech-to-text → LLM → text-to-speech). Each exchange publishes `voice_question`, `voice_response`, and `voice_exchanges`; session state is in `voice_status` |
 | `voice-stop` | — | Stops the voice assistant session |
 | `set-stt` | `moonshine-tiny`, `moonshine-base`, or `whisper-small.en` | Selects the voice transcriber (speed vs. accuracy). Applies on the next `voice-start` |
 | `run-benchmark` | *(optional)* extra CLI args, e.g. `-i vasr -o tts` | Runs GenAI Flow's official benchmark mode (`-r -b`) and publishes `bench_*` metrics. Defaults to keyboard/text mode so no audio hardware is needed |
-| `set-model` | `danube-500M-q8`, `danube-500M-q4`, or any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`) | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU |
-| `set-backend` | `cpu` or `neutron` | Toggles eIQ Neutron NPU acceleration (see requirements above) |
+| `set-model` | `danube-500M-q8`, `danube-500M-q4`, any GGUF model name from `/opt/llama/models` (e.g. `qwen2.5-1.5b-instruct-q4_k_m`), or an Ara240 model served by the AAF connector | Selects the LLM used for subsequent commands. GGUF models run via llama.cpp on the CPU; picking an Ara240 model switches the backend to `ara2` automatically. An invalid name returns the list of available models |
+| `set-backend` | `cpu`, `neutron`, or `ara2` | Selects where `ask-llm` runs: CPU, eIQ Neutron NPU, or the Kinara Ara-2 / Ara240 module (see the backend sections above/below) |
+| `set-rag` | `on` or `off` | Toggles RAG grounding for `ask-llm`, the voice assistant, and `run-benchmark` (see [RAG](#9-rag-ground-answers-in-your-own-documentation-set-rag)) |
+| `rag-add` | document URL, optional name | Downloads a document (IOTCONNECT's file upload provides a URL), chunks and embeds it into the on-device RAG database — watch `rag_status` |
+| `rag-show` | document name | Publishes a preview of a document's chunks (`rag_preview` telemetry) |
+| `rag-remove` | document name | Removes a document from the RAG database |
 | `get-ip` | — | Returns the board's local IP address |
 | `file-download` | package URL | Self-update with a new demo package |
 
@@ -191,16 +196,24 @@ to interact with the LLM:
 ### Enabling the Neutron NPU
 
 The Neutron NPU needs a large reserved DMA/CMA memory pool for LLM inference (the default `CmaTotal` is only
-~960 MB; NXP requires >3 GB). On the **LF6.18.20_2.0.0** image this pool is already provided by the
-Neutron device trees NXP ships **in the boot partition** — you just boot the board with the Neutron DTB instead of
-the default one. **Nothing is built or overwritten:**
+~960 MB; NXP requires >3 GB). The whinlatter FRDM image ships **no** FRDM Neutron device tree — the boot
+partition holds only the default `imx95-15x15-frdm.dtb` and peripheral variants — so this repo provides the
+missing one: **[`imx95-15x15-frdm-neutron.dtb`](imx95-15x15-frdm-neutron.dtb)**
+(sha256 `5a7a0bf478f1395f374d9b207aeb7a1cc277f0e9a5482afa1e0d5f2c4240b09e`).
+
+It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay merged in — the delta is a
+4 GB `shared-dma-pool` reserved at `0x1_0000_0000` (the upper half of an 8 GB board's DDR) plus a
+`memory-region` reference on the `imx95-neutron@4ab00004` node. This exact DTB is what produced the NPU
+column of the benchmark table above (verified on whinlatter, kernel `6.18.2-1.0.0`: `CmaTotal` ≈ 5.1 GB,
+danube-500M-q8 at 13.7 tok/s). To rebuild it yourself instead of trusting the binary, decompile with
+`dtc -I dtb -O dts`, add those two nodes, and recompile — or merge NXP's `imx95-19x19-evk-neutron.dtso`
+from the linux-imx kernel source with `fdtoverlay`.
+
+Install it alongside the stock DTB (**nothing is overwritten**):
 
 ```bash
-# On the board - confirm the shipped Neutron device trees are present
-ls /run/media/boot-mmcblk1p1 | grep neutron
-# imx95-15x15-frdm-neutron.dtb      <- the FRDM (15x15) one this board uses
-# imx95-19x19-evk-neutron.dtb
-# imx95-19x19-frdm-pro-neutron.dtb
+# From this repo's genai-flow-demo/ directory on your host PC
+scp imx95-15x15-frdm-neutron.dtb root@<board-ip>:/run/media/boot-mmcblk0p1/
 ```
 
 Select it from the **U-Boot** prompt over the serial console (interrupt boot to reach `u-boot=>`):
@@ -228,9 +241,9 @@ boot`). The original DTB is never touched.
 > experimental until confirmed on your image.
 
 > [!NOTE]
-> This demo requires 8 GB RAM boards — the Neutron pool reserves the upper 4 GB of DDR. The Neutron device trees are
-> NXP's own, shipped in the LF6.18.20_2.0.0 boot partition; older images that predate them needed a hand-built
-> overlay, which this flow no longer uses.
+> This requires an **8 GB** board — the Neutron pool reserves the upper 4 GB of DDR (`0x1_0000_0000`–`0x2_0000_0000`),
+> which a 4 GB board does not have. General-purpose RAM drops to ~4 GB, which is why the demo app keeps only one
+> LLM session resident at a time.
 
 ### Comparing CPU vs. NPU performance
 
@@ -300,7 +313,7 @@ Ara240, and starts serving it (no SSH). Step-by-step with screenshots: [docs/MOD
 <a name="vision-language-model-ask-vlm"></a>
 ## 7. Vision Language Model (ask-vlm)
 
-The GenAI Flow repository also ships a **VLM submodule** (SmolVLM-256M/500M) that answers natural-language questions
+The GenAI Flow repository also ships a **VLM submodule** (SmolVLM2-256M/500M) that answers natural-language questions
 about images — this demo wires it to a USB camera so you can ask about the live scene from /IOTCONNECT.
 
 ### Install
@@ -325,8 +338,8 @@ Send the `ask-vlm` command from /IOTCONNECT — with no argument it describes th
 `Is there a person in the room?`. The app captures a fresh frame via GStreamer, runs the VLM (models download on
 first use), and publishes `vlm_response` plus performance telemetry.
 
-Measured on the FRDM-IMX95 CPU with SmolVLM-256M q8 and a 1280×720 frame: **vision encode ~3.6 s, time to first
-token ~4.1 s, decode ~10–11 tok/s**.
+Measured on the FRDM-IMX95 CPU with SmolVLM2-256M q8 and a 1280×720 frame: **vision encode ~4.4 s, time to first
+token ~4.9 s, decode ~9.5 tok/s** (see [MODELS.md](MODELS.md)).
 
 ## 8. Voice Assistant (voice-start)
 
@@ -404,6 +417,10 @@ echo "User guide for the NXP FRDM i.MX 95 development board." | \
 To use your own content, write a chunk file in the same JSON format (groups of short, self-contained factual
 passages) and rebuild — any product manual, datasheet, or procedure text works.
 
+You can also manage the database **from the cloud**, no SSH needed: `rag-add <document URL> [name]` downloads a
+document (upload it via IOTCONNECT to get a URL), chunks and embeds it on the board (progress in `rag_status` /
+`rag_detail`); `rag-show <name>` publishes a preview of a document's chunks; `rag-remove <name>` deletes it.
+
 ### Calibrate the ambiguity threshold
 
 GenAI Flow's query classifier rejects questions as "ambiguous" when retrieval similarity is below
@@ -443,11 +460,19 @@ output — a complete plan → act → respond loop running on a small model at 
 Send `ask-agent` with a request that needs live data, e.g. `what time is it`, `how warm is the chip`,
 `how much memory is in use`. Telemetry shows the whole reasoning chain: `agent_tool` (which tool was picked),
 `agent_tool_result` (the real data), `agent_response` (the grounded answer), and `agent_router` — `llm` when the
-model chose the tool itself, `keyword` when the fallback matcher rescued an unparseable pick.
+model chose the tool itself, `keyword-override` when the safety net overrode a bad pick, `keyword` when the
+fallback matcher rescued an unparseable one.
 
 The agent keeps one persistent LLM session alive (CPU backend), so the **first** request takes ~1 minute to load and
-subsequent ones answer in seconds. The session stops itself after 15 idle minutes (configurable via
+subsequent ones answer in seconds. The session stops itself after 60 idle minutes (configurable via
 `agent_idle_timeout_s`), or immediately with `agent-stop`.
+
+Beyond the local tools, the agent can also query your **/IOTCONNECT account itself** (fleet devices, health,
+telemetry readback) through Avnet's [iotc-mcp-server](https://github.com/avnet-iotconnect/iotc-mcp-server) running
+on the board. Install it with `python3 -m pip install iotconnect-mcp-server`, start it with `iotc-mcp-server` (the
+demo expects it at `http://127.0.0.1:8000/mcp` — `mcp_url` in `/opt/demo/genai-config.json`), and authenticate once
+with `iotconnect-cli configure` (the session token refreshes automatically afterwards). Without it, the local board
+tools above still work — only the cloud-backed tools report the server as unreachable.
 
 ### Companion device: MCX predictive-maintenance (PdM)
 
@@ -465,7 +490,7 @@ faults by voice, and the MCXN947 detects them.
 
 Set the target device in `/opt/demo/genai-config.json` (`vibration_duid`, default `mclMCXvib`). Then, with the
 agent warm: `ask-agent how's the motor` → reads the live state; `ask-agent inject a fault` → the unbalanced motor
-spins and the MCX board reports `fault`. Requires the MCP server running and authenticated (§0 start block) and the
+spins and the MCX board reports `fault`. Requires the MCP server running and authenticated (see above) and the
 companion device onboarded — see the [eIQ PdM demo](https://github.com/avnet-iotconnect/iotc-zephyr-demos/tree/main/demos/eiq-pdm-vibration).
 
 ### Test without the cloud
