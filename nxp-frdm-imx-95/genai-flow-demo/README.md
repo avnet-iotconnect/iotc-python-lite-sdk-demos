@@ -80,10 +80,29 @@ performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configur
 The eIQ GenAI Flow demonstrator is delivered by NXP as a separate repository (models are encrypted binaries downloaded
 on first use). Install it on the board first:
 
-1. On your **host PC** (needs Git LFS):
+1. On your **host PC**, clone the demonstrator (needs Git LFS — the repo's AI binaries are LFS objects) and copy
+   it to the board. **A Linux host is not required** — pick your OS:
+
+   **Windows** (PowerShell — `git` from [Git for Windows](https://git-scm.com/download/win) includes Git LFS, and
+   `scp` is built into Windows 10/11):
+
+   ```powershell
+   git lfs install
+   git clone --config core.autocrlf=false --single-branch -b release/v3.0 https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator
+   cd dm-eiq-genai-flow-demonstrator
+   scp -r eiq_genai_flow root@<board-ip>:/root/
+   ```
+
+   > [!WARNING]
+   > **Windows users: keep the `--config core.autocrlf=false` exactly as shown.** Git for Windows otherwise
+   > converts the repo's Linux scripts to Windows (CRLF) line endings during clone, and step 2's `./install.sh`
+   > then fails on the board with `$'\r': command not found`. If you already cloned without it, delete the clone
+   > and re-clone — don't copy the mangled files to the board.
+
+   **Linux / macOS**:
 
    ```bash
-   sudo apt update && sudo apt install git-lfs
+   sudo apt update && sudo apt install git-lfs    # macOS: brew install git-lfs
    git lfs install
    git clone --single-branch -b release/v3.0 https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator
    cd dm-eiq-genai-flow-demonstrator
@@ -92,9 +111,10 @@ on first use). Install it on the board first:
 
    > [!TIP]
    > No Git LFS on your host? `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM
-   > packages) so the board pulls the demonstrator and this demo repo straight from Git. (The
-   > `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download server is **not** a copy of the demonstrator — it is a
-   > pruned library subset built for a different demo and cannot be used for this install.)
+   > packages) so the board pulls the demonstrator and this demo repo straight from Git — this sidesteps every
+   > host-OS concern, including the Windows line-ending warning above. (The `dm-eiq-genai-flow-lib-v1.0.0.tgz`
+   > file on our download server is **not** a copy of the demonstrator — it is a pruned library subset built for
+   > a different demo and cannot be used for this install.)
 
 2. On the **board**:
 
