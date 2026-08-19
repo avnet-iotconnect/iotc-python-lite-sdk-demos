@@ -1346,8 +1346,13 @@ def rag_add(url, name=None):
     if not chunks:
         raise RuntimeError("%s has no readable text" % name)
     set_rag_status("indexing", "%s - %d chunks" % (name, len(chunks)))
+    # One group PER CHUNK: the reranker scores a group by the mean embedding
+    # of all its chunks, so a multi-chunk group gets diluted and loses to the
+    # single-chunk garbage_model entries - which makes the classifier REJECT
+    # on-topic questions (found live). Single-chunk groups rerank as themselves.
     with open(os.path.join(chunk_dir, stem + ".json"), "w", encoding="utf-8") as f:
-        json.dump({stem: {"chunks": chunks}}, f, indent=4)
+        json.dump({"%s-%03d" % (stem, i): {"chunks": [c]}
+                   for i, c in enumerate(chunks, 1)}, f, indent=4)
     print("RAG: %s -> %d chunks, embedding..." % (name, len(chunks)))
 
     # generate_embeddings prompts for a one-line description of the database

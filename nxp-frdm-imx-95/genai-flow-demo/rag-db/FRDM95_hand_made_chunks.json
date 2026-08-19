@@ -1,44 +1,144 @@
 {
-    "frdm-imx95-board": {
+    "frdm-imx95-board-01": {
         "chunks": [
-            "The NXP FRDM i.MX 95 development board features the i.MX 95 applications processor with six Arm Cortex-A55 cores, one Cortex-M7 real-time core, one Cortex-M33 safety core, and an integrated eIQ Neutron NPU rated at 2 TOPS.",
-            "The FRDM i.MX 95 board includes 8 GB of LPDDR4X memory, 32 GB of eMMC storage, a microSD card slot, and an IW612 tri-radio module providing Wi-Fi 6, Bluetooth 5.4, and 802.15.4.",
-            "The FRDM i.MX 95 board can be purchased from Avnet. It ships from the factory with a pre-built NXP Linux demo image already flashed to the eMMC, so it boots directly into Linux out of the box.",
-            "The serial console settings for the FRDM i.MX 95 are 115200 baud, 8 data bits, 1 stop bit, and no parity. Log in as user root with no password.",
-            "The FRDM i.MX 95 USB debug connection enumerates four serial ports. The first port is the Linux console on the Cortex-A55 cores. The second port is the System Manager debug monitor on the Cortex-M33. On a Linux host the console is typically /dev/ttyACM0.",
-            "To flash a fresh image on the FRDM i.MX 95, set the SW1 boot switch to serial download mode, connect USB1 to the host, and run the NXP UUU tool: uuu.exe -b emmc_all imx-image-full-imx95frdm.rootfs.wic. Afterwards set SW1 back to eMMC boot mode.",
-            "The stock FRDM i.MX 95 demo image only allocates about 11 GB of the 32 GB eMMC to the root filesystem. Expand it with: parted -s /dev/mmcblk0 resizepart 2 100% followed by resize2fs /dev/mmcblk0p2. This gives about 28 GB total.",
+            "The NXP FRDM i.MX 95 development board features the i.MX 95 applications processor with six Arm Cortex-A55 cores, one Cortex-M7 real-time core, one Cortex-M33 safety core, and an integrated eIQ Neutron NPU rated at 2 TOPS."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-02": {
+        "chunks": [
+            "The FRDM i.MX 95 board includes 8 GB of LPDDR4X memory, 32 GB of eMMC storage, a microSD card slot, and an IW612 tri-radio module providing Wi-Fi 6, Bluetooth 5.4, and 802.15.4."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-03": {
+        "chunks": [
+            "The FRDM i.MX 95 board can be purchased from Avnet. It ships from the factory with a pre-built NXP Linux demo image already flashed to the eMMC, so it boots directly into Linux out of the box."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-04": {
+        "chunks": [
+            "The serial console settings for the FRDM i.MX 95 are 115200 baud, 8 data bits, 1 stop bit, and no parity. Log in as user root with no password."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-05": {
+        "chunks": [
+            "The FRDM i.MX 95 USB debug connection enumerates four serial ports. The first port is the Linux console on the Cortex-A55 cores. The second port is the System Manager debug monitor on the Cortex-M33. On a Linux host the console is typically /dev/ttyACM0."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-06": {
+        "chunks": [
+            "To flash a fresh image on the FRDM i.MX 95, set the SW1 boot switch to serial download mode, connect USB1 to the host, and run the NXP UUU tool: uuu.exe -b emmc_all imx-image-full-imx95frdm.rootfs.wic. Afterwards set SW1 back to eMMC boot mode."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-07": {
+        "chunks": [
+            "The stock FRDM i.MX 95 demo image only allocates about 11 GB of the 32 GB eMMC to the root filesystem. Expand it with: parted -s /dev/mmcblk0 resizepart 2 100% followed by resize2fs /dev/mmcblk0p2. This gives about 28 GB total."
+        ],
+        "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
+    },
+    "frdm-imx95-board-08": {
+        "chunks": [
             "To set up Wi-Fi on the FRDM i.MX 95, load the IW612 module with modprobe moal mod_para=nxp/wifi_mod_para.conf and connect using the connmanctl tool: enable wifi, scan wifi, agent on, then connect to your network service."
         ],
         "metadata": "FRDM-IMX95 board hardware, serial console, flashing, and setup"
     },
-    "iotconnect-setup": {
+    "iotconnect-setup-01": {
         "chunks": [
-            "To prepare the FRDM i.MX 95 for Avnet IOTCONNECT, install the SDK with: python3 -m pip install iotconnect-sdk-lite requests, then create the demo directory with mkdir -p /opt/demo.",
-            "The IOTCONNECT demo application lives in /opt/demo and is started with python3 app.py. It sends telemetry every 10 seconds including CPU load, memory usage, SoC temperature, and the latest AI performance metrics.",
+            "To prepare the FRDM i.MX 95 for Avnet IOTCONNECT, install the SDK with: python3 -m pip install iotconnect-sdk-lite requests, then create the demo directory with mkdir -p /opt/demo."
+        ],
+        "metadata": "IOTCONNECT cloud onboarding and demo application"
+    },
+    "iotconnect-setup-02": {
+        "chunks": [
+            "The IOTCONNECT demo application lives in /opt/demo and is started with python3 app.py. It sends telemetry every 10 seconds including CPU load, memory usage, SoC temperature, and the latest AI performance metrics."
+        ],
+        "metadata": "IOTCONNECT cloud onboarding and demo application"
+    },
+    "iotconnect-setup-03": {
+        "chunks": [
             "Device onboarding to IOTCONNECT is done through the web console at console.iotconnect.io: import the genaiflow device template, create a device, and install the device certificate, private key, and iotcDeviceConfig.json into /opt/demo on the board."
         ],
         "metadata": "IOTCONNECT cloud onboarding and demo application"
     },
-    "genai-llm": {
+    "genai-llm-01": {
         "chunks": [
-            "The GenAI demo on the FRDM i.MX 95 uses NXP eIQ GenAI Flow version 3.0 with the Danube-500M large language model, available in 8-bit and 4-bit quantized versions named danube-500M-q8 and danube-500M-q4.",
-            "The ask-llm IOTCONNECT command sends a text prompt to the on-device language model. The answer returns as llm_response telemetry together with time to first token, generation time, and tokens per second.",
-            "Measured LLM performance on the FRDM i.MX 95 with danube-500M-q8: the six Cortex-A55 CPU cores generate about 10.1 tokens per second with 0.74 seconds time to first token. The eIQ Neutron NPU generates about 13.7 tokens per second with 0.48 seconds time to first token, roughly 35 percent faster than CPU.",
-            "The set-backend command switches LLM inference between cpu, neutron, and ara2. The Neutron NPU backend requires i.MX 95 B0 silicon and takes about two minutes to load because the model is compiled for the NPU at startup. The ara2 backend runs ask-llm on the Kinara Ara-2 discrete NPU module.",
-            "The stock FRDM i.MX 95 image does not reserve the DMA memory pool the Neutron NPU needs for LLM inference. It is enabled by installing the imx95-15x15-frdm-neutron device tree from the demo repository into the boot partition, setting the fdtfile U-Boot variable to it, and rebooting. That device tree reserves an enlarged 4 GB shared DMA pool.",
-            "The run-benchmark command executes the official eIQ GenAI Flow benchmark. On the Neutron NPU with RAG enabled it measured 12.92 tokens per second average, 0.28 seconds time to first token, and 23.6 percent average CPU load.",
+            "The GenAI demo on the FRDM i.MX 95 uses NXP eIQ GenAI Flow version 3.0 with the Danube-500M large language model, available in 8-bit and 4-bit quantized versions named danube-500M-q8 and danube-500M-q4."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-02": {
+        "chunks": [
+            "The ask-llm IOTCONNECT command sends a text prompt to the on-device language model. The answer returns as llm_response telemetry together with time to first token, generation time, and tokens per second."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-03": {
+        "chunks": [
+            "Measured LLM performance on the FRDM i.MX 95 with danube-500M-q8: the six Cortex-A55 CPU cores generate about 10.1 tokens per second with 0.74 seconds time to first token. The eIQ Neutron NPU generates about 13.7 tokens per second with 0.48 seconds time to first token, roughly 35 percent faster than CPU."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-04": {
+        "chunks": [
+            "The set-backend command switches LLM inference between cpu, neutron, and ara2. The Neutron NPU backend requires i.MX 95 B0 silicon and takes about two minutes to load because the model is compiled for the NPU at startup. The ara2 backend runs ask-llm on the Kinara Ara-2 discrete NPU module."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-05": {
+        "chunks": [
+            "The stock FRDM i.MX 95 image does not reserve the DMA memory pool the Neutron NPU needs for LLM inference. It is enabled by installing the imx95-15x15-frdm-neutron device tree from the demo repository into the boot partition, setting the fdtfile U-Boot variable to it, and rebooting. That device tree reserves an enlarged 4 GB shared DMA pool."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-06": {
+        "chunks": [
+            "The run-benchmark command executes the official eIQ GenAI Flow benchmark. On the Neutron NPU with RAG enabled it measured 12.92 tokens per second average, 0.28 seconds time to first token, and 23.6 percent average CPU load."
+        ],
+        "metadata": "On-device LLM commands and measured performance"
+    },
+    "genai-llm-07": {
+        "chunks": [
             "The Kinara Ara-2 discrete NPU module, sold by NXP as the Ara240 M.2 module, is supported with the set-backend ara2 command. It runs much larger language models such as Qwen2.5-7B-Instruct through NXP's eIQ AAF Connector: the 7B generates about 5.1 tokens per second and the 1.5B coder model about 18.7 tokens per second, roughly 3.3 times faster than the same size model on the CPU."
         ],
         "metadata": "On-device LLM commands and measured performance"
     },
-    "genai-vision-voice": {
+    "genai-vision-voice-01": {
         "chunks": [
-            "The ask-vlm IOTCONNECT command captures a frame from the USB camera and answers questions about the scene using the SmolVLM2 vision language model running on the FRDM i.MX 95. With smolvlm-256M in 8-bit precision, vision encoding takes about 4.4 seconds and decoding runs at about 9.5 tokens per second.",
-            "A Logitech C920 USB webcam on the FRDM i.MX 95 appears as video device /dev/video52 for image capture, and its built-in microphone is used for voice input.",
-            "The voice-start IOTCONNECT command launches an offline voice assistant on the board. Say the wake word Hey NXP, pause for the beep, then speak a question. The answer is spoken through text-to-speech and also published to the dashboard. voice-stop ends the session.",
-            "The voice assistant pipeline uses VIT wake word detection, Moonshine speech-to-text, the Danube language model, and VITS streaming text-to-speech, all running locally with no cloud AI. Audio replies play through the MQS 3.5 mm jack, which needs a powered speaker.",
-            "If the voice assistant cuts questions off after the first word, raise vad_min_silence_duration_ms from 200 to 800 in the GenAI Flow STT adapter so natural pauses are tolerated.",
+            "The ask-vlm IOTCONNECT command captures a frame from the USB camera and answers questions about the scene using the SmolVLM2 vision language model running on the FRDM i.MX 95. With smolvlm-256M in 8-bit precision, vision encoding takes about 4.4 seconds and decoding runs at about 9.5 tokens per second."
+        ],
+        "metadata": "Vision language model and voice assistant usage"
+    },
+    "genai-vision-voice-02": {
+        "chunks": [
+            "A Logitech C920 USB webcam on the FRDM i.MX 95 appears as video device /dev/video52 for image capture, and its built-in microphone is used for voice input."
+        ],
+        "metadata": "Vision language model and voice assistant usage"
+    },
+    "genai-vision-voice-03": {
+        "chunks": [
+            "The voice-start IOTCONNECT command launches an offline voice assistant on the board. Say the wake word Hey NXP, pause for the beep, then speak a question. The answer is spoken through text-to-speech and also published to the dashboard. voice-stop ends the session."
+        ],
+        "metadata": "Vision language model and voice assistant usage"
+    },
+    "genai-vision-voice-04": {
+        "chunks": [
+            "The voice assistant pipeline uses VIT wake word detection, Moonshine speech-to-text, the Danube language model, and VITS streaming text-to-speech, all running locally with no cloud AI. Audio replies play through the MQS 3.5 mm jack, which needs a powered speaker."
+        ],
+        "metadata": "Vision language model and voice assistant usage"
+    },
+    "genai-vision-voice-05": {
+        "chunks": [
+            "If the voice assistant cuts questions off after the first word, raise vad_min_silence_duration_ms from 200 to 800 in the GenAI Flow STT adapter so natural pauses are tolerated."
+        ],
+        "metadata": "Vision language model and voice assistant usage"
+    },
+    "genai-vision-voice-06": {
+        "chunks": [
             "The stt_model setting in genai-config.json selects the speech recognizer: moonshine-tiny is fastest, moonshine-base balances speed and accuracy, and whisper-small.en is the most accurate."
         ],
         "metadata": "Vision language model and voice assistant usage"

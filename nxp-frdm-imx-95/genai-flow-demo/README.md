@@ -438,8 +438,13 @@ echo "User guide for the NXP FRDM i.MX 95 development board." | \
   python3 -m rag.preprocessing.generate_embeddings -f all
 ```
 
-To use your own content, write a chunk file in the same JSON format (groups of short, self-contained factual
-passages) and rebuild — any product manual, datasheet, or procedure text works.
+To use your own content, write a chunk file in the same JSON format — **one single-chunk group per passage**, as
+in the shipped file — and rebuild; any product manual, datasheet, or procedure text works.
+
+> [!WARNING]
+> Do **not** put many chunks into one group: GenAI Flow's reranker scores a group by the *mean* embedding of all
+> its chunks, so a multi-chunk group gets diluted and reliably loses to the single-chunk `garbage_model` entries —
+> the classifier then rejects even perfectly on-topic questions with "I'm unable to assist you with this topic."
 
 You can also manage the database **from the cloud**, no SSH needed: `rag-add <document URL> [name]` downloads a
 document (upload it via IOTCONNECT to get a URL), chunks and embeds it on the board (progress in `rag_status` /
@@ -449,10 +454,11 @@ document (upload it via IOTCONNECT to get a URL), chunks and embeds it on the bo
 
 GenAI Flow's query classifier rejects questions as "ambiguous" when retrieval similarity is below
 `similarity_threshold` (default 0.65) in `/root/eiq_genai_flow/config.py`. With MiniLM embeddings and hand-made
-chunks, correct matches typically score 0.35–0.45, so lower it:
+chunks, correct matches typically score 0.31–0.45 (e.g. *"How do I expand the root filesystem?"* scores 0.31
+against its own chunk), so lower it:
 
 ```python
-similarity_threshold: float = 0.35
+similarity_threshold: float = 0.30
 ```
 
 ### Use it
