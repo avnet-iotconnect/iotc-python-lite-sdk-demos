@@ -23,7 +23,8 @@ portal signup (event code)
 Do this once per board. Steps 1–4 are identical for every board, so prepare one and clone the eMMC/SD if
 your logistics allow.
 
-1. **Flash / check the BSP** — 6.18-whinlatter or later (see [../FLASHING.md](../FLASHING.md)); expand the
+1. **Flash / check the BSP** — **LF6.18.2-1.0.0 (whinlatter) only**; do *not* use the newer LF6.18.20
+   "wrynose", which breaks GenAI Flow (see [FLASHING.md](../../FLASHING.md) and README §2). Then expand the
    root partition:
    ```bash
    parted -s /dev/mmcblk0 resizepart 2 100% && resize2fs /dev/mmcblk0p2

@@ -9,9 +9,10 @@
 # 1. Gives the board a UNIQUE mDNS hostname derived from its MAC address
 #    (imx95-XXXX) so many boards can share a room - each is reachable at
 #    http://imx95-XXXX.local:8088. Prints the URL to put on the board's card.
-# 2. Installs + enables systemd services so the demo app and the claim page
-#    start on every boot:  genai-app (the demo)  and  genai-provision (the
-#    claim page attendees use to drop their board-kit zip).
+# 2. Installs + enables systemd services so the demo stack starts on every
+#    boot:  genai-app (the demo),  genai-provision (the claim page attendees
+#    use to drop their board-kit zip),  genai-camera (HTTPS camera/responses
+#    server on :8080)  and  genai-bench (the model-shootout UI on :8090).
 # -----------------------------------------------------------------------------
 set -e
 DEMO_DIR="$(cd "$(dirname "$0")" && pwd)"
