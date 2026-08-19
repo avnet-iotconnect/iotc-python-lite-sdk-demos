@@ -66,6 +66,10 @@ DEFAULT_CONFIG = {
     "use_rag": False,
     # RAG document ingestion (rag-add): where GenAI Flow's RAG package lives
     "rag_dir": "/root/eiq_genai_flow/rag",
+    # One-line domain description the RAG query classifier gates against
+    # (piped to generate_embeddings on every rebuild). Empty = derive one
+    # covering every indexed document.
+    "rag_description": "",
 
     # "cpu", "neutron" (i.MX 95 B0 only), or "ara2" (Kinara Ara-2 / NXP Ara240
     # discrete NPU via the eIQ AAF Connector REST API - see MODELS.md).
@@ -1225,6 +1229,22 @@ def rag_show(name, limit=6):
     return "%s: %d chunks" % (stem, len(chunks))
 
 
+def rag_domain_description():
+    """The one-line domain description the query classifier gates against.
+
+    A rebuild redefines the WHOLE database's domain, so the description must
+    cover every indexed document: describing only the newest one makes the
+    classifier reject questions about all the others as out-of-domain (found
+    live: a TRIA doc add turned every FRDM95 question into "I'm unable to
+    assist you with this topic")."""
+    if config.get("rag_description"):
+        return config["rag_description"]
+    names = [n.replace("_", " ") for n, _, _ in rag_inventory()
+             if n not in ("garbage_model", "intent")]
+    base = "User guide for the NXP FRDM i.MX 95 development board"
+    return base + (", plus documents about " + ", ".join(names) if names else "")
+
+
 def rag_remove(name):
     """Drop a document from the RAG database and rebuild the embeddings."""
     path, stem = rag_chunk_path(name)
@@ -1240,7 +1260,7 @@ def rag_remove(name):
             except OSError:
                 pass
     set_rag_status("indexing", "removing " + stem)
-    description = config.get("rag_description") or "Workshop documents"
+    description = rag_domain_description()
     r = subprocess.run([config["python"], "-m", "rag.preprocessing.generate_embeddings"],
                        cwd=src_dir, input=description + "\n",
                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -1332,7 +1352,7 @@ def rag_add(url, name=None):
 
     # generate_embeddings prompts for a one-line description of the database
     # (used by the domain classifier) - feed it rather than block on stdin.
-    description = config.get("rag_description") or ("Documents about " + stem.replace("_", " "))
+    description = rag_domain_description()
     r = subprocess.run([config["python"], "-m", "rag.preprocessing.generate_embeddings"],
                        cwd=src_dir, input=description + "\n",
                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
