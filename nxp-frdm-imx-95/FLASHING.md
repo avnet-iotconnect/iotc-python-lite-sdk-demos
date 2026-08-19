@@ -79,6 +79,11 @@ page — the source location for every i.MX Linux release.
 
 * Power the board with a second USB-C cable connected to the POWER port
 
+The three items this section uses are circled below: the **Boot mode switch** (SW1), the bottom **USB C**
+connector (USB1 — the flashing connection), and **USB C PD** (the POWER port):
+
+![FRDM i.MX 95 flashing connectors: Boot mode switch (SW1), bottom USB C (USB1), and USB C PD (POWER) circled](media/frdm-imx95-flashing-connectors.png)
+
 # 6. Flash the Image
 
 * Open a Windows Powershell window

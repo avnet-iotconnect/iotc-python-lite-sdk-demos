@@ -347,7 +347,8 @@ scp -r dm-eiq-genai-flow-demonstrator/vlm root@<board-ip>:/root/
 cd /root/vlm && ./install.sh
 ```
 
-Connect a UVC USB webcam and find its device node with `v4l2-ctl --list-devices` (e.g. a Logitech C920 typically
+Connect a UVC USB webcam to the board's **USB A** port (circled in the
+[quickstart's connector diagram](../README.md#3-hardware-setup)) and find its device node with `v4l2-ctl --list-devices` (e.g. a Logitech C920 typically
 appears as `/dev/video52` on this image, among the many i.MX95 ISP nodes). Set `camera_device` in
 `/opt/demo/genai-config.json` if yours differs, along with `vlm_model` (`smolvlm-256M` default, or `smolvlm-500M`)
 and `vlm_precision` (`q8` default, or `fp32`).
@@ -370,7 +371,8 @@ The `voice-start` command turns the board into a fully offline voice assistant u
 ### Audio hardware
 
 GenAI Flow auto-detects audio devices. On a FRDM-IMX95 with a USB webcam this means the webcam's microphone for
-capture and the **MQS 3.5 mm jack** for TTS playback — plug in headphones or a powered speaker to hear the replies
+capture and the **MQS 3.5 mm jack** for TTS playback (circled in the
+[quickstart's connector diagram](../README.md#3-hardware-setup)) — plug in headphones or a powered speaker to hear the replies
 (or start with `voice-start text` for dashboard-only responses). A USB headset with echo cancellation (e.g. a
 business/UC model) improves wake-word and transcription accuracy; override `capture_device` / `playback_device` in
 `/opt/demo/genai-config.json` to select it (ALSA names from `arecord -l` / `aplay -l`, e.g. `sysdefault:CARD=H570e`).

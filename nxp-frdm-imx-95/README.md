@@ -49,6 +49,13 @@ modern industrial, IoT, and edge AI applications.
 2. Connect a USB cable from your PC to the **DEBUG** USB-C port.
 3. Connect a USB cable from your PC (or a USB-C power supply) to the **POWER** USB-C port.
 
+The connectors used in this guide are circled below: **GbE RJ45** is the Ethernet connector (step 1),
+**USB C debug** is the DEBUG port (step 2), and **USB C PD** is the POWER port (step 3). For the GenAI demo's
+optional voice/vision hardware, the **USB A** port takes the webcam or USB headset, and **MQS** is the 3.5 mm
+audio jack the voice assistant speaks through:
+
+![FRDM i.MX 95 connectors: GbE RJ45 (Ethernet), USB C debug (DEBUG), USB C PD (POWER), USB A (webcam/headset), and MQS (3.5 mm audio) circled](media/frdm-imx95-connectors.png)
+
 > [!NOTE]
 > The FRDM i.MX 95 ships from the factory with a pre-built NXP Linux demo image already flashed to the eMMC, so it will
 > boot directly into Linux out of the box. The eIQ GenAI Flow demo requires BSP **LF6.18.2-1.0.0** ("whinlatter")
