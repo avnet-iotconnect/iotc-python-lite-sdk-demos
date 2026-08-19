@@ -25,15 +25,27 @@ release a demo needs or to return the board to an out-of-box state.
 
 # 3. Download Image Files
 
-* Go to the "Software" section of
-  NXP's [FRDM-IMX95 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX95#software)
-* Click the "Download" button next to the "FRDM-IMX95 Demo Images" entry for the release you need — for the
-  eIQ GenAI Flow demo that is **LF6.18.2-1.0.0** specifically (see the warning in the Introduction), *not*
-  necessarily the latest entry; for a plain out-of-box restore the latest entry is fine
-* Accept the Software License Agreement and the download should automatically start
+The demo images come from NXP's
+[Embedded Linux for i.MX Applications Processors](https://www.nxp.com/design/design-center/software/embedded-software/i-mx-software/embedded-linux-for-i-mx-applications-processors:IMXLINUX)
+page — the source location for every i.MX Linux release.
+
+1. Open that page and select the **Software Details** tab.
+2. The eIQ GenAI Flow demo needs **LF6.18.2-1.0.0** (see the warning in the Introduction). It is *not* the
+   newest release, so it is **not** behind the orange DOWNLOADS button — scroll down to the
+   **Linux Past Releases** table instead.
+3. In the **Linux 6.18.2_1.0.0** row, click the **i.MX 95 EVK, FRDM, VERDIN** link under
+   "Supported Platforms/Demo Images" — exactly as marked here:
+
+   ![Linux Past Releases table: Linux 6.18.2_1.0.0 row, i.MX 95 EVK, FRDM, VERDIN link circled](media/imxlinux-past-releases.png)
+
+4. Accept the Software License Agreement and the download starts automatically.
 
 > [!NOTE]
-> These pre-built demo images are hosted on NXP's product page, **not** on GitHub. If you would rather build the
+> Only restoring the board to out-of-box (no GenAI demo)? Any release works — use the newest via the
+> **DOWNLOADS** button at the top of that same page.
+
+> [!NOTE]
+> These pre-built demo images are hosted on NXP's site, **not** on GitHub. If you would rather build the
 > image from source with Yocto, the manifest is on GitHub at
 > [nxp-imx/imx-manifest](https://github.com/nxp-imx/imx-manifest) — use the manifest matching your chosen release
 > (e.g. `imx-6.18.2-1.0.0.xml` for whinlatter) with machine `imx95-15x15-lpddr4x-frdm` (confirm the exact
