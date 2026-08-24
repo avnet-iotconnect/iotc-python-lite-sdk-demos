@@ -110,11 +110,18 @@ on first use). Install it on the board first:
    ```
 
    > [!TIP]
-   > No Git LFS on your host? `git` and `git-lfs` can be installed **on the board itself** (via Arch Linux ARM
-   > packages) so the board pulls the demonstrator and this demo repo straight from Git — this sidesteps every
-   > host-OS concern, including the Windows line-ending warning above. (The `dm-eiq-genai-flow-lib-v1.0.0.tgz`
-   > file on our download server is **not** a copy of the demonstrator — it is a pruned library subset built for
-   > a different demo and cannot be used for this install.)
+   > **No git on your PC at all? Let the board fetch it** — one line on the board, no host tooling, no Git LFS,
+   > no line-ending pitfalls:
+   > ```bash
+   > curl -sL https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/src/get-genai-flow.sh | bash
+   > ```
+   > It downloads the source tree and then replaces every Git LFS pointer (62 files, ~1.5 GB — the compiled
+   > modules and models) with the real file, size-checked, into `/root/eiq_genai_flow` and `/root/vlm`. Then
+   > continue with step 2 (and the VLM install in section 7 is already staged). **Do not use GitHub's
+   > "Download ZIP"** — like a clone without LFS, it delivers 130-byte pointer files instead of binaries, and
+   > `install.sh` / `eiq_genai_flow.py` then fail with errors such as `No module named 'shared_utils'`. (The
+   > `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download server is **not** a copy of the demonstrator
+   > either — it is a pruned library subset built for a different demo.)
 
 2. On the **board**:
 
