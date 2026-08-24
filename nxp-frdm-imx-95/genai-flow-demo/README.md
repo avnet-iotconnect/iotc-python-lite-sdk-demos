@@ -62,7 +62,7 @@ performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configur
   > core is distributed as **`cpython-313` compiled binaries** that Python 3.14 cannot load — the stack does
   > not run there (verified on hardware). Revisit only when NXP publishes `cpython-314` GenAI Flow builds.
 * At least **16 GB free storage** on the board for GenAI Flow and its models
-* Internet access on the board (models are downloaded on first use)
+* Internet access on the board (GenAI Flow is fetched from GitHub, ~1.5 GB; the vision model downloads on first use)
 
 > [!IMPORTANT]
 > The stock NXP demo image only allocates ~11 GB of the 32 GB eMMC to the root filesystem, leaving too little free
@@ -77,57 +77,24 @@ performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configur
 
 ## 3. Install NXP eIQ GenAI Flow
 
-The eIQ GenAI Flow demonstrator is delivered by NXP as a separate repository (models are encrypted binaries downloaded
-on first use). Install it on the board first:
+NXP delivers the eIQ GenAI Flow demonstrator as a separate GitHub repository whose compiled modules and models are
+Git LFS objects (~1.5 GB). Everything below runs **on the board** — nothing needs to be installed on your PC.
 
-1. On your **host PC**, clone the demonstrator (needs Git LFS — the repo's AI binaries are LFS objects) and copy
-   it to the board. **A Linux host is not required** — pick your OS:
-
-   **Windows** (PowerShell — `git` from [Git for Windows](https://git-scm.com/download/win) includes Git LFS, and
-   `scp` is built into Windows 10/11):
-
-   ```powershell
-   git lfs install
-   git clone --config core.autocrlf=false --single-branch -b release/v3.0 https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator
-   cd dm-eiq-genai-flow-demonstrator
-   scp -r eiq_genai_flow root@<board-ip>:/root/
-   ```
-
-   > [!WARNING]
-   > **Windows users: keep the `--config core.autocrlf=false` exactly as shown.** Git for Windows otherwise
-   > converts the repo's Linux scripts to Windows (CRLF) line endings during clone, and step 2's `./install.sh`
-   > then fails on the board with `$'\r': command not found`. If you already cloned without it, delete the clone
-   > and re-clone — don't copy the mangled files to the board.
-
-   **Linux / macOS**:
+1. Fetch the demonstrator (this stages both the `eiq_genai_flow` pipeline and its `vlm` vision submodule):
 
    ```bash
-   sudo apt update && sudo apt install git-lfs    # macOS: brew install git-lfs
-   git lfs install
-   git clone --single-branch -b release/v3.0 https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator
-   cd dm-eiq-genai-flow-demonstrator
-   scp -r eiq_genai_flow root@<board-ip>:/root/
+   curl -sL https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/src/get-genai-flow.sh | bash
    ```
 
-   > [!TIP]
-   > **No git on your PC at all? Let the board fetch it** — one line on the board, no host tooling, no Git LFS,
-   > no line-ending pitfalls:
-   > ```bash
-   > curl -sL https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/src/get-genai-flow.sh | bash
-   > ```
-   > It downloads the source tree and then replaces every Git LFS pointer (62 files, ~1.5 GB — the compiled
-   > modules and models) with the real file, size-checked, into `/root/eiq_genai_flow` and `/root/vlm`. Then
-   > continue with step 2 (and the VLM install in section 7 is already staged). **Do not use GitHub's
-   > "Download ZIP"** — like a clone without LFS, it delivers 130-byte pointer files instead of binaries, and
-   > `install.sh` / `eiq_genai_flow.py` then fail with errors such as `No module named 'shared_utils'`. (The
-   > `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download server is **not** a copy of the demonstrator
-   > either — it is a pruned library subset built for a different demo.)
+   It prints one `OK … MB … filename` line per file — 70 lines, about 1.5 GB (the 495 MB Danube LLM is the
+   largest) — and ends with *"all LFS files resolved"*. If it ends with `!!` instead, the board's internet
+   connection dropped: simply run the same line again.
 
-2. On the **board**:
+2. Install both packages:
 
    ```bash
-   cd /root/eiq_genai_flow
-   ./install.sh
+   cd /root/eiq_genai_flow && ./install.sh
+   cd /root/vlm && ./install.sh
    ```
 
    > [!NOTE]
@@ -135,15 +102,27 @@ on first use). Install it on the board first:
    > (`cpython-313`) require — so `install.sh` and `eiq_genai_flow.py` run under the stock `python3` with no
    > extra steps. (This is why the demo stays on whinlatter; see the BSP warning under Requirements.)
 
-3. (Optional) Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
+3. Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
    ```bash
-   python3 eiq_genai_flow.py -i keyb -o text -m danube-500M-q8
+   cd /root/eiq_genai_flow && python3 eiq_genai_flow.py -i keyb -o text -m danube-500M-q8
    ```
+
+   Type a question at the prompt; an answer means the install is complete. (The first `ask-vlm` later will
+   download the SmolVLM2 vision model, ~1–2 minutes, one time only.)
 
 > [!NOTE]
 > If you install GenAI Flow somewhere other than `/root/eiq_genai_flow`, edit the `genai_dir` field in
 > `/opt/demo/genai-config.json` after step 5 below.
+
+> [!WARNING]
+> Prefer to get the repository onto a PC yourself? Then you **must** clone it with Git LFS installed
+> (`git lfs install` before `git clone --single-branch -b release/v3.0 https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator`),
+> and on Windows clone with `--config core.autocrlf=false` or the Linux scripts arrive with CRLF line endings.
+> GitHub's **"Download ZIP"** does *not* work — it delivers 130-byte LFS placeholder files instead of the binaries,
+> and `install.sh` / `eiq_genai_flow.py` then fail with errors such as `No module named 'shared_utils'`. The
+> board-side one-liner above sidesteps all of this. (The `dm-eiq-genai-flow-lib-v1.0.0.tgz` file on our download
+> server is **not** a copy of the demonstrator either — it is a pruned library subset for a different demo.)
 
 ## 4. Change Device Template
 
@@ -346,12 +325,10 @@ about images — this demo wires it to a USB camera so you can ask about the liv
 
 ### Install
 
-The `vlm` directory sits next to `eiq_genai_flow` in the NXP repository you cloned in section 3:
+The VLM submodule was fetched and installed in [section 3](#3-install-nxp-eiq-genai-flow) (`/root/vlm`). If you
+skipped that step, run it now:
 
 ```bash
-# On your host PC:
-scp -r dm-eiq-genai-flow-demonstrator/vlm root@<board-ip>:/root/
-# On the board:
 cd /root/vlm && ./install.sh
 ```
 
