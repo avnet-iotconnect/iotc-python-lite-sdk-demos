@@ -33,6 +33,8 @@ This expansion demo connects that pipeline to /IOTCONNECT so you can:
 * **Run the official GenAI Flow benchmark** (`run-benchmark`) and publish its metrics (TTFT, tokens/sec, CPU/memory
   averages) to your dashboard.
 * **Switch models and backends** (`set-model`, `set-backend`) to compare CPU vs. eIQ Neutron NPU performance.
+* **Push a new model from the cloud** — upload a GGUF (or an Ara240 bundle) under IOTCONNECT's *AI Models* and push
+  it; the board downloads, installs, and switches to it, no SSH (see [Model push](docs/MODEL-PUSH.md)).
 * **Monitor the board** continuously (CPU %, memory, SoC temperature) while models are running.
 
 ### Execution backends
@@ -582,6 +584,15 @@ From /IOTCONNECT: `set-model qwen2.5-1.5b-instruct-q4_k_m`, then `ask-llm` as us
 reports `cpu-llama.cpp`, and `llm_tps` / `llm_ttft` come from llama.cpp's own timing instrumentation. Switch back
 anytime with `set-model danube-500M-q8`.
 
+### Push a model from the cloud (no SSH)
+
+You don't have to `curl` GGUFs onto the board: IOTCONNECT's **AI Models → Push Model** delivers a model to the
+device, and the demo app installs it and switches `ask-llm` to it automatically — a GGUF goes into
+`/opt/llama/models/` for llama.cpp on any FRDM, an Ara240 bundle onto the module on Ara boards. Progress streams
+as `model_deploy_status` (`downloading → deploying → loading → ready`), and the new model then appears in the
+`llm_models` telemetry list. Step-by-step with screenshots, including the mismatch rules (an Ara240 bundle
+pushed to a plain board is refused cleanly): [docs/MODEL-PUSH.md](docs/MODEL-PUSH.md).
+
 ### Measured ladder (FRDM-IMX95, 6 threads)
 
 | Model | Runtime | Load (s) | Tokens/sec | Answer quality (same question set) |
@@ -636,6 +647,8 @@ cd /opt/demo && nohup python3 camera-server.py > camera.log 2>&1 &
 
 ## 13. Going Further
 
+* **Fleet model management**: push a new GGUF (or Ara240 model) to one board or a fleet from IOTCONNECT's
+  *AI Models* page — see [docs/MODEL-PUSH.md](docs/MODEL-PUSH.md).
 * **Custom RAG content**: swap the FRDM95 chunks in section 9 for your own product documentation.
 * **More agent tools**: add entries to `AGENT_TOOLS` in `app.py` — anything the board can read or do (GPIO, camera,
   scripts) becomes voice/cloud addressable.

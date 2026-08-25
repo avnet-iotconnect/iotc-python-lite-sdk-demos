@@ -1,24 +1,36 @@
-# Cloud → edge model push: deploy an LLM to the Ara240 from IOTCONNECT
+# Cloud → edge model push: deploy an LLM to the board from IOTCONNECT
 
-IOTCONNECT can **store a model in the cloud and push it to a device**, where the demo downloads it, loads it
-onto the **Kinara Ara‑2 / NXP Ara240** NPU, and starts serving it — no SSH, no manual file copy. This is
-IOTCONNECT's model-management layer on top of the on-device AI: manage models centrally, deploy to one device or
-a fleet with a click.
+IOTCONNECT can **store a model in the cloud and push it to a device**: the demo app downloads it, installs it,
+switches `ask-llm` to it, and reports progress as telemetry — no SSH, no manual file copy. It is IOTCONNECT's
+model-management layer on top of the on-device AI: manage models centrally, deploy to one device or a fleet
+with a click.
 
-This walkthrough deploys `Qwen2.5-Coder-1.5B` to a FRDM‑IMX95 (`MCLiMX95b`) that **does not have it** — proving
-the whole path. Retraining is a separate feature and is intentionally out of scope here.
+Two kinds of model can be pushed; the board sorts out which one it received:
 
-> Prerequisite: the Ara240 backend is up (runtime + eIQ AAF Connector) — see
-> [Enabling the Ara240 backend](../README.md#enabling-the-kinara-ara-2--nxp-ara240-backend). The demo app
-> (`app.py`) handles the incoming push automatically; no per-push device action is needed.
+| You push | Runs on | Where it lands | Needs |
+|---|---|---|---|
+| a **GGUF** file (`*.gguf`, any llama.cpp model from Hugging Face) | **any FRDM i.MX 95** — CPU via llama.cpp | `/opt/llama/models/<name>.gguf`, then `set-model` selects it | llama.cpp built once (README section 11, *One-time setup*) |
+| an **Ara240 bundle** (`model.dvm` + `config.json` + `tokenizer/`, tarred) | boards with the Kinara Ara-2 / NXP Ara240 module | `/usr/share/llm/<Code>/`, served by the eIQ AAF Connector | the Ara240 runtime + connector (README, *Enabling the Ara240 backend*) |
+
+A mismatch is refused, not half-installed: an Ara240 bundle pushed to a board without the module, or a GGUF
+pushed to a board without llama.cpp, ends in `model_deploy_status = error` with a one-line reason, the current
+model unchanged, and the download cleaned up.
+
+The walkthrough below uses the Ara240 bundle (`Qwen2.5-Coder-1.5B` to booth board `MCLiMX95b`); the GGUF path is
+identical except for step 1, where you simply upload the `.gguf` file. Retraining is a separate IOTCONNECT feature
+and is out of scope here.
 
 ---
 
 ## 1. Package the model
 
-IOTCONNECT delivers whatever file you upload, so package the **whole Ara240 model directory** (its `model.dvm`
-plus `config.json` and the `tokenizer/` folder) into a single `.tar`. From your host, stream it straight off the
-board (no board disk used):
+**GGUF:** nothing to package — upload the `.gguf` file itself as the model file in step 2 (IOTCONNECT wraps it
+in its own `.tar` for delivery; the board unwraps it). For example,
+`qwen2.5-coder-1.5b-instruct-q4_k_m.gguf` from Hugging Face.
+
+**Ara240 bundle:** IOTCONNECT delivers whatever file you upload, so package the **whole model directory** (its
+`model.dvm` plus `config.json` and the `tokenizer/` folder) into a single `.tar`. From your host, stream it
+straight off a board that already has it (no board disk used):
 
 ```bash
 ssh root@<board-ip> "tar -cf - -C /usr/share/llm/Qwen2.5-Coder-1.5B ." > Qwen2.5-Coder-1.5B.tar
@@ -33,19 +45,19 @@ the model folder). Any Ara240 `model.dvm` bundle works the same way.
 
 ![Create Model from the My Model list](media/push-model/1-create-model.png)
 
-Fill in the details and choose your `.tar` as the **Model File**:
+Fill in the details and choose your `.gguf` (or `.tar`) as the **Model File**:
 
-![Enter model details and select the tar file](media/push-model/2-model-details.png)
+![Enter model details and select the model file](media/push-model/2-model-details.png)
 
 | Field | Value | Notes |
 |---|---|---|
-| **Name** | e.g. `LLM Qwen2.5 1.5B` | Free text |
-| **Code** | e.g. `Qwen25C15B` | ⚠️ **3–10 chars, alphanumeric only, must start with a letter** (no `-` or `.`). **The device uses this as the model's name** — it deploys to `/usr/share/llm/<Code>/` and serves it under `<Code>`, so pick something clean and recognizable |
+| **Name** | e.g. `LLM Qwen2.5 1.5B` | Free text — this is what `model_deploy_name` telemetry shows |
+| **Code** | e.g. `Qwen25C15B` | ⚠️ **3–10 chars, alphanumeric only, must start with a letter** (no `-` or `.`). For an **Ara240** bundle the device uses this as the model's name — it deploys to `/usr/share/llm/<Code>/` and serves it under `<Code>`. A **GGUF** keeps its own filename as the `set-model` name |
 | **Version** | e.g. `1.0.0.0` | |
 | **Model Type** | `AI Model` | |
 | **Variant** | `NXP` | |
-| **Model File** | your `.tar` | The Ara240 model package from step 1 |
-| **Convert through sagemaker?** | **unchecked** | Leave off — the `.tar` is already an Ara‑compiled model; conversion would break it |
+| **Model File** | your `.gguf` or `.tar` | From step 1 |
+| **Convert through sagemaker?** | **unchecked** | Leave off — the file is already a runnable model; conversion would break it |
 
 Save. The model appears in **My Model** with status **Completed**:
 
@@ -55,7 +67,7 @@ Save. The model appears in **My Model** with status **Completed**:
 
 **AI Models → Push Model.** Select the model + version, pick the device template your device is on —
 **`genaiflow`** if you imported this repo's template (the screenshots show our booth account's `iMX95genai`) —
-choose **Selected devices → `MCLiMX95b`**, and click **Push Model**.
+choose **Selected devices → your device**, and click **Push Model**.
 
 ![Push Model to the FRDM device](media/push-model/4-push-model.png)
 
@@ -69,13 +81,17 @@ idle → downloading → deploying → loading → ready
 ```
 
 - **downloading** – pulls the package from S3
-- **deploying** – unpacks it into `/usr/share/llm/<Code>/` (handles IOTCONNECT's tar wrapping)
-- **loading** – restarts the eIQ AAF Connector so the model loads onto the Ara240
-- **ready** – the model is serving; the demo switches `set-backend ara2` / `ara2_model` to it and sends an
-  **`OTA_DOWNLOAD_DONE`** ack back to IOTCONNECT
+- **deploying** – unpacks it (handles IOTCONNECT's tar wrapping) and works out which kind of model it is
+- **loading** – GGUF: installs it into `/opt/llama/models/` for llama.cpp · Ara240: unpacks into
+  `/usr/share/llm/<Code>/` and restarts the eIQ AAF Connector so the model loads onto the module
+- **ready** – the model is serving and **`ask-llm` now uses it**: a GGUF is selected as the current `set-model`
+  (`llm_backend` reads `cpu-llama.cpp`); an Ara240 model becomes `ara2_model` with `backend = ara2`. The board
+  sends an **`OTA_DOWNLOAD_DONE`** ack back to IOTCONNECT (`OTA_DOWNLOAD_FAILED` with the reason on error)
 
-Measured on a FRDM‑IMX95: **~54 s** from *Push* to *ready* (the connector reloads the resident 7B alongside the
-new model). Then `ask-llm` answers on the freshly pushed model:
+Measured on a FRDM‑IMX95: **~54 s** from *Push* to *ready* for the Ara240 bundle (the connector reloads the
+resident 7B alongside the new model); a 1.5B GGUF pushed to a plain FRDM lands in about the time its ~1 GB
+download takes, then answers at **~5.6 tok/s** on the CPU. Either way `ask-llm` then answers on the freshly
+pushed model:
 
 > **ask-llm** *"In one sentence, what is edge AI?"* →
 > *"Edge AI is the use of artificial intelligence technology to process and analyze data at the edge of a
@@ -83,22 +99,24 @@ new model). Then `ask-llm` answers on the freshly pushed model:
 
 `model_deploy_*` are telemetry attributes; add **`model_deploy_status`**, **`model_deploy_name`**, and
 **`model_deploy_detail`** to your device's template (`genaiflow` in this repo) to show the deploy progress on a
-dashboard.
+dashboard. `llm_models` telemetry lists every model the board can `set-model` to, so a pushed GGUF shows up there.
 
 ---
 
 ## How it works (device side)
 
-`app.py` registers a handler for the IOTCONNECT model push and deploys it to the connector:
+`app.py` registers a handler for the IOTCONNECT model push and deploys whatever arrives:
 
 - **Receiving the push.** IOTCONNECT sends the model as a module command (`ct:2`) with a download URL. The
   `iotconnect-sdk-lite` maps `ct:2` to message type `UNKNOWN` (the `MODULE_COMMAND` id isn't in its type map), so
   the handler is registered under `C2dMessage.UNKNOWN` via `generic_message_callbacks` and filters on `ct == 2`.
-- **Deploying.** It downloads the `urls[].Url` file, un-tars it (recursively — IOTCONNECT wraps the upload in its
-  own `.tar`) into `/usr/share/llm/<Code>/`, enables `<Code>` in the connector's `server_config.json`, restarts
-  the connector, and waits for the model to report `ready` on `/v1/models`.
-- **Activating + acking.** It points `ara2_model` at `<Code>` and sets `backend = ara2` (so `ask-llm` serves it),
-  publishes `model_deploy_status = ready`, and acks the module command back to IOTCONNECT
-  (`OTA_DOWNLOAD_DONE`, or `OTA_DOWNLOAD_FAILED` with the error on failure).
+- **Deploying.** It downloads the `urls[].Url` file and un-tars it recursively (IOTCONNECT wraps the upload in
+  its own `.tar`). If the payload contains a **`.gguf`** it is installed into `/opt/llama/models/` and selected
+  (refused if llama.cpp isn't built). Otherwise it looks for **`model.dvm`** (refused on a board without an
+  Ara240), unpacks into `/usr/share/llm/<Code>/`, enables `<Code>` in the connector's `server_config.json`,
+  restarts the connector, and waits for the model to report `ready` on `/v1/models`. A failed deploy removes its
+  half-extracted directory so nothing is left behind.
+- **Activating + acking.** It switches `ask-llm` to the new model (GGUF: `set-model`; Ara240: `ara2_model` +
+  `backend = ara2`), publishes `model_deploy_status = ready`, and acks the module command back to IOTCONNECT.
 
 See `on_module_command` / `deploy_model` in [`src/app.py`](../src/app.py).
