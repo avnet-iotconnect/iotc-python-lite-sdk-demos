@@ -33,6 +33,7 @@ tar -xzf egf-src.tgz --wildcards '*/eiq_genai_flow/*' '*/vlm/*'
 SRC=$(ls -d dm-eiq-genai-flow-demonstrator-*/ | head -1)
 mv "$SRC/eiq_genai_flow" "$SRC/vlm" "$DEST/"
 rm -rf "$SRC" egf-src.tgz
+chmod +x "$DEST"/eiq_genai_flow/*.sh "$DEST"/vlm/*.sh 2>/dev/null || true
 
 fail=0
 for d in eiq_genai_flow vlm; do

@@ -6,7 +6,10 @@ conversational AI pipeline, with live **LLM performance telemetry** (tokens/sec,
 temperature) streamed to /IOTCONNECT.
 
 > [!IMPORTANT]
-> Complete the [/IOTCONNECT quickstart guide for this board](../README.md) before proceeding.
+> Complete the [/IOTCONNECT quickstart guide for this board](../README.md) before proceeding — in particular its
+> **Onboard Device** step, which creates `/opt/demo/iotcDeviceConfig.json` and the device certificate. This demo
+> installs into and runs from `/opt/demo`; without that file, `app.py` stops with *"File iotcDeviceConfig.json
+> is not accessible"*.
 
 > [!TIP]
 > Demoing this at a booth or customer meeting? Follow the step-by-step [demo flow guide](demo-flow.md) —
@@ -56,13 +59,15 @@ performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configur
 * Completed [FRDM i.MX 95 quickstart](../README.md) (starter demo onboarded and working in `/opt/demo`)
 * NXP Linux BSP **LF6.18.2-1.0.0** ("whinlatter", kernel `6.18.2`) — the release this flow runs on. Check
   yours with `uname -r`, and see the [flashing guide](../FLASHING.md) / [BSP-UPGRADE.md](docs/BSP-UPGRADE.md)
-  to install it.
-  > [!WARNING]
-  > **Do not use the newer LF6.18.20_2.0.0 ("wrynose").** It ships **Python 3.14 only**, and eIQ GenAI Flow's
-  > core is distributed as **`cpython-313` compiled binaries** that Python 3.14 cannot load — the stack does
-  > not run there (verified on hardware). Revisit only when NXP publishes `cpython-314` GenAI Flow builds.
-* At least **16 GB free storage** on the board for GenAI Flow and its models
+  to install it (and the warning below)
+* At least **16 GB free storage** on the board for GenAI Flow and its models (see the note below)
 * Internet access on the board (GenAI Flow is fetched from GitHub, ~1.5 GB; the vision model downloads on first use)
+* (Optional) USB headset or USB speaker + microphone if you want the full voice pipeline (`-i vasr -o tts`)
+
+> [!WARNING]
+> **Do not use the newer LF6.18.20_2.0.0 ("wrynose").** It ships **Python 3.14 only**, and eIQ GenAI Flow's
+> core is distributed as **`cpython-313` compiled binaries** that Python 3.14 cannot load — the stack does
+> not run there (verified on hardware). Revisit only when NXP publishes `cpython-314` GenAI Flow builds.
 
 > [!IMPORTANT]
 > The stock NXP demo image only allocates ~11 GB of the 32 GB eMMC to the root filesystem, leaving too little free
@@ -73,7 +78,6 @@ performance — see [MODELS.md](MODELS.md) for the full matrix: six LLM configur
 > resize2fs /dev/mmcblk0p2
 > df -h /   # should now show ~28 GB total
 > ```
-* (Optional) USB headset or USB speaker + microphone if you want the full voice pipeline (`-i vasr -o tts`)
 
 ## 3. Install NXP eIQ GenAI Flow
 
@@ -93,14 +97,9 @@ Git LFS objects (~1.5 GB). Everything below runs **on the board** — nothing ne
 2. Install both packages:
 
    ```bash
-   cd /root/eiq_genai_flow && ./install.sh
-   cd /root/vlm && ./install.sh
+   cd /root/eiq_genai_flow && bash ./install.sh
+   cd /root/vlm && bash ./install.sh
    ```
-
-   > [!NOTE]
-   > The whinlatter image ships **Python 3.13**, which is what eIQ GenAI Flow's compiled modules
-   > (`cpython-313`) require — so `install.sh` and `eiq_genai_flow.py` run under the stock `python3` with no
-   > extra steps. (This is why the demo stays on whinlatter; see the BSP warning under Requirements.)
 
 3. Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
@@ -108,8 +107,19 @@ Git LFS objects (~1.5 GB). Everything below runs **on the board** — nothing ne
    cd /root/eiq_genai_flow && python3 eiq_genai_flow.py -i keyb -o text -m danube-500M-q8
    ```
 
-   Type a question at the prompt; an answer means the install is complete. (The first `ask-vlm` later will
-   download the SmolVLM2 vision model, ~1–2 minutes, one time only.)
+   Type a question at the prompt; an answer means the install is complete. Press `Ctrl+C` to quit. (The first
+   `ask-vlm` later will download the SmolVLM2 vision model, ~1–2 minutes, one time only.)
+
+> [!NOTE]
+> The whinlatter image ships **Python 3.13**, which is what eIQ GenAI Flow's compiled modules (`cpython-313`)
+> require — so `install.sh` and `eiq_genai_flow.py` run under the stock `python3` with no extra steps. (This is
+> why the demo stays on whinlatter; see the BSP warning under Requirements.)
+
+> [!NOTE]
+> Two startup messages are normal and can be ignored: `[W:onnxruntime … ] GPU device discovery failed: … Failed
+> to open file: "/sys/class/drm/card0/device/vendor"` (onnxruntime probing for a GPU the board doesn't expose —
+> everything runs on the CPU/NPU as intended) and `WARNING - shared_utils.utils - Demo will keep running for
+> 3600s` (the standalone session's idle limit).
 
 > [!NOTE]
 > If you install GenAI Flow somewhere other than `/root/eiq_genai_flow`, edit the `genai_dir` field in
@@ -140,7 +150,14 @@ Before installing, change your device's template to `genaiflow` in the /IOTCONNE
 
 ### Download and Install
 
-On the board, run:
+The demo lives in **`/opt/demo`** — the directory the quickstart's onboarding step created, holding your device's
+`iotcDeviceConfig.json` and certificate. Confirm that first:
+
+```bash
+ls /opt/demo/iotcDeviceConfig.json   # must exist - if not, do the quickstart's "Onboard Device" step first
+```
+
+Then, on the board, run:
 
 ```bash
 cd /opt/demo
@@ -148,6 +165,14 @@ wget -O package.tar.gz https://downloads.iotconnect.io/partners/nxp/packages/frd
 tar -xzf package.tar.gz --overwrite
 bash ./install.sh
 ```
+
+> [!IMPORTANT]
+> Run these in `/opt/demo`, **not** in `/root/eiq_genai_flow`. Extracting the package into the GenAI Flow
+> directory scatters the demo files among NXP's (and its `--overwrite` replaces NXP's own `install.sh` with the
+> demo's), and `python3 app.py` there fails with *"File iotcDeviceConfig.json is not accessible"* because the
+> device identity lives in `/opt/demo`. If that happened, re-run the block above in `/opt/demo` and delete the
+> stray copies (`app.py`, `camera-server.py`, `bench_*.py`, `provision_server.py`, `vlm_worker.py`,
+> `workshop-install.sh`, `package.tar.gz`) from `/root/eiq_genai_flow`.
 
 > [!NOTE]
 > The demo package is hosted on /IOTCONNECT's download server, not in Git. To build it yourself from the `src/`
