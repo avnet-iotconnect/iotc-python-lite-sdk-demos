@@ -24,9 +24,20 @@ and is out of scope here.
 
 ## 1. Package the model
 
-**GGUF:** nothing to package — upload the `.gguf` file itself as the model file in step 2 (IOTCONNECT wraps it
-in its own `.tar` for delivery; the board unwraps it). For example,
-`qwen2.5-coder-1.5b-instruct-q4_k_m.gguf` from Hugging Face.
+**GGUF:** nothing to package — download the `.gguf` file to your PC and upload it as-is as the model file in
+step 2 (IOTCONNECT wraps it in its own `.tar` for delivery; the board unwraps it). Any llama.cpp GGUF works, but
+for an 8 GB, CPU-only FRDM stay at **≤ 2 GB on disk** (Q4_K_M or Q8_0 quantizations of 0.5–3B models). These are
+the ones measured on this board — click to download:
+
+| GGUF (direct download) | Size | Measured on FRDM-IMX95 CPU | Good for |
+|---|---|---|---|
+| [qwen2.5-0.5b-instruct-q8_0.gguf](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q8_0.gguf) | 644 MB | **12.9 tok/s**, 5.6 s load | Fast, noticeably better facts than Danube — the quick-win push |
+| [qwen2.5-1.5b-instruct-q4_k_m.gguf](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf) | 1.07 GB | **5.7 tok/s**, 7.1 s load | Best reasoning of the measured set |
+| [qwen2.5-coder-1.5b-instruct-q4_k_m.gguf](https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf) | 1.07 GB | **~5.6 tok/s** (pushed from IOTCONNECT, this exact path) | Code-flavoured answers; the GGUF twin of the Ara240 `Qwen25C15B` |
+| [qwen2.5-3b-instruct-q4_k_m.gguf](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf) | 2.0 GB | *not measured* — expect roughly half the 1.5B's speed | The largest sensible CPU push; try it only if answer quality matters more than speed |
+
+The filename (minus `.gguf`) becomes the model's `set-model` name on the board, and the board keeps it under
+`/opt/llama/models/` alongside any GGUFs you installed by hand in README section 11.
 
 **Ara240 bundle:** IOTCONNECT delivers whatever file you upload, so package the **whole model directory** (its
 `model.dvm` plus `config.json` and the `tokenizer/` folder) into a single `.tar`. From your host, stream it
