@@ -151,7 +151,7 @@ df -h /   # should now show ~28 GB total
 
 ## 7. Change Device Template
 
-To facilitate the integration of the GenAI Flow pipeline outputs to /IOTCONNECT, we need to update the device template.
+To facilitate the integration of the GenAI Flow pipeline outputs to /IOTCONNECT, we need to change the device template.
 
 1. Download the [genai-flow-template.json](/genai-flow-demo/genai-floow-template.json)
 2. Import it into your /IOTCONNECT instance via **Templates → Create Template → Import**.
