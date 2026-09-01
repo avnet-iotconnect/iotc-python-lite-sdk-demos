@@ -148,7 +148,9 @@
       <button id="asksend">Send</button>
       <button class="ghost" id="ragtoggle">RAG: off</button>
       <button class="ghost" data-cmd0="agent-start">Warm agent</button>
+      <button class="ghost" id="whatsrunning">What’s running?</button>
      </div>
+     <div class="hint" id="sessions" style="display:none"></div>
      <div class="answer" id="answer"><span class="dim">Answers appear here with live performance numbers.</span></div>
      <div class="metrics" id="metrics"></div>
     </div>
@@ -361,6 +363,7 @@ async function refresh(){
   if(v.rag_status&&v.rag_status!=="idle")
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
   renderRagList(v); renderPreview(v);
+  if($("sessions").style.display!=="none")$("sessions").innerHTML=sessionsHtml(v);
   const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
   const qmatch=S.await&&(!S.await.q||String(v[S.await.qk]||"").replace(/\s+/g," ")===S.await.q);
   if(S.await&&v[key]&&v[key]!==S.await.prev&&qmatch){$("answer").textContent=v[key];S.await=null;metrics(v);log("answer received","ok")}
@@ -472,6 +475,29 @@ function metrics(v){
   if(S.mode==="ask-agent"&&v.agent_tool)m.push("tool <b>"+v.agent_tool+"</b>")}
  $("metrics").innerHTML=m.join(" · ");
 }
+
+function sessionsHtml(v){
+ const on=t=>'<b style="color:var(--ok)">'+t+'</b>', off=t=>'<b class="dim">'+t+'</b>';
+ const eng=v.genai_status||"?";
+ const agent=v.agent_status==="ready"?on("warm — answers in seconds"):
+   v.agent_status==="loading"?on("warming up…"):off(v.agent_status||"off");
+ const voiceOn=v.voice_status&&!["off","error"].includes(v.voice_status);
+ const voice=voiceOn?on(v.voice_status+" — holds the engine until voice-stop"):off(v.voice_status||"off");
+ const ara=v.ara_status==="ready"?on("serving "+esc(v.ara_models||"")):off(v.ara_status||"not fitted");
+ return "Engine: "+(eng==="idle"?off("idle — ready for an ask"):on(esc(eng)))+
+  " · Agent session: "+agent+
+  " · Voice assistant: "+voice+
+  " · LLM: <b>"+esc(v.llm_model||"?")+"</b> on <b>"+esc(v.llm_backend||"?")+"</b>"+
+  " · RAG: <b>"+(v.llm_rag||"off")+"</b> · VLM: <b>"+esc(v.vlm_model||"?")+"</b>"+
+  " · Ara240: "+ara+
+  '<br><span class="dim">The board runs one AI operation at a time — an active session or run is why an ask answers “busy”.</span>';
+}
+$("whatsrunning").onclick=function(){
+ const show=$("sessions").style.display==="none";
+ $("sessions").style.display=show?"":"none";
+ this.classList.toggle("on",show);
+ if(show)$("sessions").innerHTML=sessionsHtml(S.v);
+};
 
 /* ---------- commands ---------- */
 async function send(cmd,value){
