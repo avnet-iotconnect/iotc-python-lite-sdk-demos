@@ -98,8 +98,10 @@ connector (USB1 — the flashing connection), and **USB C PD** (the POWER port):
 * Your FRDM i.MX 95 has now booted with a fresh default image on it
 
 > [!NOTE]
-> The login prompt will read `root@imx95evk` — expected, not a wrong image: the hostname comes from the shared
-> rootfs image's machine name, while the board-specific part of the flash was the boot binary. Confirm the
-> release with `uname -r` (`6.18.2-1.0.0`) and the board with `cat /proc/device-tree/model` (names the FRDM).
+> The login prompt will read `root@imx95evk`, whereas the factory image said `root@imx95frdm` — expected, not a
+> wrong image. The hostname comes from the rootfs image's machine name: the factory ships NXP's FRDM-specific
+> demo build, while this release zip ships the shared all-i.MX 95 build; the board-specific part of your flash
+> was the boot binary. Confirm the release with `uname -r` (`6.18.2-1.0.0`) and the board with
+> `cat /proc/device-tree/model` (names the FRDM).
 > A prompt like `root@imx95-4f2c` instead means the board previously ran the GenAI demo's `workshop-install.sh`,
 > which assigns a unique MAC-derived hostname; reflashing resets it.
