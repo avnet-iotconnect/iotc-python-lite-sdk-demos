@@ -1839,6 +1839,33 @@ class PersistentVLM:
         self.signature = (config["vlm_model"], config["vlm_precision"])
         self.last_used = time.monotonic()
 
+    _OK_SHORT = re.compile(r"(?i)^\s*(yes|no)\b")
+
+    def _exchange(self, frame, question):
+        self.proc.stdin.write(json.dumps({"image": frame, "question": question}) + "\n")
+        self.proc.stdin.flush()
+        ans, perf, grab = [], "", False
+        deadline = time.monotonic() + config["vlm_timeout_s"]
+        while True:
+            line = self._readline(5)
+            if line is None:
+                raise RuntimeError("VLM worker exited mid-answer")
+            if line is False:
+                if time.monotonic() > deadline:
+                    raise RuntimeError("VLM worker timed out")
+                continue
+            if line == "VLM_ANSWER_BEGIN":
+                grab = True
+            elif line == "VLM_ANSWER_END":
+                grab = False
+            elif line == "VLM_DONE":
+                break
+            elif line.startswith("Vision:") or line.startswith("ERROR"):
+                perf = line
+            elif grab:
+                ans.append(line)
+        return "\n".join(ans).strip(), perf
+
     def ask(self, frame, question):
         """Answer (frame, question). Returns (answer, perf_line, load_time);
         (re)loads the model on first use or a model/precision change."""
@@ -1850,30 +1877,19 @@ class PersistentVLM:
                 t0 = time.monotonic()
                 self.start(frame)
                 load_time = round(time.monotonic() - t0, 2)
-            self.proc.stdin.write(json.dumps({"image": frame, "question": question}) + "\n")
-            self.proc.stdin.flush()
-            ans, perf, grab = [], "", False
-            deadline = time.monotonic() + config["vlm_timeout_s"]
-            while True:
-                line = self._readline(5)
-                if line is None:
-                    raise RuntimeError("VLM worker exited mid-answer")
-                if line is False:
-                    if time.monotonic() > deadline:
-                        raise RuntimeError("VLM worker timed out")
-                    continue
-                if line == "VLM_ANSWER_BEGIN":
-                    grab = True
-                elif line == "VLM_ANSWER_END":
-                    grab = False
-                elif line == "VLM_DONE":
-                    break
-                elif line.startswith("Vision:") or line.startswith("ERROR"):
-                    perf = line
-                elif grab:
-                    ans.append(line)
+            answer, perf = self._exchange(frame, question)
+            if len(answer) < 12 and not self._OK_SHORT.match(answer):
+                # The warm worker occasionally emits a degenerate generation
+                # (seen live: an entire answer of "omerase"). A fresh session
+                # reliably recovers - restart and retry once.
+                print("VLM answer looked degenerate (%r) - restarting worker and retrying" % answer[:40])
+                self.stop()
+                t0 = time.monotonic()
+                self.start(frame)
+                load_time = round(load_time + (time.monotonic() - t0), 2)
+                answer, perf = self._exchange(frame, question)
             self.last_used = time.monotonic()
-        return "\n".join(ans).strip(), perf, load_time
+        return answer, perf, load_time
 
     def stop(self):
         if self.proc:
