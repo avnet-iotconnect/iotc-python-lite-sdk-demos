@@ -132,10 +132,10 @@ df -h /   # should now show ~28 GB total
    curl -sL https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/src/get-genai-flow.sh | bash
    ```
 
-   > [!NOTE]
-   > It prints one `OK … MB … filename` line per file — 70 lines, about 1.5 GB (the 495 MB Danube LLM is the
-   > largest) — and ends with *"all LFS files resolved"*. If it ends with `!!` instead, the board's internet
-   > connection dropped: simply run the same line again.
+ > [!NOTE]
+ > It prints one `OK … MB … filename` line per file — 70 lines, about 1.5 GB (the 495 MB Danube LLM is the
+ > largest) — and ends with *"all LFS files resolved"*. If it ends with `!!` instead, the board's internet
+ > connection dropped: simply run the same line again.
 
 2. Install both packages:
 
