@@ -147,7 +147,7 @@
      <div class="row tight" style="margin-top:10px">
       <button id="asksend">Send</button>
       <button class="ghost" id="ragtoggle">RAG: off</button>
-      <button class="ghost" data-cmd0="agent-start">Warm agent</button>
+      <button class="ghost" data-cmd0="agent-start" id="warmagent">Warm agent</button>
       <button class="ghost" id="whatsrunning">What’s running?</button>
      </div>
      <div class="hint" id="sessions" style="display:none"></div>
@@ -364,6 +364,11 @@ async function refresh(){
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
   renderRagList(v); renderPreview(v);
   if($("sessions").style.display!=="none")$("sessions").innerHTML=sessionsHtml(v);
+  {const ab=$("warmagent"),ast=v.agent_status||"off";
+   if(!ab.classList.contains("busy")){
+    ab.textContent=ast==="ready"?"Agent: warm ✓":ast==="loading"?"Agent: warming…":"Warm agent";
+    ab.disabled=(ast==="ready"||ast==="loading");
+    ab.classList.toggle("on",ast==="ready");}}
   const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
   const qmatch=S.await&&(!S.await.q||String(v[S.await.qk]||"").replace(/\s+/g," ")===S.await.q);
   if(S.await&&v[key]&&v[key]!==S.await.prev&&qmatch){$("answer").textContent=v[key];S.await=null;metrics(v);log("answer received","ok")}
