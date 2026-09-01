@@ -10,7 +10,7 @@
   - [3. Hardware Setup](#3-hardware-setup)
   - [4. Device Setup](#4-device-setup)
   - [5. Onboard Device](#5-onboard-device)
-  - [6. Configure the NXP eAI GenAI Flow](#6-configure-the-nxp-eai-genai-flow)
+  - [6. Configure the NXP eIQ GenAI Flow](#6-configure-the-nxp-eai-genai-flow)
     - [Expand Storage](#expand-storage)
     - [Install the eIQ GenAI Flow Pipeline](#install-the-eiq-genai-flow-pipeline)
   - [7. Change Device Template](#7-change-device-template)
