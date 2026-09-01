@@ -107,7 +107,7 @@ The next step is to onboard your device into /IOTCONNECT. This will be done via 
 
 Follow [this guide](../common/general-guides/UI-ONBOARD.md) to walk you through the process.
 
-## 6. Configure the NXP eAI GenAI Flow
+## 6. Configure the NXP eIQ GenAI Flow
 
 ### Expand Storage
 
