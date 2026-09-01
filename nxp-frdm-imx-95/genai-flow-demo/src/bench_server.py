@@ -240,7 +240,7 @@ PAGE = """<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>i.MX95 LLM Shootout</title>
 <style>
- :root{--bg:#101418;--card:#1a2129;--line:#2a3441;--fg:#e6edf3;--dim:#8b98a5;--acc:#33b5e5;--ok:#3fb950;--warn:#d29922;--err:#f85149}
+ :root{--bg:#101418;--card:#1a2129;--line:#2a3441;--fg:#e6edf3;--dim:#8b98a5;--acc:#41C363;--ok:#3fb950;--warn:#d29922;--err:#f85149}
  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
  .wrap{max-width:1080px;margin:0 auto;padding:20px}
  h1{font-size:1.4rem;margin:.2rem 0 .1rem}h1 small{color:var(--dim);font-weight:400;font-size:.9rem}

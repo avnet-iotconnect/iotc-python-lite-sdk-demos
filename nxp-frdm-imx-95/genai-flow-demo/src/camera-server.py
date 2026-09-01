@@ -110,13 +110,13 @@ RESPONSES_HTML = b"""<!DOCTYPE html>
 <style>
  body{margin:0;padding:84px 14px 14px;background:#10151c;color:#e8edf2;font-family:'Segoe UI',Roboto,sans-serif}
  .grid{display:grid;grid-template-columns:1fr;gap:12px}
- .card{background:#1a2230;border-radius:10px;padding:12px 16px;border-left:5px solid #4a90d9;min-height:70px}
- .card h2{margin:0 0 6px;font-size:15px;color:#7fb2e5;text-transform:uppercase;letter-spacing:1px}
+ .card{background:#171e26;border-radius:10px;padding:12px 16px;border-left:5px solid #41C363;min-height:70px}
+ .card h2{margin:0 0 6px;font-size:15px;color:#8fd9a8;text-transform:uppercase;letter-spacing:1px}
  .q{color:#9aa7b4;font-size:14px;margin:2px 0}
  .a{font-size:17px;line-height:1.45;margin:4px 0;white-space:pre-wrap}
  .meta{color:#5d6b7a;font-size:12px;margin-top:6px}
  .badges{margin-bottom:12px}
- .badge{display:inline-block;background:#243247;border-radius:14px;padding:4px 14px;margin-right:8px;font-size:14px}
+ .badge{display:inline-block;background:#20342a;border-radius:14px;padding:4px 14px;margin-right:8px;font-size:14px}
  .badge b{color:#7ed321}
  .agent{border-left-color:#7ed321}.vlm{border-left-color:#f5a623}.voice{border-left-color:#bd10e0}
 

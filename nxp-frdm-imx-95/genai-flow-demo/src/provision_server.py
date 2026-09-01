@@ -97,13 +97,13 @@ PAGE = """<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Claim board %(name)s</title>
 <style>
- :root{--bg:#0e1116;--card:#161b22;--line:#2a3441;--fg:#e6edf3;--dim:#8b98a5;--acc:#33b5e5;--ok:#3fb950;--err:#f85149;--warn:#d29922}
+ :root{--bg:#0e1116;--card:#161b22;--line:#2a3441;--fg:#e6edf3;--dim:#8b98a5;--acc:#41C363;--ok:#3fb950;--err:#f85149;--warn:#d29922}
  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif}
  .wrap{max-width:560px;margin:0 auto;padding:34px 20px;text-align:center}
  h1{font-size:1.5rem}h1 span{color:var(--acc)}
  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;margin:16px 0}
  .drop{border:2px dashed var(--line);border-radius:12px;padding:36px 16px;cursor:pointer;transition:.15s}
- .drop.hover{border-color:var(--acc);background:#0d2030}
+ .drop.hover{border-color:var(--acc);background:#0d2417}
  .dim{color:var(--dim)}.ok{color:var(--ok)}.err{color:var(--err)}.warn{color:var(--warn)}
  .big{font-size:1.2rem;font-weight:700}
  .spin{display:inline-block;width:16px;height:16px;border:2px solid var(--acc);border-top-color:transparent;border-radius:50%%;animation:r .9s linear infinite;vertical-align:-3px;margin-right:8px}
