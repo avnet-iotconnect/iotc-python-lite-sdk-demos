@@ -274,15 +274,17 @@ the lab starts.*
 
 ### 14 · Lab: claim your board (~5–10 minutes)
 
-1. **Sign up** on the portal — name, email, company, **event code** → your private space is created instantly
-2. **Check your email** — sign in at [awspoc.iotconnect.io](https://awspoc.iotconnect.io) with the temporary password and set a real one
+1. **Sign up** on the portal — name, email, company, **event code**, and **choose a password** → your private space is created instantly
+2. **Log in** at [awspoc.iotconnect.io](https://awspoc.iotconnect.io) with the password you just chose — no email check needed
 3. **Download your board kit** (.zip) — your device's identity: config + x.509 cert + private key
 4. **Open your board's URL** from the card (`http://imx95-XXXX.local:8088`)
 5. **Drag the kit onto the page** → board installs the identity, restarts the demo → **"✓ Connected as p95…"**
 
 *Notes: Follow ATTENDEE-GUIDE §2 — that's the attendees' own copy of these steps plus
-troubleshooting. What the kit is: `iotcDeviceConfig.json`, `device-cert.pem`, `device-pkey.pem` —
-a real x.509 device identity, the same mechanism a production fleet uses, not a workshop toy.
+troubleshooting. The password-at-signup path needs the event code (it uses instant onboarding);
+anyone who leaves it blank falls back to the emailed invite with a temporary password. What the
+kit is: `iotcDeviceConfig.json`, `device-cert.pem`, `device-pkey.pem` — a real x.509 device
+identity, the same mechanism a production fleet uses, not a workshop toy.
 Claim-page safety: a claimed board demands an explicit confirmation before being re-claimed, so a
 mistyped URL can't steal a neighbor's board (WORKSHOP.md part 3). Failure cheat-sheet is in
 WORKSHOP.md troubleshooting: mDNS blocked → use the board IP; connected-but-empty-dashboard →
