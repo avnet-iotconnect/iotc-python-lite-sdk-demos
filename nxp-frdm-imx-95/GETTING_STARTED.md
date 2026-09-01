@@ -49,9 +49,7 @@ Note that this guide has been written and tested using the following hardware an
 
 - NXP FRDM i.MX 95 Development Board [Purchase](https://www.avnet.com/americas/product/nxp/frdm-imx95/evolve-122131125/) | [All Resources](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX95)
 - 2x USB Type-C Cables (included in kit)
-- (Recommended) Ethernet Cable OR WiFi Network SSID and Password
-- (Optional, for the GenAI voice pipeline) USB headset or USB speaker + microphone
-- (Optional, for the ask-vlm vision demo) UVC-compliant USB webcam
+- Ethernet Cable OR WiFi Network SSID and Password
 
 ### Software
 
@@ -75,26 +73,33 @@ audio jack that can optionally be utilized in a subsequent lab for the GenAI voi
 1. Open a serial terminal emulator program such as TeraTerm.
 2. Ensure that your serial settings in your terminal emulator are set to:
 
-- Baud Rate: 115200
-- Data Bits: 8
-- Stop Bits: 1
-- Parity: None
+   - Baud Rate: 115200
+   - Data Bits: 8
+   - Stop Bits: 1
+   - Parity: None
 
 3. The board's WCH USB-serial converter enumerates **four** serial ports on your PC. To find the Linux (Cortex-A55) console connect to each port and press ENTER until you get a login prompt.  
 `imx95-15x15-lpddr4x-frdm login:`
 
 4. When prompted for a login, type `root` followed by the ENTER key.
-5. Run this command to install the necessary /IOTCONNECT packages:
+5. Verify the board is running the firmware compatible with the eIQ pipeline by running the following command:
+   ```bash
+   uname -r
+   ```
 
-```bash
-python3 -m pip install iotconnect-sdk-lite requests
-```
+   Ensure the version is `6.18.2-1.0.0`. If not, refer to the [flashing](FLASHING.md) guide to flash the correct firmware.
 
-6. Run this command to create and move into a directory for your demo files:
+6. Run this command to install the necessary /IOTCONNECT packages:
 
-```bash
-mkdir -p /opt/demo && cd /opt/demo
-```
+    ```bash
+    python3 -m pip install iotconnect-sdk-lite requests
+    ```
+
+7. Run this command to create and move into a directory for your demo files:
+
+    ```bash
+    mkdir -p /opt/demo && cd /opt/demo
+    ```
 
 ## 5. Onboard Device
 
@@ -121,7 +126,7 @@ df -h /   # should now show ~28 GB total
 
 ### Install the eIQ GenAI Flow Pipeline
 
-1. Fetch the demonstrator (this stages both the `eiq_genai_flow` pipeline and its `vlm` vision submodule):
+1. Fetch the demonstrator to stage both the `eiq_genai_flow` pipeline and its `vlm` vision submodule (the later of which will be explored in a subsequent lab):
 
    ```bash
    curl -sL https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/src/get-genai-flow.sh | bash
@@ -148,13 +153,12 @@ df -h /   # should now show ~28 GB total
    Type a question at the prompt; an answer means the install is complete. Press `Ctrl+C` to quit. (The first
    `ask-vlm` later will download the SmolVLM2 vision model, ~1–2 minutes, one time only.)
 
-
 ## 7. Change Device Template
 
-To facilitate the integration of the GenAI Flow pipeline outputs to /IOTCONNECT, we need to change the device template.
+To facilitate the integration of the GenAI Flow pipeline outputs to /IOTCONNECT, we need to change the device template to inform the platform of the expected telemetry from the models and the available, supported, commands.
 
-1. Download the [genai-flow-template.json](/genai-flow-demo/genai-floow-template.json)
-2. Import it into your /IOTCONNECT instance via **Templates → Create Template → Import**.
+1. Download the [genai-flow-template.json](/genai-flow-demo/genai-floow-template.json) device template file to your PC.
+2. Import it into your /IOTCONNECT instance via **Templates → Create Template → Import** (same process as the onboarding guide).
 3. Find your device in the /IOTCONNECT **Devices** list and click on it to open the device details page.
 4. Locate the **Template** field (mid-left on the page) and click the edit icon.
 5. Select the `genaiflow` template just imported from the drop-down and save.
@@ -191,7 +195,7 @@ python3 app.py
 
 /IOTCONNECT Dynamic Dashboards are an easy way to visualize data and interact with edge devices.  The demo dashbaord below is pre-configured to display the GenAI Flow pipeline outputs enabled in this guide.  It also has placeholders for the other models and NPU outputs that will be explored in subsequent labs.
 
-1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard.json](/genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard.json)
+1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard.json](genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard.json)
 2. Switch back to the /IOTCONNECT browser window and verify the device status is displaying as `Connected`
 3. Click **Create Dashboard** from the top of the page
 4. Select the **Import Dashboard** option and click **Browse** to select the dashboard template previously downloaded.
@@ -230,11 +234,10 @@ Once running, system telemetry streams to /IOTCONNECT every 10 seconds. Use the 
 > use) — watch `llm_load_time`. Subsequent prompts are faster. While a prompt or benchmark is running, `genai_status`
 > reports `generating` / `benchmarking`.
 
-
 ## 11. Continuing Your Journey
 
-- Lab 2: Enable the NPU and Explore other NXP eIQ GenAI Flow Models
-- Lab 3: Enable the Kinara Ara-2 / NXP Ara240 discrete NPU module
+- [Lab 2: Enable the NPU and Explore other NXP eIQ GenAI Flow Models](LAB2.md)
+- [Lab 3: Enable the Kinara Ara-2 / NXP Ara240 discrete NPU module](LAB3.md)  
 
 ## 12. Troubleshooting
 
