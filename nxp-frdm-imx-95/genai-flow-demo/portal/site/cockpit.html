@@ -168,6 +168,12 @@
       <div class="hint">CPU / Neutron apply to the <b>Danube</b> models (they run on either; Neutron asks take ~2½ min).
        <b>GGUF</b> models always run on the CPU via llama.cpp — the backend buttons don’t affect them.
        Picking an <b>Ara240</b> model switches the backend automatically.</div>
+      <label>Vision model (ask-vlm)</label>
+      <div class="row tight"><select id="vlmname" style="flex:1;min-width:130px">
+        <option value="smolvlm-256M">smolvlm-256M — fast (~9.5 tok/s)</option>
+        <option value="smolvlm-500M">smolvlm-500M — more accurate (~5.5 tok/s)</option>
+       </select><button id="setvlm">Set</button></div>
+      <div class="hint" id="vlmhint"></div>
       <label>Other</label>
       <div class="row"><button class="ghost" data-cmd0="run-benchmark">Benchmark</button>
        <button class="ghost" data-cmd0="get-ip">Get IP</button></div>
@@ -364,6 +370,12 @@ async function refresh(){
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
   renderRagList(v); renderPreview(v);
   if($("sessions").style.display!=="none")$("sessions").innerHTML=sessionsHtml(v);
+  if(!$("vlmname").matches(":focus")&&v.vlm_model){
+   const cur=String(v.vlm_model).split(" ")[0];
+   if([...$("vlmname").options].some(o=>o.value===cur))$("vlmname").value=cur;
+   if(!$("vlmhint").innerHTML.includes("not in your device template"))
+    $("vlmhint").innerHTML='current: <b>'+esc(v.vlm_model)+'</b> — applies on the next ask-vlm (a switch reloads the model; a first-ever 500M load also downloads it, ~1–2 min)';
+  }
   {const ab=$("warmagent"),ast=v.agent_status||"off";
    if(!ab.classList.contains("busy")){
     ab.textContent=ast==="ready"?"Agent: warm ✓":ast==="loading"?"Agent: warming…":"Warm agent";
@@ -532,6 +544,13 @@ $("asksend").onclick=function(){
 document.querySelectorAll("[data-cmd0]").forEach(b=>b.onclick=function(){withPress(this,()=>send(this.dataset.cmd0,""))});
 document.querySelectorAll("[data-backend]").forEach(b=>b.onclick=function(){withPress(this,()=>send("set-backend",this.dataset.backend))});
 $("setmodel").onclick=function(){const m=$("modelname").value.trim();if(m)withPress(this,()=>send("set-model",m))};
+$("setvlm").onclick=function(){
+ if(!S.commands["set-vlm"]){
+  $("vlmhint").innerHTML='<span class="warn">set-vlm is not in your device template — add the command in the '+
+   '/IOTCONNECT console (your template → Commands: name/command <b>set-vlm</b>, required parameter, requires ack), then reload this page.</span>';
+  log("set-vlm is not in your device template","err");return}
+ withPress(this,()=>send("set-vlm",$("vlmname").value));
+};
 $("ragtoggle").onclick=function(){withPress(this,()=>send("set-rag",S.v.llm_rag==="on"?"off":"on"))};
 
 /* ---------- RAG upload ---------- */
