@@ -96,3 +96,10 @@ connector (USB1 — the flashing connection), and **USB C PD** (the POWER port):
 * Power off the board and set the boot switch (SW1) back to **eMMC boot mode** (the factory-default position)
 * Reboot the board by unplugging the power cable and plugging it back in
 * Your FRDM i.MX 95 has now booted with a fresh default image on it
+
+> [!NOTE]
+> The login prompt will read `root@imx95evk` — expected, not a wrong image: the hostname comes from the shared
+> rootfs image's machine name, while the board-specific part of the flash was the boot binary. Confirm the
+> release with `uname -r` (`6.18.2-1.0.0`) and the board with `cat /proc/device-tree/model` (names the FRDM).
+> A prompt like `root@imx95-4f2c` instead means the board previously ran the GenAI demo's `workshop-install.sh`,
+> which assigns a unique MAC-derived hostname; reflashing resets it.
