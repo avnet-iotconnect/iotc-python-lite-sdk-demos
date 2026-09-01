@@ -68,10 +68,12 @@ your logistics allow.
 
 Give attendees these steps (slide or handout):
 
-1. **Sign up**: open the portal (host shares the URL), enter your name, email, company, and the **event
-   code**. Your private space is created instantly.
-2. **Check your email**: /IOTCONNECT sends an invite — set your password. That's your login at
-   [awspoc.iotconnect.io](https://awspoc.iotconnect.io); you'll only see *your* space.
+1. **Sign up**: open the portal (host shares the URL), enter your name, email, company, the **event
+   code** — and **choose a password** (this skips the email step entirely). Your private space is
+   created instantly.
+2. **Log in** at [awspoc.iotconnect.io](https://awspoc.iotconnect.io) with the password you chose;
+   you'll only see *your* space. (No password set? /IOTCONNECT emailed you an invite instead —
+   check your inbox and set one.)
 3. **Download your board kit** (.zip) from the signup page.
 4. **Find your board's URL** on the card next to it (e.g. `http://imx95-4f2c.local:8088`) and open it.
 5. **Drop the kit .zip on the page.** The board installs your identity and the page reports

@@ -55,16 +55,16 @@ page — the source location for every i.MX Linux release.
 
 # 4. Organize Files for Flashing
 
-* Unzip the zipped image folder you downloaded
-* Copy the `uuu.exe` file you previously downloaded into the newly-unzipped image folder (you may need to navigate
-  an additional layer into the folder after unzipping it to get to where the real files are)
-* If the root filesystem image is compressed (`.wic.zst`), unzip it with 7-Zip (or another unzipping utility that
-  supports ZST files), keeping the same destination directory
-* Before proceeding to the next step, verify that the uncompressed `.wic` rootfs image, the `imx-boot-...` boot binary,
-  and `uuu.exe` are all within the same folder. The exact file names depend on the image release, e.g.:
-  ```imx-image-full-imx95frdm.rootfs.wic```
-  ```imx-boot-imx95frdm-sd.bin-flash_all```
-  ```uuu.exe```
+* Unzip the downloaded zip (e.g. `LF_v6.18.2-1.0.0_images_IMX95.zip`)
+* Copy the `uuu.exe` file you previously downloaded into the unzipped folder
+* The zip contains images and boot binaries for **every** i.MX 95 board (EVK, FRDM, FRDM-Pro, Verdin — plus
+  `-ecc`, `jailhouse`, and other variants you can ignore). For the FRDM board you need exactly **two** files:
+  ```imx-boot-imx95-15x15-lpddr4x-frdm-sd.bin-flash_all```
+  ```imx-image-full-imx95evk.wic```
+  The first is the FRDM's **boot binary** — the board-specific part. The second is the **root filesystem**,
+  shared across all i.MX 95 boards; despite the `evk` in its name, it is the right file for the FRDM — the
+  LF6.18.2-1.0.0 zip contains **no** `…imx95frdm…wic` file
+* Verify those two files and `uuu.exe` are in the same folder before proceeding
 
 # 5. Prepare Hardware for Flashing
 
@@ -88,11 +88,20 @@ connector (USB1 — the flashing connection), and **USB C PD** (the POWER port):
 
 * Open a Windows Powershell window
 * Move into the unzipped downloaded image folder containing the image files and uuu.exe
-* Execute this command to start the flash (adjust the `.wic` filename if your image release uses a different name):
+* Execute this command to start the flash — the boot binary first, then the rootfs image:
   ```
-  .\uuu.exe -b emmc_all .\imx-image-full-imx95frdm.rootfs.wic
+  .\uuu.exe -b emmc_all .\imx-boot-imx95-15x15-lpddr4x-frdm-sd.bin-flash_all .\imx-image-full-imx95evk.wic
   ```
 * Wait until the flash is complete (this can take several minutes)
 * Power off the board and set the boot switch (SW1) back to **eMMC boot mode** (the factory-default position)
 * Reboot the board by unplugging the power cable and plugging it back in
 * Your FRDM i.MX 95 has now booted with a fresh default image on it
+
+> [!NOTE]
+> The login prompt will read `root@imx95evk`, whereas the factory image said `root@imx95frdm` — expected, not a
+> wrong image. The hostname comes from the rootfs image's machine name: the factory ships NXP's FRDM-specific
+> demo build, while this release zip ships the shared all-i.MX 95 build; the board-specific part of your flash
+> was the boot binary. Confirm the release with `uname -r` (`6.18.2-1.0.0`) and the board with
+> `cat /proc/device-tree/model` (names the FRDM).
+> A prompt like `root@imx95-4f2c` instead means the board previously ran the GenAI demo's `workshop-install.sh`,
+> which assigns a unique MAC-derived hostname; reflashing resets it.

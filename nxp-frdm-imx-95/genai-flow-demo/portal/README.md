@@ -52,9 +52,22 @@ visitor ──> signup page ──> Lambda ──> DynamoDB (pending)
 
 ## Deploying updates
 
-Package = `lambda_function.py` + `iotc_client.py` + `index.html` + vendored `cryptography` manylinux wheels
+Package = `lambda_function.py` + `iotc_client.py` + `site/index.html` + `site/cockpit.html` + vendored
+`cryptography` manylinux wheels
 (`pip download cryptography --platform manylinux2014_x86_64 --only-binary=:all: --python-version 3.12`),
-zipped flat, then `aws lambda update-function-code --function-name imx95-portal-api --zip-file fileb://lambda.zip`.
+zipped flat (HTML files at the zip root), then
+`aws lambda update-function-code --function-name imx95-portal-api --zip-file fileb://lambda.zip`.
+Easiest: download the live package (`aws lambda get-function` → `Code.Location`), swap in the changed
+files, re-zip — the vendored wheels come along for free.
+
+## Password at signup (skip the email invite)
+
+The signup form takes an **optional password** (8–64 chars, upper + lower + digit). It rides an
+**undocumented** `password`/`confirmPassword` pair on `POST /User` — verified working on AWS UAT
+2026-08-31 (`probe.py --test-user-password`); the created user logs in immediately and
+`sendInvitationEmail` is set false. It requires the event code (instant onboarding): the approval
+path onboards later from DynamoDB, and the password is used in-request only and **never stored**
+(the table gets a `pw_set` flag). Blank password = the original invite-email flow.
 
 ## Guardrails
 

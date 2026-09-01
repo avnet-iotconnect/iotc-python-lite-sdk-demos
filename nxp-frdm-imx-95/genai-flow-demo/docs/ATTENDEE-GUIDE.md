@@ -23,10 +23,11 @@ reach it, measure it, and manage it from anywhere.
 
 ## 2. Getting started (about 5 minutes)
 
-1. **Sign up** on the portal with your name, email, company and the **attendee code**. Your private
-   /IOTCONNECT space is created instantly.
-2. **Check your email** — /IOTCONNECT sends a welcome message with a **temporary password**. Sign in at the
-   console and set a real one.
+1. **Sign up** on the portal with your name, email, company and the **attendee code** — and **choose a
+   password** right there (8+ characters with an upper-case letter, a lower-case letter and a digit).
+   Your private /IOTCONNECT space is created instantly and your password works immediately.
+2. **(Only if you skipped the password)** check your email — /IOTCONNECT sends a welcome message with a
+   **temporary password**. Sign in at the console and set a real one.
 3. **Download your board kit** (.zip) from the portal page. It contains your device identity:
    `iotcDeviceConfig.json`, `device-cert.pem`, `device-pkey.pem`.
 4. **Claim your board**: open the URL on your board's card and **drag the kit zip onto the page**. The board

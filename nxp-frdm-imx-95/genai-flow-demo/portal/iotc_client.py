@@ -112,16 +112,22 @@ class Client:
     # entity creation alone does NOT invite anyone.
     DEFAULT_TZ = "C41A0E73-E62B-4275-B236-19E894B80381"  # (UTC-06:00) Central America
 
-    def create_user(self, email, first, last, role_guid, entity_guid, timezone_guid=None):
+    def create_user(self, email, first, last, role_guid, entity_guid, timezone_guid=None,
+                    password=None, send_invitation=True):
         # sendInvitationEmail (a real boolean, unlike isActive) is what actually
         # makes the platform email the invite - omitted, no mail is ever sent
         # (verified: forgot-password mails arrived while invites did not).
-        return self._req("POST", self.urls["entityBaseUrl"] + "/User",
-                         body={"userId": email, "email": email,
-                               "firstName": first, "lastName": last,
-                               "roleGuid": role_guid, "entityGuid": entity_guid,
-                               "isActive": 1, "sendInvitationEmail": True,
-                               "timezoneGuid": timezone_guid or self.DEFAULT_TZ})
+        body = {"userId": email, "email": email,
+                "firstName": first, "lastName": last,
+                "roleGuid": role_guid, "entityGuid": entity_guid,
+                "isActive": 1, "sendInvitationEmail": bool(send_invitation),
+                "timezoneGuid": timezone_guid or self.DEFAULT_TZ}
+        if password is not None:
+            # UNDOCUMENTED: the published /User spec has no password field. Sent
+            # as password + confirmPassword to test whether the server honors it
+            # (probe.py --test-user-password); harmless if ignored.
+            body["password"] = body["confirmPassword"] = password
+        return self._req("POST", self.urls["entityBaseUrl"] + "/User", body=body)
 
     def create_device(self, duid, name, template_guid, entity_guid):
         return self._req("POST", self.urls["deviceBaseUrl"] + "/Device",

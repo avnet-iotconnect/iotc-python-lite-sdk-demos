@@ -151,16 +151,21 @@ def slug(s, maxlen=18):
     return re.sub(r"[^A-Za-z0-9]", "", s)[:maxlen] or "Customer"
 
 
-def onboard(item):
+def onboard(item, password=None):
     c = iotc()
-    base = slug(item["company"] or item["name"])
+    first, _, last = (item["name"] or "Portal User").partition(" ")
+    # Company alone collides when colleagues sign up together, so the entity is
+    # Company+LastName; the numeric suffix below stays as the final tiebreaker.
+    if item["company"]:
+        base = slug(item["company"], 14) + slug(last or first, 10)
+    else:
+        base = slug(item["name"])
     existing = {e["name"] for e in c.entities().get("data", [])}
     ent_name = base
     n = 1
     while ent_name in existing:
         n += 1
         ent_name = "%s%d" % (base, n)
-    first, _, last = (item["name"] or "Portal User").partition(" ")
     out = c._req("POST", c.urls["entityBaseUrl"] + "/Entity",
                  body={"name": ent_name, "parentEntityGuid": PORTAL_PARENT})
     ent_guid = out["data"][0]["entityGuid"]
@@ -169,8 +174,13 @@ def onboard(item):
     # invitation and sends the platform welcome email.
     tz_guid = resolve_timezone_guid(c, item.get("tz") or "")
     print("timezone: %r -> %s" % (item.get("tz"), tz_guid), flush=True)
+    # password is UNDOCUMENTED but verified working on AWS UAT (2026-08-31,
+    # probe.py --test-user-password): the platform accepts password +
+    # confirmPassword on POST /User and the user can log in immediately, so
+    # attendees who set one at signup skip the email invite entirely.
     c.create_user(item["email"], first or "Portal", last or "User",
-                  ADMIN_ROLE, ent_guid, timezone_guid=tz_guid)
+                  ADMIN_ROLE, ent_guid, timezone_guid=tz_guid,
+                  password=password, send_invitation=password is None)
 
     duid = "p95" + uuid.uuid4().hex[:9]
     cert_pem, key_pem = make_device_cert(duid)
@@ -190,11 +200,16 @@ def onboard(item):
             "device_config": json.dumps(cfg, indent=2)}
 
 
+KIT_STEP1_INVITE = """1. Check your inbox: IOTCONNECT sent you an invite - set your password, then
+   log in at {console} to see your own dashboard."""
+
+KIT_STEP1_PW = """1. Log in at {console} with your email and the password
+   you chose at signup - no email invite needed."""
+
 KIT_README = """Your /IOTCONNECT i.MX95 board kit
 =================================
 
-1. Check your inbox: IOTCONNECT sent you an invite - set your password, then
-   log in at {console} to see your own dashboard.
+{step1}
 
 2. Install the GenAI demo on your FRDM i.MX95 (one time):
    https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/tree/main/nxp-frdm-imx-95/genai-flow-demo
@@ -218,7 +233,8 @@ def build_kit_zip(item):
         z.writestr("iotcDeviceConfig.json", ob["device_config"])
         z.writestr("device-cert.pem", ob["cert_pem"])
         z.writestr("device-pkey.pem", ob["key_pem"])
-        z.writestr("README.txt", KIT_README.format(console=CONSOLE_URL, duid=ob["duid"],
+        step1 = (KIT_STEP1_PW if item.get("pw_set") else KIT_STEP1_INVITE).format(console=CONSOLE_URL)
+        z.writestr("README.txt", KIT_README.format(step1=step1, duid=ob["duid"],
                                                    entity=ob["entity_name"]))
     return buf.getvalue()
 
@@ -251,8 +267,8 @@ def send_approval_email(item, base_url):
                             "Body": {"Text": {"Data": body}}})
 
 
-def do_onboard(item):
-    ob = onboard(item)
+def do_onboard(item, password=None):
+    ob = onboard(item, password=password)
     ddb.update_item(Key={"id": item["id"]},
                     UpdateExpression="SET #s=:s, onboard=:o, approved_at=:t",
                     ExpressionAttributeNames={"#s": "state"},
@@ -557,18 +573,32 @@ def lambda_handler(event, context):
         name, email, company = (b.get("name") or "").strip(), (b.get("email") or "").strip(), (b.get("company") or "").strip()
         if not name or not re.match(r"[^@\s]+@[^@\s]+\.[^@\s]+$", email):
             return resp(400, {"error": "name and a valid email are required"})
-        item = {"id": uuid.uuid4().hex[:12], "token": pysecrets.token_urlsafe(16),
-                "admin_token": pysecrets.token_urlsafe(16), "name": name, "email": email,
-                "company": company, "tz": (b.get("tz") or "")[:64],
-                "state": "pending", "created_at": int(time.time())}
         instant = bool(EVENT_CODE) and (b.get("eventCode") or "").strip() == EVENT_CODE
         if os.environ.get("REQUIRE_CODE") == "1" and not instant:
             return resp(400, {"error": "A valid attendee code is required for this event - "
                                        "get it from the workshop host."})
+        # Optional password: lets the attendee skip the email invite entirely.
+        # It is used in-request only and NEVER stored (DynamoDB gets a pw_set
+        # flag, not the password) - which is also why it needs the event code:
+        # the approval path onboards later, from the DB.
+        pw = b.get("password") or ""
+        if pw:
+            if not instant:
+                return resp(400, {"error": "Setting a password requires the event code - "
+                                           "leave it blank to request approval instead "
+                                           "(you'll get an email invite)."})
+            if not re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,64}$", pw):
+                return resp(400, {"error": "Password must be 8-64 characters with an upper-case "
+                                           "letter, a lower-case letter and a digit."})
+        item = {"id": uuid.uuid4().hex[:12], "token": pysecrets.token_urlsafe(16),
+                "admin_token": pysecrets.token_urlsafe(16), "name": name, "email": email,
+                "company": company, "tz": (b.get("tz") or "")[:64],
+                "state": "pending", "created_at": int(time.time()),
+                "pw_set": bool(pw)}
         ddb.put_item(Item=item)
         if instant:
             try:
-                do_onboard(item)
+                do_onboard(item, password=pw or None)
                 return resp(200, {"id": item["id"], "token": item["token"], "state": "ready"})
             except (IoTConnectError, Exception) as e:  # noqa: BLE001 - surface to applicant
                 ddb.update_item(Key={"id": item["id"]},
@@ -619,7 +649,8 @@ def lambda_handler(event, context):
         if got["state"] == "ready":
             ob = json.loads(got["onboard"])
             out.update(entity=ob["entity_name"], duid=ob["duid"],
-                       kit="/api/kit/%s?t=%s" % (rid, got["token"]))
+                       kit="/api/kit/%s?t=%s" % (rid, got["token"]),
+                       pw=bool(got.get("pw_set")))
         if got["state"] == "error":
             out["detail"] = got.get("error_detail", "")[:200]
         return resp(200, out)

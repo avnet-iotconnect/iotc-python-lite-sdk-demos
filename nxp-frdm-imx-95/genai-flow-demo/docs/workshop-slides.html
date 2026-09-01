@@ -418,13 +418,13 @@
   <p class="eyebrow">Lab · ~5–10 minutes</p>
   <h2>Claim your board</h2>
   <ol>
-    <li><strong>Sign up</strong> on the portal — name, email, company, <strong>event code</strong> → your private space, instantly</li>
-    <li><strong>Check your email</strong> — sign in at <code>awspoc.iotconnect.io</code> with the temporary password and set a real one</li>
+    <li><strong>Sign up</strong> on the portal — name, email, company, <strong>event code</strong>, and <strong>choose a password</strong> → your private space, instantly</li>
+    <li><strong>Log in</strong> at <code>awspoc.iotconnect.io</code> with the password you just chose — no email check needed</li>
     <li><strong>Download your board kit</strong> (.zip) — your device's identity: config + x.509 cert + private key</li>
     <li><strong>Open your board's URL</strong> from the card — <code>http://imx95-XXXX.local:8088</code></li>
     <li><strong>Drag the kit onto the page</strong> → identity installs, demo restarts → <strong>"✓ Connected as p95…"</strong></li>
   </ol>
-  <aside class="notes">ATTENDEE-GUIDE §2 is their copy of these steps + troubleshooting. The kit is a real x.509 device identity (iotcDeviceConfig.json + cert + key) — production mechanism, not a workshop toy. Claim-page safety: re-claiming demands explicit confirmation, so a mistyped URL can't steal a neighbor's board. Failures: mDNS blocked → use board IP; connected-but-empty dashboard → wrong account (WORKSHOP.md).</aside>
+  <aside class="notes">ATTENDEE-GUIDE §2 is their copy of these steps + troubleshooting. Password-at-signup needs the event code (instant onboarding); a blank password falls back to the emailed invite with a temporary password. The kit is a real x.509 device identity (iotcDeviceConfig.json + cert + key) — production mechanism, not a workshop toy. Claim-page safety: re-claiming demands explicit confirmation, so a mistyped URL can't steal a neighbor's board. Failures: mDNS blocked → use board IP; connected-but-empty dashboard → wrong account (WORKSHOP.md).</aside>
 </section>
 
 <!-- 15 · Lab prompts -->
