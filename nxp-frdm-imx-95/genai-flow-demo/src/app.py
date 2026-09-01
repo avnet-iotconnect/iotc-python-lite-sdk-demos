@@ -2312,6 +2312,25 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Expected 1 argument: on or off")
 
     elif msg.command_name == "set-backend":
+        if len(msg.command_args) == 1 and msg.command_args[0] == "neutron":
+            # Refuse a backend that cannot work: without the Neutron device
+            # tree the CMA pool is ~960 MB and every NPU ask grinds to a
+            # 10-minute timeout. Fail fast with the fix instead.
+            cma_kb = 0
+            try:
+                with open("/proc/meminfo") as f:
+                    for line in f:
+                        if line.startswith("CmaTotal"):
+                            cma_kb = int(line.split()[1])
+                            break
+            except (OSError, ValueError, IndexError):
+                pass
+            if 0 < cma_kb < 2000000:
+                c.send_command_ack(msg, C2dAck.CMD_FAILED,
+                                   "Neutron needs the enlarged CMA pool but CmaTotal is only %d MB "
+                                   "(>3 GB required) - boot the Neutron device tree first (demo README, "
+                                   "'Enabling the Neutron NPU'). Backend unchanged." % (cma_kb // 1024))
+                return
         if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron", "ara2"):
             config["backend"] = msg.command_args[0]
             save_config(config)
