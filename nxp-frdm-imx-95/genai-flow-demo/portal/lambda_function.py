@@ -418,10 +418,17 @@ def cockpit(event, path, method, headers, body_raw):
         if path.endswith("/telemetry"):
             guid = qs.get("guid") or ""
             rows = c._req("GET", telemetry_base(c) + "/Telemetry/device/" + guid).get("data", [])
-            values, newest = {}, None
+            # The API can return more than one row per attribute in arbitrary
+            # order; keep only the newest per attribute or the UI flip-flops
+            # between current and stale values (seen live: llm_model
+            # alternating q8/q4 after a model change).
+            values, stamp, newest = {}, {}, None
             for r in rows:
-                values[r.get("attributeName")] = r.get("attributeValue")
-                ts = r.get("deviceUpdatedDate")
+                k = r.get("attributeName")
+                ts = r.get("deviceUpdatedDate") or ""
+                if k and (k not in stamp or ts >= stamp[k]):
+                    values[k] = r.get("attributeValue")
+                    stamp[k] = ts
                 if ts and (newest is None or ts > newest):
                     newest = ts
             age = None
