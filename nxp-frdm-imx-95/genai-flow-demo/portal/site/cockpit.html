@@ -366,10 +366,15 @@ async function refresh(){
   else if(S.await){
    const el=Math.round((Date.now()-S.await.t0)/1000),st=v.genai_status||"";
    if(st&&st!=="idle")S.await.started=true;
-   if(st==="error"||(S.await.started&&st==="idle"&&el>15)||el>660){
-    $("answer").innerHTML='<span class="err">No answer arrived — '+(st==="error"?"the board reported an error":"the run ended without a new answer")+
+   if(st==="error"||el>660){
+    $("answer").innerHTML='<span class="err">No answer arrived — '+(st==="error"?"the board reported an error":"timed out after 11 minutes")+
      '. Check the model &amp; backend: Neutron needs the Neutron device tree (demo README §“Enabling the Neutron NPU”); GGUF models run on the CPU.</span>';
     S.await=null;log("no answer — run failed or timed out","err");
+   }else if(S.await.started&&st==="idle"&&el>15){
+    if(v[key]){$("answer").textContent=v[key];metrics(v);log("answer received (same text as the previous ask)","ok")}
+    else{$("answer").innerHTML='<span class="err">The run finished but produced no response — check the model &amp; backend.</span>';
+     log("run finished with no response","err")}
+    S.await=null;
    }else{
     const hint=(v.llm_backend==="neutron"&&S.mode==="ask-llm")?" — Neutron compiles the model first, allow ~2½ min":"";
     $("answer").innerHTML='<span class="spin"></span><span class="dim">'+S.mode+' running on your board… '+el+'s · board: '+esc(st||"…")+hint+'</span>';
@@ -475,6 +480,7 @@ document.querySelectorAll("#asktabs button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("#asktabs button").forEach(x=>x.classList.remove("on"));
  b.classList.add("on");S.mode=b.dataset.mode;metrics(S.v)});
 $("asksend").onclick=function(){
+ if(S.await){log("still waiting for the current answer — the board runs one ask at a time","err");return}
  const p=$("prompt").value.trim();
  const key=S.mode==="ask-agent"?"agent_response":(S.mode==="ask-vlm"?"vlm_response":"llm_response");
  S.await={prev:S.v[key],t0:Date.now(),started:false};
