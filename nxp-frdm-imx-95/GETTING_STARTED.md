@@ -157,7 +157,7 @@ df -h /   # should now show ~28 GB total
 
 To facilitate the integration of the GenAI Flow pipeline outputs to /IOTCONNECT, we need to change the device template to inform the platform of the expected telemetry from the models and the available, supported, commands.
 
-1. Download the [genai-flow-template.json](genai-flow-demo/genai-floow-template.json) device template file to your PC.
+1. Download the [genai-flow-template.json](nxp-frdm-imx-95/genai-flow-demo/genai-floow-template.json) device template file to your PC.
 2. Import it into your /IOTCONNECT instance via **Templates → Create Template → Import** (same process as the onboarding guide).
 3. Find your device in the /IOTCONNECT **Devices** list and click on it to open the device details page.
 4. Locate the **Template** field (mid-left on the page) and click the edit icon.
