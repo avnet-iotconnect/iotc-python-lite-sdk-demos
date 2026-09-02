@@ -10,7 +10,7 @@
   - [3. Hardware Setup](#3-hardware-setup)
   - [4. Device Setup](#4-device-setup)
   - [5. Onboard Device](#5-onboard-device)
-  - [6. Configure the NXP eIQ GenAI Flow](#6-configure-the-nxp-eai-genai-flow)
+  - [6. Configure the NXP eIQ GenAI Flow](#6-configure-the-nxp-eiq-genai-flow)
     - [Expand Storage](#expand-storage)
     - [Install the eIQ GenAI Flow Pipeline](#install-the-eiq-genai-flow-pipeline)
   - [7. Change Device Template](#7-change-device-template)
@@ -195,7 +195,7 @@ python3 app.py
 
 /IOTCONNECT Dynamic Dashboards are an easy way to visualize data and interact with edge devices.  The demo dashbaord below is pre-configured to display the GenAI Flow pipeline outputs enabled in this guide.
 
-1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard.json](genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard.json)
+1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard.json](genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard_basic.json)
 2. Switch back to the /IOTCONNECT browser window and verify the device status is displaying as `Connected`
 3. Click **Create Dashboard** from the top of the page
 4. Select the **Import Dashboard** option and click **Browse** to select the dashboard template previously downloaded.
