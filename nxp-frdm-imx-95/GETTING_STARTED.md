@@ -195,7 +195,7 @@ python3 app.py
 
 /IOTCONNECT Dynamic Dashboards are an easy way to visualize data and interact with edge devices.  The demo dashbaord below is pre-configured to display the GenAI Flow pipeline outputs enabled in this guide.
 
-1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard.json](genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard_basic.json)
+1. Download the *FRDM i.MX 95 GenAI* demo dashboard: [FRDM_i.MX_95_GenAI_dashboard_basic.json](genai-flow-demo/FRDM_i.MX_95_GenAI_dashboard_basic.json)
 2. Switch back to the /IOTCONNECT browser window and verify the device status is displaying as `Connected`
 3. Click **Create Dashboard** from the top of the page
 4. Select the **Import Dashboard** option and click **Browse** to select the dashboard template previously downloaded.
