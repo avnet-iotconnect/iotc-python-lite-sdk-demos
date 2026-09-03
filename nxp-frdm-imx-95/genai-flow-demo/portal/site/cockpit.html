@@ -156,7 +156,7 @@
     </div>
 
     <div>
-     <div class="card">
+     <div class="card" id="modelcard">
       <h2>3 · Model &amp; backend</h2>
       <label>Model</label>
       <div class="row tight"><select id="modelname" style="flex:1;min-width:130px"></select><button id="setmodel">Set</button></div>
@@ -390,6 +390,18 @@ async function refresh(){
     :(ara==="present"?'<span class="warn">Ara240 card detected but its runtime is not serving models.</span>'
                      :'<span class="dim">No Ara240 module fitted — NPU options disabled.</span>');
   if(!S.shooting)renderCombos();
+  if(S.pending){
+   const pd=S.pending,cur=String(v[pd.key]||""),el=(Date.now()-pd.t0)/1000;
+   if(cur===pd.want||cur.indexOf(pd.want+" ")===0){
+    log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;lockModelCard(false);
+   }else if(el>25){
+    log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board — it may have refused (see its rules) or be busy; controls unlocked","err");
+    S.pending=null;lockModelCard(false);
+   }
+  }else if(S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend){
+   log("board backend changed to <b>"+esc(v.llm_backend)+"</b> without a click here — a running shootout or another session is driving the board","dim");
+  }
+  S.lastBackend=v.llm_backend;
   // reflect current backend / RAG / voice on the buttons
   document.querySelectorAll("[data-backend]").forEach(b=>b.classList.toggle("on",b.dataset.backend===v.llm_backend));
   $("ragtoggle").textContent="RAG: "+(v.llm_rag||"off");
@@ -582,14 +594,34 @@ $("asksend").onclick=function(){
  withPress(this,()=>send(S.mode,p));
 };
 document.querySelectorAll("[data-cmd0]").forEach(b=>b.onclick=function(){withPress(this,()=>send(this.dataset.cmd0,""))});
-document.querySelectorAll("[data-backend]").forEach(b=>b.onclick=function(){withPress(this,()=>send("set-backend",this.dataset.backend))});
-$("setmodel").onclick=function(){const m=$("modelname").value.trim();if(m)withPress(this,()=>send("set-model",m))};
+function setPending(key,want,label){
+ S.pending={key,want,label,t0:Date.now()};
+ log("switching "+label+" to <b>"+esc(want)+"</b> — controls locked until the board confirms","dim");
+ lockModelCard(true);
+}
+function lockModelCard(on){
+ document.querySelectorAll("#modelcard button, #modelcard select").forEach(el=>{
+  if(el.id==="btn-ara2"&&!on)return;           // keep the Ara rule in charge of its own button
+  el.disabled=on;});
+}
+document.querySelectorAll("[data-backend]").forEach(b=>b.onclick=function(){
+ if(S.pending)return;
+ const want=this.dataset.backend;
+ withPress(this,()=>send("set-backend",want));setPending("llm_backend",want,"backend");
+});
+$("setmodel").onclick=function(){
+ if(S.pending)return;
+ const m=$("modelname").value.trim();if(!m)return;
+ withPress(this,()=>send("set-model",m));setPending("llm_model",m,"model");
+};
 $("setvlm").onclick=function(){
  if(!S.commands["set-vlm"]){
   $("vlmhint").innerHTML='<span class="warn">set-vlm is not in your device template — add the command in the '+
    '/IOTCONNECT console (your template → Commands: name/command <b>set-vlm</b>, required parameter, requires ack), then reload this page.</span>';
   log("set-vlm is not in your device template","err");return}
- withPress(this,()=>send("set-vlm",$("vlmname").value));
+ if(S.pending)return;
+ const wv=$("vlmname").value;
+ withPress(this,()=>send("set-vlm",wv));setPending("vlm_model",wv,"vision model");
 };
 $("ragtoggle").onclick=function(){withPress(this,()=>send("set-rag",S.v.llm_rag==="on"?"off":"on"))};
 
