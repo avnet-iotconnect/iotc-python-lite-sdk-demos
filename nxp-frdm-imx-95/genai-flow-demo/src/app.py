@@ -220,6 +220,11 @@ telemetry_lock = threading.Lock()
 # Only one LLM operation (prompt or benchmark) may run at a time
 llm_busy = threading.Lock()
 
+# Set by publish_state() so the telemetry loop publishes immediately when
+# something changed (an answer landing, a status transition) instead of
+# waiting out the full telemetry interval.
+telemetry_wake = threading.Event()
+
 
 def publish_state():
     """Write current state for camera-server.py's /responses page (atomic)."""
@@ -231,6 +236,7 @@ def publish_state():
         os.replace("/tmp/genai-state.json.tmp", "/tmp/genai-state.json")
     except OSError:
         pass
+    telemetry_wake.set()
 
 
 def genai_script_path():
@@ -2825,7 +2831,9 @@ try:
             telemetry["llm_models"] = read_model_inventory()
             c.send_telemetry(dict(telemetry))
         publish_state()
-        time.sleep(config["telemetry_interval_s"])
+        telemetry_wake.clear()   # the publish_state above set it - not a change
+        if telemetry_wake.wait(config["telemetry_interval_s"]):
+            time.sleep(0.7)      # coalesce a burst of changes into one publish
 
 except DeviceConfigError as dce:
     print(dce)

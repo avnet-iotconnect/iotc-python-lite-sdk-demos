@@ -310,7 +310,7 @@ async function boot(){
  $("whoami").textContent=S.email;
  log("signed in — "+S.devices.length+" board(s) available","ok");
  selectDevice(0);
- if(!S.poll)S.poll=setInterval(refresh,5000);
+ if(!S.poll)S.poll=setInterval(refresh,3000);
 }
 /* Switch which board the cockpit is looking at. Commands come from that device's
    own template, so a board on a different template still gets the right command set. */
