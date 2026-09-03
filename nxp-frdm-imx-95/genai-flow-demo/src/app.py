@@ -226,11 +226,29 @@ llm_busy = threading.Lock()
 telemetry_wake = threading.Event()
 
 
+_duid_cache = None
+
+
+def _own_duid():
+    """This device's claimed identity, for state.json consumers: a cockpit
+    viewing a different device must not overlay this board's local data
+    (seen live after a re-claim: old-identity REST data flapping against
+    new-identity board state)."""
+    global _duid_cache
+    if not _duid_cache:
+        try:
+            _duid_cache = json.load(open("/opt/demo/iotcDeviceConfig.json"))["uid"]
+        except (OSError, ValueError, KeyError):
+            _duid_cache = ""
+    return _duid_cache
+
+
 def publish_state():
     """Write current state for camera-server.py's /responses page (atomic)."""
     try:
         with telemetry_lock:
             snapshot = dict(telemetry)
+        snapshot["duid"] = _own_duid()
         with open("/tmp/genai-state.json.tmp", "w") as f:
             json.dump(snapshot, f)
         os.replace("/tmp/genai-state.json.tmp", "/tmp/genai-state.json")

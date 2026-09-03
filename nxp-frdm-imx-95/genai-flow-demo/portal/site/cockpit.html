@@ -243,12 +243,19 @@ const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
 const FACTS=[["genai_status","status"],["llm_model","model"],["llm_backend","backend"],
              ["llm_tps","last tok/s"],["vlm_model","vlm"],["voice_stt","stt"]];
-const COMBOS=[
+const BASE_COMBOS=[
  {id:"cpu|danube-500M-q8",label:"CPU · danube q8",backend:"cpu",model:"danube-500M-q8",est:60},
  {id:"cpu|danube-500M-q4",label:"CPU · danube q4",backend:"cpu",model:"danube-500M-q4",est:50},
  {id:"neutron|danube-500M-q8",label:"Neutron · q8",backend:"neutron",model:"danube-500M-q8",est:140},
- {id:"neutron|danube-500M-q4",label:"Neutron · q4",backend:"neutron",model:"danube-500M-q4",est:155},
- {id:"ara2|__ARA__",label:"Ara240 NPU",backend:"ara2",model:"",est:20,ara:true}];
+ {id:"neutron|danube-500M-q4",label:"Neutron · q4",backend:"neutron",model:"danube-500M-q4",est:155}];
+function combos(){
+ // GGUFs installed on the board (from llm_models telemetry) each get a
+ // llama.cpp row; the Ara row stays last.
+ const gg=(S.v.llm_models||"").split(",").filter(m=>m&&!m.startsWith("danube")).map(m=>({
+  id:"gguf|"+m,label:"llama.cpp · "+m.replace("-instruct",""),backend:"cpu",model:m,
+  est:/0\.5b/.test(m)?20:35}));
+ return BASE_COMBOS.concat(gg,[{id:"ara2|__ARA__",label:"Ara240 NPU",backend:"ara2",model:"",est:20,ara:true}]);
+}
 const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");
 const fmt=v=>(v===null||v===undefined||v==="")?"–":v;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -325,10 +332,15 @@ function selectDevice(i){
 
 /* ---------- telemetry + state reflection ---------- */
 const tele=()=>api("telemetry?guid="+encodeURIComponent(S.device.guid));
+let comboSig="";
 function renderCombos(){
  const araReady=S.v.ara_status==="ready";
  const araModel=(S.v.ara_models||"").split(",")[0]||"";
- $("combos").innerHTML=COMBOS.map(c=>{
+ const cs=combos();
+ const sig=cs.map(c=>c.id).join()+"|"+araReady+"|"+araModel;
+ if(sig===comboSig)return;   // don't wipe the user's checkbox picks every poll
+ comboSig=sig;
+ $("combos").innerHTML=cs.map(c=>{
   const dis=c.ara&&!araReady;
   const label=c.ara?("Ara240 · "+(araModel||"no model")):c.label;
   return '<label class="combo'+(dis?" off":"")+'" title="'+(dis?"No Ara240 detected on this board":"")+'">'+
@@ -346,7 +358,15 @@ async function boardState(ip){
   const r=await fetch("https://"+ip+":8080/state.json",{cache:"no-store",signal:ctl.signal});
   clearTimeout(tm);
   if(!r.ok)throw new Error("http "+r.status);
-  S.fastFail=0;return await r.json();
+  S.fastFail=0;
+  const j=await r.json();
+  if(j.duid&&S.device&&S.device.uniqueId&&j.duid!==S.device.uniqueId){
+   if(S.wrongBoard!==j.duid){S.wrongBoard=j.duid;
+    log("the board at "+esc(ip)+" is claimed as <b>"+esc(j.duid)+"</b> but you are viewing <b>"+
+     esc(S.device.uniqueId)+"</b> — ignoring its local data. Switch devices, or re-claim the board with your kit.","err");}
+   return null;
+  }
+  return j;
  }catch(e){S.fastFail=Date.now();return null}
 }
 async function refresh(){
@@ -608,7 +628,7 @@ $("ragfile").onchange=e=>{if(e.target.files[0])uploadRag(e.target.files[0])};
 $("clearshoot").onclick=()=>{$("shootout").innerHTML="";$("shootstatus").textContent=""};
 $("runshoot").onclick=async function(){
  const sel=[...document.querySelectorAll("#combos input:checked")].map(i=>{
-  const c=Object.assign({},COMBOS.find(x=>x.id===i.value));
+  const c=Object.assign({},combos().find(x=>x.id===i.value));
   if(c.ara)c.model=(S.v.ara_models||"").split(",")[0]||"";
   return c;});
  const prompt=$("sprompt").value.trim();
