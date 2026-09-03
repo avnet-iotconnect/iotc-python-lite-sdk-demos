@@ -122,7 +122,7 @@
   <span class="spacer"></span>
   <select class="pill" id="devsel" title="Choose which board to view" style="cursor:pointer"></select>
   <span class="pill" id="arapill">Ara: …</span>
-  <span class="pill" id="livepill">…</span>
+  <span class="pill" id="livepill">…</span><span class="pill" id="buildpill" title="Cockpit build id. If a newer build is deployed, hard-refresh (Ctrl+F5)."></span>
   <span class="dim" id="whoami" style="font-size:.8rem"></span>
   <button class="ghost" id="logout">Sign out</button>
  </header>
@@ -239,6 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
+const BUILD="b15";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -381,6 +382,7 @@ function latch(values,stamps){
  }
  return Object.assign({},S.tv);
 }
+(function(){const b=document.getElementById("buildpill");if(b)b.textContent="build "+BUILD;})();
 async function refresh(){
  try{
   const t=await tele(),v0=latch(t.values||{},t.stamps);
