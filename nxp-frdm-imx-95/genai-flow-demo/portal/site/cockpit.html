@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b18";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b19";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -373,19 +373,21 @@ async function boardState(ip){
 }
 S.tv={};S.ts={};
 function latch(values,stamps){
- // Platform latest-values reads are eventually consistent AND rows can be
- // ingest-stamped out of order, so single polls both omit fresh rows and
- // resurrect stale ones with advancing stamps. Two rules: an attribute
- // never moves backwards in time, and a CHANGED value must appear in two
- // consecutive polls before it is believed (~6 s extra latency, no blips).
- S.cand=S.cand||{};
+ // Platform latest-values reads are eventually consistent, rows can be
+ // ingest-stamped out of order, and stale reads arrive in RUNS. Rules:
+ // never move an attribute backwards in time; a NOVEL value needs 2
+ // consecutive polls to be believed; a REVERSION to a previously shown
+ // value needs 5 (stale resurrection is far likelier than a real revert).
+ S.cand=S.cand||{};S.hist=S.hist||{};
  for(const k in values){
   const st=(stamps||{})[k]||"",nv=values[k];
-  if(!(k in S.ts)){S.tv[k]=nv;S.ts[k]=st;continue}
+  if(!(k in S.ts)){S.tv[k]=nv;S.ts[k]=st;(S.hist[k]={})[String(nv)]=1;continue}
   if(st<S.ts[k])continue;
   if(nv===S.tv[k]){S.ts[k]=st;delete S.cand[k];continue}
-  if(S.cand[k]===nv){S.tv[k]=nv;S.ts[k]=st;delete S.cand[k];}
-  else S.cand[k]=nv;
+  const need=(S.hist[k]&&S.hist[k][String(nv)])?5:2;
+  const c=S.cand[k];
+  if(c&&c.v===nv)c.n++;else S.cand[k]={v:nv,n:1};
+  if(S.cand[k].n>=need){S.tv[k]=nv;S.ts[k]=st;(S.hist[k]=S.hist[k]||{})[String(nv)]=1;delete S.cand[k];}
  }
  return Object.assign({},S.tv);
 }
@@ -421,12 +423,12 @@ async function refresh(){
   if(S.pending){
    const pd=S.pending,cur=String(v[pd.key]||""),el=(Date.now()-pd.t0)/1000;
    if(cur===pd.want||cur.indexOf(pd.want+" ")===0){
-    log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;updateModelLock();
+    log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;S.quietUntil=Date.now()+120000;updateModelLock();
    }else if(el>75){
     log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board within 75 s — it may have refused (see its rules) or be busy; controls unlocked","err");
     S.pending=null;updateModelLock();
    }
-  }else if(((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend&&
+  }else if(Date.now()>(S.quietUntil||0)&&((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend&&
              !(v.llm_model===S.lastModel&&[S.lastBackend,v.llm_backend].every(x=>x==="cpu"||x==="cpu-llama.cpp")))||
            (S.lastModel&&v.llm_model&&v.llm_model!==S.lastModel))){
    log("board switched to <b>"+esc(v.llm_model||"?")+"</b> on <b>"+esc(v.llm_backend||"?")+"</b> without a click here — a running shootout or another session is driving the board","dim");
