@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b20";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b21";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -701,7 +701,7 @@ $("runshoot").onclick=async function(){
   return c;});
  const prompt=$("sprompt").value.trim();
  if(!sel.length||!prompt){$("shootstatus").innerHTML='<span class="err">Pick an engine and a prompt.</span>';return}
- this.disabled=true;this.classList.add("busy");S.shooting=true;S.shootStop=false;
+ this.disabled=true;this.classList.add("busy");S.shooting=true;S.shootStop=false;S.shootSeen=new Set();
  $("stopshoot").disabled=false;updateModelLock();
  const results=[];const mins=Math.max(1,Math.round(sel.reduce((a,c)=>a+c.est,0)/60));
  log("shootout started — "+sel.length+" engines, ~"+mins+" min","ok");
@@ -710,8 +710,9 @@ $("runshoot").onclick=async function(){
   const c=sel[i];
   $("shootstatus").innerHTML='<span class="spin"></span>'+(i+1)+'/'+sel.length+' — <b>'+esc(c.label)+'</b>';
   try{
-   const bv=(await tele()).values;
-   const beforeSig=(bv.llm_response||"")+"|"+bv.llm_ttft+"|"+bv.llm_gen_time;
+   const answerSig=x=>(x.llm_response||"")+"|"+x.llm_ttft+"|"+x.llm_gen_time+"|"+x.llm_tps+"|"+x.llm_token_count;
+   if(!S.shootSeen)S.shootSeen=new Set();
+   S.shootSeen.add(answerSig(S.v));
    const want=prompt.replace(/\s+/g," ");
    if(c.backend==="ara2"){await send("set-model",c.model);}
    else{await send("set-backend",c.backend);await sleep(1500);await send("set-model",c.model);}
@@ -719,12 +720,14 @@ $("runshoot").onclick=async function(){
    let got=null;
    for(let t=0;t<Math.max(30,c.est/2)&&!S.shootStop;t++){
     await sleep(5000);
-    const v=(await tele()).values;
-    // Accept only an answer to THIS shootout's question - a change alone can
-    // be a frame-2 ask or a stale-read echo (seen live: combos harvesting
-    // "capital of Florida" answers for an air-composition prompt).
-    const sig=(v.llm_response||"")+"|"+v.llm_ttft+"|"+v.llm_gen_time;
-    if(v.llm_response&&sig!==beforeSig&&String(v.llm_prompt||"").replace(/\s+/g," ")===want){got=v;break}
+    const v=S.v;  // the latched, damped, board-direct-preferring store
+    // All combos share one question, so prompt-match alone cannot tell a
+    // fresh answer from a stale echo of an EARLIER combo (seen live: Neutron
+    // rows wearing CPU metrics). Accept only a never-before-seen answer
+    // signature, from the right engine, to the right question.
+    const sg=answerSig(v);
+    if(v.llm_response&&!S.shootSeen.has(sg)&&v.llm_model===c.model&&
+       String(v.llm_prompt||"").replace(/\s+/g," ")===want){S.shootSeen.add(sg);got=v;break}
    }
    results.push({c,v:got});
   }catch(e){log("shootout: "+esc(c.label)+" — "+e.message,"err");results.push({c,v:null})}
