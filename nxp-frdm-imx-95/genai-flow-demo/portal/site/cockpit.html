@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b21";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b22";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -716,7 +716,15 @@ $("runshoot").onclick=async function(){
    const want=prompt.replace(/\s+/g," ");
    if(c.backend==="ara2"){await send("set-model",c.model);}
    else{await send("set-backend",c.backend);await sleep(1500);await send("set-model",c.model);}
-   await sleep(2500); await send("ask-llm",prompt);
+   // Confirm the engine actually switched before asking - fixed sleeps let
+   // an ask run on the PREVIOUS engine (seen live: a "Neutron q8" row with
+   // a 39 s load, i.e. a mislabeled CPU run).
+   const wantB=c.ara?"ara2":(c.model.indexOf("danube")===0?c.backend:"cpu-llama.cpp");
+   let switched=false;
+   for(let t=0;t<25&&!S.shootStop;t++){await sleep(3000);
+    if(S.v.llm_model===c.model&&S.v.llm_backend===wantB){switched=true;break}}
+   if(!switched)throw new Error("engine switch not confirmed by the board");
+   await send("ask-llm",prompt);
    let got=null;
    for(let t=0;t<Math.max(30,c.est/2)&&!S.shootStop;t++){
     await sleep(5000);
