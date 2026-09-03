@@ -335,14 +335,31 @@ function renderCombos(){
    '<input type="checkbox" value="'+c.id+'"'+(dis?" disabled":"")+(c.backend==="cpu"?" checked":"")+'>'+
    label+'<span class="est">'+(dis?"n/a":"~"+c.est+"s")+'</span></label>';}).join("");
 }
+async function boardState(ip){
+ // The board serves its live state at ~2s freshness (camera server
+ // :8080/state.json); REST telemetry lags 30-60s. Prefer the board when
+ // this browser can reach it (same LAN, cert accepted once).
+ if(!ip)return null;
+ if(S.fastFail&&Date.now()-S.fastFail<30000)return null;
+ try{
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),1500);
+  const r=await fetch("https://"+ip+":8080/state.json",{cache:"no-store",signal:ctl.signal});
+  clearTimeout(tm);
+  if(!r.ok)throw new Error("http "+r.status);
+  S.fastFail=0;return await r.json();
+ }catch(e){S.fastFail=Date.now();return null}
+}
 async function refresh(){
  try{
-  const t=await tele(),v=t.values||{};S.v=v;
+  const t=await tele(),v0=t.values||{};
+  const b=await boardState(v0.board_ip||S.v.board_ip);
+  const v=b?Object.assign({},v0,b):v0;S.v=v;S.fastOn=!!b;
   $("gauges").innerHTML=GAUGES.map(([k,l,u,max])=>gauge(v[k],max,l,u)).join("");
   $("facts").innerHTML=FACTS.map(([k,l])=>'<div class="fact"><div class="k">'+l+'</div><div class="v">'+fmt(v[k])+'</div></div>').join("");
-  const fresh=t.age_s!==null&&t.age_s<45;
-  $("livepill").textContent=fresh?"live":(t.age_s===null?"no data":"stale "+Math.round(t.age_s)+"s");
+  const fresh=S.fastOn||(t.age_s!==null&&t.age_s<45);
+  $("livepill").textContent=S.fastOn?"live · board-direct":(fresh?"live (cloud)":(t.age_s===null?"no data":"stale "+Math.round(t.age_s)+"s"));
   $("livepill").className="pill "+(fresh?"live":"dead");
+  $("livepill").title=S.fastOn?"Reading the board's own state.json — ~2 s freshness":"Reading cloud REST telemetry — can lag the board by 30–60 s";
   // Ara presence
   const ara=v.ara_status||"absent", araReady=ara==="ready";
   $("arapill").textContent="Ara240: "+(araReady?"ready":ara==="present"?"idle":"not fitted");
