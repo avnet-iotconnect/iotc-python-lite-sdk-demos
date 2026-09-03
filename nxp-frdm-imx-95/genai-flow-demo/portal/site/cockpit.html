@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b17";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b18";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -373,12 +373,19 @@ async function boardState(ip){
 }
 S.tv={};S.ts={};
 function latch(values,stamps){
- // The platform's latest-values reads are eventually consistent: two polls
- // can hit replicas with and without the newest row, so raw values flap.
- // Never let an attribute move backwards in time.
+ // Platform latest-values reads are eventually consistent AND rows can be
+ // ingest-stamped out of order, so single polls both omit fresh rows and
+ // resurrect stale ones with advancing stamps. Two rules: an attribute
+ // never moves backwards in time, and a CHANGED value must appear in two
+ // consecutive polls before it is believed (~6 s extra latency, no blips).
+ S.cand=S.cand||{};
  for(const k in values){
-  const st=(stamps||{})[k]||"";
-  if(!(k in S.ts)||st>=S.ts[k]){S.tv[k]=values[k];S.ts[k]=st;}
+  const st=(stamps||{})[k]||"",nv=values[k];
+  if(!(k in S.ts)){S.tv[k]=nv;S.ts[k]=st;continue}
+  if(st<S.ts[k])continue;
+  if(nv===S.tv[k]){S.ts[k]=st;delete S.cand[k];continue}
+  if(S.cand[k]===nv){S.tv[k]=nv;S.ts[k]=st;delete S.cand[k];}
+  else S.cand[k]=nv;
  }
  return Object.assign({},S.tv);
 }
@@ -393,6 +400,8 @@ async function refresh(){
   const boardFresh=S.board&&(Date.now()-S.board.at)<15000;
   const v=boardFresh?Object.assign({},v0,S.board.v):v0;
   S.v=v;S.fastOn=boardFresh;
+  if(!boardFresh&&v0.board_ip&&S.fastFail&&!S.bdHint){S.bdHint=true;
+   log("tip: for ~2 s updates open <b>https://"+esc(v0.board_ip)+":8080</b> once in this browser and accept the certificate — the cockpit then reads the board directly (“live · board-direct”) instead of the slower cloud feed","dim");}
   $("gauges").innerHTML=GAUGES.map(([k,l,u,max])=>gauge(v[k],max,l,u)).join("");
   $("facts").innerHTML=FACTS.map(([k,l])=>'<div class="fact"><div class="k">'+l+'</div><div class="v">'+fmt(v[k])+'</div></div>').join("");
   const fresh=S.fastOn||(t.age_s!==null&&t.age_s<45);
@@ -413,8 +422,8 @@ async function refresh(){
    const pd=S.pending,cur=String(v[pd.key]||""),el=(Date.now()-pd.t0)/1000;
    if(cur===pd.want||cur.indexOf(pd.want+" ")===0){
     log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;updateModelLock();
-   }else if(el>25){
-    log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board — it may have refused (see its rules) or be busy; controls unlocked","err");
+   }else if(el>75){
+    log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board within 75 s — it may have refused (see its rules) or be busy; controls unlocked","err");
     S.pending=null;updateModelLock();
    }
   }else if(((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend&&
