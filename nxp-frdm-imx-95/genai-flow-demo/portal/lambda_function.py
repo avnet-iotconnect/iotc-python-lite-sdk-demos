@@ -440,7 +440,7 @@ def cockpit(event, path, method, headers, body_raw):
                     age = (datetime.datetime.now(datetime.timezone.utc) - t).total_seconds()
                 except ValueError:
                     pass
-            return resp(200, {"values": values, "age_s": age})
+            return resp(200, {"values": values, "stamps": stamp, "age_s": age})
 
         if path.endswith("/command"):
             b = json.loads(body_raw or "{}")

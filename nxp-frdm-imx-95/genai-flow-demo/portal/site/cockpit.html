@@ -190,6 +190,7 @@
     <div class="combos" id="combos"></div>
     <div class="row tight" style="margin-top:12px;align-items:center">
      <button id="runshoot">Run shootout</button>
+     <button class="ghost" id="stopshoot" disabled>Stop</button>
      <button class="ghost" id="clearshoot">Clear</button>
      <span id="shootstatus" class="dim" style="flex:1;min-width:190px"></span>
     </div>
@@ -344,7 +345,7 @@ function renderCombos(){
   const dis=c.ara&&!araReady;
   const label=c.ara?("Ara240 · "+(araModel||"no model")):c.label;
   return '<label class="combo'+(dis?" off":"")+'" title="'+(dis?"No Ara240 detected on this board":"")+'">'+
-   '<input type="checkbox" value="'+c.id+'"'+(dis?" disabled":"")+(c.backend==="cpu"?" checked":"")+'>'+
+   '<input type="checkbox" value="'+c.id+'"'+(dis?" disabled":"")+(c.id==="cpu|danube-500M-q8"?" checked":"")+'>'+
    label+'<span class="est">'+(dis?"n/a":"~"+c.est+"s")+'</span></label>';}).join("");
 }
 async function boardState(ip){
@@ -369,9 +370,20 @@ async function boardState(ip){
   return j;
  }catch(e){S.fastFail=Date.now();return null}
 }
+S.tv={};S.ts={};
+function latch(values,stamps){
+ // The platform's latest-values reads are eventually consistent: two polls
+ // can hit replicas with and without the newest row, so raw values flap.
+ // Never let an attribute move backwards in time.
+ for(const k in values){
+  const st=(stamps||{})[k]||"";
+  if(!(k in S.ts)||st>=S.ts[k]){S.tv[k]=values[k];S.ts[k]=st;}
+ }
+ return Object.assign({},S.tv);
+}
 async function refresh(){
  try{
-  const t=await tele(),v0=t.values||{};
+  const t=await tele(),v0=latch(t.values||{},t.stamps);
   const b=await boardState(v0.board_ip||S.v.board_ip);
   const v=b?Object.assign({},v0,b):v0;S.v=v;S.fastOn=!!b;
   $("gauges").innerHTML=GAUGES.map(([k,l,u,max])=>gauge(v[k],max,l,u)).join("");
@@ -393,15 +405,16 @@ async function refresh(){
   if(S.pending){
    const pd=S.pending,cur=String(v[pd.key]||""),el=(Date.now()-pd.t0)/1000;
    if(cur===pd.want||cur.indexOf(pd.want+" ")===0){
-    log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;lockModelCard(false);
+    log(pd.label+" confirmed: <b>"+esc(pd.want)+"</b>","ok");S.pending=null;updateModelLock();
    }else if(el>25){
     log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board — it may have refused (see its rules) or be busy; controls unlocked","err");
-    S.pending=null;lockModelCard(false);
+    S.pending=null;updateModelLock();
    }
-  }else if(S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend){
-   log("board backend changed to <b>"+esc(v.llm_backend)+"</b> without a click here — a running shootout or another session is driving the board","dim");
+  }else if((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend)||
+           (S.lastModel&&v.llm_model&&v.llm_model!==S.lastModel)){
+   log("board switched to <b>"+esc(v.llm_model||"?")+"</b> on <b>"+esc(v.llm_backend||"?")+"</b> without a click here — a running shootout or another session is driving the board","dim");
   }
-  S.lastBackend=v.llm_backend;
+  S.lastBackend=v.llm_backend;S.lastModel=v.llm_model;
   // reflect current backend / RAG / voice on the buttons
   document.querySelectorAll("[data-backend]").forEach(b=>b.classList.toggle("on",b.dataset.backend===v.llm_backend));
   $("ragtoggle").textContent="RAG: "+(v.llm_rag||"off");
@@ -597,9 +610,10 @@ document.querySelectorAll("[data-cmd0]").forEach(b=>b.onclick=function(){withPre
 function setPending(key,want,label){
  S.pending={key,want,label,t0:Date.now()};
  log("switching "+label+" to <b>"+esc(want)+"</b> — controls locked until the board confirms","dim");
- lockModelCard(true);
+ updateModelLock();
 }
-function lockModelCard(on){
+function updateModelLock(){
+ const on=!!(S.pending||S.shooting);
  document.querySelectorAll("#modelcard button, #modelcard select").forEach(el=>{
   if(el.id==="btn-ara2"&&!on)return;           // keep the Ara rule in charge of its own button
   el.disabled=on;});
@@ -658,6 +672,8 @@ $("ragfile").onchange=e=>{if(e.target.files[0])uploadRag(e.target.files[0])};
 
 /* ---------- shootout ---------- */
 $("clearshoot").onclick=()=>{$("shootout").innerHTML="";$("shootstatus").textContent=""};
+$("stopshoot").onclick=function(){S.shootStop=true;this.disabled=true;
+ log("stopping the shootout after the current engine…","dim");};
 $("runshoot").onclick=async function(){
  const sel=[...document.querySelectorAll("#combos input:checked")].map(i=>{
   const c=Object.assign({},combos().find(x=>x.id===i.value));
@@ -665,10 +681,12 @@ $("runshoot").onclick=async function(){
   return c;});
  const prompt=$("sprompt").value.trim();
  if(!sel.length||!prompt){$("shootstatus").innerHTML='<span class="err">Pick an engine and a prompt.</span>';return}
- this.disabled=true;this.classList.add("busy");S.shooting=true;
+ this.disabled=true;this.classList.add("busy");S.shooting=true;S.shootStop=false;
+ $("stopshoot").disabled=false;updateModelLock();
  const results=[];const mins=Math.max(1,Math.round(sel.reduce((a,c)=>a+c.est,0)/60));
  log("shootout started — "+sel.length+" engines, ~"+mins+" min","ok");
  for(let i=0;i<sel.length;i++){
+  if(S.shootStop)break;
   const c=sel[i];
   $("shootstatus").innerHTML='<span class="spin"></span>'+(i+1)+'/'+sel.length+' — <b>'+esc(c.label)+'</b>';
   try{
@@ -677,7 +695,7 @@ $("runshoot").onclick=async function(){
    else{await send("set-backend",c.backend);await sleep(1500);await send("set-model",c.model);}
    await sleep(2500); await send("ask-llm",prompt);
    let got=null;
-   for(let t=0;t<Math.max(30,c.est/2);t++){
+   for(let t=0;t<Math.max(30,c.est/2)&&!S.shootStop;t++){
     await sleep(5000);
     const v=(await tele()).values;
     if(v.llm_response&&v.llm_response!==before){got=v;break}
@@ -686,8 +704,10 @@ $("runshoot").onclick=async function(){
   }catch(e){log("shootout: "+esc(c.label)+" — "+e.message,"err");results.push({c,v:null})}
   render(results);
  }
- $("shootstatus").innerHTML='<span class="ok">done — '+results.filter(r=>r.v).length+'/'+sel.length+' answered</span>';
- this.disabled=false;this.classList.remove("busy");S.shooting=false;renderCombos();log("shootout complete","ok");
+ $("shootstatus").innerHTML=S.shootStop?'<span class="warn">stopped — '+results.filter(r=>r.v).length+' engine(s) finished</span>'
+   :'<span class="ok">done — '+results.filter(r=>r.v).length+'/'+sel.length+' answered</span>';
+ this.disabled=false;this.classList.remove("busy");S.shooting=false;$("stopshoot").disabled=true;
+ updateModelLock();renderCombos();log(S.shootStop?"shootout stopped":"shootout complete","ok");
  function render(rs){
   const cols=[["llm_load_time","load s","min"],["llm_ttft","ttft s","min"],["llm_gen_time","gen s","min"],
               ["llm_tps","tok/s","max"],["llm_token_count","tokens",""]];
