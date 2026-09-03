@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b16";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b17";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -387,9 +387,12 @@ async function refresh(){
  try{
   const t=await tele(),v0=latch(t.values||{},t.stamps);
   const b=await boardState(v0.board_ip||S.v.board_ip);
-  let v=v0;
-  if(b){const now=new Date().toISOString(),st={};for(const k in b)st[k]=now;v=latch(b,st);}
-  S.v=v;S.fastOn=!!b;
+  if(b)S.board={v:b,at:Date.now()};
+  // Two clock domains never mix: cloud values are latched by PLATFORM
+  // timestamps; board-direct values are simply preferred while recent.
+  const boardFresh=S.board&&(Date.now()-S.board.at)<15000;
+  const v=boardFresh?Object.assign({},v0,S.board.v):v0;
+  S.v=v;S.fastOn=boardFresh;
   $("gauges").innerHTML=GAUGES.map(([k,l,u,max])=>gauge(v[k],max,l,u)).join("");
   $("facts").innerHTML=FACTS.map(([k,l])=>'<div class="fact"><div class="k">'+l+'</div><div class="v">'+fmt(v[k])+'</div></div>').join("");
   const fresh=S.fastOn||(t.age_s!==null&&t.age_s<45);
@@ -414,8 +417,9 @@ async function refresh(){
     log(pd.label+" switch to "+esc(pd.want)+" was NOT confirmed by the board — it may have refused (see its rules) or be busy; controls unlocked","err");
     S.pending=null;updateModelLock();
    }
-  }else if((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend)||
-           (S.lastModel&&v.llm_model&&v.llm_model!==S.lastModel)){
+  }else if(((S.lastBackend&&v.llm_backend&&v.llm_backend!==S.lastBackend&&
+             !(v.llm_model===S.lastModel&&[S.lastBackend,v.llm_backend].every(x=>x==="cpu"||x==="cpu-llama.cpp")))||
+           (S.lastModel&&v.llm_model&&v.llm_model!==S.lastModel))){
    log("board switched to <b>"+esc(v.llm_model||"?")+"</b> on <b>"+esc(v.llm_backend||"?")+"</b> without a click here — a running shootout or another session is driving the board","dim");
   }
   S.lastBackend=v.llm_backend;S.lastModel=v.llm_model;

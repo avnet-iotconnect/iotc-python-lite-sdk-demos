@@ -2251,6 +2251,11 @@ def on_command(msg: C2dCommand):
             invalidate_agent_session()
             with telemetry_lock:
                 telemetry["llm_model"] = arg
+                if config["backend"] != "ara2":
+                    # Label where asks will actually run so the backend field
+                    # doesn't toggle cpu/cpu-llama.cpp per ask
+                    telemetry["llm_backend"] = ("cpu-llama.cpp" if is_gguf_model(arg)
+                                                else config["backend"])
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Model set to " + arg)
         else:
             c.send_command_ack(msg, C2dAck.CMD_FAILED, "Available models: " + ", ".join(valid))
@@ -2376,7 +2381,9 @@ def on_command(msg: C2dCommand):
             save_config(config)
             invalidate_agent_session()
             with telemetry_lock:
-                telemetry["llm_backend"] = config["backend"]
+                telemetry["llm_backend"] = ("cpu-llama.cpp"
+                                            if config["backend"] == "cpu" and is_gguf_model(config["model"])
+                                            else config["backend"])
             note = " - ask-llm now runs on the Ara240 via the AAF connector" if config["backend"] == "ara2" else ""
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, "Backend set to " + config["backend"] + note)
         else:
