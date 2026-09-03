@@ -444,6 +444,10 @@ def cockpit(event, path, method, headers, body_raw):
 
         if path.endswith("/command"):
             b = json.loads(body_raw or "{}")
+            src = ((event.get("requestContext") or {}).get("http") or {}).get("sourceIp", "?")
+            print("cockpit command from %s: device=%s cmd=%s value=%r" % (
+                src, (b.get("deviceGuid") or "")[-8:], (b.get("commandGuid") or "")[-8:],
+                (b.get("value") or "")[:60]))
             c._req("POST", c.urls["deviceBaseUrl"] + "/template-command/device/%s/send"
                    % b["deviceGuid"],
                    body={"commandGuid": b["commandGuid"], "parameterValue": b.get("value", ""),

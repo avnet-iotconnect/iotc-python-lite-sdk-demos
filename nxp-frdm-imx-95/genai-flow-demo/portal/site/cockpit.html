@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b15";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b16";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -387,7 +387,9 @@ async function refresh(){
  try{
   const t=await tele(),v0=latch(t.values||{},t.stamps);
   const b=await boardState(v0.board_ip||S.v.board_ip);
-  const v=b?Object.assign({},v0,b):v0;S.v=v;S.fastOn=!!b;
+  let v=v0;
+  if(b){const now=new Date().toISOString(),st={};for(const k in b)st[k]=now;v=latch(b,st);}
+  S.v=v;S.fastOn=!!b;
   $("gauges").innerHTML=GAUGES.map(([k,l,u,max])=>gauge(v[k],max,l,u)).join("");
   $("facts").innerHTML=FACTS.map(([k,l])=>'<div class="fact"><div class="k">'+l+'</div><div class="v">'+fmt(v[k])+'</div></div>').join("");
   const fresh=S.fastOn||(t.age_s!==null&&t.age_s<45);
