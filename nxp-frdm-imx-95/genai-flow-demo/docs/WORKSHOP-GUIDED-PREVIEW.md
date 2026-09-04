@@ -44,6 +44,14 @@ Times are wall-clock from pressing a control to the answer appearing.
 **Say:** "The first answer took a minute; the next two took seventeen seconds. On a model this small
 the *loading* is the cost, not the thinking — which is why the board keeps a model resident once it's up."
 
+> **Anatomy of the wait — teach this here, it defuses every "why so slow?" question.**
+> `wall time = command delivery + load (cold only) + TTFT + tokens ÷ tok/s + display refresh`
+> The model *starts* in under a second (TTFT ~0.4 s warm); the rest of the wait is it **typing the answer**.
+> The measured "17 s" was a ~120-token paragraph at ~10 tok/s = ~12 s of typing + ~3 s round-trip. The same
+> engine answers a 20-token question in ~5 s — which is why shootout rows show gen times of 1–8 s: their
+> answers were short. **Generation time is answer length ÷ tok/s.** Compare engines on TTFT and tok/s (the
+> tokens column shows how much each wrote), and ask for one-sentence answers when you want snappy demos.
+
 ---
 
 ## 2 · Small and fast, but it guesses   ~2 min
