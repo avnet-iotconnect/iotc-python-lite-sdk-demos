@@ -34,6 +34,7 @@ import glob
 import json
 import os
 import queue
+import secrets
 import re
 import shutil
 import socket
@@ -229,6 +230,15 @@ telemetry_wake = threading.Event()
 
 _duid_cache = None
 
+# Local (LAN) command path: the cockpit, when direct-connected, can inject
+# commands via camera-server:8080/command to skip the cloud C2D pipeline
+# (which is intermittently 1-2 min). Convenience-grade: the token is exposed
+# in the LAN-readable state.json, so this is same-LAN reachability gating,
+# not hardened auth. The cloud path stays the default.
+LOCAL_CMD_TOKEN = secrets.token_urlsafe(12)
+LOCAL_CMD_SPOOL = "/tmp/genai-cmd"
+_local_dispatch = threading.local()
+
 
 def _own_duid():
     """This device's claimed identity, for state.json consumers: a cockpit
@@ -250,6 +260,7 @@ def publish_state():
         with telemetry_lock:
             snapshot = dict(telemetry)
         snapshot["duid"] = _own_duid()
+        snapshot["cmd_token"] = LOCAL_CMD_TOKEN
         with open("/tmp/genai-state.json.tmp", "w") as f:
             json.dump(snapshot, f)
         os.replace("/tmp/genai-state.json.tmp", "/tmp/genai-state.json")
@@ -2094,6 +2105,54 @@ def exit_and_restart():
 # -----------------------------------------------------------------------------
 # COMMAND CALLBACK
 # -----------------------------------------------------------------------------
+class _LocalCommand:
+    """Duck-typed stand-in for C2dCommand for locally-injected (LAN) commands.
+    ack_id is None so the SDK never publishes a cloud ack; the ack wrapper
+    installed in main() short-circuits acks while a local command dispatches."""
+    type = None
+
+    def __init__(self, name, args):
+        self.command_name = name
+        self.command_args = args
+        self.ack_id = None
+
+
+def dispatch_local(line):
+    parts = line.split()
+    if not parts:
+        return
+    _local_dispatch.active = True
+    try:
+        on_command(_LocalCommand(parts[0], parts[1:]))
+    finally:
+        _local_dispatch.active = False
+
+
+def local_command_watcher():
+    """Consume command lines that camera-server spools after a validated
+    :8080/command POST. Each file holds one command line (e.g. 'ask-llm ...')."""
+    try:
+        os.makedirs(LOCAL_CMD_SPOOL, exist_ok=True)
+    except OSError:
+        pass
+    while True:
+        try:
+            for name in sorted(os.listdir(LOCAL_CMD_SPOOL)):
+                path = os.path.join(LOCAL_CMD_SPOOL, name)
+                try:
+                    with open(path, encoding="utf-8") as f:
+                        line = f.read().strip()
+                    os.remove(path)
+                except OSError:
+                    continue
+                if line:
+                    print("Local command:", line)
+                    dispatch_local(line)
+        except Exception as e:  # noqa: BLE001 - keep the watcher alive
+            print("local command watcher error:", e)
+        time.sleep(0.25)
+
+
 def on_command(msg: C2dCommand):
     global c
     print("Received command", msg.command_name, msg.command_args, msg.ack_id)
@@ -2862,6 +2921,19 @@ try:
         except Exception as e:
             print("Client setup failed (%s). Retrying in 30 seconds..." % e)
             time.sleep(30)
+
+    # Suppress cloud acks for locally-injected commands, and start the spool
+    # watcher that turns validated :8080/command POSTs into real commands.
+    _orig_send_command_ack = c.send_command_ack
+
+    def _send_command_ack_local_aware(msg, status, message_str=None):
+        if getattr(_local_dispatch, "active", False):
+            print("[local-cmd] %s: %s" % (status, message_str))
+            return None
+        return _orig_send_command_ack(msg, status, message_str)
+
+    c.send_command_ack = _send_command_ack_local_aware
+    threading.Thread(target=local_command_watcher, daemon=True).start()
     while True:
         if _connection_lost.is_set() and llm_busy.acquire(blocking=False):
             llm_busy.release()

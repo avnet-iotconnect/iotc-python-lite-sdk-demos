@@ -122,7 +122,7 @@
   <span class="spacer"></span>
   <select class="pill" id="devsel" title="Choose which board to view" style="cursor:pointer"></select>
   <span class="pill" id="arapill">Ara: …</span>
-  <span class="pill" id="livepill">…</span><span class="pill" id="buildpill" title="Cockpit build id. If a newer build is deployed, hard-refresh (Ctrl+F5)."></span>
+  <span class="pill" id="livepill">…</span><span class="pill" id="buildpill" title="Cockpit build id. If a newer build is deployed, hard-refresh (Ctrl+F5)."></span><span class="pill" id="fastcmd" title="Direct LAN command mode: when your browser can reach the board, send commands straight to it over the local network (near-instant) instead of via the cloud (which can lag 1-2 min). Falls back to cloud automatically if unreachable. Turn off if commands misbehave." style="cursor:pointer;opacity:.4">⚡</span>
   <span class="dim" id="whoami" style="font-size:.8rem"></span>
   <button class="ghost" id="logout">Sign out</button>
  </header>
@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b25";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b26";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -360,7 +360,7 @@ async function boardState(ip){
   const r=await fetch("https://"+ip+":8080/state.json",{cache:"no-store",signal:ctl.signal});
   clearTimeout(tm);
   if(!r.ok)throw new Error("http "+r.status);
-  S.fastFail=0;
+  S.fastFail=0;S.boardIp=ip;
   const j=await r.json();
   if(j.duid&&S.device&&S.device.uniqueId&&j.duid!==S.device.uniqueId){
    if(S.wrongBoard!==j.duid){S.wrongBoard=j.duid;
@@ -392,6 +392,15 @@ function latch(values,stamps){
  return Object.assign({},S.tv);
 }
 (function(){const b=document.getElementById("buildpill");if(b)b.textContent="build "+BUILD;})();
+try{S.localCmd=localStorage.getItem("localCmd")==="1"}catch(e){S.localCmd=false}
+function renderFastCmd(){const el=document.getElementById("fastcmd");if(!el)return;
+ el.style.opacity=S.localCmd?"1":"0.4";el.style.color=S.localCmd?"var(--ok)":"";
+ el.textContent=S.localCmd?"⚡direct":"⚡";}
+(function(){const el=document.getElementById("fastcmd");if(el)el.onclick=function(){
+ S.localCmd=!S.localCmd;try{localStorage.setItem("localCmd",S.localCmd?"1":"0")}catch(e){}
+ renderFastCmd();
+ log(S.localCmd?"direct LAN command mode <b>on</b> — commands go straight to the board when reachable (falls back to cloud)":"direct LAN command mode off — commands go via the cloud","dim");};
+ renderFastCmd();})();
 async function refresh(){
  try{
   const t=await tele(),v0=latch(t.values||{},t.stamps);
@@ -616,6 +625,21 @@ $("whatsrunning").onclick=function(){
 /* ---------- commands ---------- */
 async function send(cmd,value){
  if(!S.commands[cmd])throw new Error("command "+cmd+" is not in your device template");
+ // Fast local path: when direct mode is on and this browser can reach the
+ // board (fresh board-direct read with a token), inject the command over the
+ // LAN, skipping the 1-2 min cloud command pipeline. Any failure falls back.
+ if(S.localCmd&&S.boardIp&&S.board&&(Date.now()-S.board.at)<15000&&S.board.v&&S.board.v.cmd_token){
+  try{
+   const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),2000);
+   const r=await fetch("https://"+S.boardIp+":8080/command",{method:"POST",signal:ctl.signal,
+     headers:{"Content-Type":"application/json"},
+     body:JSON.stringify({cmd:cmd+(value?" "+value:""),token:S.board.v.cmd_token})});
+   clearTimeout(tm);
+   if(!r.ok)throw new Error("http "+r.status);
+   log("sent <b>"+cmd+"</b> · <span class=\"ok\">direct</span>"+(value?" — "+esc(String(value).slice(0,44)):""));
+   return;
+  }catch(e){log("direct send failed ("+esc(e.message)+") — using cloud","dim");}
+ }
  await api("command",{method:"POST",body:JSON.stringify(
   {deviceGuid:S.device.guid,commandGuid:S.commands[cmd],value:value||""})});
  log("sent <b>"+cmd+"</b>"+(value?" — "+esc(String(value).slice(0,44)):""));

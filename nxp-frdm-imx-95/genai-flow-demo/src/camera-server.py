@@ -18,6 +18,7 @@
 
 import glob
 import http.server
+import json
 import os
 import re
 import signal
@@ -104,6 +105,7 @@ def capture_loop():
 
 
 STATE_PATH = "/tmp/genai-state.json"
+LOCAL_CMD_SPOOL = "/tmp/genai-cmd"   # app.py's local_command_watcher consumes this
 
 RESPONSES_HTML = b"""<!DOCTYPE html>
 <html><head><title>FRDM i.MX 95 - GenAI Responses</title><meta charset="utf-8">
@@ -166,14 +168,57 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
 
-    def _send(self, data, ctype):
-        self.send_response(200)
+    def _send(self, data, ctype, code=200):
+        self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Cache-Control", "no-cache")
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
+
+    def do_OPTIONS(self):
+        # CORS preflight for the cockpit's cross-origin POST /command
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+    def do_POST(self):
+        # Local (LAN) command injection: the cockpit, when direct-connected and
+        # in "direct" mode, POSTs {cmd, token} here to skip the slow cloud C2D
+        # path. The token must match the one app.py publishes in state.json
+        # (same-LAN reachability gating, not hardened auth). The command line is
+        # spooled for app.py's local_command_watcher to dispatch.
+        if not self.path.startswith("/command"):
+            self._send(b'{"ok":false,"error":"not found"}', "application/json", 404)
+            return
+        try:
+            n = int(self.headers.get("Content-Length", "0"))
+            body = json.loads(self.rfile.read(n) or b"{}")
+        except (ValueError, json.JSONDecodeError):
+            body = {}
+        cmd = str(body.get("cmd", "")).strip()
+        token = str(body.get("token", ""))
+        try:
+            want = json.load(open(STATE_PATH)).get("cmd_token", "")
+        except (OSError, ValueError):
+            want = ""
+        if not cmd or not want or token != want:
+            self._send(b'{"ok":false,"error":"unauthorized or empty"}', "application/json", 403)
+            return
+        try:
+            os.makedirs(LOCAL_CMD_SPOOL, exist_ok=True)
+            path = os.path.join(LOCAL_CMD_SPOOL, "%d.cmd" % time.time_ns())
+            with open(path + ".tmp", "w", encoding="utf-8") as f:
+                f.write(cmd)
+            os.replace(path + ".tmp", path)
+        except OSError:
+            self._send(b'{"ok":false,"error":"spool"}', "application/json", 500)
+            return
+        self._send(b'{"ok":true}', "application/json")
 
     def do_GET(self):
         if self.path.startswith("/responses"):
