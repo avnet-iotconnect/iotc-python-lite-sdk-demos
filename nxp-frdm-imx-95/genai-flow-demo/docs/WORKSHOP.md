@@ -113,6 +113,8 @@ first, backup before touching an Ara board), and cloning a golden image to the r
 
 ## Related docs
 
+- [WORKSHOP-GUIDED-PREVIEW.md](WORKSHOP-GUIDED-PREVIEW.md) — the presenter-driven demo to run **before** attendees go hands-on: six segments, every prompt, measured timings, and the talking points.
+
 - [Onboarding portal](../portal/README.md) — the signup/approval backend
 - [Demo README](../README.md) — full command reference and GenAI Flow install
 - [BENCHMARKS.md](BENCHMARKS.md) — measured numbers + the on-board shootout UI
