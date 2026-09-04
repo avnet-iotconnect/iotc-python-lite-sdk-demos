@@ -16,6 +16,16 @@ Times are wall-clock from pressing a control to the answer appearing.
 > - If you'll show vision: one `ask-vlm Describe what you see` (eats the ~43 s VLM load).
 > - Confirm the cockpit header shows **build b22+** and the live pill is green.
 >
+> **What resets the warm model (read this — it explains every surprise wait).** The board keeps ONE
+> warm LLM session, identified by *(model, backend, RAG)*. It restarts — paying the full load again — on:
+> - **any** Model / Backend / RAG change in frame 3, *even re-selecting the value already set*;
+> - warming the **Agent** (one session at a time: the agent releases the chat model, and the next plain
+>   LLM ask releases the agent — each flip costs a reload);
+> - ~60 minutes idle (the session reaper), or a voice session.
+>
+> On CPU a restart costs ~44 s. **On Neutron it costs the full ~2 min compile — the compile is per
+> session start, not per board.** So on Neutron: get it warm, then *touch nothing* between asks.
+>
 > **Recommended board prep — remove the `garbage_model` demo corpus.** It is 959 filler chunks that
 > (a) stretch every `rag-add` to ~85 s because the whole database re-embeds, and (b) pollute
 > retrieval. Without it, `rag-add` drops to ~10 s. See *Insight 6*.
@@ -66,12 +76,16 @@ next few minutes are about making a small model *trustworthy*."
 | Do | Measured |
 |---|---|
 | set-backend neutron | ~10 s |
-| `What is an NPU?` on Neutron | **141 s** — 129 s is a one-time NPU model **compile**, then **12.8 tok/s** vs CPU's 9.8 (+31%) |
+| `What is an NPU?` on Neutron | **141 s** — 129 s is the NPU model **compile**, then **12.8 tok/s** vs CPU's 9.8 (+31%) |
+| a second Neutron ask (touch nothing in between) | fast — the session is warm |
 
-**Say:** "The NPU has to compile the model the first time — that's the two-minute wait, and it happens
-once. After that it generates about a third faster than the CPU for the same model and the same answer.
-For a booth you pre-warm this; the wait itself is worth narrating — 'this is the NPU building an
-optimized version of the model.'" Then **set-backend cpu** to move on quickly.
+**Say:** "The NPU compiles the model when the session starts — that's the two-minute wait. After that it
+generates about a third faster than the CPU for the same model and the same answer. The wait itself is worth
+narrating — 'this is the NPU building an optimized version of the model.'" Then **set-backend cpu** to move on.
+
+> ⚠️ The compile is **not** cached: ANY frame-3 click (even re-selecting the same model), a RAG toggle, or
+> warming the agent restarts the session — and on Neutron a restart is another ~2 min compile. Measured live:
+> a presenter clicked set-model (to the model already selected) while on Neutron and the next ask recompiled.
 
 ---
 
@@ -85,7 +99,9 @@ First, ask the plain LLM things it cannot know:
 | `What time is it right now?` | *"The current time is 12:00:00 PM."* ❌ (it was 03:29) |
 | `What is today's date?` | *"Today's date is the day of the week in the Gregorian calendar…"* ❌ nonsense |
 
-Now **Warm agent** (frame 2) — or it's already warm from pre-flight — and switch to the **Agent** tab:
+Now **Warm agent** (frame 2) — or it's already warm from pre-flight — and switch to the **Agent** tab.
+(Note: the agent takes over the board's single LLM session, so your next *plain* LLM ask after this segment
+will pay the ~44 s reload — that's why §5's first RAG ask shows "cold".)
 
 | Do (Agent tab) | Measured | Tool | Answer |
 |---|---|---|---|
@@ -162,7 +178,8 @@ Pre-warming (pre-flight) removes ~3–4 minutes of load bars from the audience's
    run (qwen-0.5b gave the i.MX 95 release year as 2018, then 2009; Danube drifts "quantization" into
    quantum mechanics). Don’t rely on a specific funny quote landing — rely on the *pattern*: ask a
    niche fact twice and it contradicts itself. That inconsistency is the honest, memorable framing.
-3. **Neutron = +31% throughput for a 129 s one-time compile.** Great for sustained use; narrate the compile.
+3. **Neutron = +31% throughput for a ~129 s compile per session start.** Not cached — any model/backend/RAG
+   click or agent warm-up recompiles. Warm it, then don’t touch frame 3; narrate the compile when it happens.
 4. **The agent is the money shot.** Invented time/date from the LLM → real time, real USB device, real
    memory from the agent. This is the clearest "why does this matter" moment in the whole demo.
 5. **RAG both grounds and refuses.** A correct grounded answer *and* a polite off-topic refusal are both
