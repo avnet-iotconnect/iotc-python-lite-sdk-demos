@@ -147,7 +147,7 @@
      <div class="row tight" style="margin-top:10px">
       <button id="asksend">Send</button>
       <button class="ghost" id="ragtoggle">RAG: off</button>
-      <button class="ghost" data-cmd0="agent-start" id="warmagent">Warm agent</button>
+      <button class="ghost" data-cmd0="agent-start" id="warmagent" title="Pre-loads the agent so your first Agent-tab question is fast. The board holds ONE model session, so an LLM-tab question evicts the warm agent (it re-warms automatically when you return to the Agent tab).">Warm agent</button>
       <button class="ghost" id="whatsrunning">What’s running?</button>
      </div>
      <div class="hint" id="sessions" style="display:none"></div>
@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b26";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b27";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -636,7 +636,7 @@ async function send(cmd,value){
      body:JSON.stringify({cmd:cmd+(value?" "+value:""),token:S.board.v.cmd_token})});
    clearTimeout(tm);
    if(!r.ok)throw new Error("http "+r.status);
-   log("sent <b>"+cmd+"</b> · <span class=\"ok\">direct</span>"+(value?" — "+esc(String(value).slice(0,44)):""));
+   log("sent <b>"+cmd+"</b>"+(value?" — "+esc(String(value).slice(0,44)):""));
    return;
   }catch(e){log("direct send failed ("+esc(e.message)+") — using cloud","dim");}
  }
@@ -646,7 +646,14 @@ async function send(cmd,value){
 }
 document.querySelectorAll("#asktabs button").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("#asktabs button").forEach(x=>x.classList.remove("on"));
- b.classList.add("on");S.mode=b.dataset.mode;metrics(S.v)});
+ b.classList.add("on");S.mode=b.dataset.mode;metrics(S.v);
+ if(b.dataset.mode==="ask-agent"){
+  const ast=S.v.agent_status||"off";
+  if(ast!=="ready"&&ast!=="loading"&&S.commands["agent-start"]){
+   log("warming the agent so your first question is fast…","dim");
+   send("agent-start","").catch(()=>{});
+  }
+ }});
 $("asksend").onclick=function(){
  if(S.shooting){log("a shootout is running — wait for it or press Stop first","err");return}
  if(S.pending){log("a "+esc(S.pending.label)+" change is still settling — wait for it to confirm","err");return}
