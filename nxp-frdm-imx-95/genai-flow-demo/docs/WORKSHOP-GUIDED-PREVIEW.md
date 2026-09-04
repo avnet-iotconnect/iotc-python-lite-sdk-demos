@@ -36,22 +36,29 @@ the *loading* is the cost, not the thinking — which is why the board keeps a m
 
 ---
 
-## 2 · Small and fast, but it guesses   ~1.5 min
+## 2 · Small and fast, but it guesses   ~2 min
 **Settings:** frame 3 → Model → `qwen2.5-0.5b-instruct-q8_0` (a llama.cpp GGUF) → Set.
 
-| Do | Measured | Answer |
+| Do | Measured | Point |
 |---|---|---|
 | set-model | ~10 s | backend auto-labels `cpu-llama.cpp` |
-| `What is an NPU?` | **22 s** (load **3.7 s**) | *"An NPU (NVIDIA Programming Unified Language) … developed by NVIDIA, a subsidiary of Alibaba Cloud."* ❌ |
-| `Why do edge devices need their own NPU?` | 28 s | a solid, well-structured answer ✔ |
+| `What is an NPU?` | **22 s** (load **3.7 s**) | **speed** — loads 12× faster than Danube (3.7 s vs 44 s) and types faster (~12.5 vs 9.8 tok/s) |
+| `What year was the NXP i.MX 95 released?` | ~15 s | **facts** — answers a confident **wrong** year (measured: "2018" one run, "2009" the next) |
+| (ask the year question **again**) | ~15 s | it gives a **different wrong** year — proof it's guessing, not recalling |
 
-**Say:** "This model loads in under four seconds — twelve times faster than Danube — and it types
-faster too. But look: it just invented that NPU stands for *NVIDIA Programming Unified Language* and
-that NVIDIA is owned by Alibaba. **Fast is not the same as right.** These are half-billion-parameter
-models running on a dev board, not GPT-4 — the whole point of the next few minutes is how we make a
-small model *trustworthy*."
+**Say:** "This model loads in under four seconds — twelve times faster than Danube — and types faster too.
+Now watch the facts: I'll ask what year this very board's processor came out... it says 2018. Ask again...
+now it says 2009. Both wrong, and *different* — it isn't remembering a fact, it's generating a plausible-looking
+one. **Fast is not the same as right.** These are half-billion-parameter models on a dev board, not GPT-4 — the
+next few minutes are about making a small model *trustworthy*."
 
----
+> **Why the answers won't match this script exactly.** These models sample with randomness (temperature), so
+> every run's wording — and every hallucination — differs. That's the point of running the year question twice.
+> Reliable-to-hallucinate prompts (tested on qwen-0.5b): *"What year was the NXP i.MX 95 released?"* and
+> *"How many CPU cores does the i.MX 95 have?"* (it says 4 with hyperthreading; it's actually 6 Cortex-A55).
+> Avoid *"Who is the CEO of NXP?"* — it sensibly declines rather than inventing. And note "What is an NPU?"
+> is usually answered *correctly* — use it for the **speed** point, the year question for the **guessing** point.
+
 
 ## 3 · CPU vs the Neutron NPU (same model)   ~3 min (mostly a wait)
 **Settings:** model `danube-500M-q8`; frame 3 → Backend → **Neutron**.
@@ -151,9 +158,10 @@ Pre-warming (pre-flight) removes ~3–4 minutes of load bars from the audience's
 ## Insights to use out loud
 
 1. **Loading dominates on small models.** Danube ~44 s, qwen-GGUF ~4 s, Neutron ~129 s compile. Pre-warm.
-2. **Fast ≠ correct.** Both small LLMs invented facts (Danube: "quantization" → quantum mechanics;
-   qwen-0.5b: "NPU = NVIDIA Programming Unified Language, owned by Alibaba"). This is the honest, memorable
-   framing for on-device AI — set the expectation, then show the fixes.
+2. **Fast ≠ correct, and non-deterministic.** Small models invent facts and word them differently every
+   run (qwen-0.5b gave the i.MX 95 release year as 2018, then 2009; Danube drifts "quantization" into
+   quantum mechanics). Don’t rely on a specific funny quote landing — rely on the *pattern*: ask a
+   niche fact twice and it contradicts itself. That inconsistency is the honest, memorable framing.
 3. **Neutron = +31% throughput for a 129 s one-time compile.** Great for sustained use; narrate the compile.
 4. **The agent is the money shot.** Invented time/date from the LLM → real time, real USB device, real
    memory from the agent. This is the clearest "why does this matter" moment in the whole demo.
@@ -174,7 +182,8 @@ Why do edge devices need their own NPU?
 Explain model quantization in one paragraph.
 # Segment 2 (set-model qwen2.5-0.5b-instruct-q8_0)
 What is an NPU?
-Why do edge devices need their own NPU?
+What year was the NXP i.MX 95 released?
+What year was the NXP i.MX 95 released?    (ask again - different wrong answer)
 # Segment 3 (set-model danube-500M-q8, set-backend neutron, then back to cpu)
 What is an NPU?
 # Segment 4 (RAG off; plain LLM, then Warm agent + Agent tab)
