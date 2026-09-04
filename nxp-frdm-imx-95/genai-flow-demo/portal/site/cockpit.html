@@ -89,6 +89,8 @@
  .combo input{width:auto;accent-color:var(--acc)}
  .combo .est{margin-left:auto;color:var(--dim);font-size:.74rem}
  .drop{border:2px dashed var(--line);border-radius:11px;padding:18px;text-align:center;cursor:pointer;transition:.15s}
+ .packgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:7px;margin:4px 0 8px}
+ .packgrid button{font-size:.84rem;padding:9px 10px;text-align:left;line-height:1.2}
  .drop.hover{border-color:var(--acc);background:#0d2417}
  .resp{border-left:3px solid var(--line);padding:6px 11px;margin-top:8px;background:#0a0f16;border-radius:0 8px 8px 0;font-size:.86rem;white-space:pre-wrap}
  .tabs{display:flex;gap:6px;margin-bottom:11px;flex-wrap:wrap}
@@ -198,22 +200,28 @@
    </div>
 
    <div class="card">
-    <h2>5 · RAG knowledge base <em>— drop a document, then ask about it</em></h2>
-    <div class="drop" id="ragdrop">
-     <b>Drop a document here</b>
-     <div class="dim" style="font-size:.82rem">PDF, .txt, .md, .csv, .json, .log — PDFs are converted to
-      text in the cloud, then chunked and embedded on your board</div>
-     <input type="file" id="ragfile" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.rst" class="hidden">
-    </div>
-    <label>…or index a web page</label>
-    <div class="row tight">
-     <input id="ragurl" placeholder="https://example.com/product-page" style="flex:1;min-width:180px">
-     <button class="ghost" id="ragurlbtn">Fetch &amp; index</button>
-    </div>
+    <h2>5 · RAG knowledge base <em>— load a topic pack, then ask about it</em></h2>
+    <div class="dim" style="font-size:.82rem;margin-bottom:6px">Pick a knowledge pack. It replaces the last one on the
+     board (about a minute to embed), turns on <b>RAG</b>, and drops a sample question in panel 2 — just press Send.</div>
+    <div class="packgrid" id="packgrid"></div>
     <div class="metrics" id="ragstatus"></div>
     <label style="display:flex;align-items:center;gap:8px">Indexed documents
      <span class="dim" id="ragtotal" style="font-weight:400;text-transform:none"></span></label>
     <div id="raglist"><span class="dim">—</span></div>
+    <details id="ragadv" style="margin-top:10px">
+     <summary style="cursor:pointer;font-size:.8rem;color:var(--dim)">Advanced — bring your own document</summary>
+     <div class="drop" id="ragdrop" style="margin-top:8px">
+      <b>Drop a document here</b>
+      <div class="dim" style="font-size:.82rem">PDF, .txt, .md, .csv, .json, .log — PDFs are converted to
+       text in the cloud, then chunked and embedded on your board. Adds to the current knowledge base.</div>
+      <input type="file" id="ragfile" accept=".pdf,.txt,.md,.markdown,.csv,.json,.log,.rst" class="hidden">
+     </div>
+     <label>…or index a web page</label>
+     <div class="row tight">
+      <input id="ragurl" placeholder="https://example.com/product-page" style="flex:1;min-width:180px">
+      <button class="ghost" id="ragurlbtn">Fetch &amp; index</button>
+     </div>
+    </details>
    </div>
 
    <div class="card">
@@ -239,7 +247,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b27";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b28";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -458,6 +466,8 @@ async function refresh(){
    $("voiceqa").innerHTML="<b>Q:</b> "+esc(v.voice_question)+"\n<b>A:</b> "+esc(v.voice_response||"…")}
   if(v.rag_status&&v.rag_status!=="idle")
    $("ragstatus").innerHTML="RAG <b>"+v.rag_status+"</b>"+(v.rag_detail?" · "+esc(v.rag_detail):"");
+  {const active=String(v.rag_doc||"");
+   document.querySelectorAll("#packgrid button").forEach(b=>b.classList.toggle("on",b.dataset.pack===active));}
   renderRagList(v); renderPreview(v);
   if($("sessions").style.display!=="none")$("sessions").innerHTML=sessionsHtml(v);
   if(!$("vlmname").matches(":focus")&&v.vlm_model){
@@ -710,6 +720,39 @@ $("ragtoggle").onclick=function(){
  const want=S.v.llm_rag==="on"?"off":"on";
  withPress(this,()=>send("set-rag",want));setPending("llm_rag",want,"RAG");
 };
+
+/* ---------- RAG topic packs ---------- */
+const PACK_BASE="https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/rag-packs/";
+const PACKS=[
+ {id:"pack_formula1.md",     label:"🏎️ Formula 1",     q:"How many points does a Grand Prix win score?"},
+ {id:"pack_hockey.md",       label:"🏒 Hockey (NHL)",        q:"What is a Gordie Howe hat trick?"},
+ {id:"pack_football.md",     label:"🏈 NFL Football",        q:"How many points is a touchdown worth?"},
+ {id:"pack_baking.md",       label:"🧁 Baking & Desserts",   q:"What does creaming butter and sugar do?"},
+ {id:"pack_iotconnect.md",   label:"📡 /IOTCONNECT",         q:"What is a device template in /IOTCONNECT?"},
+ {id:"pack_space.md",        label:"🚀 Space & Astronomy",   q:"What is a light-year?"},
+ {id:"pack_coffee.md",       label:"☕ Coffee",                  q:"What is the difference between Arabica and Robusta?"},
+ {id:"pack_dinosaurs.md",    label:"🦕 Dinosaurs",           q:"When did the dinosaurs go extinct?"},
+ {id:"pack_nationalparks.md",label:"🏞️ National Parks",q:"What was the first US national park?"},
+ {id:"pack_videogames.md",   label:"🎮 Classic Video Games", q:"Who created Super Mario Bros.?"},
+];
+function renderPacks(){
+ const g=$("packgrid");if(!g)return;g.innerHTML="";
+ PACKS.forEach(pk=>{const b=document.createElement("button");b.className="ghost";
+  b.textContent=pk.label;b.title=pk.q;b.dataset.pack=pk.id;b.onclick=()=>loadPack(pk,b);g.appendChild(b);});
+}
+function loadPack(pk,btn){
+ if(!S.commands["rag-add"]){log("rag-add is not in your device template","err");return}
+ document.querySelectorAll("#packgrid button").forEach(x=>x.classList.toggle("on",x===btn));
+ $("ragstatus").innerHTML='<span class="spin"></span>loading <b>'+esc(pk.label)+'</b> — the board is fetching &amp; embedding it (~1–2 min)';
+ withPress(btn,async()=>{
+  if(S.v.llm_rag!=="on"&&S.commands["set-rag"])await send("set-rag","on");
+  await send("rag-add",PACK_BASE+pk.id+" "+pk.id);
+  $("prompt").value=pk.q;
+  const llmtab=document.querySelector('#asktabs button[data-mode="ask-llm"]');if(llmtab)llmtab.click();
+  log("loading knowledge pack <b>"+esc(pk.label)+"</b> — when it finishes, ask: “"+esc(pk.q)+"”","ok");
+ });
+}
+renderPacks();
 
 /* ---------- RAG upload ---------- */
 function uploadRag(file){

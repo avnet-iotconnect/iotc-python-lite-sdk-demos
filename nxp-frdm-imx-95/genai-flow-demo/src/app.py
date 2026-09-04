@@ -1381,6 +1381,17 @@ def rag_add(url, name=None):
     chunks = chunk_text(text)
     if not chunks:
         raise RuntimeError("%s has no readable text" % name)
+    # Topic packs (name starts with "pack_") are mutually exclusive: loading one
+    # swaps out any previously-loaded pack so the demo shows a single clean topic
+    # (the cockpit's one-click knowledge packs). Bring-your-own docs still stack.
+    if stem.startswith("pack_"):
+        for old in glob.glob(os.path.join(chunk_dir, "pack_*.json")):
+            if os.path.basename(old) != stem + ".json":
+                try:
+                    os.remove(old)
+                    print("RAG: swapped out previous pack", os.path.basename(old))
+                except OSError:
+                    pass
     set_rag_status("indexing", "%s - %d chunks" % (name, len(chunks)))
     # One group PER CHUNK: the reranker scores a group by the mean embedding
     # of all its chunks, so a multi-chunk group gets diluted and loses to the
