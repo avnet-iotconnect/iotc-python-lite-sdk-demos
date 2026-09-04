@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b22";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b23";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -479,13 +479,19 @@ async function refresh(){
     else{$("answer").innerHTML='<span class="err">The run finished but produced no response — check the model &amp; backend.</span>';
      log("run finished with no response","err")}
     S.await=null;
-   }else if(st==="idle"&&!aw.taken&&el>90){
-    $("answer").innerHTML='<span class="err">The board hasn’t picked this question up after 90 seconds — it was '+
-     'probably busy when you pressed Send, or the command was lost. It’s idle now: press <b>Send</b> once more.</span>';
-    S.await=null;log("ask never ran — send it again","err");
+   }else if(st==="idle"&&!aw.taken&&el>210){
+    $("answer").innerHTML='<span class="err">The board never received this question after ~3.5 minutes — the '+
+     'command was likely dropped by the platform. Press <b>Send</b> once to try again.</span>';
+    S.await=null;log("command not delivered after 210 s — try Send once more","err");
    }else{
-    const hint=(v.llm_backend==="neutron"&&aw.mode==="ask-llm")?" — Neutron compiles the model first, allow ~2½ min":"";
-    $("answer").innerHTML='<span class="spin"></span><span class="dim">'+aw.mode+' running on your board… '+el+'s · board: '+esc(st||"…")+hint+'</span>';
+    // IOTCONNECT command delivery is usually seconds but can intermittently
+    // take 1-2 min. DO NOT prompt a resend early - a duplicate just queues and
+    // arrives later, answering a stale question. Keep waiting and say so.
+    const nb=(v.llm_backend==="neutron"&&aw.mode==="ask-llm");
+    const hint=aw.taken?(nb?" — Neutron compiles the model first, allow ~2½ min":"")
+      :(el>25?" — waiting for the board to receive it (platform delivery can lag ~1-2 min; don’t resend)":"");
+    $("answer").innerHTML='<span class="spin"></span><span class="dim">'+aw.mode+
+      (aw.taken?" running on your board… ":" — sent, waiting for the board… ")+el+'s · board: '+esc(st||"…")+hint+'</span>';
    }
   }
  }catch(e){$("livepill").textContent="error";$("livepill").className="pill dead"}
