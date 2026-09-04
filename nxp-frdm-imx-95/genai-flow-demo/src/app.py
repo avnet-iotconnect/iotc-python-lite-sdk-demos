@@ -2236,6 +2236,10 @@ def on_command(msg: C2dCommand):
         valid = ["danube-500M-q8", "danube-500M-q4"] + list_gguf_models() + ara_models
         arg = msg.command_args[0] if len(msg.command_args) == 1 else None
         if arg in ara_models:
+            if arg == config.get("ara2_model") and config["backend"] == "ara2":
+                c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                                   "Ara240 model already " + arg)
+                return
             config["ara2_model"] = arg
             config["backend"] = "ara2"
             save_config(config)
@@ -2246,6 +2250,12 @@ def on_command(msg: C2dCommand):
             c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
                                "Ara240 model set to %s - ask-llm now serves it" % arg)
         elif arg in valid:
+            if arg == config["model"]:
+                # No-op reselect: keep the warm session - tearing it down costs
+                # a full reload (a ~2 min recompile on Neutron)
+                c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                                   "Model already " + arg + " - warm session kept")
+                return
             config["model"] = arg
             save_config(config)
             invalidate_agent_session()
@@ -2377,6 +2387,10 @@ def on_command(msg: C2dCommand):
                                    "'Enabling the Neutron NPU'). Backend unchanged." % (cma_kb // 1024))
                 return
         if len(msg.command_args) == 1 and msg.command_args[0] in ("cpu", "neutron", "ara2"):
+            if msg.command_args[0] == config["backend"]:
+                c.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK,
+                                   "Backend already " + config["backend"] + " - warm session kept")
+                return
             config["backend"] = msg.command_args[0]
             save_config(config)
             invalidate_agent_session()
