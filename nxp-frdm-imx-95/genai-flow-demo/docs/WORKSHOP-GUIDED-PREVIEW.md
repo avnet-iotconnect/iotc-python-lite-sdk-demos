@@ -125,6 +125,7 @@ USB, memory) and would just answer a knowledge question from the model, unground
 | Do | Measured | Answer |
 |---|---|---|
 | `What kind of processor is inside the NXP i.MX 95?` | 55 s (cold) / ~11 s warm | *"…the i.MX 95 applications processor, a high-performance Arm Cortex-A55."* ✔ grounded |
+| `What baud rate does the serial console use?` | ~11 s | *"…115200 baud, 8 data bits, 1 stop bit, no parity."* ✔ grounded (mind the phrasing — see caution) |
 | `How many eggs are in a dozen?` | **6 s** | *"I'm unable to assist you with this topic."* ✔ refuses off-topic by design |
 
 **Add your own document (live):** frame 3 area → drop a **small `.txt`/`.md`** on the RAG upload, or paste a URL.
@@ -136,6 +137,11 @@ and when I asked something off-topic, it *declined* instead of making something 
 And you can drop in your own document and it'll answer from that too."
 
 > **Presenter cautions for §5:**
+> - **Phrase so the distinctive word leads.** Retrieval is keyword-sensitive on a small embedder:
+>   *"What baud rate does the serial console use?"* retrieves the serial chunk (→ 115200); *"What baud rate
+>   should I use for the NXP i.MX 95?"* is dominated by "i.MX 95" and pulls the **processor** chunk instead
+>   (measured live — it answered with the Cortex-A55 spec). Keep the topic word up front; don't tack on
+>   "…for the i.MX 95."
 > - Use **danube-500M-q8**, not q4 — q4 reproducibly fails RAG (refuses instead of quoting).
 > - The ~85 s add time is almost entirely the 959-chunk `garbage_model` corpus re-embedding. On a
 >   board prepped per *Insight 6* this is ~10 s and safe to do live; otherwise kick it off and talk
@@ -184,8 +190,10 @@ Pre-warming (pre-flight) removes ~3–4 minutes of load bars from the audience's
    click or agent warm-up recompiles. Warm it, then don’t touch frame 3; narrate the compile when it happens.
 4. **The agent is the money shot.** Invented time/date from the LLM → real time, real USB device, real
    memory from the agent. This is the clearest "why does this matter" moment in the whole demo.
-5. **RAG both grounds and refuses.** A correct grounded answer *and* a polite off-topic refusal are both
-   selling points — small models made trustworthy by retrieval.
+5. **RAG grounds and refuses — but retrieval is phrasing-sensitive.** A grounded answer and a polite
+   off-topic refusal are both selling points; just keep the distinctive keyword up front. "What baud rate does
+   the serial console use?" grounds correctly (115200); "…baud rate for the NXP i.MX 95?" retrieves the
+   processor chunk because "i.MX 95" dominates. Removing `garbage_model` (Insight 6) also sharpens retrieval.
 6. **Remove `garbage_model` on workshop boards.** It's 959 filler chunks that make `rag-add` ~85 s and
    muddy retrieval; without it, adds are ~10 s. Strong candidate to bake into the golden image.
 7. **VLM: ask open or scene-true questions.** "Describe what you see" was accurate; "how many people" at a
@@ -214,8 +222,9 @@ What is today's date?
 What time is it right now?          (agent)
 What is plugged into my USB ports?  (agent)
 How much memory am I using?         (agent)
-# Segment 5 (RAG on, danube-500M-q8)
+# Segment 5 (RAG on, danube-500M-q8, backend cpu, LLM tab)
 What kind of processor is inside the NXP i.MX 95?
+What baud rate does the serial console use?
 How many eggs are in a dozen?
 # Segment 6 (VLM tab)
 Describe what you see in this image.
