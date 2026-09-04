@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b24";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b25";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -581,9 +581,9 @@ function renderPreview(v){
 }
 function metrics(v){
  const m=[];
- if(S.mode==="ask-vlm"){if(v.vlm_ttft)m.push("TTFT <b>"+v.vlm_ttft+"s</b>");if(v.vlm_tps)m.push("<b>"+v.vlm_tps+"</b> tok/s");
+ if(S.mode==="ask-vlm"){if(v.vlm_ttft)m.push("TTFT <b>"+v.vlm_ttft+"s</b>");if(v.vlm_tps)m.push("tok/s <b>"+v.vlm_tps+"</b>");
   if(v.vlm_load_time!==undefined)m.push("load <b>"+v.vlm_load_time+"s</b>")}
- else{if(v.llm_ttft)m.push("TTFT <b>"+v.llm_ttft+"s</b>");if(v.llm_tps)m.push("<b>"+v.llm_tps+"</b> tok/s");
+ else{if(v.llm_ttft)m.push("TTFT <b>"+v.llm_ttft+"s</b>");if(v.llm_tps)m.push("tok/s <b>"+v.llm_tps+"</b>");
   if(v.llm_load_time!==undefined)m.push("load <b>"+v.llm_load_time+"s</b>");
   if(v.llm_gen_time)m.push("gen <b>"+v.llm_gen_time+"s</b>");
   if(S.mode==="ask-agent"&&v.agent_tool)m.push("tool <b>"+v.agent_tool+"</b>")}
@@ -625,6 +625,7 @@ document.querySelectorAll("#asktabs button").forEach(b=>b.onclick=()=>{
  b.classList.add("on");S.mode=b.dataset.mode;metrics(S.v)});
 $("asksend").onclick=function(){
  if(S.shooting){log("a shootout is running — wait for it or press Stop first","err");return}
+ if(S.pending){log("a "+esc(S.pending.label)+" change is still settling — wait for it to confirm","err");return}
  if(S.await){
   const st=S.v.genai_status||"idle",el=(Date.now()-S.await.t0)/1000;
   if(st!=="idle"){log("board is busy ("+esc(st)+") — wait for the current run to finish","err");return}
@@ -650,6 +651,9 @@ function updateModelLock(){
  document.querySelectorAll("#modelcard button, #modelcard select").forEach(el=>{
   if(el.id==="btn-ara2"&&!on)return;           // keep the Ara rule in charge of its own button
   el.disabled=on;});
+ // Send and the RAG toggle sit outside the model card but must also lock
+ // while a model/backend/RAG switch is settling.
+ ["asksend","ragtoggle"].forEach(id=>{const el=$(id);if(el)el.disabled=on;});
 }
 document.querySelectorAll("[data-backend]").forEach(b=>b.onclick=function(){
  if(S.pending)return;
@@ -670,7 +674,11 @@ $("setvlm").onclick=function(){
  const wv=$("vlmname").value;
  withPress(this,()=>send("set-vlm",wv));setPending("vlm_model",wv,"vision model");
 };
-$("ragtoggle").onclick=function(){withPress(this,()=>send("set-rag",S.v.llm_rag==="on"?"off":"on"))};
+$("ragtoggle").onclick=function(){
+ if(S.pending||S.shooting)return;
+ const want=S.v.llm_rag==="on"?"off":"on";
+ withPress(this,()=>send("set-rag",want));setPending("llm_rag",want,"RAG");
+};
 
 /* ---------- RAG upload ---------- */
 function uploadRag(file){
