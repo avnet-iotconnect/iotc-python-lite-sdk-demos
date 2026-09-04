@@ -172,6 +172,7 @@ telemetry = {
     "agent_request": "",          # last natural-language request to the agent
     "agent_tool": "",             # tool the agent chose
     "agent_tool_result": "",      # what the tool actually returned
+    "genai_error": "",           # last LLM/agent job error text, for the UI
     "agent_response": "",         # agent's final answer, grounded in the tool result
     "agent_router": "",           # llm if the model picked the tool, keyword if fallback
     "voice_stt": config.get("stt_model", ""),  # active speech recognizer
@@ -1706,7 +1707,22 @@ def _run_agent_request(request):
     elif kw_pick:
         tool_name, router = kw_pick, ("keyword-override" if llm_pick else "keyword")
     else:
-        raise RuntimeError("No tool matches this request (LLM said: %s)" % reply[:120])
+        # No board tool fits (e.g. a knowledge question in the Agent tab).
+        # Answer directly with the model instead of erroring - the agent is
+        # tools-when-relevant, plain LLM otherwise.
+        set_agent_status("answering")
+        answer = agent_generate("Q: %s A:" % request.rstrip("?"))
+        with telemetry_lock:
+            telemetry.update({
+                "agent_request": request[:500],
+                "agent_tool": "(none)",
+                "agent_tool_result": "",
+                "agent_response": answer[:1000],
+                "agent_router": "no-tool-llm",
+            })
+        set_agent_status("ready")
+        print("Agent (no tool - direct LLM answer): %s" % answer[:160])
+        return answer
 
     set_agent_status("executing")
     fn = AGENT_TOOLS[tool_name][1]
@@ -2025,6 +2041,7 @@ def start_llm_job(job, name, done_msg):
         try:
             with telemetry_lock:
                 telemetry["genai_status"] = name
+                telemetry["genai_error"] = ""
             publish_state()
             job()
             with telemetry_lock:
@@ -2035,6 +2052,8 @@ def start_llm_job(job, name, done_msg):
             print("LLM job failed:", e)
             with telemetry_lock:
                 telemetry["genai_status"] = "error"
+                telemetry["genai_error"] = str(e)[:300]
+            publish_state()
         finally:
             llm_busy.release()
     threading.Thread(target=worker, daemon=True).start()

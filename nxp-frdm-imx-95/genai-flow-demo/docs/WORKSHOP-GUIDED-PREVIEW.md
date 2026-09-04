@@ -118,7 +118,9 @@ safety net corrected it.)
 ---
 
 ## 5 · RAG: ground it in the manual, and watch it refuse   ~4 min
-**Settings:** model `danube-500M-q8`; frame 2 → **RAG: on**.
+**Settings:** model `danube-500M-q8`, **backend `cpu`** (set it if you were on Neutron), frame 2 → **RAG: on**.
+**Ask in the LLM tab, not the Agent tab** — RAG grounds the plain LLM; the Agent answers board questions (time,
+USB, memory) and would just answer a knowledge question from the model, ungrounded.
 
 | Do | Measured | Answer |
 |---|---|---|
@@ -189,6 +191,9 @@ Pre-warming (pre-flight) removes ~3–4 minutes of load bars from the audience's
 7. **VLM: ask open or scene-true questions.** "Describe what you see" was accurate; "how many people" at a
    board-wall hallucinated ten. Point the camera at the audience for people questions.
 8. **Use q8 for anything grounded.** q4 is faster but fails RAG.
+9. **Tabs matter.** RAG/knowledge questions go in the **LLM** tab; the **Agent** tab is for board facts
+   (time, USB, memory). Asking a knowledge question in the Agent tab now just answers it from the model
+   (ungrounded) instead of erroring — but for a grounded answer, use the LLM tab with RAG on.
 
 ## Exact prompt list (copy/paste)
 

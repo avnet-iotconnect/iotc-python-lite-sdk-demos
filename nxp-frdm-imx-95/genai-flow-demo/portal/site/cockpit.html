@@ -239,7 +239,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b23";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b24";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -471,9 +471,16 @@ async function refresh(){
    if(v[aw.key]&&v[aw.key]!==aw.prev&&aw.taken){
     $("answer").textContent=v[aw.key];S.await=null;metrics(v);log("answer received","ok");
    }else if(st==="error"||el>660){
-    $("answer").innerHTML='<span class="err">No answer arrived — '+(st==="error"?"the board reported an error":"timed out after 11 minutes")+
-     '. Check the model &amp; backend: Neutron needs the Neutron device tree (demo README §“Enabling the Neutron NPU”); GGUF models run on the CPU.</span>';
-    S.await=null;log("no answer — run failed or timed out","err");
+    // Prefer the board's actual error text over a generic guess. Only add the
+    // Neutron/GGUF hint when the error is silent AND the backend is Neutron.
+    const be=(v.genai_error||"").trim();
+    const hint=be?"":(v.llm_backend==="neutron"
+      ?" Check the model &amp; backend: Neutron needs the Neutron device tree (demo README §“Enabling the Neutron NPU”)."
+      :" Try again, or switch model/backend in frame 3.");
+    $("answer").innerHTML='<span class="err">No answer arrived — '+
+     (st==="error"?"the board reported an error":"timed out after 11 minutes")+
+     (be?": <b>"+esc(be)+"</b>":".")+hint+'</span>';
+    S.await=null;log(be?("board error: "+be):"no answer — run failed or timed out","err");
    }else if(st==="idle"&&aw.taken&&el>30){
     if(v[aw.key]){$("answer").textContent=v[aw.key];metrics(v);log("answer received (same text as the previous ask)","ok")}
     else{$("answer").innerHTML='<span class="err">The run finished but produced no response — check the model &amp; backend.</span>';
