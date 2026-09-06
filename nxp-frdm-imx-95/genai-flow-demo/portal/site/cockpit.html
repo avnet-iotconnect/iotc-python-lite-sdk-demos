@@ -225,7 +225,7 @@
    </div>
 
    <div class="card">
-    <h2>6 · Voice assistant <em>— the finale: say &ldquo;Hey&nbsp;NXP&rdquo;</em></h2>
+    <h2>6 · Voice assistant <em>— &ldquo;Hey&nbsp;NXP&rdquo; is the wake word</em></h2>
     <div class="row tight">
      <button class="ghost" id="voicestart" data-cmd0="voice-start">Start</button>
      <button class="ghost" id="voicestop" data-cmd0="voice-stop">Stop</button>
@@ -247,7 +247,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b30";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b31";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
