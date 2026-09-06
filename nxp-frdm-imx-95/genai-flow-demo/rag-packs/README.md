@@ -36,5 +36,5 @@ answers grounded questions about that topic.
 
 ## Current packs
 
-Formula 1 · Hockey (NHL) · NFL Football · Baking & Desserts · /IOTCONNECT ·
-Space & Astronomy · Coffee · Dinosaurs · National Parks · Classic Video Games
+Building a RAG database · AI Agents · LLMs & VLMs · NXP History · Avnet History ·
+/IOTCONNECT · Formula 1 · Space & Astronomy · Coffee · Classic Video Games
