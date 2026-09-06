@@ -24,6 +24,16 @@ answers grounded questions about that topic.
   context (e.g. "The Monaco Grand Prix…" not "This race…").
 - Prefer timeless, verifiable facts; date anything that changes ("As of 2024, …").
 - 15–20 paragraphs is a good size (~1 minute to embed on the board).
+- **Lead each paragraph with the answer, echoing the likely question.** On the small
+  on-device embedder, retrieval is imprecise when many chunks look alike (a
+  single-topic pack has 20 near-duplicate "NXP …" chunks). Verified live: **definition
+  and "when was X founded" questions retrieve reliably** ("What is chunking?", "What is
+  a token?", "What is DRS?", "When was Avnet founded?"), while multi-concept or
+  comparative questions ("difference between A and B", "which company did X acquire")
+  often pull the wrong chunk or defeat a 500M model's extraction. Pick each pack's
+  sample question in the "What is X?" / "When was X …?" form, and put the answer in the
+  chunk's first sentence. Grounded RAG runs on **danube-500M-q8** — GGUF models bypass
+  retrieval entirely, so keep the RAG demo on Danube.
 
 ## Adding a pack to the cockpit
 

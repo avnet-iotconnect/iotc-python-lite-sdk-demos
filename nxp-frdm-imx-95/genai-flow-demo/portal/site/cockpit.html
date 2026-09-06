@@ -247,7 +247,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b29";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b30";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -725,15 +725,15 @@ $("ragtoggle").onclick=function(){
 const PACK_BASE="https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nxp-frdm-imx-95/genai-flow-demo/rag-packs/";
 const PACKS=[
  {id:"pack_rag.md",         label:"📚 Building a RAG DB",   q:"What is chunking in a RAG database?"},
- {id:"pack_agents.md",      label:"🤖 AI Agents",          q:"How does an AI agent avoid hallucinating the time?"},
- {id:"pack_llm_vlm.md",     label:"🧠 LLMs & VLMs",        q:"What is the difference between an LLM and a VLM?"},
- {id:"pack_nxp.md",         label:"🔷 NXP History",        q:"What company did NXP acquire in 2015?"},
+ {id:"pack_agents.md",      label:"🤖 AI Agents",          q:"What is tool calling?"},
+ {id:"pack_llm_vlm.md",     label:"🧠 LLMs & VLMs",        q:"What is a token?"},
+ {id:"pack_nxp.md",         label:"🔷 NXP History",        q:"When was NXP founded?"},
  {id:"pack_avnet.md",       label:"🏢 Avnet History",      q:"When was Avnet founded, and by whom?"},
  {id:"pack_iotconnect.md",  label:"📡 /IOTCONNECT",        q:"What is a device template in /IOTCONNECT?"},
- {id:"pack_formula1.md",    label:"🏎️ Formula 1",    q:"How many points does a Grand Prix win score?"},
+ {id:"pack_formula1.md",    label:"🏎️ Formula 1",    q:"What is DRS in Formula 1?"},
  {id:"pack_space.md",       label:"🚀 Space & Astronomy",  q:"What is a light-year?"},
- {id:"pack_coffee.md",      label:"☕ Coffee",                 q:"What is the difference between Arabica and Robusta?"},
- {id:"pack_videogames.md",  label:"🎮 Classic Video Games",q:"Who created Super Mario Bros.?"},
+ {id:"pack_coffee.md",      label:"☕ Coffee",                 q:"What is espresso?"},
+ {id:"pack_videogames.md",  label:"🎮 Classic Video Games",q:"What was Pong?"},
 ];
 function renderPacks(){
  const g=$("packgrid");if(!g)return;g.innerHTML="";
