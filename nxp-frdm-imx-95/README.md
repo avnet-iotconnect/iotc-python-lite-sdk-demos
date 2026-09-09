@@ -1,4 +1,4 @@
-# NXP FRDM i.MX 95 Development Board QuickStart
+# Getting Started: NXP FRDM i.MX 95 Development Board
 
 [Purchase NXP FRDM i.MX 95 Development Board](https://www.avnet.com/americas/product/nxp/frdm-imx95/evolve-122131125/)
 
