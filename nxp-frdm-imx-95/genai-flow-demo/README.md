@@ -103,6 +103,18 @@ Git LFS objects (~1.5 GB). Everything below runs **on the board** — nothing ne
    cd /root/vlm && bash ./install.sh
    ```
 
+   > [!IMPORTANT]
+   > If `install.sh` stops with **`Cannot uninstall typing_extensions … no RECORD file was found`**
+   > (ending in *"System-wide installation failed"*), the image ships that package baked in without pip
+   > metadata, so pip can't replace it. Install a pip-tracked copy over it, then re-run `install.sh`:
+   > ```bash
+   > python3 -m pip install --ignore-installed --no-deps typing_extensions==4.15.0
+   > cd /root/eiq_genai_flow && bash ./install.sh   # then also: cd /root/vlm && bash ./install.sh
+   > ```
+   > `--ignore-installed` skips the failing uninstall and writes a proper RECORD. If a **different** package
+   > raises the same *"no RECORD file"* error, repeat the one-liner with that package name and version
+   > (`idna==3.11` is another known one — see §10).
+
 3. Sanity-check it standalone before wiring up /IOTCONNECT — keyboard in, text out:
 
    ```bash
