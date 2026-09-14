@@ -37,6 +37,16 @@ sudo bash ./install.sh
 > [!NOTE]
 > The install downloads several Python packages and GStreamer plugins. Warning messages in the console are expected and can be ignored.
 
+> [!IMPORTANT]
+> If `install.sh` stops with **`Cannot uninstall cryptography … no RECORD file was found`**, the image's `cryptography`
+> package was installed via `apt` without pip metadata, so pip can't replace it. Install a pip-tracked copy over it, then
+> re-run `install.sh`:
+> ```bash
+> sudo python3 -m pip install --break-system-packages --ignore-installed --no-deps cryptography
+> sudo bash ./install.sh
+> ```
+> If a **different** package raises the same *"no RECORD file"* error, repeat the one-liner with that package name instead.
+
 ### Run
 
 ```bash

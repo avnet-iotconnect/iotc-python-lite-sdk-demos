@@ -27,6 +27,14 @@ apt-get install -y python3-numpy python3-pip
 # Upgrade iotconnect-sdk-lite to ensure KVS WebRTC / vs_cb support is present
 python3 -m pip install $PIP_BREAK --upgrade iotconnect-sdk-lite
 
+# Ubuntu Server's cloud image ships an apt-installed `cryptography` package baked in
+# without pip's own RECORD metadata, so pip cannot uninstall/replace it when aiortc
+# pulls in a newer cryptography as a dependency ("Cannot uninstall cryptography ...
+# no RECORD file was found") -- which aborts the whole install, silently leaving
+# aiortc itself not installed. Install a pip-tracked copy over it first so the
+# aiortc install below has nothing to fight over.
+python3 -m pip install $PIP_BREAK --ignore-installed --no-deps cryptography
+
 # Install WebRTC and supporting Python dependencies.
 # boto3 provides the AWS API clients used by app_webrtc.py for KVS signaling.
 # aiortc handles WebRTC peer connections and media encoding (pulls in av/PyAV).
