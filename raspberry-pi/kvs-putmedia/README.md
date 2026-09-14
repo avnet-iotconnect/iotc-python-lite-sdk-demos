@@ -1,20 +1,22 @@
 # KVS PutMedia Expansion Demo
 
-Upgrades the /IOTCONNECT Starter Demo on the NVIDIA Jetson Orin to the AWS Kinesis Video Streams (KVS) PutMedia video streaming demo.
+Upgrades the /IOTCONNECT Starter Demo on the Raspberry Pi (4 or 5) to the AWS Kinesis Video Streams (KVS) PutMedia video streaming demo.
 
 > [!IMPORTANT]
-> Complete the [/IOTCONNECT quickstart guide for the Jetson Orin](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nvidia-jetson-orin/README.md) before proceeding.
+> Complete the [/IOTCONNECT quickstart guide for the Raspberry Pi](https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/raspberry-pi/README.md) before proceeding.
 
 ## 1. Introduction
 
-This demo streams live video from a USB camera through the Jetson Orin to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK is built from source on the board during installation — the first install takes approximately 15–20 minutes.
+This demo streams live video from a USB camera through the Raspberry Pi to AWS Kinesis Video Streams (KVS), accessible via the /IOTCONNECT platform. The KVS Producer SDK is built from source on the board during installation — the first install takes approximately 15–20 minutes on a Pi 4, somewhat less on a Pi 5.
+
+Neither the Raspberry Pi 4 (VideoCore VI) nor the Raspberry Pi 5 (VideoCore VII) expose a hardware H264 *encoder* via V4L2 (only hardware decode), so the USB camera's raw frames are re-encoded to H264 in software via GStreamer's `x264enc`, on the CPU. The default resolution is 640×480 at 30 fps, which both boards encode comfortably; the Pi 5's quad-core Cortex-A76 has ample headroom to go higher if desired.
 
 ## 2. Set Up Hardware and Template
 
-1. Plug a USB camera into a USB port on the Jetson Orin.
+1. Plug a USB camera into a USB port on the Raspberry Pi.
 
 > [!TIP]
-> Verify the camera is detected by running `ls /dev/video*` on the device. The app auto-detects the first available video device.
+> Verify the camera is detected by running `ls /dev/video*` on the device. The board's own video hardware also registers `/dev/videoN` nodes, so the app identifies the USB camera specifically by inspecting the hardware path of each video device.
 
 > [!IMPORTANT]
 > This demo requires the `plitekvs` template (available [here](plitekvs-template.json)). The device must be created in /IOTCONNECT with the `plitekvs` template and the correct stream resource (Video Stream for a PutMedia stream or WebRTC for a WebRTC stream) must be selected during the device creation process. The AWS backend provisions a KVS WebRTC signaling channel for WebRTC devices and a KVS stream for PutMedia devices, and these cannot be switched after device creation. If your device was created with a different template, create a new device using `plitekvs` and select the appropriate stream resource.
@@ -27,7 +29,7 @@ On the board, run:
 
 ```bash
 cd /opt/demo
-wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/nvidia-jetson-orin/kvs-putmedia/package.tar.gz
+wget -O package.tar.gz https://raw.githubusercontent.com/avnet-iotconnect/iotc-python-lite-sdk-demos/main/raspberry-pi/kvs-putmedia/package.tar.gz
 tar -xzf package.tar.gz --overwrite
 sudo bash ./install.sh
 ```
@@ -71,6 +73,22 @@ The default camera settings in `app.py` are:
 
 These can be adjusted by modifying the `camera_options` dictionary in `app.py`.
 
+### Local HDMI Preview
+
+By default, the capture is also rendered on the monitor connected to the board's
+HDMI0 port (already connected per the base quickstart's hardware setup) while the
+stream is active, so the feed can be watched locally at the same time it streams
+to KVS. This uses GStreamer's `kmssink`, which draws directly via DRM/KMS — Ubuntu
+Server has no desktop session, so there is no X11/Wayland window to render into.
+
+To disable it (e.g. for a headless deployment with no display attached), set
+`"local_preview": False` in the `camera_options` dictionary in `app.py`.
+
+> [!TIP]
+> If the preview fails to appear (GStreamer exits immediately and the console
+> logs mention `kmssink`), the text console (`getty`) may be holding the display.
+> Free it with `sudo systemctl stop getty@tty1` and restart the demo.
+
 ## 5. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
@@ -80,11 +98,11 @@ To modify the demo files before deploying:
    git clone https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos.git
    ```
 
-2. Edit files in `nvidia-jetson-orin/kvs-putmedia/src/` as needed.
+2. Edit files in `raspberry-pi/kvs-putmedia/src/` as needed.
 
 3. Rebuild the package:
    ```bash
-   cd nvidia-jetson-orin/kvs-putmedia
+   cd raspberry-pi/kvs-putmedia
    bash ./create-package.sh
    ```
 
@@ -93,7 +111,7 @@ To modify the demo files before deploying:
    **Option A — Direct copy (scp):**
    ```bash
    # On host:
-   scp package.tar.gz root@<board-ip>:/opt/demo/
+   scp package.tar.gz username@<board-ip>:/opt/demo/
    # On board:
    cd /opt/demo && tar -xzf package.tar.gz --overwrite && sudo bash ./install.sh
    ```

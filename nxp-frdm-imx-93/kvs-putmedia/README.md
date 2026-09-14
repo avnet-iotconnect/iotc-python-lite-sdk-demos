@@ -108,7 +108,7 @@ cd /opt/demo && tar -xzf package.tar.gz --overwrite && bash ./install.sh
 
 **Option B — OTA via /IOTCONNECT platform:**
 1. In the **Device** page, select **Firmware** on the bottom toolbar.
-2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `putmedia` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
+2. Create a new firmware if needed: click **Create Firmware** (top-right), name it, select the `plitekvs` template, set version numbers (e.g., `0`, `0`), browse to `package.tar.gz`, and click **Save**.
 3. Back on the Firmware page, click the draft number under **Software Upgrades → Draft**.
 4. Click the publish icon (black square with arrow) under **Actions**.
 5. Select **OTA Updates** (top-right), choose your firmware's hardware and software versions, set **Target** to **Devices**, select your device, and click **Update**.

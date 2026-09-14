@@ -1,6 +1,6 @@
 {
-    "code": "putmedia",
-    "name": "putmedia",
+    "code": "plitekvs",
+    "name": "plitekvs",
     "authType": 2,
     "attributes": [
         {
@@ -9,7 +9,6 @@
             "type": "INTEGER",
             "description": "",
             "unit": "",
-            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -18,7 +17,6 @@
             "type": "BOOLEAN",
             "description": "",
             "unit": "",
-            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -27,7 +25,6 @@
             "type": "STRING",
             "description": "",
             "unit": "",
-            "attributeColor": "",
             "aggregateTypes": []
         },
         {
@@ -36,11 +33,17 @@
             "type": "STRING",
             "description": "",
             "unit": "",
-            "attributeColor": "",
             "aggregateTypes": []
         }
     ],
     "commands": [
+        {
+            "name": "dummy",
+            "command": "dummy",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false
+        },
         {
             "name": "file-download",
             "command": "file-download",
@@ -56,13 +59,6 @@
             "isOTACommand": false
         },
         {
-            "name": "dummy",
-            "command": "dummy",
-            "requiredParam": false,
-            "requiredAck": true,
-            "isOTACommand": false
-        },
-        {
             "name": "dummynoack",
             "command": "dummynoack",
             "requiredParam": false,
@@ -71,7 +67,7 @@
         }
     ],
     "messageVersion": "2.1",
-    "msgCode": "XG4EXFL",
+    "msgCode": "XG4E1RN",
     "capability": "0",
     "enableCSR": "false",
     "c2dOnDemand": 0,
