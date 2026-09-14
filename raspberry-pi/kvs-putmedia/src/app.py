@@ -30,12 +30,6 @@ camera_options = {
         "height": 480,
         "framerate": 30
     },
-    # Also renders the capture to the HDMI output (via kmssink) so the feed can be
-    # watched on a locally-attached monitor at the same time it streams to KVS.
-    # The board's HDMI0 port is already connected per the base quickstart's
-    # hardware setup step. Set to False for a headless deployment with no
-    # display attached, or if kmssink cannot acquire the display (see README).
-    "local_preview": True,
     "verbose": False
 }
 
@@ -120,32 +114,16 @@ def start_video_stream(
     # Build GStreamer command
     verbose = camera_options.get("verbose", False)
     verbose_flag = "-v " if verbose else ""
-    local_preview = camera_options.get("local_preview", True)
-
-    capture = (
+    gst_command = (
+        f"gst-launch-1.0 {verbose_flag}"
         f"v4l2src device={device_port} do-timestamp=true ! "
-        f"videoconvert ! video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1"
-    )
-    encode_and_send = (
+        f"videoconvert ! video/x-raw,format=I420,width={video_width},height={video_height},framerate={video_framerate}/1 ! "
         "x264enc bframes=0 key-int-max=45 bitrate=800 speed-preset=ultrafast tune=zerolatency ! "
         "video/x-h264,stream-format=avc,alignment=au ! "
         f"kvssink stream-name={stream_name} storage-size=512 "
         f"access-key={access_key} secret-key={secret_key} "
         f"session-token={session_token} aws-region={region}"
     )
-
-    if local_preview:
-        # tee splits the raw capture: one branch encodes to H264 for KVS, the other
-        # renders locally via kmssink (direct DRM/KMS rendering -- Ubuntu Server has
-        # no X11/Wayland session to target). Each tee branch needs its own queue so
-        # a stalled/absent display does not block the KVS branch.
-        gst_command = (
-            f"gst-launch-1.0 {verbose_flag}{capture} ! tee name=t "
-            f"t. ! queue leaky=downstream max-size-buffers=2 ! {encode_and_send} "
-            "t. ! queue leaky=downstream max-size-buffers=2 ! videoconvert ! kmssink sync=false"
-        )
-    else:
-        gst_command = f"gst-launch-1.0 {verbose_flag}{capture} ! {encode_and_send}"
 
     if camera_options.get("verbose", False):
         print(f"GStreamer command:\n{gst_command}")
@@ -182,10 +160,6 @@ def start_video_stream(
             print("   - GStreamer is not installed")
             print("   - kvssink plugin is not installed")
             print("   - Video device is not accessible")
-            if local_preview:
-                print("   - Local preview (kmssink) failed: no display attached, or the")
-                print("     DRM device is busy. Try 'sudo systemctl stop getty@tty1' to")
-                print("     release the console, or set camera_options['local_preview'] = False")
             _stream_process = None
             return None
 

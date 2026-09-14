@@ -12,12 +12,10 @@ PIP_BREAK="--break-system-packages"
 
 apt-get update
 
-# Install GStreamer's video4linux2 plugin for USB camera capture, plus
-# gstreamer1.0-plugins-bad for kmssink (local HDMI preview via direct DRM/KMS
-# rendering -- Ubuntu Server has no X11/Wayland session for a normal video sink
-# to target). Ubuntu Server does not ship GStreamer by default, unlike the
-# multimedia-focused Yocto images used by other boards in this repo.
-apt-get install -y gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-tools
+# Install GStreamer's video4linux2 plugin for USB camera capture. Ubuntu Server
+# does not ship GStreamer by default, unlike the multimedia-focused Yocto images
+# used by other boards in this repo.
+apt-get install -y gstreamer1.0-plugins-good gstreamer1.0-tools
 
 # numpy has a spotty history of aarch64 wheel availability on PyPI for some
 # Python builds and can otherwise trigger a slow from-source build; install it

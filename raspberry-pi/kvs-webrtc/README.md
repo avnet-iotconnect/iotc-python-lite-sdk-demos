@@ -60,23 +60,6 @@ The default camera settings in `app.py` are:
 
 These can be adjusted by modifying the `camera_options` dictionary in `app.py`.
 
-### Local HDMI Preview
-
-By default, the capture is also rendered on the monitor connected to the board's
-HDMI0 port (already connected per the base quickstart's hardware setup) while the
-stream is active, so the feed can be watched locally at the same time it streams
-over WebRTC. This uses GStreamer's `kmssink`, which draws directly via DRM/KMS —
-Ubuntu Server has no desktop session, so there is no X11/Wayland window to render
-into.
-
-To disable it (e.g. for a headless deployment with no display attached), set
-`"local_preview": False` in the `camera_options` dictionary in `app.py`.
-
-> [!TIP]
-> If the preview fails to appear (GStreamer exits immediately and the console
-> logs mention `kmssink`), the text console (`getty`) may be holding the display.
-> Free it with `sudo systemctl stop getty@tty1` and restart the demo.
-
 ## 5. Customize and Rebuild (Optional)
 
 To modify the demo files before deploying:
