@@ -191,6 +191,7 @@ PutMedia streams video from the device to a KVS stream where it is stored and ca
 **Supported on:**
 * [NVIDIA Jetson Orin NX](nvidia-jetson-orin/kvs-putmedia/README.md)
 * [NXP FRDM-IMX93](nxp-frdm-imx-93/kvs-putmedia/README.md)
+* [Raspberry Pi](raspberry-pi/kvs-putmedia/README.md)
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-putmedia/README.md)
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-putmedia/README.md)
 * [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-putmedia/README.md)
@@ -203,6 +204,7 @@ WebRTC establishes a direct peer-to-peer connection between the device and the v
 
 **Supported on:**
 * [NXP FRDM-IMX93](nxp-frdm-imx-93/kvs-webrtc/README.md)
+* [Raspberry Pi](raspberry-pi/kvs-webrtc/README.md)
 * [ST STM32MP135F-DK Discovery Kit](stm32mp135f-dk/kvs-webrtc/README.md)
 * [ST STM32MP157F-DK2 Discovery Kit](stm32mp157f-dk2/kvs-webrtc/README.md)
 * [ST STM32MP257F-DK Evaluation Board](stm32mp257f-dk/kvs-webrtc/README.md)
