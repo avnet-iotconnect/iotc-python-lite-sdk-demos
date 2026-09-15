@@ -150,6 +150,13 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
+## More Demos
+
+- [**Robotic Arm**](./robotic-arm/README.md) — control a Hiwonder XArm 1S
+  from the RZ/G3E with a wrist-mounted USB camera. Includes an autonomous
+  ball-pickup mode (HSV detection + visual servoing) and an optional ASL
+  gesture-control mode, with /IOTCONNECT telemetry and remote commands.
+
 # 8. Resources
 
 * [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
