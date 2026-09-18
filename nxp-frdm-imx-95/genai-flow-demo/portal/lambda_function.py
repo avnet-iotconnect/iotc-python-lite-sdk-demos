@@ -542,6 +542,28 @@ def cockpit(event, path, method, headers, body_raw):
 
 
 def lambda_handler(event, context):
+    # Asynchronous re-invoke of an instant signup's onboarding (see /api/signup):
+    # runs the full entity/user/device/cert chain free of API Gateway's 30 s
+    # ceiling and records the outcome where /api/status reads it.
+    if event.get("_signup_job"):
+        rid = event.get("id")
+        item = ddb.get_item(Key={"id": rid}).get("Item") if rid else None
+        if not item:
+            print("signup job: unknown id", rid)
+            return {"ok": False}
+        if item.get("state") == "ready":
+            return {"ok": True, "note": "already onboarded"}
+        try:
+            do_onboard(item, password=event.get("password") or None)
+            print("signup job: onboarded", item.get("email"))
+            return {"ok": True}
+        except Exception as e:  # noqa: BLE001 - record for the poller, never lose the signup
+            print("signup job failed:", e)
+            ddb.update_item(Key={"id": rid}, UpdateExpression="SET #s=:s, error_detail=:e",
+                            ExpressionAttributeNames={"#s": "state"},
+                            ExpressionAttributeValues={":s": "error", ":e": str(e)[:400]})
+            return {"ok": False}
+
     # Asynchronous re-invoke of a RAG conversion job (see cockpit()).
     if event.get("_rag_job"):
         try:
@@ -608,6 +630,24 @@ def lambda_handler(event, context):
                 "pw_set": bool(pw)}
         ddb.put_item(Item=item)
         if instant:
+            # The onboarding chain (entity -> user -> device -> x.509 cert) can run
+            # past API Gateway's hard 30 s ceiling, which surfaced to the browser
+            # as a 503 even though the account was created (seen live: a 30.7 s
+            # signup). Same cure as the RAG jobs: hand it to an async self-invoke
+            # and answer at once - the page already polls /api/status to "ready".
+            # The password rides the payload in-request only; it is never stored.
+            try:
+                ddb.update_item(Key={"id": item["id"]}, UpdateExpression="SET #s=:s",
+                                ExpressionAttributeNames={"#s": "state"},
+                                ExpressionAttributeValues={":s": "onboarding"})
+                boto3.client("lambda", region_name=REGION).invoke(
+                    FunctionName=os.environ.get("AWS_LAMBDA_FUNCTION_NAME", "imx95-portal-api"),
+                    InvocationType="Event",
+                    Payload=json.dumps({"_signup_job": True, "id": item["id"],
+                                        "password": pw or None}).encode())
+                return resp(202, {"id": item["id"], "token": item["token"], "state": "onboarding"})
+            except Exception as e:  # noqa: BLE001 - can't queue it: run inline as before
+                print("signup async invoke failed, running inline:", e)
             try:
                 do_onboard(item, password=pw or None)
                 return resp(200, {"id": item["id"], "token": item["token"], "state": "ready"})

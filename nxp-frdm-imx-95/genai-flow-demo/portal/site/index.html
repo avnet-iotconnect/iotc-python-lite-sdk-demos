@@ -115,6 +115,10 @@ async function refresh(id, token){
    clearInterval(poll); poll = null;
    setStatus('<span class="err">Something went wrong: ' + (j.detail||"") + '</span>');
    $("go").disabled = false;
+  } else if(j.state === "onboarding"){
+   setStatus('<span class="spin"></span>Creating your /IOTCONNECT account and board identity — '
+    + 'usually under a minute. <span class="dim">This page updates automatically; you can close it, '
+    + 'your signup is saved.</span>');
   } else {
    setStatus('<span class="spin"></span>Waiting for approval — this page updates automatically. '
     + '<span class="dim">You can close it; your signup is saved.</span>');
