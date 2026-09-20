@@ -124,6 +124,13 @@ DEFAULT_CONFIG = {
     "llama_dir": "/opt/llama",
     "llama_threads": 6,
     "llama_max_tokens": 200,
+    # Default answer-length ceiling for ask-llm / ask-agent / ask-vlm and every
+    # shootout row, in characters (~4 chars per token): generation time is
+    # tokens / tok-per-s, so this bounds how long any engine can ramble - 600
+    # chars is ~150 tokens, ~15 s on Danube, ~25 s on a 1.5B GGUF. It only
+    # LOWERS the per-engine limits (llama_max_tokens, ara2_max_tokens, the VLM's
+    # 96, Danube's built-in 128); 0 disables it.
+    "max_response_chars": 600,
     # Voice assistant (voice-start command): tts speaks replies through the
     # playback device; text just streams them to /IOTCONNECT. Empty device
     # strings let GenAI Flow auto-detect (e.g. a USB webcam mic and the MQS
@@ -463,10 +470,20 @@ def _llama_complete(prompt, max_tokens):
     return response, prompt_tps, tps, total_time
 
 
+def response_token_cap(limit):
+    """Apply the max_response_chars ceiling (in tokens, ~4 chars each) to an
+    engine's own max-token limit - never raises it, only lowers it."""
+    chars = int(config.get("max_response_chars") or 0)
+    if chars <= 0:
+        return limit
+    return min(limit, max(32, chars // 4))
+
+
 def run_llama_prompt(prompt):
     """Run a prompt through llama.cpp (llama-cli) and update llm_* telemetry."""
     model = config["model"]
-    response, prompt_tps, tps, total_time = _llama_complete(prompt, config["llama_max_tokens"])
+    response, prompt_tps, tps, total_time = _llama_complete(
+        prompt, response_token_cap(config["llama_max_tokens"]))
     tokens = max(1, int(len(response) / 4))  # ~4 chars/token estimate
     gen_time = round(tokens / tps, 2) if tps else round(total_time, 2)
     ttft = round((len(prompt) / 4) / prompt_tps, 2) if prompt_tps else 0.0
@@ -508,7 +525,7 @@ def run_ara2_prompt(prompt):
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": config.get("ara2_max_tokens", 200),
+        "max_tokens": response_token_cap(config.get("ara2_max_tokens", 200)),
         "stream": True,
     }
     print("Ara2 request -> %s (model %s)" % (url, model))
@@ -1676,6 +1693,7 @@ def agent_generate(prompt, max_tokens=200):
     connector (ara2), llama.cpp (a GGUF), or the warm Danube session. This is what
     lets the agent reason on the same model ask-llm uses - e.g. the resident 7B on
     the Ara instead of the little Danube router."""
+    max_tokens = response_token_cap(max_tokens)
     if config["backend"] == "ara2":
         return _ara2_generate(prompt, max_tokens)
     if is_gguf_model(config["model"]):
@@ -1878,7 +1896,8 @@ class PersistentVLM:
 
     def start(self, init_frame):
         cmd = [config["python"], "-u", VLM_WORKER,
-               config["vlm_model"], config["vlm_precision"], init_frame]
+               config["vlm_model"], config["vlm_precision"], init_frame,
+               str(response_token_cap(96))]   # the worker's own default is 96
         print("Starting warm VLM:", " ".join(cmd))
         self.proc = subprocess.Popen(
             cmd, cwd=config["vlm_dir"],

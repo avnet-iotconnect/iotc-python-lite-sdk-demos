@@ -24,6 +24,8 @@ from transformers.image_utils import load_image
 
 def main():
     model, precision, init_image = sys.argv[1], sys.argv[2], sys.argv[3]
+    if len(sys.argv) > 4:  # answer-length ceiling from app.py's max_response_chars
+        user_params.max_new_tokens = min(user_params.max_new_tokens, max(16, int(sys.argv[4])))
     vlm = make_VLM(model, precision, user_params=user_params, fixed_image=init_image)
     vlm.image_features = vlm.run_vision(vlm.image_inputs)  # prime the first frame
     print("VLM_READY", flush=True)

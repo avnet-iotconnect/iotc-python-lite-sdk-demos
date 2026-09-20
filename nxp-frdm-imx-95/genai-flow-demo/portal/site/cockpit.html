@@ -146,6 +146,7 @@
       <button data-mode="ask-vlm">VLM</button>
      </div>
      <textarea id="prompt">What is an NPU?</textarea>
+     <div class="dim" style="font-size:.78rem;margin-top:4px">Answers are capped at ~600 characters by default (so every engine finishes in seconds) — ask a follow-up for more detail.</div>
      <div class="row tight" style="margin-top:10px">
       <button id="asksend">Send</button>
       <button class="ghost" id="ragtoggle">RAG: off</button>
@@ -188,6 +189,7 @@
    <div class="card">
     <h2>4 · Model shootout <em>— same prompt, every engine, measured on your board</em></h2>
     <textarea id="sprompt">What color is an apple?</textarea>
+    <div class="dim" style="font-size:.78rem;margin-top:4px">Answers are capped at ~600 characters by default (so every engine finishes in seconds) — compare tok/s, not answer length.</div>
     <label>Engines to compare</label>
     <div class="combos" id="combos"></div>
     <div class="row tight" style="margin-top:12px;align-items:center">
@@ -247,7 +249,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b31";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b32";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];

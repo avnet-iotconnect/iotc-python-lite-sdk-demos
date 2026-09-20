@@ -51,6 +51,8 @@ the *loading* is the cost, not the thinking — which is why the board keeps a m
 > engine answers a 20-token question in ~5 s — which is why shootout rows show gen times of 1–8 s: their
 > answers were short. **Generation time is answer length ÷ tok/s.** Compare engines on TTFT and tok/s (the
 > tokens column shows how much each wrote), and ask for one-sentence answers when you want snappy demos.
+> By default the board caps every answer at ~600 characters (`max_response_chars` in `genai-config.json`,
+> ~150 tokens), so no engine can ramble past ~15–25 s.
 
 ---
 

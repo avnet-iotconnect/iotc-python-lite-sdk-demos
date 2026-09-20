@@ -234,6 +234,13 @@ to interact with the LLM:
 | `file-download` | package URL | Self-update with a new demo package |
 
 > [!NOTE]
+> Every answer (`ask-llm`, `ask-agent`, `ask-vlm`, and each shootout row) is capped at **~600 characters** by
+> default — `max_response_chars` in `/opt/demo/genai-config.json` (~4 chars per token, so ~150 tokens). Generation
+> time is *tokens ÷ tok/s*, so this bounds even the slowest engine to roughly 15–25 s per answer instead of letting
+> a 250-token ramble run a minute. It only lowers each engine's own limit (`llama_max_tokens`, `ara2_max_tokens`, the
+> VLM's 96, Danube's built-in 128); set it to `0` to disable, or raise it if you want longer answers.
+
+> [!NOTE]
 > The **first** `ask-llm` after boot takes noticeably longer while the model is loaded (and downloaded on first ever
 > use) — watch `llm_load_time`. Subsequent prompts are faster. While a prompt or benchmark is running, `genai_status`
 > reports `generating` / `benchmarking`.
