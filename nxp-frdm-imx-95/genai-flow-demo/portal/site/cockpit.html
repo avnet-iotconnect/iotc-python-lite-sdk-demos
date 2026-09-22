@@ -249,7 +249,7 @@
 
 <script>
 const $=id=>document.getElementById(id);
-const BUILD="b33";  // bumped on every cockpit deploy - compare with what support says is current
+const BUILD="b34";  // bumped on every cockpit deploy - compare with what support says is current
 const S={token:null,device:null,commands:{},poll:null,email:null,mode:"ask-llm",await:null,v:{},shooting:false};
 const GAUGES=[["cpu_percent","CPU","%",100],["cpu_temp","SoC temp","°C",90],
               ["mem_used_mb","memory","MB",8000],["disk_used_pct","disk used","%",100]];
@@ -643,7 +643,12 @@ async function send(cmd,value){
  // Fast local path: when direct mode is on and this browser can reach the
  // board (fresh board-direct read with a token), inject the command over the
  // LAN, skipping the 1-2 min cloud command pipeline. Any failure falls back.
- if(S.localCmd&&S.boardIp&&S.board&&(Date.now()-S.board.at)<15000&&S.board.v&&S.board.v.cmd_token){
+ const directOK=!!(S.localCmd&&S.boardIp&&S.board&&(Date.now()-S.board.at)<15000&&S.board.v&&S.board.v.cmd_token);
+ if(S.localCmd&&!directOK&&Date.now()-(S.directWhy||0)>20000){S.directWhy=Date.now();
+  const why=!S.boardIp||!S.board?"this browser has no direct read of the board (pill shows cloud) — open https://"+esc(S.v.board_ip||"<board-ip>")+":8080 in a tab; if it won't load, this network isolates you from the board (Wi-Fi client isolation) — use a wired connection"
+   :(Date.now()-S.board.at)>=15000?"the last direct read of the board is stale":"the board's state has no command token (its camera-server predates the direct path)";
+  log("⚡ direct is ON but the command is going via the cloud: "+why,"err");}
+ if(directOK){
   try{
    const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),2000);
    const r=await fetch("https://"+S.boardIp+":8080/command",{method:"POST",signal:ctl.signal,
