@@ -1,0 +1,330 @@
+{
+    "code": "drone",
+    "name": "tykho_drone",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "Attitude",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "childs": [
+                {
+                    "name": "heading",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "deg",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "angX",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "deg",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "angY",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "deg",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "Battery",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "attributeColor": "#68bc00",
+            "childs": [
+                {
+                    "name": "State",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Voltage",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "V",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Amperage",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "A",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "Capacity",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "mAh",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "CellCount",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "mAhDrawn",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "mAh",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "Motor",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "childs": [
+                {
+                    "name": "PWM1",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "PWM2",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "PWM3",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "PWM4",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "Gyroscope",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "childs": [
+                {
+                    "name": "x",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "y",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "z",
+                    "displayName": "",
+                    "type": "DECIMAL",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "Accelerometer",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "childs": [
+                {
+                    "name": "x",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "y",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "z",
+                    "displayName": "",
+                    "type": "INTEGER",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "Altitude",
+            "displayName": "",
+            "type": "INTEGER",
+            "description": "",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "ControllerInfo",
+            "displayName": "",
+            "type": "OBJECT",
+            "description": "",
+            "childs": [
+                {
+                    "name": "name",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "variant",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "version",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "board_info",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                },
+                {
+                    "name": "api_version",
+                    "displayName": "",
+                    "type": "STRING",
+                    "description": "",
+                    "unit": "",
+                    "attributeColor": ""
+                }
+            ],
+            "aggregateTypes": []
+        },
+        {
+            "name": "DemoOn",
+            "displayName": "DemoOn",
+            "type": "INTEGER",
+            "description": "1 is active, 0 is not",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "demo",
+            "command": "demo",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "pwm",
+            "command": "pwm",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "SetInterval",
+            "command": "SetInterval",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "qualification",
+            "command": "aws-qualification-start",
+            "requiredParam": true,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "on",
+            "command": "on",
+            "requiredParam": false,
+            "requiredAck": false,
+            "isOTACommand": false
+        },
+        {
+            "name": "off",
+            "command": "off",
+            "requiredParam": false,
+            "requiredAck": false,
+            "isOTACommand": false
+        }
+    ],
+    "messageVersion": "2.1",
+    "msgCode": "XG4ETLX",
+    "capability": "0",
+    "c2dOnDemand": 0,
+    "enableGeoLocation": "false",
+    "properties": {
+        "description": null,
+        "dataFrequency": "2",
+        "fileSupport": false,
+        "certRenewalDay": 0,
+        "enableCSR": false,
+        "enableGeoLocation": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

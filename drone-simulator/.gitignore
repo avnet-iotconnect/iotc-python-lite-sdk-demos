@@ -1,0 +1,7 @@
+# Never commit device credentials or the per-device config
+*.pem
+*.crt
+*.key
+iotcDeviceConfig*.json
+simulator.env
+venv/

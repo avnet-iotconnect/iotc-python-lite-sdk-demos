@@ -211,6 +211,17 @@ WebRTC establishes a direct peer-to-peer connection between the device and the v
 * [ST STM32MP257F-EV1 Evaluation Board](stm32mp257f-ev1/kvs-webrtc/README.md)
 * [Tria Vision AI-KIT 6490](tria-vision-ai-kit-6490/kvs-webrtc/README.md)
 
+## Drone Simulator (EC2 / any Linux host)
+
+The Drone Simulator needs no hardware at all. It emulates a quadcopter flight controller using the `tykho_drone`
+template and drives the Witekio and Indeema Drone Platform dashboard: motor PWM gauges, altitude, heading/roll/pitch,
+battery consumption and flight controller info. It reports every 90 seconds normally and switches to every 3 seconds
+with a scripted flight when the dashboard's Demo button is pressed. A one-shot installer sets it up as a systemd
+service on an EC2 instance.
+
+**Supported on:**
+* [Amazon EC2 or any Linux host with Python 3.9+](drone-simulator/README.md)
+
 ## Licensing
 
 This library is distributed under
