@@ -240,6 +240,17 @@ to interact with the LLM:
 > a 250-token ramble run a minute. It only lowers each engine's own limit (`llama_max_tokens`, `ara2_max_tokens`, the
 > VLM's 96, Danube's built-in 128); set it to `0` to disable, or raise it if you want longer answers.
 
+> [!IMPORTANT]
+> **NXP's demonstrator has a 1-hour session limit.** eIQ GenAI Flow is an evaluation build: each LLM or voice
+> session it starts shuts itself down after one hour of operation (listed under *Demonstrator Limitations* in
+> NXP's README; a production build without the limit is available from NXP on request). The demo absorbs it
+> rather than letting it fail a question: the idle reaper **recycles a Danube session once it is 55 minutes old
+> and nobody is asking** (`genai_session_recycle_s`, default 3300 - the ~44 s reload happens between questions,
+> ~2 min on Neutron), and a voice session that ends on its own is **relaunched automatically** (up to 3 times)
+> so the assistant keeps listening. llama.cpp GGUFs and the Ara240 connector are not affected. For a
+> workshop the only visible effect is an occasional reload during a long break; for a permanent installation,
+> ask NXP for the extended build.
+
 > [!NOTE]
 > The **first** `ask-llm` after boot takes noticeably longer while the model is loaded (and downloaded on first ever
 > use) — watch `llm_load_time`. Subsequent prompts are faster. While a prompt or benchmark is running, `genai_status`

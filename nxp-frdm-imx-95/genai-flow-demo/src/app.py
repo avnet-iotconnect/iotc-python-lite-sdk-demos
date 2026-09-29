@@ -106,6 +106,13 @@ DEFAULT_CONFIG = {
     # Agent (ask-agent): a persistent CPU LLM session routes requests to real
     # board tools (time, temperature, memory...). Stopped after this idle time.
     "agent_idle_timeout_s": 3600,
+    # NXP's eIQ GenAI Flow demonstrator is an evaluation build that shuts each
+    # LLM/voice session down after 1 hour of operation (a documented
+    # limitation; a production build without it is available from NXP on
+    # request). Rather than let that timer fire mid-question, the reaper
+    # recycles a Danube session once it is this old AND idle, so the reload
+    # happens between questions instead of failing one. 0 disables.
+    "genai_session_recycle_s": 3300,
     # Local IoTConnect MCP server (iotc-mcp-server) for the agent's cloud
     # tools. Authenticate once with: iotconnect-cli configure
     "mcp_url": "http://127.0.0.1:8000/mcp",
@@ -866,7 +873,15 @@ def start_voice(output_mode):
                 telemetry["genai_status"] = "voice"
                 telemetry["voice_exchanges"] = 0
             set_voice_status("starting")
-            voice_session(output_mode)
+            # The eIQ demonstrator ends a voice pipeline after 1 hour of operation.
+            # If it exits on its own (no voice-stop requested), relaunch it so the
+            # assistant keeps listening; bounded so a broken setup can't loop.
+            for attempt in range(4):   # callers clear _voice_stop before start_voice()
+                voice_session(output_mode)
+                if _voice_stop.is_set() or attempt == 3:
+                    break
+                print("voice pipeline ended on its own (eIQ 1-hour session limit?) - relaunching")
+                set_voice_status("starting")
             set_voice_status("off")
             with telemetry_lock:
                 telemetry["genai_status"] = "idle"
@@ -1521,6 +1536,7 @@ class PersistentLLM:
         self.reader = ProcReader(self.proc)
         self._read_until_marker(config["prompt_timeout_s"])
         self.last_used = time.monotonic()
+        self.started_at = time.monotonic()
 
     def _read_until_marker(self, timeout):
         buf = b""
@@ -1658,11 +1674,16 @@ def run_chat_prompt(prompt):
 
 
 def agent_reaper():
-    """Stop idle LLM sessions (agent + chat) to reclaim RAM."""
+    """Stop idle LLM sessions (agent + chat) to reclaim RAM, and recycle Danube
+    sessions before the eIQ demonstrator's 1-hour session limit ends them."""
     while True:
         time.sleep(60)
+        recycle_s = int(config.get("genai_session_recycle_s") or 0)
         for sess in (agent_llm, chat_llm, vlm_session):
-            if sess.alive() and time.monotonic() - sess.last_used > config["agent_idle_timeout_s"]:
+            if not sess.alive():
+                continue
+            idle_s = time.monotonic() - sess.last_used
+            if idle_s > config["agent_idle_timeout_s"]:
                 if llm_busy.acquire(blocking=False):
                     try:
                         print("%s LLM idle - stopping session" % sess.name)
@@ -1670,6 +1691,25 @@ def agent_reaper():
                         if sess is agent_llm:
                             with telemetry_lock:
                                 telemetry["agent_status"] = "off"
+                    finally:
+                        llm_busy.release()
+                continue
+            # The GenAI Flow (Danube) sessions carry NXP's 1-hour limit; llama.cpp
+            # and the Ara connector do not. Restart an old session while nobody is
+            # asking, so it is warm again (same model/backend) instead of dying
+            # under the next question.
+            age_s = time.monotonic() - getattr(sess, "started_at", time.monotonic())
+            if recycle_s and sess in (agent_llm, chat_llm) and age_s > recycle_s:
+                if llm_busy.acquire(blocking=False):
+                    try:
+                        print("%s LLM session is %d min old - recycling ahead of the eIQ demonstrator's "
+                              "1-hour session limit" % (sess.name, age_s // 60))
+                        with sess.lock:
+                            sess.stop()
+                            sess.start()
+                        print("%s LLM session recycled (warm again)" % sess.name)
+                    except Exception as e:  # noqa: BLE001 - next ask will reload it
+                        print("%s LLM recycle failed (next ask reloads it):" % sess.name, e)
                     finally:
                         llm_busy.release()
 

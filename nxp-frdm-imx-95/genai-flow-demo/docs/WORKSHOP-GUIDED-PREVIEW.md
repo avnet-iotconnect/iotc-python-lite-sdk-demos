@@ -22,6 +22,8 @@ Times are wall-clock from pressing a control to the answer appearing.
 > - warming the **Agent** (one session at a time: the agent releases the chat model, and the next plain
 >   LLM ask releases the agent — each flip costs a reload);
 > - ~60 minutes idle (the session reaper), or a voice session.
+> - **every ~55 minutes of session age** (NXP's demonstrator ends any LLM/voice session at 1 hour; the demo
+>   recycles it early while idle so the reload lands between questions, and relaunches voice if it's cut off).
 >
 > On CPU a restart costs ~44 s. **On Neutron it costs the full ~2 min compile — the compile is per
 > session start, not per board.** So on Neutron: get it warm, then *touch nothing* between asks.
