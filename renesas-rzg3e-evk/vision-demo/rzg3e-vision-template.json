@@ -1,0 +1,66 @@
+{
+    "code": "rzg3evis",
+    "name": "rzg3evis",
+    "authType": 2,
+    "attributes": [
+        { "name": "sdk_version", "displayName": "SDK Version", "type": "STRING", "description": "IoTConnect SDK version", "unit": "", "aggregateTypes": [] },
+        { "name": "cpu_percent", "displayName": "CPU Usage", "type": "DECIMAL", "description": "Overall CPU utilisation (%)", "unit": "%", "aggregateTypes": ["avg", "max"] },
+        { "name": "memory_percent", "displayName": "Memory Usage", "type": "DECIMAL", "description": "RAM usage (%)", "unit": "%", "aggregateTypes": ["avg", "max"] },
+        { "name": "memory_used_mb", "displayName": "Memory Used", "type": "DECIMAL", "description": "Used RAM in MB", "unit": "MB", "aggregateTypes": ["avg", "max"] },
+        { "name": "cpu_temp_c", "displayName": "CPU Temp", "type": "DECIMAL", "description": "Cortex-A55 cluster temperature (°C)", "unit": "°C", "aggregateTypes": ["avg", "max"] },
+        { "name": "load_1m", "displayName": "Load (1 min)", "type": "DECIMAL", "description": "1-minute load average", "unit": "", "aggregateTypes": ["avg", "max"] },
+        { "name": "cloud_connected", "displayName": "Cloud Connected", "type": "BOOLEAN", "description": "MQTT session up at the time of the sample", "unit": "", "aggregateTypes": [] },
+        { "name": "mode", "displayName": "Mode", "type": "STRING", "description": "Active pipelines: both | faces | occupancy | off", "unit": "", "aggregateTypes": [] },
+        { "name": "cameras_connected", "displayName": "USB Cameras", "type": "INTEGER", "description": "Number of USB cameras detected", "unit": "", "aggregateTypes": ["min", "max"] },
+
+        { "name": "faces_active", "displayName": "Face Pipeline Active", "type": "BOOLEAN", "description": "Face identity pipeline is running on a camera", "unit": "", "aggregateTypes": [] },
+        { "name": "face_count", "displayName": "Faces Seen", "type": "INTEGER", "description": "Faces detected in the current frame", "unit": "", "aggregateTypes": ["avg", "max"] },
+        { "name": "known_count", "displayName": "Known Faces", "type": "INTEGER", "description": "Faces matched to an enrolled identity", "unit": "", "aggregateTypes": ["avg", "max"] },
+        { "name": "unknown_count", "displayName": "Unknown Faces", "type": "INTEGER", "description": "Faces not matching any enrolled identity", "unit": "", "aggregateTypes": ["avg", "max", "sum"] },
+        { "name": "identities", "displayName": "Identities", "type": "STRING", "description": "Comma-separated identities in view (and 'unknown')", "unit": "", "aggregateTypes": [] },
+        { "name": "top_identity", "displayName": "Top Identity", "type": "STRING", "description": "Best-matched enrolled identity in view", "unit": "", "aggregateTypes": [] },
+        { "name": "top_confidence", "displayName": "Top Match Confidence", "type": "DECIMAL", "description": "Cosine similarity of the best match (%)", "unit": "%", "aggregateTypes": ["avg", "max"] },
+        { "name": "unknown_present", "displayName": "Unknown Person", "type": "BOOLEAN", "description": "An unrecognised face was seen since the previous sample (use for rules)", "unit": "", "aggregateTypes": [] },
+        { "name": "known_seen", "displayName": "Known Seen", "type": "STRING", "description": "Enrolled identities seen since the previous sample", "unit": "", "aggregateTypes": [] },
+        { "name": "enrolled_count", "displayName": "Enrolled Faces", "type": "INTEGER", "description": "Identities in the on-device gallery", "unit": "", "aggregateTypes": ["max"] },
+        { "name": "face_infer_ms", "displayName": "Face Inference Time", "type": "DECIMAL", "description": "YuNet + SFace time per frame (ms)", "unit": "ms", "aggregateTypes": ["avg", "max"] },
+        { "name": "face_fps", "displayName": "Face FPS", "type": "DECIMAL", "description": "Face pipeline frames per second", "unit": "fps", "aggregateTypes": ["avg", "min"] },
+
+        { "name": "occupancy_active", "displayName": "Occupancy Pipeline Active", "type": "BOOLEAN", "description": "Occupancy pipeline is running on a camera", "unit": "", "aggregateTypes": [] },
+        { "name": "person_count", "displayName": "People In View", "type": "INTEGER", "description": "People tracked in the current frame", "unit": "", "aggregateTypes": ["avg", "max"] },
+        { "name": "zone_count", "displayName": "People In Zone", "type": "INTEGER", "description": "People whose centre is inside the configured zone", "unit": "", "aggregateTypes": ["avg", "max"] },
+        { "name": "entries_total", "displayName": "Zone Entries", "type": "INTEGER", "description": "Cumulative zone entries since start / reset_counts", "unit": "", "aggregateTypes": ["max"] },
+        { "name": "exits_total", "displayName": "Zone Exits", "type": "INTEGER", "description": "Cumulative zone exits since start / reset_counts", "unit": "", "aggregateTypes": ["max"] },
+        { "name": "dwell_max_s", "displayName": "Longest Dwell", "type": "DECIMAL", "description": "Longest time anyone currently in the zone has been there (s)", "unit": "s", "aggregateTypes": ["avg", "max"] },
+        { "name": "dwell_avg_s", "displayName": "Average Dwell", "type": "DECIMAL", "description": "Average dwell time of people currently in the zone (s)", "unit": "s", "aggregateTypes": ["avg", "max"] },
+        { "name": "det_infer_ms", "displayName": "Detector Inference Time", "type": "DECIMAL", "description": "NanoDet person detector time per frame (ms)", "unit": "ms", "aggregateTypes": ["avg", "max"] },
+        { "name": "det_fps", "displayName": "Detector FPS", "type": "DECIMAL", "description": "Occupancy pipeline frames per second", "unit": "fps", "aggregateTypes": ["avg", "min"] },
+        { "name": "det_confidence", "displayName": "Detector Confidence", "type": "DECIMAL", "description": "Current person detector confidence threshold", "unit": "", "aggregateTypes": [] },
+        { "name": "zone", "displayName": "Zone", "type": "STRING", "description": "Zone rectangle as normalised x1,y1,x2,y2", "unit": "", "aggregateTypes": [] },
+        { "name": "mirror", "displayName": "Mirrored Feeds", "type": "BOOLEAN", "description": "Camera frames are flipped horizontally (selfie view)", "unit": "", "aggregateTypes": [] }
+    ],
+    "commands": [
+        { "name": "set_mode", "command": "set_mode", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Select active pipelines. Param: both | faces | occupancy | off" },
+        { "name": "enroll", "command": "enroll", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Enrol the face in front of camera 1 under the given name (look at the camera for ~3 s). Param: name" },
+        { "name": "forget", "command": "forget", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Remove an enrolled identity (or 'all'). Param: name" },
+        { "name": "list_faces", "command": "list_faces", "requiredParam": false, "requiredAck": true, "isOTACommand": false, "description": "Ack with the list of enrolled identities" },
+        { "name": "set_zone", "command": "set_zone", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Set the occupancy zone. Param: x1,y1,x2,y2 normalised 0..1 (default 0.3,0.05,0.7,0.95)" },
+        { "name": "set_confidence", "command": "set_confidence", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Person detector confidence threshold. Param: 0.05-0.95 (default 0.4)" },
+        { "name": "set_face_threshold", "command": "set_face_threshold", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Face match cosine-similarity threshold. Param: 0.1-0.9 (default 0.363)" },
+        { "name": "set_mirror", "command": "set_mirror", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Mirror the camera feeds horizontally. Param: on | off (default on)" },
+        { "name": "reset_counts", "command": "reset_counts", "requiredParam": false, "requiredAck": true, "isOTACommand": false, "description": "Reset the zone entry/exit counters" },
+        { "name": "swap_cameras", "command": "swap_cameras", "requiredParam": false, "requiredAck": true, "isOTACommand": false, "description": "Swap which USB camera feeds the face vs occupancy pipeline" },
+        { "name": "file-download", "command": "file-download", "requiredParam": true, "requiredAck": true, "isOTACommand": false, "description": "Download and apply an update package (.tar.gz with install.sh) from a URL" }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "Renesas RZ/G3E EVK Vision Demo (face identity + occupancy)",
+        "dataFrequency": "5",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

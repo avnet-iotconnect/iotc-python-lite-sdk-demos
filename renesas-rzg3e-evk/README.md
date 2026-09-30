@@ -150,6 +150,12 @@ python3 app.py
 
 View the random-integer telemetry data under the "Live Data" tab for your device on /IOTCONNECT.
 
+## Vision AI Demo
+
+Once the basic demo works, try the [Vision Demo](./vision-demo/README.md): two USB cameras driving
+CPU-only face identity (with enrolment from the cloud) and occupancy analytics, all streamed to a
+browser and to /IOTCONNECT.
+
 # 8. Resources
 
 * [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
