@@ -57,12 +57,13 @@ amd-kria-<board>/<demo-dir>/
 `package.tar.gz` is never committed (`.gitignore` already covers it). Download URLs in the READMEs will point at
 downloads.iotconnect.io. TODO: exact hosting path on downloads.iotconnect.io to be assigned when packages are built.
 
-The shared system monitor demo (section 3) is identical on all three boards, so its source should live once, in a
-shared directory `amd-kria-common/system-monitor-demo/` with per-board README stubs, or be duplicated per board if the
-repo convention prefers self-contained board directories. TODO: decide at implementation time; duplication matches the
-existing repo style.
+The shared system monitor demo (section 3) is identical on all three boards. Decision (implemented): the demo is
+duplicated into each board directory, matching the repo's self-contained board directory convention; the three `src/`
+trees and the `kriaSM` template are kept byte-identical, with only the README board references differing.
 
 ## 3. Demo A: Kria System and Accelerator Monitor (all three boards)
+
+Status: IMPLEMENTED in `amd-kria-<board>/system-monitor-demo/` for all three boards.
 
 Upgrades the starter demo to stream system telemetry and manage PL accelerator apps from the cloud. One template
 serves all three kits.
@@ -104,16 +105,22 @@ Commands:
 Dependencies: none beyond the Lite SDK (`iotconnect-sdk-lite`, `requests`). `install.sh` optionally writes the xmutil
 sudoers drop-in.
 
-Verify on hardware:
+Hardware verification status (KR260 rev B, Ubuntu 24.04.2, 2026-10-18):
 
-* hwmon device indexes are not stable across boots or kits; code must locate `ams` and `ina260*` by reading
-  `/sys/class/hwmon/hwmon*/name` (verified names on KR260; confirm same names on KV260 and KD240, where the INA260
-  label may differ from `ina260_u14`).
-* AMS temp channel-to-sensor mapping (temp1/2/3 vs PS/remote/PL) against `xlnx_platformstats` output on each kit.
-* `xmutil loadapp`/`unloadapp` round trip with the stock starter-kit shells on each kit, and behavior when loading
-  while an app is already loaded (expect: unload first, else error).
-* Whether `xmutil boardid` output is stable enough to derive the `board` attribute (verified working on KR260).
-* KD240 K24 shell name (`k24-starter-kits`) loads on KD240 and not on K26 kits.
+* VERIFIED on KR260: `install.sh` end to end (pip install, sudoers rule); `python3 app.py --dry-run` returns full
+  telemetry (board autodetect `kr260` from `/proc/device-tree/model`, AMS temps 34.0/32.5/31.3 C, INA260
+  5.05 V / 0.637 A / 3.22 W, loaded app `k26-starter-kits`); `listapps` parsing for both loaded and none states; a
+  full `unloadapp`/`loadapp k26-starter-kits` round trip as user `ubuntu` through the scoped sudoers rule (xmutil
+  wrapped in a root-owned `timeout`) with a cold sudo timestamp; `install.sh` in both interactive and simulated OTA
+  (`IOTC_OTA=1`, stdin detached) contexts. The code also passed an adversarial multi-agent review; confirmed findings
+  (install.sh exit code, OTA failure acks, unkillable root sudo child on xmutil hang, sudoers scope, interactive sudo
+  prompt during OTA) were fixed before commit.
+* Remaining, needs KV260 and KD240 on the bench: hwmon names (`ams` verified on KR260; the INA260 label may differ
+  from `ina260_u14` on other kits, the code matches any `ina260*`), board autodetect strings in
+  `/proc/device-tree/model`, the `k24-starter-kits` shell round trip on KD240, and end-to-end telemetry in the
+  IOTCONNECT Live Data tab after onboarding (needs a device created with the `kriaSM` template).
+* AMS temp channel-to-sensor mapping (temp1/2/3 vs PS/remote/PL) is taken from the AMS driver channel order; worth a
+  cross-check against `xlnx_platformstats` output on each kit.
 
 ## 4. Demo B: KV260 Vision AI Demo (DPU)
 

@@ -1,0 +1,156 @@
+{
+    "code": "kriaSM",
+    "name": "kria-system-monitor",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IOTCONNECT SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "board",
+            "displayName": "Board",
+            "type": "STRING",
+            "description": "Kria starter kit id (kv260, kr260, kd240)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_percent",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "Overall CPU utilisation (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_percent",
+            "displayName": "Memory Usage",
+            "type": "DECIMAL",
+            "description": "RAM usage (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_temp_ps_c",
+            "displayName": "SOM Temp PS",
+            "type": "DECIMAL",
+            "description": "AMS/SYSMON PS die temperature (C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_temp_rem_c",
+            "displayName": "SOM Temp Remote",
+            "type": "DECIMAL",
+            "description": "AMS/SYSMON remote die temperature (C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_temp_pl_c",
+            "displayName": "SOM Temp PL",
+            "type": "DECIMAL",
+            "description": "AMS/SYSMON PL die temperature (C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_voltage_v",
+            "displayName": "SOM Voltage",
+            "type": "DECIMAL",
+            "description": "SOM 5V rail voltage (INA260)",
+            "unit": "V",
+            "aggregateTypes": ["avg", "min", "max"]
+        },
+        {
+            "name": "som_current_a",
+            "displayName": "SOM Current",
+            "type": "DECIMAL",
+            "description": "SOM 5V rail current (INA260)",
+            "unit": "A",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_power_w",
+            "displayName": "SOM Power",
+            "type": "DECIMAL",
+            "description": "SOM power draw (INA260)",
+            "unit": "W",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "loaded_app",
+            "displayName": "Loaded PL App",
+            "type": "STRING",
+            "description": "Currently loaded PL accelerator app, or none",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "apps_installed",
+            "displayName": "Installed PL Apps",
+            "type": "STRING",
+            "description": "Installed accelerator apps (JSON array)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "random",
+            "displayName": "Random",
+            "type": "INTEGER",
+            "description": "Random integer for connectivity check",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "list-apps",
+            "command": "list-apps",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Ack with the installed accelerator apps and which one is loaded"
+        },
+        {
+            "name": "load-app",
+            "command": "load-app",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Load an accelerator app by name (unloads the current app first)"
+        },
+        {
+            "name": "unload-app",
+            "command": "unload-app",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Unload the currently loaded accelerator app"
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Download and apply an OTA update package from a URL"
+        }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "AMD Kria System and Accelerator Monitor Demo",
+        "dataFrequency": "10",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

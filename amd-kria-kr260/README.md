@@ -17,7 +17,6 @@
 This guide walks through the steps to connect the AMD Kria KR260 Robotics Starter Kit to the Avnet IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
-<!-- TODO: photo needed: kr260-product.png (product shot of the KR260 kit) -->
 <table>
   <tr>
     <td><img src="./media/kr260-product.png" width="6000"></td>
@@ -76,14 +75,14 @@ this guide (factory K26-BootFW-01.02).
 
 # 4. Hardware Setup
 
-See the reference image below for cable connections.
-<!-- TODO: photo needed: kr260-connections.png (top-down shot with power J12, micro-USB J4, PS Ethernet ports J10C/J10D, and microSD J11 labeled) -->
+See the reference image below for cable connections (board image: AMD; see [media/SOURCES.md](media/SOURCES.md)).
 <details>
 <summary>Reference Image with Connections</summary>
 <img src="./media/kr260-connections.png">
 </details>
 
-1. Insert the flashed microSD card into the microSD card slot (J11).
+1. Insert the flashed microSD card into the microSD card slot (J11). On the KR260 the slot is mounted on the
+   underside of the board edge, near the RESET button.
 2. Connect the micro-USB cable from your PC to the micro-USB connector (J4). This is the JTAG/UART interface and
    provides the serial console.
 3. Connect an Ethernet cable from your router/switch to one of the two PS Ethernet ports: J10D (the top right port)
@@ -173,11 +172,15 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Going Further: Expansion Demos
 
-Expansion demos for the Kria starter kits are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of
-this repository:
+Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an
+OTA software package. The following expansion demo is available for this board:
 
-* **Kria System and Accelerator Monitor**: streams CPU, memory, SOM temperature, and SOM power telemetry, reports the
-  currently loaded programmable logic (PL) accelerator app, and switches accelerator apps through cloud commands.
+* **[System and Accelerator Monitor Demo](system-monitor-demo/README.md)**: streams CPU, memory, SOM temperature, and
+  SOM power telemetry, reports the currently loaded programmable logic (PL) accelerator app, and switches accelerator
+  apps through cloud commands.
+
+Further demos are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository:
+
 * **KR260 Inspection Cell Demo**: USB3 camera inspection station reporting pass/fail results and cycle metrics, with
   an optional ROS 2 bridge node that maps ROS 2 topics to telemetry and IOTCONNECT commands to ROS 2 services.
 

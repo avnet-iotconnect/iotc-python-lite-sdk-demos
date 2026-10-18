@@ -17,7 +17,6 @@
 This guide walks through the steps to connect the AMD Kria KD240 Drives Starter Kit to the Avnet IOTCONNECT platform
 and demonstrate the standard IoT function of telemetry collection.
 
-<!-- TODO: photo needed: kd240-product.png (product shot of the KD240 kit) -->
 <table>
   <tr>
     <td><img src="./media/kd240-product.png" width="6000"></td>
@@ -79,8 +78,7 @@ best compatibility.
 
 # 4. Hardware Setup
 
-See the reference image below for cable connections.
-<!-- TODO: photo needed: kd240-connections.png (top-down shot with power J12, micro-USB J4, PS Ethernet J24, and microSD J11 labeled) -->
+See the reference image below for cable connections (board image: AMD; see [media/SOURCES.md](media/SOURCES.md)).
 <details>
 <summary>Reference Image with Connections</summary>
 <img src="./media/kd240-connections.png">
@@ -182,11 +180,15 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 
 # 8. Going Further: Expansion Demos
 
-Expansion demos for the Kria starter kits are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of
-this repository:
+Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an
+OTA software package. The following expansion demo is available for this board:
 
-* **Kria System and Accelerator Monitor**: streams CPU, memory, SOM temperature, and SOM power telemetry, reports the
-  currently loaded programmable logic (PL) accelerator app, and switches accelerator apps through cloud commands.
+* **[System and Accelerator Monitor Demo](system-monitor-demo/README.md)**: streams CPU, memory, SOM temperature, and
+  SOM power telemetry, reports the currently loaded programmable logic (PL) accelerator app, and switches accelerator
+  apps through cloud commands.
+
+Further demos are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository:
+
 * **KD240 Motor Control Demo**: field-oriented control of the Motor Accessory Pack BLDC motor using AMD's FOC Motor
   Control app and its Python interface, streaming speed, current, position, and fault telemetry with set-speed,
   set-mode, and stop commands from the cloud.

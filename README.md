@@ -146,6 +146,17 @@ The System Monitor demo upgrades the /IOTCONNECT starter application on the RZ/V
 **Supported on:**
 * [Renesas RZ/V2H EVK](renesas-rzv2h-evk/system-monitor-demo/README.md)
 
+## Kria System and Accelerator Monitor
+
+The Kria System and Accelerator Monitor demo streams CPU utilisation, RAM usage, SOM die temperatures, and SOM power
+rail telemetry from AMD Kria starter kits, reports the currently loaded programmable logic (PL) accelerator app, and
+lets you list, load, and unload accelerator apps from the cloud through `xmutil` and dfx-mgr.
+
+**Supported on:**
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240/system-monitor-demo/README.md)
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/system-monitor-demo/README.md)
+* [AMD Kria KV260 Vision AI Starter Kit](amd-kria-kv260/system-monitor-demo/README.md)
+
 ## Tria Vision AI Demo
 
 The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.
