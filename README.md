@@ -10,6 +10,9 @@ completed this work for a subset of boards as outlined in the following section.
 
 The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240) - ([Purchase Link](https://www.newark.com/amd/sk-kd240-g/starter-kit-zynq-ultrascale-mpsoc/dp/83AK4855))
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260) - ([Purchase Link](https://www.newark.com/amd/sk-kr260-g/starter-kit-robotics-mpsoc/dp/33AK7080))
+* [AMD Kria KV260 Vision AI Starter Kit](amd-kria-kv260) - ([Purchase Link](https://www.newark.com/amd/sk-kv260-g/vision-ai-startr-kit-arm-cortex/dp/26AM6575))
 * [Arduino Uno Q](arduino-uno-q) - ([Purchase Link](https://www.newark.com/arduino/abx00162/uno-q-sbc-2gb-arm-cortex-a53-m33f/dp/59AM1209))
 * [Microchip Curiosity PIC64GX1000 Kit](microchip-pic64gx1000) - ([Purchase Link](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917))
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk) - ([Purchase Link](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474))
