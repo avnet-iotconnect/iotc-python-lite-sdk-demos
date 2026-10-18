@@ -178,11 +178,11 @@ OTA software package. The following expansion demo is available for this board:
 * **[System and Accelerator Monitor Demo](system-monitor-demo/README.md)**: streams CPU, memory, SOM temperature, and
   SOM power telemetry, reports the currently loaded programmable logic (PL) accelerator app, and switches accelerator
   apps through cloud commands.
+* **[Inspection Cell Demo](inspection-demo/README.md)**: USB camera golden-sample inspection station reporting
+  pass/fail results, counters, and cycle metrics, with an optional ROS 2 bridge node that maps ROS 2 topics to
+  telemetry and IOTCONNECT commands to ROS 2 services.
 
-Further demos are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository:
-
-* **KR260 Inspection Cell Demo**: USB3 camera inspection station reporting pass/fail results and cycle metrics, with
-  an optional ROS 2 bridge node that maps ROS 2 topics to telemetry and IOTCONNECT commands to ROS 2 services.
+Further demos are tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository.
 
 # 9. Resources
 

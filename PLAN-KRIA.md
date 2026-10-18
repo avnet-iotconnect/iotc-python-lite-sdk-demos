@@ -194,6 +194,23 @@ Verify on hardware:
 
 ## 5. Demo C: KR260 Inspection Cell Demo
 
+Status: IMPLEMENTED in `amd-kria-kr260/inspection-demo/` (template `kr26IC`). The implementation uses golden-sample
+reference comparison (normalized mean absolute difference on the grayscale ROI) and adds a `capture-reference`
+command plus `last_score` and `ros2_data` attributes relative to the tables below. Camera path uses pip
+`opencv-python-headless` (aarch64 wheel), so the demo needs no root at all. The ROS 2 bridge ships as a separate
+rclpy node (`src/ros2_bridge.py` + `ros2_bridge.json`) talking to the app over localhost UDP (5577 data in, 5578
+command forward).
+
+Hardware verification status (KR260 rev B, Logitech C920 on USB, 2026-10-18): reference capture at 640x480, pass and
+fail threshold paths, counters and yield, ROI set/recapture/inspect (200x150), malformed-input rejection, and the
+bridge UDP ingest path all verified live; inspection cycle measured at about 68 ms (about 15 FPS capability). One
+image-wide fact worth knowing: the Kria Ubuntu image does not put the default user in the `video` group, so camera
+demos need a one-time `sudo usermod -aG video $USER` plus re-login (documented in the demo README). The code passed an
+adversarial multi-agent review; confirmed findings (camera fd leak through the OTA execv, metadata-node adoption,
+stale camera_connected after unplug, UDP bind failures, success acks lost to execv before the MQTT flush, bridge
+heartbeat and config validation) were fixed before commit, and the ack-flush fix was back-ported to the system
+monitor demo. Remaining TODO: exercise ros2_bridge.py against a live ROS 2 Jazzy install.
+
 Goal: a compact machine-vision inspection station: a camera watches parts, the app classifies pass/fail (presence,
 color, or simple defect check via OpenCV), and IOTCONNECT shows live results, counters, and cycle metrics. Optional
 ROS 2 bridge for robotics integration.
@@ -322,8 +339,11 @@ Verify on hardware:
 * The exact Python module name and API surface of the foc-motor-ctrl pybind11 bindings (not documented; inspect
   `/opt/xilinx/xlnx-app-kd240-foc-motor-ctrl` after install). TODO.
 * DC link connector silkscreen: UG1093 says J39, the FOC guide says J29. Check the board. TODO.
-* Whether the firmware package set installs cleanly on the current 24.04 image (research saw the packages in
-  `ppa:xilinx-apps` for jammy; confirm noble builds exist for kd240 firmware and app packages). TODO.
+* Package availability for 24.04 CONFIRMED (2026-10-18): the noble view of `ppa:xilinx-apps` lists
+  `xlnx-app-kd240-foc-motor-ctrl` 0.5.2-0xlnx1 and `xlnx-firmware-kd240-motor-ctrl-qei` 1.0-0xlnx2. A clean install
+  on the board still needs to be exercised once the KD240 is on the bench. The kit alone is not enough to run the
+  demo: the Motor Accessory Pack HW-MACCP01-SK-G (24V BLDC motor, encoder, cables, 24V motor supply) is required and
+  must be purchased separately.
 * Fault telemetry fields actually exposed by the library (dashboard shows critical/warning indicators; map to
   `fault_status`).
 * Encoder wiring (J42 vs J43 and the J44 jumper position) with the accessory pack cable.

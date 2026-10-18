@@ -1,0 +1,228 @@
+{
+    "code": "kr26IC",
+    "name": "kr260-inspection-cell",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IOTCONNECT SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_percent",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "Overall CPU utilisation (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_percent",
+            "displayName": "Memory Usage",
+            "type": "DECIMAL",
+            "description": "RAM usage (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_temp_ps_c",
+            "displayName": "SOM Temp PS",
+            "type": "DECIMAL",
+            "description": "AMS/SYSMON PS die temperature (C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "camera_connected",
+            "displayName": "Camera Connected",
+            "type": "BOOLEAN",
+            "description": "USB camera detected and streaming",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "camera_kind",
+            "displayName": "Camera Kind",
+            "type": "STRING",
+            "description": "usb or none",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "inspection_active",
+            "displayName": "Inspection Active",
+            "type": "BOOLEAN",
+            "description": "Continuous inspection loop running",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_result",
+            "displayName": "Last Result",
+            "type": "STRING",
+            "description": "pass, fail, none, no_reference, or error",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "last_score",
+            "displayName": "Last Score",
+            "type": "DECIMAL",
+            "description": "Difference score of the last inspection (0 = identical to reference, 1 = max)",
+            "unit": "",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "pass_count",
+            "displayName": "Pass Count",
+            "type": "INTEGER",
+            "description": "Cumulative passed inspections",
+            "unit": "",
+            "aggregateTypes": ["max"]
+        },
+        {
+            "name": "fail_count",
+            "displayName": "Fail Count",
+            "type": "INTEGER",
+            "description": "Cumulative failed inspections",
+            "unit": "",
+            "aggregateTypes": ["max"]
+        },
+        {
+            "name": "yield_percent",
+            "displayName": "Yield",
+            "type": "DECIMAL",
+            "description": "pass / (pass + fail) * 100",
+            "unit": "%",
+            "aggregateTypes": ["avg", "min"]
+        },
+        {
+            "name": "cycle_time_ms",
+            "displayName": "Cycle Time",
+            "type": "DECIMAL",
+            "description": "Time per inspection cycle (ms)",
+            "unit": "ms",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "fps",
+            "displayName": "Inspection FPS",
+            "type": "DECIMAL",
+            "description": "Inspections per second capability of the pipeline",
+            "unit": "",
+            "aggregateTypes": ["avg"]
+        },
+        {
+            "name": "ros2_bridge_active",
+            "displayName": "ROS 2 Bridge Active",
+            "type": "BOOLEAN",
+            "description": "Optional ROS 2 bridge node is feeding data",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "ros2_data",
+            "displayName": "ROS 2 Data",
+            "type": "STRING",
+            "description": "Latest values forwarded from ROS 2 topics (JSON object)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "random",
+            "displayName": "Random",
+            "type": "INTEGER",
+            "description": "Random integer for connectivity check",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "capture-reference",
+            "command": "capture-reference",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Capture the current ROI as the golden reference image"
+        },
+        {
+            "name": "start-inspection",
+            "command": "start-inspection",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Start continuous inspection against the reference"
+        },
+        {
+            "name": "stop-inspection",
+            "command": "stop-inspection",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Stop continuous inspection"
+        },
+        {
+            "name": "trigger-inspection",
+            "command": "trigger-inspection",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Run a single inspection; ack carries the result and score"
+        },
+        {
+            "name": "reset-counters",
+            "command": "reset-counters",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Zero the pass/fail counters"
+        },
+        {
+            "name": "set-roi",
+            "command": "set-roi",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Inspection region as x,y,w,h in pixels, or full"
+        },
+        {
+            "name": "set-threshold",
+            "command": "set-threshold",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Pass/fail difference threshold, 0.0 to 1.0 (default 0.15)"
+        },
+        {
+            "name": "ros2-call",
+            "command": "ros2-call",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Forward a mapped service call to the optional ROS 2 bridge"
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Download and apply an OTA update package from a URL"
+        }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "AMD Kria KR260 Inspection Cell Demo",
+        "dataFrequency": "5",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

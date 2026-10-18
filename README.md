@@ -157,6 +157,16 @@ lets you list, load, and unload accelerator apps from the cloud through `xmutil`
 * [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/system-monitor-demo/README.md)
 * [AMD Kria KV260 Vision AI Starter Kit](amd-kria-kv260/system-monitor-demo/README.md)
 
+## KR260 Inspection Cell Demo
+
+The Inspection Cell demo turns the AMD Kria KR260 and a USB webcam into a compact golden-sample inspection station:
+capture a reference image of a known-good part, then every inspection scores the live view against it and reports
+pass/fail results, counters, yield, and cycle metrics to /IOTCONNECT. Cloud commands set the inspection region and
+threshold, trigger inspections on demand, and optionally bridge to ROS 2 topics and services.
+
+**Supported on:**
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/inspection-demo/README.md)
+
 ## Tria Vision AI Demo
 
 The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.

@@ -7,6 +7,7 @@ import os
 import random
 import subprocess
 import sys
+import threading
 import time
 import urllib.request
 
@@ -24,6 +25,7 @@ HWMON_ROOT = '/sys/class/hwmon'
 XMUTIL = '/usr/bin/xmutil'
 
 client = None
+restart_pending = threading.Event()
 
 # --- System telemetry --------------------------------------------------------
 
@@ -286,8 +288,10 @@ def on_command(msg):
                     print('File downloaded successfully')
                     if extract_and_run_tar_gz('package.tar.gz'):
                         client.send_command_ack(msg, C2dAck.CMD_SUCCESS_WITH_ACK, 'Downloaded and applied %s' % url)
-                        print('OTA package applied. Restarting...')
-                        restart_app()
+                        print('OTA package applied. Restart scheduled...')
+                        # Restart from the main loop: exec'ing here would drop
+                        # the queued ack before the network thread sends it.
+                        restart_pending.set()
                     else:
                         client.send_command_ack(msg, C2dAck.CMD_FAILED,
                                                 'Package extract or install.sh failed; not restarting')
@@ -326,9 +330,9 @@ def on_ota(msg):
         else:
             print('ERROR: Unhandled file format for file %s' % url.file_name)
     if extraction_success:
-        print('OTA successful. Will restart the application...')
+        print('OTA successful. Restart scheduled...')
         client.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_DONE)
-        restart_app()
+        restart_pending.set()
     else:
         print('Encountered a download processing error. Not restarting.')
         client.send_ota_ack(msg, C2dAck.OTA_DOWNLOAD_FAILED, 'OTA download or extraction failed')
@@ -384,6 +388,11 @@ if __name__ == '__main__':
 
     try:
         while True:
+            if restart_pending.is_set():
+                print('Applying update: restarting after ack flush...')
+                time.sleep(2)
+                restart_app()
+
             if not client.is_connected():
                 print('(re)connecting...')
                 client.connect()
