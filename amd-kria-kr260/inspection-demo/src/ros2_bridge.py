@@ -52,15 +52,17 @@ class IotcBridge(Node):
                                      lambda msg, k=key: self.forward(k, msg.data), 10)
             self.get_logger().info('Forwarding %s as telemetry key %s' % (topic, key))
         # Pre-create service clients here, not on the UDP thread: creating
-        # rclpy entities while the executor spins is not thread safe.
-        self.services = {}
+        # rclpy entities while the executor spins is not thread safe. Note:
+        # rclpy's Node already owns a read-only 'services' property, so this
+        # map must use a different attribute name.
+        self.trigger_clients = {}
         for svc in config.get('services', []):
             name = svc.get('name') if isinstance(svc, dict) else None
             service = svc.get('service') if isinstance(svc, dict) else None
             if not name or not service:
                 self.get_logger().warning('Skipping services entry missing name/service: %r' % (svc,))
                 continue
-            self.services[name] = self.create_client(Trigger, service)
+            self.trigger_clients[name] = self.create_client(Trigger, service)
             self.get_logger().info('Mapping ros2-call "%s" to service %s' % (name, service))
         # Heartbeat so app.py knows the bridge is alive even with quiet topics.
         self.create_timer(5.0, self._heartbeat)
@@ -80,7 +82,7 @@ class IotcBridge(Node):
     def handle_command(self, text):
         parts = text.strip().split(None, 1)
         name = parts[0] if parts else ''
-        cli = self.services.get(name)
+        cli = self.trigger_clients.get(name)
         if cli is None:
             self.get_logger().warning('ros2-call for unmapped service: %s' % name)
             return

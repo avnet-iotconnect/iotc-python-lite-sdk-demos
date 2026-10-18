@@ -115,10 +115,15 @@ Hardware verification status (KR260 rev B, Ubuntu 24.04.2, 2026-10-18):
   (`IOTC_OTA=1`, stdin detached) contexts. The code also passed an adversarial multi-agent review; confirmed findings
   (install.sh exit code, OTA failure acks, unkillable root sudo child on xmutil hang, sudoers scope, interactive sudo
   prompt during OTA) were fixed before commit.
-* Remaining, needs KV260 and KD240 on the bench: hwmon names (`ams` verified on KR260; the INA260 label may differ
-  from `ina260_u14` on other kits, the code matches any `ina260*`), board autodetect strings in
-  `/proc/device-tree/model`, the `k24-starter-kits` shell round trip on KD240, and end-to-end telemetry in the
-  IOTCONNECT Live Data tab after onboarding (needs a device created with the `kriaSM` template).
+* VERIFIED on KD240 (rev A/B/1, factory boot firmware XilinxSOM_BootFW_20230507, 2026-10-18): the 24.04 image boots
+  on factory firmware; board autodetects as `kd240` from `/proc/device-tree/model` ("ZynqMP KD240 revA/B/1"); hwmon
+  names are `ams`, `pwmfan`, and `ina260_u3` (the INA260 label indeed differs from the KR260's `ina260_u14`; the
+  prefix match handles it); dry-run telemetry reads 5.01 V / 0.365 A / 1.82 W and three AMS temps; both starter-kit
+  shells ship with `k24-starter-kits` auto-loaded, and the `k24-starter-kits` unload/load round trip works through
+  the scoped sudoers rule. The KD240's PS Ethernet appears as `eth0` (plus `can0`).
+* Remaining: pip/SDK install on the KD240 (blocked until its Ethernet is connected to J24), KV260 on the bench, and
+  end-to-end telemetry in the IOTCONNECT Live Data tab after onboarding (needs a device created with the `kriaSM`
+  template).
 * AMS temp channel-to-sensor mapping (temp1/2/3 vs PS/remote/PL) is taken from the AMS driver channel order; worth a
   cross-check against `xlnx_platformstats` output on each kit.
 
@@ -209,7 +214,10 @@ demos need a one-time `sudo usermod -aG video $USER` plus re-login (documented i
 adversarial multi-agent review; confirmed findings (camera fd leak through the OTA execv, metadata-node adoption,
 stale camera_connected after unplug, UDP bind failures, success acks lost to execv before the MQTT flush, bridge
 heartbeat and config validation) were fixed before commit, and the ack-flush fix was back-ported to the system
-monitor demo. Remaining TODO: exercise ros2_bridge.py against a live ROS 2 Jazzy install.
+monitor demo. The ROS 2 bridge was subsequently verified end to end on the KR260 against a live ROS 2 Jazzy install
+(ros-jazzy-ros-base via the ros2-apt-source deb): heartbeat drives ros2_bridge_active, Float64 and String topics
+land in ros2_data, and a forwarded ros2-call invokes the mapped Trigger service. One live-only find: rclpy's Node
+class owns a read-only `services` property, so the bridge stores its clients as `trigger_clients`.
 
 Goal: a compact machine-vision inspection station: a camera watches parts, the app classifies pass/fail (presence,
 color, or simple defect check via OpenCV), and IOTCONNECT shows live results, counters, and cycle metrics. Optional

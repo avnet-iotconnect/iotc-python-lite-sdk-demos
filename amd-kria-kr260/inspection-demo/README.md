@@ -124,10 +124,9 @@ source /opt/ros/jazzy/setup.bash
 python3 /opt/demo/ros2_bridge.py
 ```
 
-> [!NOTE]
-> The bridge code path in app.py (UDP ingest, `ros2_data`, `ros2_bridge_active`, `ros2-call` forwarding) is verified;
-> the rclpy node itself has not yet been exercised against a live ROS 2 Jazzy install. TODO: validate on hardware
-> with ROS 2 Jazzy installed.
+The full chain is verified on hardware against a live ROS 2 Jazzy install on the KR260: the heartbeat drives
+`ros2_bridge_active`, published `Float64` and `String` topic values appear in `ros2_data`, and a forwarded
+`ros2-call` invokes the mapped `Trigger` service.
 
 ## 6. How It Works
 
