@@ -30,8 +30,8 @@ stack **cannot run** — verified on hardware. Revisit only once NXP publishes `
 | NXP eIQ GenAI Flow | every board | the LLM/VLM/voice stack (v3.0); ships `cpython-313` binaries → needs Python 3.13 |
 | This demo package | every board | `frdm-imx95-genai-flow-demo-v1.0.2.tgz` (README section 5) |
 | llama.cpp | every board | needed for GGUF models pushed from /IOTCONNECT |
-| rt-sdk-ara2 | **Ara boards only** | **2.0.4** on whinlatter (matches the r2.0.4 models). See the Ara note below. |
-| eIQ AAF Connector | **Ara boards only** | **2.0**, matched to rt-sdk 2.0.4 |
+| rt-sdk-ara2 | **Ara boards only** | **2.0.4** on whinlatter (matches the r2.0.4 models). See the Ara note below. Download: NXP [ARA-SDK](https://www.nxp.com/design/design-center/software/embedded-software/ara-software-development-kit:ARA-SDK) page (account-gated). |
+| eIQ AAF Connector | **Ara boards only** | **2.0**, matched to rt-sdk 2.0.4. Download: same ARA-SDK page. |
 
 ### Ara240 runtime — stay on 2.0.4
 
@@ -109,6 +109,14 @@ scp -r root@<ready-board>:/opt/llama/src/build /opt/llama/src/
 ```
 
 ## Step 3 — Ara boards only
+
+Both `.deb` packages are **account-gated downloads from NXP** — they are *not* in the golden image. Get them from
+the [Ara Software Development Kit page](https://www.nxp.com/design/design-center/software/embedded-software/ara-software-development-kit:ARA-SDK) → **Downloads** tab: **Ara2 Runtime SDK** (pick the **`2.0.4` `.deb`**,
+not the `2.1.1` `.bin` — that one needs LF6.18.20 and will not bring up the module here) and **eIQ Connector**
+(`eiq-aaf-connector`, `.deb`). A free NXP account and EULA click-through is all that is needed (no NDA). Full
+detail: README, *Enabling the Kinara Ara-2 / NXP Ara240 backend*. The **models** are separate and public —
+`fetch_models` (installed by the runtime SDK) pulls them from Hugging Face, e.g.
+`fetch_models --repo-id nxp/Qwen2.5-7B-Instruct-Ara240`.
 
 ```bash
 # runtime 2.0.4 (matches whinlatter and the r2.0.4 models)
