@@ -98,6 +98,7 @@ It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay
 To run the demo, execute the `app.py` script:
 
 ```bash
+cd /opt/demo
 python3 app.py
 ```
 
