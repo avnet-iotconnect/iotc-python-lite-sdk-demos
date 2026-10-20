@@ -66,7 +66,7 @@ It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay
 2. Naviagte to the download location and right-click anywhere in the windows folder and select **Open in Terminal**
 3. Use `scp` to copy the DTB to the board's boot partition (replace `<board-ip>` with the actual IP address of your board):
     ```bash
-    scp imx95-15x15-frdm-neutron.dtb root@<board-ip>:/run/media/boot-mmcblk0p1/
+    scp imx95-15x15-frdm-neutron.dtb root@<board-ip>:/run/media/boot-mmcblk0p1/imx95-15x15-frdm-neutron.dtb
     ```
 4. Reboot the board and, using the serial console, interrupt the boot process to access the U-Boot prompt by pressing any key when prompted. The board will boot into U-Boot and display the prompt `u-boot=>`.
 5. Select it from the **U-Boot** prompt:
