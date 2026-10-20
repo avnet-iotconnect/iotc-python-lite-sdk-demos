@@ -41,6 +41,7 @@ The NPU is used only when the model, runtime, data types, and operators are supp
 ## 2. Prerequisites
 
 - Complete the [`GETTING_STARTED.md`](./GETTING_STARTED.md) guide
+- All prerequisites from the guide above.
 
 ### Hardware
 
