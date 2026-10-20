@@ -53,7 +53,7 @@ The NPU is used only when the model, runtime, data types, and operators are supp
 The Neutron NPU needs a large reserved DMA/CMA memory pool for LLM inference (the default `CmaTotal` is only
 ~960 MB; NXP requires >3 GB). The whinlatter FRDM image ships **no** FRDM Neutron device tree — the boot
 partition holds only the default `imx95-15x15-frdm.dtb` and peripheral variants — so this repo provides the
-missing one: **[`imx95-15x15-frdm-neutron.dtb`](imx95-15x15-frdm-neutron.dtb)**
+missing one: **[`imx95-15x15-frdm-neutron.dtb`](genai-flow-demo/imx95-15x15-frdm-neutron.dtb)**
 (sha256 `5a7a0bf478f1395f374d9b207aeb7a1cc277f0e9a5482afa1e0d5f2c4240b09e`).
 
 It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay merged in — the delta is a
@@ -62,7 +62,7 @@ It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay
 
 ### 3.1. Install and enable the Neutron NPU
 
-1. Download the **[`imx95-15x15-frdm-neutron.dtb`](imx95-15x15-frdm-neutron.dtb)**
+1. Download the **[`imx95-15x15-frdm-neutron.dtb`](genai-flow-demo/imx95-15x15-frdm-neutron.dtb)**
 2. Naviagte to the download location and right-click anywhere in the windows folder and select **Open in Terminal**
 3. Use `scp` to copy the DTB to the board's boot partition (replace `<board-ip>` with the actual IP address of your board):
     ```bash
