@@ -95,6 +95,12 @@ It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay
 
 ### 3.2. Comparing CPU vs. NPU performance
 
+To run the demo, execute the `app.py` script:
+
+```bash
+python3 app.py
+```
+
 A typical performance experiment from the /IOTCONNECT command panel:
 
 1. `set-backend cpu` → `ask-llm Tell me about the i.MX 95 processor.` → note `llm_tps`
