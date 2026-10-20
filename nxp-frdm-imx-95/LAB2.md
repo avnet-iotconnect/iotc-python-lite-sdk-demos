@@ -73,7 +73,7 @@ It is the stock whinlatter `imx95-15x15-frdm.dtb` with NXP's EVK Neutron overlay
 
     ```text
     u-boot=> setenv fdtfile imx95-15x15-frdm-neutron.dtb
-    u-boot=> saveenv    # (optional) persist the choice across reboots
+    u-boot=> saveenv
     u-boot=> boot
     ```
 
