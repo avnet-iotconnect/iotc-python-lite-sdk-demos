@@ -212,17 +212,26 @@ its own setup, commands, and measured performance with real numbers instead of i
 
 ### 6.1. Build the database
 
-- Connect to board vis serial console and enter the following commands to build the RAG database:
+- Move the sample medical content data to a backup folder:
 
 ```bash
 cd /root/eiq_genai_flow/rag/src/data
 mkdir -p medical-backup
 mv chunked_files/Medical_*.json medical-backup/           # remove the sample medical content
 cp rag_database.pkl medical-backup/                       # keep a backup
-# copy FRDM95_hand_made_chunks.json (from this repo's rag-db/) into chunked_files/, then:
+```
+
+- Download the Pre-made FRDM i.MX 95 chunk file:
+
+```bash
+cd /root/eiq_genai_flow/rag/src/data/chunked_files
+wget https://github.com/avnet-iotconnect/iotc-python-lite-sdk-demos/blob/main/nxp-frdm-imx-95/genai-flow-demo/rag-db/FRDM95_hand_made_chunks.json
+```
+- Build the database from the downloaded chunked data:
+- 
+```bash
 cd /root/eiq_genai_flow/rag/src
-echo "User guide for the NXP FRDM i.MX 95 development board." | \
-  python3 -m rag.preprocessing.generate_embeddings -f all
+python3 -m rag.preprocessing.generate_embeddings -f all
 ```
 
 > [!TIP]
