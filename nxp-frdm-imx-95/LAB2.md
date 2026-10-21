@@ -137,6 +137,13 @@ and `vlm_precision` (`q8` default, or `fp32`) — or switch the vision model fro
 
 ### 4.2. Use the Model
 
+To run the demo, execute the `app.py` script:
+
+```bash
+cd /opt/demo
+python3 app.py
+```
+
 - Send the `ask-vlm` command from /IOTCONNECT — with no argument it describes the scene
 - Or ask something specific like `Is there a person in the room?`. The app captures a fresh frame via GStreamer, runs the VLM (models download on first use), and publishes `vlm_response` plus performance telemetry.
 
