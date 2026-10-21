@@ -248,6 +248,13 @@ Set to: `similarity_threshold: float = 0.30`
 
 ### 6.3. Use it
 
+To run the demo, execute the `app.py` script:
+
+```bash
+cd /opt/demo
+python3 app.py
+```
+
 Toggle grounding from /IOTCONNECT with `set-rag on` / `set-rag off` (reflected in the `llm_rag` telemetry
 attribute). It applies to `ask-llm`, the voice assistant, and `run-benchmark`. Example, with RAG on:
 
