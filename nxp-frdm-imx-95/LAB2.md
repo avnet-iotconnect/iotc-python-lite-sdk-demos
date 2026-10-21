@@ -252,3 +252,22 @@ attribute). It applies to `ask-llm`, the voice assistant, and `run-benchmark`. E
 > **ask-llm** `How do I expand the root filesystem?` →
 > *"The stock FRDM i.MX 95 demo image only allocates about 11 GB of the 32 GB eMMC to the root filesystem. Expand it
 > with: parted -s /dev/mmcblk0 resizepart 2 100% followed by resize2fs /dev/mmcblk0p2"* — verbatim from the docs.
+
+## 7. Continuing Your Journey
+
+- [Lab 3: Enable the Kinara Ara-2 / NXP Ara240 discrete NPU module](LAB3.md)  
+
+## 8. Troubleshooting
+
+To return the board to an out-of-box state, or to update to the latest NXP demo image, refer to the [flashing](FLASHING.md) guide.
+
+## 9. Resources
+
+- [Purchase the FRDM i.MX 95 Board](https://www.avnet.com/americas/product/nxp/frdm-imx95/evolve-122131125/)
+- [NXP FRDM-IMX95 Product Page](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX95)
+- [NXP i.MX 95 Applications Processor Family](https://www.nxp.com/products/i.MX95)
+- [NXP eIQ GenAI Flow](https://www.nxp.com/design/design-center/software/embedded-software/eiq-genai-flow-conversational-ai-software-pipeline-on-edge-devices:GEN-AI-FLOW)
+- [eIQ GenAI Flow Demonstrator (GitHub)](https://github.com/nxp-appcodehub/dm-eiq-genai-flow-demonstrator)
+- [More /IOTCONNECT NXP Guides](https://avnet-iotconnect.github.io/partners/nxp/)
+- [/IOTCONNECT Overview](https://www.iotconnect.io/)
+- [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
