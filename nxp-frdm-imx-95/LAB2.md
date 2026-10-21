@@ -241,8 +241,10 @@ chunks, correct matches typically score 0.31–0.45 (e.g. *"How do I expand the 
 against its own chunk), so lower it:
 
 ```python
-similarity_threshold: float = 0.30
+nano /root/eiq_genai_flow/config.py
 ```
+
+Set to: `similarity_threshold: float = 0.30`
 
 ### 6.3. Use it
 
