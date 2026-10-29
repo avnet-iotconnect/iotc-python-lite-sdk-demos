@@ -274,10 +274,50 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function log(m,cls){const d=document.createElement("div");
  d.innerHTML='<span class="dim">'+new Date().toLocaleTimeString()+'</span> <span class="'+(cls||"")+'">'+m+'</span>';
  $("log").prepend(d); while($("log").children.length>150)$("log").lastChild.remove();}
-async function api(p,o){o=o||{};o.headers=Object.assign({"Content-Type":"application/json"},o.headers||{});
+async function api(p,o,noRetry){o=o||{};o.headers=Object.assign({"Content-Type":"application/json"},o.headers||{});
  if(S.token)o.headers["X-Iotc-Token"]=S.token;
  const r=await fetch("api/cockpit/"+p,o);const j=await r.json().catch(()=>({error:"bad response"}));
+ if(r.status===401&&!noRetry&&p!=="login"&&S.token){
+  // The /IOTCONNECT bearer token expired under us. Get a new one and retry this
+  // call once - silently if the password is still in memory, otherwise via the
+  // sign-in box - instead of surfacing "token expired" to the attendee.
+  await relogin();
+  return api(p,o,true);
+ }
  if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j;}
+
+/* ---------- auth: re-login on an expired token ----------
+   The bearer token has a finite lifetime and the cockpit used to hold one for the
+   whole tab, so a tab left open through a workshop started failing every call
+   ("token expired") until the attendee signed out and in. The password is kept in
+   page memory only - never in storage - so while the tab is open the re-login is
+   silent. After a reload it is not in memory, so the sign-in box comes back and
+   the call that hit the expiry resumes after sign-in. */
+async function doLogin(email,password){
+ const j=await api("login",{method:"POST",body:JSON.stringify({email,password})},true);
+ S.token=j.token;S.email=email;S.password=password;
+ sessionStorage.setItem("cockpit",JSON.stringify({token:j.token,email}));
+ return j;
+}
+let reloginP=null;   // one re-login at a time; concurrent 401s (the poll, a command) share it
+function relogin(){
+ if(reloginP)return reloginP;
+ reloginP=(async()=>{
+  try{
+   if(S.password){
+    try{log("session token expired — signing you back in…","dim");await doLogin(S.email,S.password);return;}
+    catch(e){S.password=null;}   // password no longer accepted: ask instead of looping
+   }
+   log("session token expired — please sign in again; what you were doing will continue","err");
+   $("cockpit").classList.add("hidden");$("loginview").classList.remove("hidden");
+   if(S.email)$("email").value=S.email;
+   $("loginbtn").disabled=false;
+   $("loginstatus").innerHTML='<span class="err">Your session expired — sign in again to continue.</span>';
+   await new Promise(res=>{S.loginResume=res});
+  }finally{reloginP=null}
+ })();
+ return reloginP;
+}
 
 /* ---------- gauge ---------- */
 function gauge(val,max,label,unit){
@@ -312,8 +352,14 @@ $("loginbtn").onclick=async()=>{
  const email=$("email").value.trim(),password=$("password").value;
  if(!email||!password){$("loginstatus").innerHTML='<span class="err">Enter your email and password.</span>';return}
  $("loginbtn").disabled=true;$("loginstatus").innerHTML='<span class="spin"></span>Signing in…';
- try{const j=await api("login",{method:"POST",body:JSON.stringify({email,password})});
-  S.token=j.token;S.email=email;sessionStorage.setItem("cockpit",JSON.stringify({token:j.token,email}));await boot();
+ try{await doLogin(email,password);
+  if(S.loginResume){   // resuming after an expired session: pick up where the attendee left off
+   const resume=S.loginResume;S.loginResume=null;
+   $("password").value="";$("loginstatus").innerHTML="";$("loginbtn").disabled=false;
+   $("loginview").classList.add("hidden");$("cockpit").classList.remove("hidden");
+   resume();return;
+  }
+  await boot();
  }catch(e){$("loginstatus").innerHTML='<span class="err">'+e.message+'</span>';$("loginbtn").disabled=false}};
 $("logout").onclick=()=>{sessionStorage.removeItem("cockpit");location.reload()};
 
