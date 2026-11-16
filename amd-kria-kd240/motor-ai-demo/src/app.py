@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import random
+import signal
 import subprocess
 import sys
 import threading
@@ -605,6 +606,10 @@ def on_disconnect(reason: str, disconnected_from_server: bool):
 if __name__ == '__main__':
     if not FMC_AVAILABLE:
         _relaunch_with_motor_env()
+
+    # SIGTERM (plain kill/pkill, systemd stop) must also stop the motor: turn
+    # it into SystemExit so the main loop's finally block runs.
+    signal.signal(signal.SIGTERM, lambda signum, frame: sys.exit(0))
 
     parser = argparse.ArgumentParser(description='IOTCONNECT KD240 motor control and anomaly detection demo')
     parser.add_argument('--dry-run', action='store_true',
