@@ -287,6 +287,16 @@ Verify on hardware:
 
 ## 6. Demo D: KD240 Motor Control Demo
 
+Status: IMPLEMENTED in `amd-kria-kd240/motor-ai-demo/` (template `kd24MC`, name kd240-motor-ai), extended beyond
+this plan with an embedded AI layer: an on-device anomaly model (per-feature median/MAD robust z-score over speed
+error, FOC i_q/i_d, phase imbalance, and DC link voltage) trained by a `train-baseline` command and scored at 1 Hz.
+The Python surface was confirmed from the v0.5 binding source (module `py_foc_motor_ctrl`; singleton
+`MotorControl.getMotorControlInstance(sessionId, configPath)` that returns None when the 24V DC link is down;
+`setOperationMode`/`setSpeed`/`setTorque`/`clearFaults`; readbacks `getSpeed`, `getPosition`, `getCurrent`,
+`getVoltage`, `getFocCalc`, `getFaultStatus`), so no "Vitis Motor Control Library Python interface" exists as such;
+the HLS library runs in the PL and foc-motor-ctrl's pybind11 layer is the runtime API, exactly as section research
+predicted.
+
 Goal: cloud-controlled field-oriented control (FOC) of the Motor Accessory Pack BLDC motor, with speed, current,
 position, and fault telemetry.
 
@@ -344,19 +354,28 @@ above, `xlnx-firmware-kd240-motor-ctrl-qei`, `xlnx-app-kd240-foc-motor-ctrl` (pu
 
 Verify on hardware:
 
-* The exact Python module name and API surface of the foc-motor-ctrl pybind11 bindings (not documented; inspect
-  `/opt/xilinx/xlnx-app-kd240-foc-motor-ctrl` after install). TODO.
-* DC link connector silkscreen: UG1093 says J39, the FOC guide says J29. Check the board. TODO.
-* Package availability for 24.04 CONFIRMED (2026-10-18): the noble view of `ppa:xilinx-apps` lists
-  `xlnx-app-kd240-foc-motor-ctrl` 0.5.2-0xlnx1 and `xlnx-firmware-kd240-motor-ctrl-qei` 1.0-0xlnx2. A clean install
-  on the board still needs to be exercised once the KD240 is on the bench. The kit alone is not enough to run the
-  demo: the Motor Accessory Pack HW-MACCP01-SK-G (24V BLDC motor, encoder, cables, 24V motor supply) is required and
-  must be purchased separately.
-* Fault telemetry fields actually exposed by the library (dashboard shows critical/warning indicators; map to
-  `fault_status`).
-* Encoder wiring (J42 vs J43 and the J44 jumper position) with the accessory pack cable.
-* Safe-stop behavior: confirm `set-mode off` ramps or cuts PWM, and decide whether `stop` should also disengage the
-  DC link.
+Hardware verification results (KD240 + Motor Accessory Pack, 2026-11-16):
+
+* VERIFIED end to end with the motor spinning: `--spin-test 600` ran and stopped cleanly; cloud-style speed changes
+  (800, 1500, 2500 rpm) through the library; baseline training on the live motor (31 samples at the 800 rpm point,
+  persisted to baseline.json and reloaded across restarts); anomaly scoring low on the trained regime (1.8) and
+  firing hard on a condition deviation (47.9 during coast-down, flag raised). A no-load setpoint change scores low
+  because the no-load electrical signature barely moves; the demo README documents load changes and the coast-down
+  trick as the demonstration paths.
+* Python surface confirmed on target: module `py_foc_motor_ctrl` at `/opt/xilinx/xlnx-app-kd240-foc-motor-ctrl/lib`
+  (needs PYTHONPATH and LD_LIBRARY_PATH; the app re-execs itself to set them). Faults map via `getFaultStatus` over
+  the 8 FaultId values into the `fault_status` JSON attribute. `clearFaults()` forces mode off; `kModeOff` waits up
+  to 5 s for spin-down. Root is REQUIRED (the library programs IIO/UIO device nodes), so the demo runs under sudo,
+  matching AMD's own dashboard launcher.
+* Install on 24.04 is NOT clean as shipped by AMD: `xlnx-firmware-kd240-motor-ctrl-qei` depends on
+  `motor-control-iio-modules`, which is not published for noble in any PPA; it must be built once from
+  github.com/Xilinx/motor-control-iio-modules (dpkg-buildpackage with dkms + dh-dkms), after which DKMS builds the
+  drivers for installed kernels and the FOC packages install from `ppa:xilinx-apps`. The demo README documents the
+  full workaround.
+* Observed motor behavior with stock anaheim.config: measured speed settles below setpoint (about 590 at 800 rpm,
+  2265 at 2500 rpm); both values are reported in telemetry.
+* Remaining: end-to-end telemetry in the IOTCONNECT Live Data tab after onboarding (needs a device created with the
+  `kd24MC` template), and the kd240-motor-connections.png photo.
 
 ## 7. Open Items Summary
 

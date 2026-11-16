@@ -181,17 +181,17 @@ View the random-integer telemetry data under the "Live Data" tab for your device
 # 8. Going Further: Expansion Demos
 
 Now that you have completed the basic quickstart, you can patch a specialized expansion demo on top of it using an
-OTA software package. The following expansion demo is available for this board:
+OTA software package. The following expansion demos are available for this board:
 
 * **[System and Accelerator Monitor Demo](system-monitor-demo/README.md)**: streams CPU, memory, SOM temperature, and
   SOM power telemetry, reports the currently loaded programmable logic (PL) accelerator app, and switches accelerator
   apps through cloud commands.
+* **[Motor Control and Edge AI Anomaly Detection Demo](motor-ai-demo/README.md)**: field-oriented control of the
+  Motor Accessory Pack BLDC motor using AMD's FOC Motor Control app and its Python interface, with an on-device
+  anomaly model that learns the motor's healthy signature and flags deviations; speed, currents, position, faults,
+  and anomaly scores stream to IOTCONNECT with set-speed, set-torque, set-mode, stop, and train-baseline commands.
 
-Further demos are planned and tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository:
-
-* **KD240 Motor Control Demo**: field-oriented control of the Motor Accessory Pack BLDC motor using AMD's FOC Motor
-  Control app and its Python interface, streaming speed, current, position, and fault telemetry with set-speed,
-  set-mode, and stop commands from the cloud.
+Further demos are tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository.
 
 # 9. Resources
 

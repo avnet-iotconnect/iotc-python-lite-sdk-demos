@@ -167,6 +167,17 @@ threshold, trigger inspections on demand, and optionally bridge to ROS 2 topics 
 **Supported on:**
 * [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/inspection-demo/README.md)
 
+## KD240 Motor Control and Edge AI Anomaly Detection
+
+The Motor AI demo pairs the AMD Kria KD240 and its Motor Accessory Pack with AMD's FOC Motor Control accelerated app:
+cloud commands drive the BLDC motor (speed, torque, mode, stop) while speed, rotor position, phase currents,
+FOC-frame currents, DC link voltage, and drive faults stream to /IOTCONNECT. An on-device anomaly model learns the
+motor's healthy electrical signature on demand and raises an anomaly flag when the signature drifts, demonstrating
+embedded condition monitoring with no cloud inference.
+
+**Supported on:**
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240/motor-ai-demo/README.md)
+
 ## Tria Vision AI Demo
 
 The Vision AI demo integrates with the Vision AI-KIT 6490's on-device AI inference pipeline to stream inference results and system status telemetry to /IOTCONNECT in real time. Supported AI tasks include Pose Detection, Object Detection, and Image Classification, with confidence scores reported per inference. The board can run two simultaneous AI demos when two cameras are connected.
