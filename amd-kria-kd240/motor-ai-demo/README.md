@@ -102,7 +102,17 @@ sudo bash ./install.sh
 ```
 
 Running `install.sh` with sudo installs the Python dependencies system wide, so they are importable by root, which
-is how the demo runs (see section 6).
+is how the demo runs (see section 6). It also installs and enables the `iotc-motor-ai` systemd service, so from
+then on the demo starts by itself whenever the board powers up: at boot the service waits for dfx-mgr, loads the
+`kd240-motor-ctrl-qei` firmware if it is not already loaded (`motor-firmware-load.sh`), and starts `app.py` as
+root with the motor stopped. Useful commands:
+
+```bash
+sudo systemctl status iotc-motor-ai        # state
+sudo journalctl -u iotc-motor-ai -f        # live log
+sudo systemctl stop iotc-motor-ai          # stop (also stops the motor)
+sudo systemctl disable iotc-motor-ai       # stop starting at boot
+```
 
 > [!NOTE]
 > TODO: the package will be hosted on downloads.iotconnect.io; until then, build it yourself with the steps in
@@ -110,10 +120,13 @@ is how the demo runs (see section 6).
 
 ## 6. Using the Demo
 
-The FOC library programs the drive hardware through IIO and UIO device nodes that only root can access (AMD's own
-dashboard runs the same way), so run the demo with sudo:
+After install the demo runs as the `iotc-motor-ai` service and starts on every boot, so normally there is nothing
+to launch. To run it by hand instead (stop the service first so two instances never share the motor), note that
+the FOC library programs the drive hardware through IIO and UIO device nodes that only root can access (AMD's own
+dashboard runs the same way), so run it with sudo:
 
 ```bash
+sudo systemctl stop iotc-motor-ai
 cd /opt/demo
 sudo python3 app.py
 ```

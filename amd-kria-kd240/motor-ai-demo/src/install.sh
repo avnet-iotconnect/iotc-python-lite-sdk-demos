@@ -20,4 +20,16 @@ if ! dpkg -s xlnx-app-kd240-foc-motor-ctrl >/dev/null 2>&1; then
     echo "xlnx-app-kd240-foc-motor-ctrl, then: sudo xmutil unloadapp && sudo xmutil loadapp kd240-motor-ctrl-qei"
 fi
 
+# When run as root (sudo bash ./install.sh, or an OTA under the running demo),
+# install and enable the boot service so the demo starts on power-up.
+if [ "$(id -u)" -eq 0 ] && [ -d /etc/systemd/system ] && [ -f /opt/demo/iotc-motor-ai.service ]; then
+    cp /opt/demo/iotc-motor-ai.service /etc/systemd/system/iotc-motor-ai.service
+    chmod 644 /etc/systemd/system/iotc-motor-ai.service
+    systemctl daemon-reload
+    systemctl enable iotc-motor-ai.service >/dev/null 2>&1
+    echo "Boot service installed and enabled (journalctl -u iotc-motor-ai -f to watch)."
+else
+    echo "NOTE: run install.sh with sudo to install the boot service (iotc-motor-ai)."
+fi
+
 echo "Installation complete!"
