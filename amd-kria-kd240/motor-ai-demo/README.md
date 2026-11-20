@@ -3,6 +3,9 @@
 Upgrades the /IOTCONNECT Starter Demo on the AMD Kria KD240 to a cloud-connected motor drive with embedded AI:
 field-oriented control (FOC) of the Motor Accessory Pack BLDC motor through AMD's FOC Motor Control app, plus an
 on-device anomaly model that learns the motor's healthy electrical signature and flags deviations in real time.
+A ready-made IOTCONNECT dashboard (section 7) drives the whole experience with preset buttons:
+
+<img src="../media/kd240-motor-ai-dashboard.png" width="900">
 
 > [!IMPORTANT]
 > Complete the [/IOTCONNECT quickstart guide for the KD240](../README.md) before proceeding. The
@@ -161,7 +164,24 @@ operating point the healthy reference. The baseline persists in `/opt/demo/basel
 Telemetry attributes and commands are listed in [kd24MC-template.json](kd24MC-template.json); the table mirrors the
 other Kria expansion demos (system telemetry plus the motor and anomaly attributes above).
 
-## 7. How It Works
+## 7. Import the Dashboard
+
+The dashboard pictured at the top of this page ships with the demo as
+[kd24MC-dashboard-export.json](kd24MC-dashboard-export.json): AI verdict and motor status tiles, speed/DC-link/
+temperature gauges, anomaly score with threshold, preset command buttons (emergency stop, spin, train baseline,
+threshold), and a command console that shows every acknowledgement.
+
+To import it into your IOTCONNECT instance:
+
+1. Download [kd24MC-dashboard-export.json](kd24MC-dashboard-export.json) to your PC.
+2. In the IOTCONNECT web UI, open **Dashboards** and choose **Create Dashboard**.
+3. Select the **Import Dashboard** option, browse to the downloaded JSON file, and give the dashboard a name.
+4. When prompted for the data source, select the `kd24MC` template and your device (for example `mclKD240mtrAI`),
+   then save.
+5. Open the dashboard; tiles populate within one 5 second telemetry cycle, and the preset buttons in the bottom
+   row drive the motor demo end to end.
+
+## 8. How It Works
 
 * Motor control uses the `py_foc_motor_ctrl` pybind11 bindings from `xlnx-app-kd240-foc-motor-ctrl`
   ([Xilinx/foc-motor-ctrl](https://github.com/Xilinx/foc-motor-ctrl)): `MotorControl.getMotorControlInstance()`,
@@ -174,7 +194,7 @@ other Kria expansion demos (system telemetry plus the motor and anomaly attribut
   one-class novelty detector in the same family as classical condition-monitoring methods, it trains in a minute on
   the device, and its verdicts are explainable by looking at which feature moved.
 
-## 8. Customize and Rebuild (Optional)
+## 9. Customize and Rebuild (Optional)
 
 1. Clone the repository to your host machine:
    ```bash
@@ -191,3 +211,17 @@ other Kria expansion demos (system telemetry plus the motor and anomaly attribut
 
 4. Deliver the new package to the board with scp, or publish it as OTA firmware for the `kd24MC` template the same
    way the [system monitor demo README](../system-monitor-demo/README.md) describes.
+
+## 10. Community Guides
+
+Hackster.io projects that go deeper into the same hardware, useful after this demo whets your appetite:
+
+* [Getting Started with BLDCs on Kria KD240 + Motor Kit Part 1](https://www.hackster.io/whitney-knitter/getting-started-with-bldcs-on-kria-kd240-motor-kit-part-1-c18318)
+  by Whitney Knitter: the basics of controlling the Motor Accessory Pack BLDC yourself with a custom Vivado design,
+  rather than through AMD's prebuilt FOC app.
+* [Getting Started with BLDCs on Kria KD240 + Motor Kit Part 2](https://www.hackster.io/whitney-knitter/getting-started-with-bldcs-on-kria-kd240-motor-kit-part-2-fb5ee0)
+  by Whitney Knitter: continues the series by reading back-EMF data through a custom accelerated kernel loaded with
+  `xmutil`, the same app-loading mechanism this demo's firmware uses.
+* [K24 SoM eMMC/SD Programming with KD240 and Custom Carrier](https://www.hackster.io/LogicTronix/k24-som-emmc-sd-programming-with-kd240-and-custom-carrier-322d09)
+  by LogicTronix: booting PetaLinux from the K24 SOM's eMMC with bootloaders in QSPI, including why the KD240's SD
+  card appears as a USB disk (it sits behind the onboard USB hub, unlike the KV260).

@@ -190,6 +190,7 @@ OTA software package. The following expansion demos are available for this board
   Motor Accessory Pack BLDC motor using AMD's FOC Motor Control app and its Python interface, with an on-device
   anomaly model that learns the motor's healthy signature and flags deviations; speed, currents, position, faults,
   and anomaly scores stream to IOTCONNECT with set-speed, set-torque, set-mode, stop, and train-baseline commands.
+  A ready-made dashboard export with preset control buttons is included.
 
 Further demos are tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this repository.
 
@@ -205,5 +206,8 @@ Further demos are tracked in [PLAN-KRIA.md](../PLAN-KRIA.md) at the root of this
 * [AMD KD240 Ubuntu 24.04 Boot Guide](https://xilinx.github.io/kria-apps-docs/kd240/linux_boot/ubuntu_24_04/build/html/docs/intro.html)
 * [AMD Kria Wiki: Kria SOMs and Starter Kits](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/1641152513/Kria+SOMs+Starter+Kits)
 * [AMD Kria Wiki: Boot Firmware Update](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/3020685316/Kria+SOM+Boot+Firmware+Update)
+* Community guides on Hackster.io:
+  * [Getting Started with BLDCs on Kria KD240 + Motor Kit Part 1](https://www.hackster.io/whitney-knitter/getting-started-with-bldcs-on-kria-kd240-motor-kit-part-1-c18318) and [Part 2](https://www.hackster.io/whitney-knitter/getting-started-with-bldcs-on-kria-kd240-motor-kit-part-2-fb5ee0) by Whitney Knitter: driving the Motor Accessory Pack BLDC with your own PL designs
+  * [K24 SoM eMMC/SD Programming with KD240 and Custom Carrier](https://www.hackster.io/LogicTronix/k24-som-emmc-sd-programming-with-kd240-and-custom-carrier-322d09) by LogicTronix: booting PetaLinux from the K24 SOM's eMMC
 * [/IOTCONNECT Overview](https://www.iotconnect.io/)
 * [/IOTCONNECT Knowledgebase](https://help.iotconnect.io/)
