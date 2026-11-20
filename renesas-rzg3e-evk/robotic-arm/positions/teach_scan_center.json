@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-04-18T18:26:43Z",
+  "positions": {
+    "shoulder_pan": 491,
+    "shoulder_lift": 369,
+    "elbow_flex": 50,
+    "wrist_flex": 489,
+    "wrist_roll": 498,
+    "gripper": 306
+  },
+  "scan_pose_list": [
+    [
+      6,
+      491
+    ],
+    [
+      5,
+      369
+    ],
+    [
+      4,
+      50
+    ],
+    [
+      3,
+      489
+    ],
+    [
+      2,
+      498
+    ],
+    [
+      1,
+      306
+    ]
+  ]
+}

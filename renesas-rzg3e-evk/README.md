@@ -156,6 +156,12 @@ Once the basic demo works, try the [Vision Demo](./vision-demo/README.md): two U
 CPU-only face identity (with enrolment from the cloud) and occupancy analytics, all streamed to a
 browser and to /IOTCONNECT.
 
+## Robotic Arm Demo
+
+The [Robotic Arm demo](./robotic-arm/README.md) controls a Hiwonder XArm 1S from the RZ/G3E with a
+wrist-mounted USB camera. It includes an autonomous ball-pickup mode (HSV detection plus visual
+servoing) and an optional ASL gesture-control mode, with /IOTCONNECT telemetry and remote commands.
+
 # 8. Resources
 
 * [Purchase the Renesas RZ/G3E Evaluation Board Kit](https://www.newark.com/renesas/rtk9947e57s01000be/eval-kit-arm-cortex-a55-m33-64bit/dp/73AM7397)
