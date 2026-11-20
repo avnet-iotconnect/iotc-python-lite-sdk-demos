@@ -1,0 +1,276 @@
+{
+    "code": "kd24MC",
+    "name": "kd240-motor-ai",
+    "authType": 2,
+    "attributes": [
+        {
+            "name": "sdk_version",
+            "displayName": "SDK Version",
+            "type": "STRING",
+            "description": "IOTCONNECT SDK version",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "cpu_percent",
+            "displayName": "CPU Usage",
+            "type": "DECIMAL",
+            "description": "Overall CPU utilisation (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "memory_percent",
+            "displayName": "Memory Usage",
+            "type": "DECIMAL",
+            "description": "RAM usage (%)",
+            "unit": "%",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "som_temp_ps_c",
+            "displayName": "SOM Temp PS",
+            "type": "DECIMAL",
+            "description": "AMS/SYSMON PS die temperature (C)",
+            "unit": "°C",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "motor_available",
+            "displayName": "Motor Available",
+            "type": "BOOLEAN",
+            "description": "FOC motor stack initialized (24V DC link up, PL app loaded)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "motor_mode",
+            "displayName": "Motor Mode",
+            "type": "STRING",
+            "description": "off, speed, torque, or unavailable",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "speed_setpoint_rpm",
+            "displayName": "Speed Setpoint",
+            "type": "DECIMAL",
+            "description": "Commanded speed (rpm)",
+            "unit": "rpm",
+            "aggregateTypes": []
+        },
+        {
+            "name": "speed_rpm",
+            "displayName": "Speed",
+            "type": "DECIMAL",
+            "description": "Measured mechanical speed (rpm)",
+            "unit": "rpm",
+            "aggregateTypes": ["avg", "min", "max"]
+        },
+        {
+            "name": "position_deg",
+            "displayName": "Rotor Position",
+            "type": "DECIMAL",
+            "description": "Rotor position (degrees)",
+            "unit": "°",
+            "aggregateTypes": []
+        },
+        {
+            "name": "current_ia_ma",
+            "displayName": "Phase A Current",
+            "type": "DECIMAL",
+            "description": "Phase A current (mA)",
+            "unit": "mA",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "current_ib_ma",
+            "displayName": "Phase B Current",
+            "type": "DECIMAL",
+            "description": "Phase B current (mA)",
+            "unit": "mA",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "current_ic_ma",
+            "displayName": "Phase C Current",
+            "type": "DECIMAL",
+            "description": "Phase C current (mA)",
+            "unit": "mA",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "dc_link_v",
+            "displayName": "DC Link Voltage",
+            "type": "DECIMAL",
+            "description": "DC link voltage (V)",
+            "unit": "V",
+            "aggregateTypes": ["avg", "min", "max"]
+        },
+        {
+            "name": "i_q",
+            "displayName": "FOC Iq",
+            "type": "DECIMAL",
+            "description": "FOC-frame torque-producing current",
+            "unit": "",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "i_d",
+            "displayName": "FOC Id",
+            "type": "DECIMAL",
+            "description": "FOC-frame flux-producing current",
+            "unit": "",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "fault_active",
+            "displayName": "Fault Active",
+            "type": "BOOLEAN",
+            "description": "Any motor drive fault latched",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "fault_status",
+            "displayName": "Fault Status",
+            "type": "STRING",
+            "description": "Per-fault flags (JSON object over the 8 drive fault ids)",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "anomaly",
+            "displayName": "Anomaly",
+            "type": "BOOLEAN",
+            "description": "On-device model flags the motor signature as anomalous",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "anomaly_score",
+            "displayName": "Anomaly Score",
+            "type": "DECIMAL",
+            "description": "Largest robust z-score across the learned features",
+            "unit": "",
+            "aggregateTypes": ["avg", "max"]
+        },
+        {
+            "name": "anomaly_threshold",
+            "displayName": "Anomaly Threshold",
+            "type": "DECIMAL",
+            "description": "Score above this flags an anomaly",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "baseline_ready",
+            "displayName": "Baseline Ready",
+            "type": "BOOLEAN",
+            "description": "A healthy baseline has been trained",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "baseline_training",
+            "displayName": "Baseline Training",
+            "type": "BOOLEAN",
+            "description": "Baseline training window currently open",
+            "unit": "",
+            "aggregateTypes": []
+        },
+        {
+            "name": "baseline_speed_rpm",
+            "displayName": "Baseline Speed",
+            "type": "DECIMAL",
+            "description": "Speed setpoint the baseline was trained at (rpm)",
+            "unit": "rpm",
+            "aggregateTypes": []
+        },
+        {
+            "name": "random",
+            "displayName": "Random",
+            "type": "INTEGER",
+            "description": "Random integer for connectivity check",
+            "unit": "",
+            "aggregateTypes": []
+        }
+    ],
+    "commands": [
+        {
+            "name": "set-speed",
+            "command": "set-speed",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Speed setpoint in rpm: 0 stops; magnitude 250..10000 runs in speed mode"
+        },
+        {
+            "name": "set-torque",
+            "command": "set-torque",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Torque setpoint in amps, -2.5..2.5; switches to torque mode"
+        },
+        {
+            "name": "set-mode",
+            "command": "set-mode",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "off | speed | torque"
+        },
+        {
+            "name": "stop",
+            "command": "stop",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Immediate stop (mode off)"
+        },
+        {
+            "name": "clear-faults",
+            "command": "clear-faults",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Clear latched drive faults (mode forced to off)"
+        },
+        {
+            "name": "train-baseline",
+            "command": "train-baseline",
+            "requiredParam": false,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Learn the healthy motor signature at the current steady speed (optional: seconds, 10..600, default 60)"
+        },
+        {
+            "name": "set-anomaly-threshold",
+            "command": "set-anomaly-threshold",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Anomaly decision threshold in robust z-score units, 1.0..20.0 (default 4.0)"
+        },
+        {
+            "name": "file-download",
+            "command": "file-download",
+            "requiredParam": true,
+            "requiredAck": true,
+            "isOTACommand": false,
+            "description": "Download and apply an OTA update package from a URL"
+        }
+    ],
+    "messageVersion": "2.1",
+    "properties": {
+        "description": "AMD Kria KD240 Motor Control and Edge AI Anomaly Detection Demo",
+        "dataFrequency": "5",
+        "fileSupport": true,
+        "certRenewalDay": 0,
+        "enableCSR": false
+    },
+    "_meta": {
+        "version": "2.0"
+    }
+}

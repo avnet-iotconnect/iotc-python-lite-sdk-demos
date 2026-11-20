@@ -10,6 +10,9 @@ completed this work for a subset of boards as outlined in the following section.
 
 The following development boards are pre-enabled with /IOTCONNECT in this repository:
 
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240) - ([Purchase Link](https://www.newark.com/amd/sk-kd240-g/starter-kit-zynq-ultrascale-mpsoc/dp/83AK4855))
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260) - ([Purchase Link](https://www.newark.com/amd/sk-kr260-g/starter-kit-robotics-mpsoc/dp/33AK7080))
+* [AMD Kria KV260 Vision AI Starter Kit](amd-kria-kv260) - ([Purchase Link](https://www.newark.com/amd/sk-kv260-g/vision-ai-startr-kit-arm-cortex/dp/26AM6575))
 * [Arduino Uno Q](arduino-uno-q) - ([Purchase Link](https://www.newark.com/arduino/abx00162/uno-q-sbc-2gb-arm-cortex-a53-m33f/dp/59AM1209))
 * [Microchip Curiosity PIC64GX1000 Kit](microchip-pic64gx1000) - ([Purchase Link](https://www.newark.com/microchip/curiosity-pic64gx1000-kit/curiosity-kit-64bit-risc-v-quad/dp/46AM3917))
 * [Microchip PolarFire SoC Discovery Kit](microchip-polarfire-soc-dk) - ([Purchase Link](https://www.newark.com/microchip/mpfs-disco-kit/discovery-kit-64bit-risc-v-polarfire/dp/97AK2474))
@@ -142,6 +145,38 @@ The System Monitor demo upgrades the /IOTCONNECT starter application on the RZ/V
 
 **Supported on:**
 * [Renesas RZ/V2H EVK](renesas-rzv2h-evk/system-monitor-demo/README.md)
+
+## Kria System and Accelerator Monitor
+
+The Kria System and Accelerator Monitor demo streams CPU utilisation, RAM usage, SOM die temperatures, and SOM power
+rail telemetry from AMD Kria starter kits, reports the currently loaded programmable logic (PL) accelerator app, and
+lets you list, load, and unload accelerator apps from the cloud through `xmutil` and dfx-mgr.
+
+**Supported on:**
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240/system-monitor-demo/README.md)
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/system-monitor-demo/README.md)
+* [AMD Kria KV260 Vision AI Starter Kit](amd-kria-kv260/system-monitor-demo/README.md)
+
+## KR260 Inspection Cell Demo
+
+The Inspection Cell demo turns the AMD Kria KR260 and a USB webcam into a compact golden-sample inspection station:
+capture a reference image of a known-good part, then every inspection scores the live view against it and reports
+pass/fail results, counters, yield, and cycle metrics to /IOTCONNECT. Cloud commands set the inspection region and
+threshold, trigger inspections on demand, and optionally bridge to ROS 2 topics and services.
+
+**Supported on:**
+* [AMD Kria KR260 Robotics Starter Kit](amd-kria-kr260/inspection-demo/README.md)
+
+## KD240 Motor Control and Edge AI Anomaly Detection
+
+The Motor AI demo pairs the AMD Kria KD240 and its Motor Accessory Pack with AMD's FOC Motor Control accelerated app:
+cloud commands drive the BLDC motor (speed, torque, mode, stop) while speed, rotor position, phase currents,
+FOC-frame currents, DC link voltage, and drive faults stream to /IOTCONNECT. An on-device anomaly model learns the
+motor's healthy electrical signature on demand and raises an anomaly flag when the signature drifts, demonstrating
+embedded condition monitoring with no cloud inference.
+
+**Supported on:**
+* [AMD Kria KD240 Drives Starter Kit](amd-kria-kd240/motor-ai-demo/README.md)
 
 ## Tria Vision AI Demo
 

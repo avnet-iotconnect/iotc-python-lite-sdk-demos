@@ -1,0 +1,10 @@
+{
+    "telemetry_topics": [
+        {"topic": "/inspection/conveyor_speed", "type": "Float64", "key": "conveyor_speed"},
+        {"topic": "/inspection/station_state", "type": "String", "key": "station_state"}
+    ],
+    "services": [
+        {"name": "conveyor-start", "service": "/conveyor/start"},
+        {"name": "conveyor-stop", "service": "/conveyor/stop"}
+    ]
+}
